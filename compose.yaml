@@ -66,7 +66,7 @@ services:
       start_period: 10s
 
   vite:
-    image: node:24-trixie-slim
+    image: node:26-trixie-slim
     working_dir: /var/www/html
     user: "${UID:-1000}:${GID:-1000}"
     # `npm install` is a no-op when node_modules already matches package-lock.json.
