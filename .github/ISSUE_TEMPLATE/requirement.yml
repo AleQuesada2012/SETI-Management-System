@@ -1,0 +1,42 @@
+name: Requirement (RF)
+description: Work on a functional requirement of the approved analysis document.
+title: "RF_xx · "
+labels: ["type:requirement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every RF of `docs/requirements/` already has an issue. Use this form only for a requirement that was split
+        or added by the team. Quote the requirement text in Spanish.
+  - type: input
+    id: code
+    attributes:
+      label: Requirement code
+      placeholder: RF_03
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options: [security, assets, spaces, reservations, reports, users]
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description (Spanish, as approved)
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      description: One per line, as a task list (- [ ] …).
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Implementation notes
+      description: Rule file, Query/Policy/Action to use, seams with other modules.

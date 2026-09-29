@@ -1,0 +1,33 @@
+name: Bug
+description: Something that worked, or should work, and does not.
+labels: ["type:bug"]
+body:
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options: [security, assets, spaces, reservations, reports, users, platform]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Which user (role), which page, what you did.
+      placeholder: |
+        1. Sign in as admin@seti.test
+        2. Open Activos → A-0014
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs. actual
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Screenshot, the "Código de solicitud" shown on the error page, log lines (`docker compose logs app`).

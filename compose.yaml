@@ -1,0 +1,112 @@
+# Development stack. Start it with `docker compose up -d` (see README.md).
+#
+#   app        http://localhost:8000   Laravel (NGINX + PHP-FPM)
+#   vite       http://localhost:5173   asset dev server (hot reload)
+#   reverb     ws://localhost:8080     WebSockets (notifications, live dashboards)
+#   mailpit    http://localhost:8025   every email the app sends lands here
+#   pgsql      localhost:5433          PostgreSQL 18 (databases: seti, seti_testing)
+#   queue, scheduler                   background workers (no ports)
+#
+# Host ports can be changed in .env (APP_PORT, VITE_PORT, ...).
+
+name: seti
+
+x-app: &app
+  build:
+    context: .
+    dockerfile: docker/php/Dockerfile
+    target: development
+    args:
+      USER_ID: ${UID:-1000}
+      GROUP_ID: ${GID:-1000}
+  image: seti-app:dev
+  volumes:
+    - .:/var/www/html
+  environment:
+    PHP_OPCACHE_ENABLE: "0"
+    PHP_DATE_TIMEZONE: America/Costa_Rica
+    PHP_UPLOAD_MAX_FILE_SIZE: 20M
+    PHP_POST_MAX_SIZE: 25M
+    NGINX_CLIENT_MAX_BODY_SIZE: 25M
+  depends_on:
+    pgsql:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  app:
+    <<: *app
+    ports:
+      - "${APP_PORT:-8000}:8080"
+
+  queue:
+    <<: *app
+    command: ["php", "/var/www/html/artisan", "queue:work", "--tries=3", "--timeout=120"]
+    stop_signal: SIGTERM
+    healthcheck:
+      test: ["CMD", "healthcheck-queue"]
+      start_period: 10s
+
+  scheduler:
+    <<: *app
+    command: ["php", "/var/www/html/artisan", "schedule:work"]
+    stop_signal: SIGTERM
+    healthcheck:
+      test: ["CMD", "healthcheck-schedule"]
+      start_period: 10s
+
+  reverb:
+    <<: *app
+    command: ["php", "/var/www/html/artisan", "reverb:start", "--host=0.0.0.0", "--port=8000"]
+    stop_signal: SIGTERM
+    ports:
+      - "${REVERB_FORWARD_PORT:-8080}:8000"
+    healthcheck:
+      test: ["CMD", "healthcheck-reverb"]
+      start_period: 10s
+
+  vite:
+    image: node:24-trixie-slim
+    working_dir: /var/www/html
+    user: "${UID:-1000}:${GID:-1000}"
+    # `npm install` is a no-op when node_modules already matches package-lock.json.
+    command: ["sh", "-c", "npm install --no-audit --no-fund && npm run dev"]
+    environment:
+      VITE_IN_DOCKER: "true"
+      HOME: /tmp
+      npm_config_cache: /tmp/.npm
+    ports:
+      - "${VITE_PORT:-5173}:5173"
+    volumes:
+      - .:/var/www/html
+    restart: unless-stopped
+
+  pgsql:
+    image: postgres:18.6-trixie
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-seti}
+      POSTGRES_USER: ${DB_USERNAME:-seti}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+      # UTF-8 + ICU es-CR, so lower('CÓMPUTO') = 'cómputo' and the case-insensitive
+      # unique indexes behave as designed (Agent-DB.md §14.10).
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale-provider=icu --icu-locale=es-CR"
+    ports:
+      - "${FORWARD_DB_PORT:-5433}:5432"
+    volumes:
+      - pgsql-data:/var/lib/postgresql
+      - ./docker/pgsql/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  mailpit:
+    image: axllent/mailpit:v1.31
+    ports:
+      - "${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025"
+    restart: unless-stopped
+
+volumes:
+  pgsql-data:

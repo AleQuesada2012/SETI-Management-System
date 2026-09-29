@@ -1,0 +1,45 @@
+# Platform paths: a platform owner reviews every change here (CONTRIBUTING.md, "Team and ownership").
+# Module code has no code owner: the module's buddy reviewer is requested instead.
+
+/.github/                         @AleQuesada2012 @Rubiocai
+/.ai/                             @AleQuesada2012 @Rubiocai
+/AGENTS.md                        @AleQuesada2012 @Rubiocai
+/CONTRIBUTING.md                  @AleQuesada2012 @Rubiocai
+/boost.json                       @AleQuesada2012 @Rubiocai
+/.mcp.json                        @AleQuesada2012 @Rubiocai
+
+/bootstrap/                       @AleQuesada2012 @Rubiocai
+/config/                          @AleQuesada2012 @Rubiocai
+/docker/                          @AleQuesada2012 @Rubiocai
+/compose.yaml                     @AleQuesada2012 @Rubiocai
+/compose.prod.yaml                @AleQuesada2012 @Rubiocai
+/.env.example                     @AleQuesada2012 @Rubiocai
+/.env.production.example          @AleQuesada2012 @Rubiocai
+/composer.json                    @AleQuesada2012 @Rubiocai
+/composer.lock                    @AleQuesada2012 @Rubiocai
+/package.json                     @AleQuesada2012 @Rubiocai
+/package-lock.json                @AleQuesada2012 @Rubiocai
+/vite.config.js                   @AleQuesada2012 @Rubiocai
+/phpunit.xml                      @AleQuesada2012 @Rubiocai
+/phpstan.neon                     @AleQuesada2012 @Rubiocai
+/pint.json                        @AleQuesada2012 @Rubiocai
+
+/routes/web.php                   @AleQuesada2012 @Rubiocai
+/app/Providers/                   @AleQuesada2012 @Rubiocai
+/app/Support/                     @AleQuesada2012 @Rubiocai
+/app/Enums/                       @AleQuesada2012 @Rubiocai
+/database/migrations/             @AleQuesada2012 @Rubiocai
+/database/seeders/                @AleQuesada2012 @Rubiocai
+/database/sql/                    @AleQuesada2012 @Rubiocai
+/docs/db/                         @AleQuesada2012 @Rubiocai
+/docs/Agent-DB.md                 @AleQuesada2012 @Rubiocai
+/docs/adr/                        @AleQuesada2012 @Rubiocai
+/resources/views/layouts/         @AleQuesada2012 @Rubiocai
+/resources/views/partials/        @AleQuesada2012 @Rubiocai
+/resources/views/errors/          @AleQuesada2012 @Rubiocai
+/resources/css/                   @AleQuesada2012 @Rubiocai
+/resources/js/                    @AleQuesada2012 @Rubiocai
+/lang/es/app.php                  @AleQuesada2012 @Rubiocai
+/lang/es/db.php                   @AleQuesada2012 @Rubiocai
+/tests/Pest.php                   @AleQuesada2012 @Rubiocai
+/tests/TestCase.php               @AleQuesada2012 @Rubiocai

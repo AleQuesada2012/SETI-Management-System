@@ -1,0 +1,24 @@
+name: Task
+description: Platform, database, documentation or CI work that is not a requirement.
+labels: ["type:task"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [platform, db, docs, ci, security, assets, spaces, reservations, reports, users]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What and why
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: A checkable condition.
+    validations:
+      required: true

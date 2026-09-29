@@ -1,0 +1,3 @@
+# "Responsable del espacio" and "administrador asignado" are one concept: space managers
+
+The documents show a single "responsable" per space (RF_35, RF_64) and, separately, one or more administrators assigned to labs (RF_40, RF_43, RF_96, RF_97). We model a single many-to-many `space_managers` relation between spaces of any type and users holding the Administrador role. It serves three purposes: it is who the space shows as responsible, who receives RF_48 notifications, and what scopes an Administrador's power. An Administrador manages the assets, data and reservations of the spaces assigned to them, and may transfer assets out of those spaces to any active space. Two separate notions of "who is in charge" would drift apart.

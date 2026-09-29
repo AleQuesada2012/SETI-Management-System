@@ -1,0 +1,115 @@
+# Required checks for every pull request into main (branch protection): `ci` and `secrets`.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      pgsql:
+        image: postgres:18.6-trixie
+        env:
+          POSTGRES_DB: seti
+          POSTGRES_USER: seti
+          POSTGRES_PASSWORD: secret
+          POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale-provider=icu --icu-locale=es-CR"
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U seti -d seti"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USERNAME: seti
+      DB_PASSWORD: secret
+      PGPASSWORD: secret
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.5'
+          extensions: pdo_pgsql, intl, gd, exif, zip
+          tools: composer:v2
+          coverage: none
+
+      - name: Set up Node 24
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Install npm dependencies and build assets
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+
+      - name: Prepare the application
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          psql -h 127.0.0.1 -U seti -d seti -c "CREATE DATABASE seti_testing"
+
+      - name: Code style (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Static analysis (Larastan)
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+
+      - name: Tests (Pest on PostgreSQL)
+        run: php artisan test
+
+      - name: Schema smoke test (docs/db/smoke-test.sql on freshly migrated tables)
+        env:
+          APP_ENV: testing
+          DB_DATABASE: seti
+        run: |
+          php artisan migrate:fresh --seed --force
+          psql -h 127.0.0.1 -U seti -d seti -v ON_ERROR_STOP=1 -q -f database/sql/ops/create-powerbi-reader.sql
+          psql -h 127.0.0.1 -U seti -d seti -v ON_ERROR_STOP=1 -f docs/db/smoke-test.sql 2>&1 | tail -n 1
+
+      - name: Known vulnerabilities (composer audit)
+        run: composer audit
+
+  secrets:
+    name: secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Scan for committed secrets (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

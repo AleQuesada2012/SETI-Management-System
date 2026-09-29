@@ -1,0 +1,43 @@
+# The PR title becomes the squash commit on main, so it must follow CONTRIBUTING.md:
+#   type(module): summary in the imperative (RF_xx)
+name: pr-title
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-title:
+    name: pr-title
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check the pull request title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          types='feat|fix|refactor|test|docs|chore|ci|perf'
+          modules='security|assets|spaces|reservations|reports|users|platform|db|docs|ci|deps'
+          rf='RF_[0-9]+(_[0-9])?'
+          fail() {
+            echo "::error title=PR title::$1"
+            echo "Expected: type(module): summary in the imperative (RF_xx)"
+            echo "Example:  feat(assets): register an asset in a space (RF_03)"
+            echo "See CONTRIBUTING.md, section 'Pull request title'."
+            exit 1
+          }
+
+          [[ "$TITLE" =~ ^($types)\(($modules)\):\ [a-z0-9] ]] \
+            || fail "Start with type(module): and a lowercase summary. Types: ${types//|/, }. Modules: ${modules//|/, }."
+          [[ "$TITLE" != *. ]] || fail "Remove the final period."
+          if [[ "$AUTHOR" != "dependabot[bot]" && ${#TITLE} -gt 72 ]]; then
+            fail "Keep the title at 72 characters or fewer (it has ${#TITLE})."
+          fi
+          if [[ "$TITLE" =~ ^feat ]]; then
+            [[ "$TITLE" =~ \(($rf)(,\ $rf)*\)$ ]] || fail "A feat PR ends with the requirement(s) it delivers, e.g. (RF_03) or (RF_07, RF_08)."
+          fi
+          echo "PR title OK: $TITLE"

@@ -1,0 +1,2352 @@
+[
+ {
+  "code": "RF_00_1",
+  "title": "Inicio de sesión",
+  "description": "El sistema dispondrá de un inicio de sesión con nombre de usuario y contraseña para acceder al sistema",
+  "criteria": [
+   "El inicio de sesión dispondrá de un campo de texto donde ingresar el nombre de usuario",
+   "El inicio de sesión dispondrá de un campo de texto donde ingresar una contraseña",
+   "Se dispondrá de un botón para validar los datos ingresados e ingresar al sistema si los datos suministrados son válidos"
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 1,
+  "module": "security",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": true,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Delivered in the bootstrap."
+  ]
+ },
+ {
+  "code": "RF_00_2",
+  "title": "Auditar cambios",
+  "description": "Se encargará de que el sistema mantenga registro de los cambios realizados sobre los usuarios, activos, espacios, y cualquier registro que permita modificaciones.",
+  "criteria": [
+   "El sistema debe registrar, en una tabla de auditoría, cada cambio con una estampilla de tiempo y el usuario que se encargó de hacer la modificación."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 1,
+  "module": "security",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": true,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Delivered in the bootstrap."
+  ]
+ },
+ {
+  "code": "RF_00_3",
+  "title": "Auditar creaciones",
+  "description": "De forma similar al RF anterior, el sistema mantendrá registro de cuándo se creó un nuevo activo, nuevo espacio, nuevo usuario o cualquier creación en alguna categoría",
+  "criteria": [
+   "El sistema debe registrar, en una tabla de auditoría, cada vez que se crea un elemento con estampilla de tiempo, identificador del elemento y el usuario que lo creó.",
+   "Dado que un usuario crea un nuevo espacio.",
+   "El sistema guarda el registro en la tabla de auditoría, la estampilla de tiempo, el identificador del espacio creado y el usuario que lo creó.",
+   "Dado que un usuario crea un nuevo usuario.",
+   "El sistema guarda el registro en la tabla de auditoría, la estampilla de tiempo, el identificador del espacio creado y el usuario que lo creó."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 1,
+  "module": "security",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": true,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Delivered in the bootstrap."
+  ]
+ },
+ {
+  "code": "RF_00_4",
+  "title": "Auditar generaciones",
+  "description": "Cada vez que se genere un reporte ya sea pdf, xlsx o algún otro formato exportable, se creará un registro en el sistema",
+  "criteria": [
+   "El sistema deberá mantener en una tabla de auditoría, registro de cada vez que se genere un reporte, junto con una estampilla de tiempo y el usuario que lo generó.",
+   "El sistema deberá permitirle al usuario seleccionar en qué formato desea exportar su reporte.",
+   "El sistema deberá registrar todos los reportes exportados por los usuarios en la base de datos."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 1,
+  "module": "security",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": true,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Delivered in the bootstrap: ExportReport, PDF/XLSX renderers, <livewire:reports.export-button>, download route."
+  ]
+ },
+ {
+  "code": "RF_01",
+  "title": "Consultar información de activo",
+  "description": "La funcionalidad permite conocer los atributos de un activo en específico",
+  "criteria": [
+   "El sistema debe permitir al usuario conocer acerca de la información del activo de dicho espacio",
+   "Dado que el usuario consulte un activo el cual no exista deberá notificar al usuario.",
+   "Si el activo existe deberá presentar su información actualizada y constante con la base de datos."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/762fa85e-5ed3-4210-8599-7d3214b2dbe9/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_02",
+  "title": "Eliminar activo",
+  "description": "La opción permite eliminar un activo de un espacio específico",
+  "criteria": [
+   "El sistema debe permitir únicamente a los roles Administrador y Superusuario eliminar un activo del espacio que requiera ser este eliminado",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Si el usuario rechaza la confirmación el activo deberá mantenerse constante y reflejar la información conforme a la base de datos.",
+   "Dado que el usuario intente eliminar un activo el cual no se encuentre en la base de datos deberá notificar al usuario de su inexistencia"
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/a2ee6871-a96f-4208-b014-9b54e536f6f2/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_03",
+  "title": "Añadir activo",
+  "description": "El sistema presentará la opción de agregar un activo a un espacio específico",
+  "criteria": [
+   "El sistema debe permitir únicamente a los roles Administrador y Superusuario el poder ingresar un activo a un espacio específico especificando los atributos el sistema devolverá un mensaje que se realizó con éxito.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Si el usuario deja un atributo sin información al momento de intentar añadirlo el sistema deberá notificar al usuario ingresar dicho dato.",
+   "Dado el caso que el usuario ingrese la información necesaria sin embargo en un formato erróneo el sistema deberá notificarle el error de formato."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/6ee87850-343d-42a2-a406-aabe5e9e433f/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_04",
+  "title": "Editar activo",
+  "description": "El sistema presentará la opción de editar su información a los usuarios con permisos.",
+  "criteria": [
+   "El sistema debe permitir únicamente a los roles Administrador y Superusuario editar los atributos de un activo existente (nombre, marca, modelo, fecha, espacio o estado).",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Dado que el usuario edita el activo deberá validar que los datos modificados cumplan con los formatos correspondientes."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/6bd17ad8-9a10-42e7-a071-133201563cc9/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_05",
+  "title": "Asignar estado a activo",
+  "description": "Esta opción permite al usuario asignarle un color de estado entre verde y rojo a un activo describiendo el estado en el que se encuentra",
+  "criteria": [
+   "Dado que el usuario tiene permisos (Administrador o Superusuario) para asignar estado a un activo cuando selecciona el activo y le asigna el color verde indicando que está en perfectas condiciones entonces el sistema guarda el estado y muestra un mensaje de confirmación de éxito.",
+   "Dado el caso que el usuario tiene permisos de asignación de estado y asigne el color rojo el sistema deberá notificar que la asignación ha sido exitosa.",
+   "Al el usuario consultar el estado del activo el sistema deberá de mostrar correctamente el debido color del estado."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/d92f5abb-3882-415e-978b-6348865b799e/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_06",
+  "title": "Traslado de activo entre espacios",
+  "description": "El sistema debe permitir al Administrador y al Superusuario reasignar un activo de un espacio a otro, actualizando la relación activo-espacio.",
+  "criteria": [
+   "Se tiene que actualizar la representación de espacio del activo al que puso el usuario administrador encargado",
+   "El sistema deberá avisar con un mensaje de confirmación no invasivo que el activo fue reasignado en el espacio elegido",
+   "Si el usuario administrador no está asignado en ese laboratorio, el sistema negará la acción, mostrando un mensaje de denegación por no estar asignado en el ese lab"
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 2,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/d17feaf1-2b4c-4963-9986-38fab376a245/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_07",
+  "title": "Búsqueda de activos",
+  "description": "El sistema debe permitir buscar activos mediante una barra de texto que compare coincidencias con nombre, marca, modelo o ID del activo.",
+  "criteria": [
+   "El sistema mostrará los activos que concuerden total o parcialmente con el nombre puesto en la barra de búsqueda",
+   "El sistema mostrará los activos en el que su ID coincida",
+   "Si el texto o ID ingresados no concuerdan con ningún activo registrado, el sistema deberá mostrar una leyenda diciendo que el activo no existe"
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/87c3227b-f052-407b-8e37-3c2d4a72910d/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_08",
+  "title": "Filtrado de activos por métricas",
+  "description": "El sistema debe permitir filtrar el listado de activos por marca, modelo, estado (verde/rojo), espacio asignado y rango de fecha de adquisición",
+  "criteria": [
+   "El sistema sólo mostrará aquellos activos que cumplan con los atributos deseados por el usuario.",
+   "Cuando no exista ningún activo en el sistema el cual cumpla con los atributos estipulados por el usuario el sistema deberá informar al usuario que no existe ningún activo que cumpla con dichos filtros.",
+   "Cuando se seleccione la opción de limpiar filtros el sistema restablece el listado."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/87c3227b-f052-407b-8e37-3c2d4a72910d/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_09",
+  "title": "Consulta del historial de un activo",
+  "description": "El sistema debe brindar una forma de acceder al historial de un activo para conocer dónde ha estado y quién lo ha manejado",
+  "criteria": [
+   "El sistema deberá brindarle al usuario un acceso al historial de un activo",
+   "El historial debe indicar que usuarios administradores o superusuario ha hecho cambios en el activo",
+   "Si un activo no ha recibido cambios el sistema deberá mostrar un mensaje de que el historial de ese activo se encuentra vacío"
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/a2e2a054-53bc-442a-af47-fbae835128df/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_10",
+  "title": "Registrar mantenimiento de activos",
+  "description": "El sistema debe permitir registrar los mantenimientos realizados a un activo, almacenando información básica como la fecha, tipo de mantenimiento, descripción y responsable.",
+  "criteria": [
+   "El sistema debe permitir registrar un mantenimiento asociado a un activo existente a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "El sistema debe guardar el usuario que realizó el registro.",
+   "El mantenimiento registrado debe poder consultarse desde la información del activo."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/b0a571a7-d52e-499e-a9de-29ddf484a60d/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "DavidZamoraB",
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from David (round 3). Maintenance changes the asset lifecycle status as a side effect (Agent-DB.md §8.4). Code lives in the assets module: David reviews."
+  ]
+ },
+ {
+  "code": "RF_11",
+  "title": "Registrar reparaciones de activos",
+  "description": "El sistema debe permitir registrar las reparaciones realizadas a un activo que se encuentre en dañado o en mal estado, manteniendo un registro de las acciones realizadas.",
+  "criteria": [
+   "El sistema debe permitir registrar una reparación asociada a un activo existente.",
+   "El sistema debe guardar el usuario que realizó el registro.",
+   "Al registrar una reparación como finalizada, debe ser posible actualizar el estado del activo en funcionamiento."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/609b1df4-fe7a-4ee5-ae06-9e320c17bae4/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "DavidZamoraB",
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from David (round 3). A repair is corrective maintenance linked to a damage event. Code lives in the assets module: David reviews."
+  ]
+ },
+ {
+  "code": "RF_12",
+  "title": "Registrar componentes del equipo",
+  "description": "El sistema debe permitir registrar los componentes principales asociados a un equipo, con el fin de mantener un inventario detallado de sus partes.",
+  "criteria": [
+   "El sistema debe permitir asociar componentes a un activo existente a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Los componentes registrados deben poder consultarse desde la información del activo.",
+   "El sistema debe permitir modificar o eliminar un componente registrado."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/2d426401-2fe0-4e1e-8c09-d1dba3495d2a/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_13",
+  "title": "Registrar daños de activos",
+  "description": "El super admin y el admin normal podrá registrar en un formulario si un activo se encuentra dañado",
+  "criteria": [
+   "El sistema deberá permitir al usuario poder ingresar un formulario un activo el cual esté dañado a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Dado que el activo no cuente con un daño el sistema no permitirá el ingreso del mismo al formulario.",
+   "Dado el caso que el usuario que desee realizar el registro no cuente con el rol específico no podrá realizar dichas acciones,el sistema deberá notificarle el error de autorización."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/356e78b3-0264-47b7-b7ca-c280a868e43b/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_14",
+  "title": "Registrar fecha de adquisición de activos",
+  "description": "El sistema debe permitir registrar la fecha en que un activo fue adquirido, como parte de la información necesaria para su control dentro del inventario.",
+  "criteria": [
+   "El sistema debe permitir ingresar la fecha de adquisición de un activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "La fecha debe almacenarse y mostrarse en la información del activo.",
+   "El sistema debe validar que la fecha ingresada sea válida.",
+   "Los usuarios con permisos de edición deben poder modificar la fecha registrada."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/b9bcf963-cb98-43d1-be80-654194458366/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_03",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_03: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_15",
+  "title": "Registrar proveedor de activos",
+  "description": "El sistema debe permitir registrar el proveedor al que se adquirió un activo, facilitando la identificación del origen de los equipos y demás recursos del inventario.",
+  "criteria": [
+   "El sistema debe permitir indicar el proveedor al registrar un activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Debe permitir consultar el proveedor desde la información del activo.",
+   "El sistema debe permitir buscar o seleccionar un proveedor previamente registrado."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/b9bcf963-cb98-43d1-be80-654194458366/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_03",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_03: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_16",
+  "title": "Registrar garantía de activos",
+  "description": "El sistema debe permitir registrar la información básica de garantía de un activo para facilitar el seguimiento de su cobertura.",
+  "criteria": [
+   "El sistema debe indicar si el activo cuenta con garantía o no a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Debe permitir registrar la fecha de inicio y finalización de la garantía.",
+   "La información de garantía debe mostrarse en la información del activo.",
+   "El sistema debe poder modificar la información registrada a un usuario con rol de Administrador o Superusuario."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/34953c5b-3d2f-47fc-8110-395c99a90e3f/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_03",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_03: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_17",
+  "title": "Consultar garantía de activos",
+  "description": "El sistema debe permitir consultar la información de garantía asociada a un activo, facilitando conocer si se encuentra cubierto y el período de vigencia.",
+  "criteria": [
+   "El sistema debe mostrar la información de garantía registrada para el activo.",
+   "Debe indicar si el activo cuenta con garantía.",
+   "La información debe poder consultarse desde el detalle del activo."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/34953c5b-3d2f-47fc-8110-395c99a90e3f/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_01",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_01: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_18",
+  "title": "Registrar ubicación física del activo",
+  "description": "El sistema debe permitir registrar la ubicación física donde se encuentra el activo para facilitar su localización dentro de las instalaciones.",
+  "criteria": [
+   "El sistema debe permitir registrar la ubicación física de un activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "La ubicación debe poder asociarse con un espacio previamente registrado.",
+   "La ubicación debe mostrarse en la información del activo.",
+   "Los usuarios con permisos de edición deben poder modificar la ubicación registrada."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/e5e83637-54b4-4ac6-a357-10db26544dba/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_03",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_03: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_19",
+  "title": "Registrar observaciones sobre el activo",
+  "description": "El sistema debe permitir registrar observaciones relevantes sobre un activo que complementen la información general almacenada en el inventario.",
+  "criteria": [
+   "El sistema debe permitir ingresar observaciones en la información de un activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Las observaciones deben almacenarse y mostrarse en el detalle del activo.",
+   "El sistema debe permitir dejar el campo de observaciones vacío cuando no existan observaciones.",
+   "Los usuarios con permisos de edición deben poder modificar las observaciones."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/78a6182c-54b5-43e8-8553-9af00cd6ab68/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_03",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_03: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_20",
+  "title": "Adjuntar documentos a los activos",
+  "description": "El sistema debe permitir adjuntar documentos relacionados con un activo, como facturas, manuales o documentos de garantía, para mantener la información del activo centralizada.",
+  "criteria": [
+   "El sistema debe permitir adjuntar documentos desde la información del activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Debe permitir utilizar formatos de archivo comunes, como PDF.",
+   "Los documentos adjuntos deben poder consultarse desde el activo.",
+   "Los usuarios con permisos adecuados deben poder eliminar documentos adjuntos."
+  ],
+  "owner": "Dizabu",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/7fefc8f2-6653-4bfc-b4b5-6daca5132624/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "DavidZamoraB",
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from David (round 3). Reuses the upload infrastructure of RF_41. Code lives in the assets module: David reviews."
+  ]
+ },
+ {
+  "code": "RF_21",
+  "title": "Adjuntar fotografías a los activos",
+  "description": "El sistema debe permitir asociar fotografías a un activo para facilitar su identificación y visualizar su estado físico.",
+  "criteria": [
+   "El sistema debe permitir adjuntar una o más fotografías a un activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Las fotografías deben poder visualizarse desde la información del activo.",
+   "Los usuarios con permisos adecuados deben poder eliminar fotografías.",
+   "El sistema debe validar que el archivo corresponda a un formato de imagen permitido."
+  ],
+  "owner": "Dizabu",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/4a97d32c-d3b2-4775-8962-981434fec8a9/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "DavidZamoraB",
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from David (round 3). Reuses the upload infrastructure of RF_41. Code lives in the assets module: David reviews."
+  ]
+ },
+ {
+  "code": "RF_22",
+  "title": "Registrar fecha de baja de activos",
+  "description": "El sistema debe permitir registrar la fecha en que un activo es dado de baja, manteniendo este dato como parte de su historial.",
+  "criteria": [
+   "El sistema debe permitir registrar una fecha de baja para un activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "La fecha debe almacenarse y mostrarse en la información del activo.",
+   "El sistema debe validar que la fecha ingresada sea válida.",
+   "Un activo dado de baja debe conservar su información histórica dentro del sistema."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/c54c6a9e-c17b-4119-8f0e-2923cc24505d/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_23",
+  "title": "Registrar responsable de un activo",
+  "description": "El sistema debe permitir asignar un responsable a un activo para identificar a la persona encargada de su custodia o utilización.",
+  "criteria": [
+   "El sistema debe permitir asignar un usuario existente como responsable del activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "El responsable asignado debe mostrarse en la información del activo.",
+   "Los usuarios con permisos adecuados deben poder cambiar el responsable.",
+   "El sistema debe permitir consultar los activos asociados a un responsable."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/06221247-5392-45eb-876d-7e0a76e2269c/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_03",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_03: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_24",
+  "title": "Clasificar activos por categoría",
+  "description": "El sistema debe permitir clasificar los activos según categorías previamente definidas, facilitando su organización y consulta dentro del inventario.",
+  "criteria": [
+   "El sistema debe permitir asignar una categoría a un activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Las categorías disponibles deben mostrarse al registrar o editar un activo.",
+   "La categoría asignada debe mostrarse en la información del activo.",
+   "El sistema debe permitir filtrar activos según su categoría."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 1,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/6d770b61-793a-4924-987d-da4c6e0b191d/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_03",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_03: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_25",
+  "title": "Registrar movimientos de inventario",
+  "description": "El sistema debe permitir registrar los movimientos realizados sobre los activos del inventario, como traslados, entradas o salidas.",
+  "criteria": [
+   "El sistema debe registrar el activo involucrado en cada movimiento.",
+   "El sistema debe permitir registrar un movimiento de inventario a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Debe almacenar la fecha y el tipo de movimiento realizado.",
+   "Debe registrar el usuario que realizó el movimiento.",
+   "Los movimientos registrados deben poder consultarse posteriormente."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 2,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/68caf4dd-c70b-4fa9-b711-bf902ea63740/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_26",
+  "title": "Registrar mantenimiento preventivo",
+  "description": "El sistema debe permitir registrar los mantenimientos preventivos realizados a los activos para llevar un control de las revisiones periódicas.",
+  "criteria": [
+   "El sistema debe permitir registrar un mantenimiento preventivo asociado a un activo a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Debe permitir ingresar la fecha y una descripción del mantenimiento realizado.",
+   "Debe registrar el usuario que realizó el registro.",
+   "El mantenimiento debe quedar disponible para consulta en el historial del activo."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/b0a571a7-d52e-499e-a9de-29ddf484a60d/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "DavidZamoraB",
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from David (round 3). Code lives in the assets module: David reviews."
+  ]
+ },
+ {
+  "code": "RF_27",
+  "title": "Programar mantenimiento de activos",
+  "description": "El sistema debe permitir programar una fecha para realizar mantenimiento a un activo, facilitando la planificación de revisiones preventivas.",
+  "criteria": [
+   "El sistema debe permitir seleccionar un activo y establecer una fecha de mantenimiento a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Debe permitir agregar una descripción o motivo del mantenimiento.",
+   "El mantenimiento programado debe poder consultarse desde el sistema.",
+   "El sistema debe permitir modificar o cancelar un mantenimiento programado."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/9814de9a-4bfb-4039-b54b-8dfc58a46537/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "DavidZamoraB",
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from David (round 3). Code lives in the assets module: David reviews."
+  ]
+ },
+ {
+  "code": "RF_28",
+  "title": "Registrar pérdidas de activos",
+  "description": "El sistema debe permitir registrar la pérdida de un activo, conservando la información necesaria para mantener actualizado el inventario.",
+  "criteria": [
+   "El sistema debe permitir registrar un activo como perdido a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Debe permitir indicar la fecha y una descripción de la pérdida.",
+   "El sistema debe conservar el registro histórico del activo.",
+   "El activo registrado como perdido no debe contabilizarse como disponible en el inventario."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/79a6b0a6-89a2-4e80-8ae0-ff038d0b31cd/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_29",
+  "title": "Dar de baja un activo",
+  "description": "El sistema debe permitir registrar formalmente la baja de un activo cuando este deje de formar parte del inventario disponible",
+  "criteria": [
+   "El sistema debe permitir seleccionar un activo existente y registrar su baja indicando la fecha correspondiente a un usuario con rol de Administrador o Superusuario.",
+   "Dado el caso que un usuario no cuente con el rol necesario para dicha funcionalidad el sistema deberá notificar con un error de autorización.",
+   "Un activo dado de baja no debe aparecer como activo disponible para su asignación o traslado.",
+   "El sistema debe conservar la información histórica del activo después de su baja."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/c54c6a9e-c17b-4119-8f0e-2923cc24505d/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_30",
+  "title": "Consultar activos por responsable",
+  "description": "El sistema debe permitir consultar los activos asociados a un usuario responsable determinado.",
+  "criteria": [
+   "El sistema debe permitir seleccionar o buscar un responsable registrado.",
+   "El sistema debe mostrar los activos actualmente asociados al responsable seleccionado.",
+   "Si el responsable no tiene activos asignados, el sistema debe mostrar un mensaje indicando que no existen activos asociados."
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/06221247-5392-45eb-876d-7e0a76e2269c/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_08",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_08: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_31",
+  "title": "Consultar componentes de un activo",
+  "description": "El sistema debe permitir consultar el detalle de los componentes asociados a un activo.",
+  "criteria": [
+   "El sistema debe permitir acceder a los componentes desde la información detallada del activo.",
+   "El sistema debe mostrar los componentes asociados al activo seleccionado.",
+   "Si el activo no posee componentes registrados, el sistema debe informar que no existen componentes asociados"
+  ],
+  "owner": "DavidZamoraB",
+  "sprint": 3,
+  "module": "assets",
+  "owner_name": "David Zamora",
+  "diagram": "https://lucid.app/lucidchart/2d426401-2fe0-4e1e-8c09-d1dba3495d2a/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Dizabu",
+  "free_with": "RF_12",
+  "cut_rank": null,
+  "notes": [
+   "Closes together with RF_12: include it in that PR (it adds no separate screen)."
+  ]
+ },
+ {
+  "code": "RF_32",
+  "title": "Crear espacio",
+  "description": "El sistema debe permitir al admin registrar un nuevo espacio",
+  "criteria": [
+   "El sistema debe requerir como mínimo nombre, ubicación, capacidad y tipo de espacio.",
+   "El sistema debe validar que los campos obligatorios no queden vacíos.",
+   "El sistema debe notificar al usuario si el registro se realizó con éxito.",
+   "El sistema debe notificar al usuario si algún dato ingresado tiene un formato incorrecto."
+  ],
+  "owner": "Dizabu",
+  "sprint": 1,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/591a039a-1d12-45b0-a059-39274a8c973c/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_33",
+  "title": "Editar espacio",
+  "description": "El sistema debe permitir al admin modificar atributos de un espacio existente",
+  "criteria": [
+   "El sistema debe permitir modificar nombre, ubicación, capacidad, tipo y estado del espacio.",
+   "El sistema debe validar que los datos modificados cumplan con los formatos correspondientes.",
+   "El sistema debe notificar con un error de autorización si el usuario no cuenta con el rol necesario.",
+   "El sistema debe confirmar mediante un mensaje que los cambios fueron guardados exitosamente."
+  ],
+  "owner": "Dizabu",
+  "sprint": 1,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/0aa68181-178e-4c49-8328-066dfc42ec34/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_34",
+  "title": "Eliminar espacio",
+  "description": "El sistema debe permitir al admin eliminar espacios sin activos ni reservas activas",
+  "criteria": [
+   "El sistema debe impedir la eliminación de un espacio que tenga activos asociados.",
+   "El sistema debe impedir la eliminación de un espacio que tenga reservas activas.",
+   "El sistema debe notificar al usuario el motivo por el cual no se puede eliminar el espacio.",
+   "El sistema debe solicitar confirmación antes de eliminar un espacio de forma definitiva."
+  ],
+  "owner": "Dizabu",
+  "sprint": 3,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/c289c2ed-9d49-4672-a0ce-ce558d1098bd/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_35",
+  "title": "Consultar información de un espacio",
+  "description": "El sistema debe permitir ver el detalle completo del espacio",
+  "criteria": [
+   "El sistema debe mostrar nombre, ubicación, capacidad, tipo, estado y responsable del espacio.",
+   "El sistema debe mostrar los activos asociados al espacio consultado.",
+   "El sistema debe notificar al usuario si el espacio consultado no existe.",
+   "La información presentada debe ser consistente y actualizada respecto a la base de datos."
+  ],
+  "owner": "Dizabu",
+  "sprint": 1,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/ad00ce18-2832-4244-951d-1e1976e289d8/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_36",
+  "title": "Actualizar la capacidad de un espacio",
+  "description": "El sistema debe permitir al admin actualizar la capacidad máxima de personas",
+  "criteria": [
+   "El sistema debe validar que el valor ingresado sea un número entero positivo.",
+   "La capacidad registrada debe reflejarse en el detalle del espacio.",
+   "El sistema debe permitir modificar la capacidad a los usuarios con permisos de edición."
+  ],
+  "owner": "Dizabu",
+  "sprint": 1,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/0aa68181-178e-4c49-8328-066dfc42ec34/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_37",
+  "title": "Ordenar espacios por fecha de modificación",
+  "description": "EL usuario debe poder ordenar los espacios por fecha de modificación, ascendente o descendentemente",
+  "criteria": [
+   "El sistema deberá permitirle al usuario darle click al encabezado de la columna para ordenar los espacios por fecha de modificación, dandole click intercambia entre ascendente o descendente.",
+   "Al hacer clic en el encabezado de la columna, se mostrará una flecha encima del texto de dicho atributo, apuntando para arriba si es orden ascendente, para abajo si es descendente.",
+   "La fecha debe ser en formato DD/MM/AA Hora. En formato de 24 horas."
+  ],
+  "owner": "Dizabu",
+  "sprint": 3,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/afd30140-bc2a-4f19-831e-a04d89b32694/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": 4,
+  "notes": [
+   "Cut order #4: if Sprint 3 runs late, this is dropped #4 (reported as not delivered)."
+  ]
+ },
+ {
+  "code": "RF_38",
+  "title": "Ordenar espacios por fecha de creación",
+  "description": "EL usuario debe poder ordenar los espacios por fecha de creación, ascendente o descendentemente",
+  "criteria": [
+   "El sistema deberá permitirle al usuario darle click al encabezado de la columna para ordenar los espacios por fecha de creación, dándole click intercambia entre ascendente o descendente.",
+   "Al hacer clic en el encabezado de la columna, se mostrará una flecha encima del texto de dicho atributo, apuntando para arriba si es orden ascendente, para abajo si es descendente.",
+   "La fecha debe ser en formato DD/MM"
+  ],
+  "owner": "Dizabu",
+  "sprint": 3,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/afd30140-bc2a-4f19-831e-a04d89b32694/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": 4,
+  "notes": [
+   "Cut order #4: if Sprint 3 runs late, this is dropped #4 (reported as not delivered)."
+  ]
+ },
+ {
+  "code": "RF_39",
+  "title": "Consulta del historial de un espacio",
+  "description": "El sistema debe brindar una forma de acceder al historial de un espacio para conocer cuando fue reservado y por quién.",
+  "criteria": [
+   "El sistema deberá brindarle al usuario un acceso al historial de un espacio.",
+   "El historial debe indicar que usuarios administradores o superusuario ha hecho cambios en el espacio",
+   "Si un espacio no ha recibido cambios el sistema deberá mostrar un mensaje de que el historial de ese espacio se encuentra vacío"
+  ],
+  "owner": "Dizabu",
+  "sprint": 3,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/3c63e9e4-5b09-4d63-a6fd-2a8e8abf4f86/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_40",
+  "title": "Asignar laboratorio a usuarios administradores",
+  "description": "El super admin podrá asignar uno o más laboratorios a los usuarios administradores normales",
+  "criteria": [
+   "El sistema deberá permitir que uno o varios laboratorios se asignen a un usuario administrador"
+  ],
+  "owner": "Rubiocai",
+  "sprint": 2,
+  "module": "spaces",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": "https://lucid.app/lucidchart/ff8a18a7-9358-4365-ba9d-7fd6506c704f/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "Dizabu",
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from Diego (round 3) and pulled into Sprint 2: without manager assignment an Administrador cannot act on any space (the ★ rule). Only Administrador holders can be assigned. Code touches the spaces module: Diego reviews."
+  ]
+ },
+ {
+  "code": "RF_41",
+  "title": "Adjuntar fotografías a un espacio",
+  "description": "El sistema debe permitir asociar fotografías a un espacio",
+  "criteria": [
+   "El sistema debe permitir adjuntar una o más fotografías a un espacio.",
+   "El sistema debe validar que el archivo corresponda a un formato de imagen permitido.",
+   "Las fotografías deben poder visualizarse desde la información del espacio.",
+   "Los usuarios con permisos adecuados deben poder eliminar fotografías adjuntas."
+  ],
+  "owner": "Dizabu",
+  "sprint": 2,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/fe8b87e6-8a54-4eb1-9e62-97320d8e55f6/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Builds the shared file-upload infrastructure (validation, phone thumbnails, private storage, authorized download) that RF_20, RF_21 and RF_13 evidence reuse. Platform-reviewed PR."
+  ]
+ },
+ {
+  "code": "RF_42",
+  "title": "Búsqueda de espacios",
+  "description": "El sistema debe permitir buscar espacios mediante una barra de texto que compare coincidencias con el nombre, la ubicación o el identificador del espacio.",
+  "criteria": [
+   "El sistema mostrará al usuario los espacios que coincidan con el nombre,ubicación o el identificador.",
+   "Dado el caso que ningún espacio cumpla con las características de búsqueda el sistema deberá notificarle que no existe espacio con dichas condiciones.",
+   "El sistema si encuentra uno o más espacio que cumplan dichas características los mostrara al usuario"
+  ],
+  "owner": "Dizabu",
+  "sprint": 1,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/1d671bd3-74d1-4950-b6e1-7c1db9e4885a/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_43",
+  "title": "Eliminar asignación de laboratorio a usuarios administradores",
+  "description": "El super admin podrá eliminar una o varias asignaciones de laboratorio que tenga un usuario administrador",
+  "criteria": [
+   "El sistema deberá permitir que uno o varios laboratorios sean desenlazados de un usuario encargado.",
+   "Dado el caso que el usuario encargado no cuente con laboratorios asignados el sistema deberá notificar al usuario del error.",
+   "El sistema al momento de eliminar mostrará una ventana de confirmación al usuario para confirmar dicha decisión."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 2,
+  "module": "spaces",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": "https://lucid.app/lucidchart/ff8a18a7-9358-4365-ba9d-7fd6506c704f/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "Dizabu",
+  "reviewer": "Dizabu",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from Diego (round 3) and pulled into Sprint 2. Removing the Administrador role must also remove the user's assignments. Code touches the spaces module: Diego reviews."
+  ]
+ },
+ {
+  "code": "RF_44",
+  "title": "Asignar estado a un laboratorio",
+  "description": "El super admin y el usuario administrador podrán asignar un estado a un laboratorio",
+  "criteria": [
+   "El sistema deberá permitir y reflejar en pantalla la asignación del estado al laboratorio en cuestión.",
+   "Dado que el usuario tiene un rol distinto a Superusuario o Administrador. Intenta asignar un estado a un laboratorio el sistema bloquea la acción y muestra un mensaje de error de autorización.",
+   "Dado que un laboratorio tiene un estado asignado el usuario consulta el detalle o listado de laboratorios el sistema muestra visualmente el estado correspondiente del laboratorio."
+  ],
+  "owner": "Dizabu",
+  "sprint": 1,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/2a5027cb-179c-456e-bbef-76503cb2275b/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_45",
+  "title": "Revisar calendario de espacios",
+  "description": "El sistema debe permitir al usuario visualizar un calendario mensual con la ocupación de todos los espacios, identificando de forma clara qué fechas tienen reservas y cuáles están disponibles.",
+  "criteria": [
+   "El calendario muestra los días del mes seleccionado y permite navegar entre meses (anterior/siguiente).",
+   "Cada día indica visualmente (ej. color o ícono) si hay uno o más espacios reservados, o si el día está completamente libre.",
+   "El usuario puede seleccionar un día para ver el detalle: qué espacio(s) están reservados, en qué horario y por quién."
+  ],
+  "owner": "Dizabu",
+  "sprint": 1,
+  "module": "spaces",
+  "owner_name": "Diego Zamora",
+  "diagram": "https://lucid.app/lucidchart/16bc0bf6-a3c0-4efe-98c6-1b62d442d111/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "JoseHerrera21",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_46",
+  "title": "Reservar espacio",
+  "description": "El sistema debe permitir al usuario reservar un espacio disponible, especificando fecha, horario y datos de la reserva, y debe garantizar que no se generen conflictos con reservas existentes.",
+  "criteria": [
+   "El usuario selecciona un espacio, fecha y horario (hora de inicio y fin).",
+   "El sistema captura datos adicionales de la reserva: motivó/título, cantidad de personas, usuario responsable.",
+   "El sistema valida automáticamente que el espacio esté disponible en ese horario antes de confirmar (no debe permitir solapamiento con otra reserva del mismo espacio)."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 1,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/6291e9c2-f7a1-4d9d-bebb-436d6ea89bd9/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Ships with RF_47 and RF_48 (one diagram)."
+  ]
+ },
+ {
+  "code": "RF_47",
+  "title": "Notificación de reserva de espacio a Superusuario",
+  "description": "Super Usuario El sistema deberá mandar una notificación al Super Usuario cuando un espacio es reservado",
+  "criteria": [
+   "El sistema notificará por medio de un mensaje al Superusuario de que un espacio ha sido reservado.",
+   "El sistema deberá incluir en el mensaje el espacio y fecha reservados",
+   "El mensaje llegará a la bandeja de entrada de notificaciones del Superusuario"
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 2,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/6291e9c2-f7a1-4d9d-bebb-436d6ea89bd9/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Builds the notification infrastructure (database notifications with JSON snapshots, bell in the top bar, Reverb live updates; ADR-0006). Platform-reviewed PR. Ships with RF_46 (same diagram)."
+  ]
+ },
+ {
+  "code": "RF_48",
+  "title": "Notificación de reserva de espacio a Usuario Administrador asignado",
+  "description": "El sistema deberá mandar una notificación al Usuario Administrador asignado en el laboratorio a reservar",
+  "criteria": [
+   "El sistema notificará por medio de un mensaje al Usuario Administrador asignado al espacio a reservar sobre la reserva de ese espacio",
+   "El sistema deberá incluir en el mensaje el espacio y fechas reservadas",
+   "El mensaje llegará a la bandeja de entrada de notificaciones del Usuario Administrador asignado al espacio a reservar"
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 2,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/6291e9c2-f7a1-4d9d-bebb-436d6ea89bd9/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Uses the notification infrastructure of RF_47. Ships with RF_46 (same diagram)."
+  ]
+ },
+ {
+  "code": "RF_49",
+  "title": "Modificar reserva",
+  "description": "El sistema deberá permitirle al usuario modificar la reserva de modo que se mantenga la información de la misma pero en diferente horario. El sistema deberá permitirle al usuario cambiar la persona encargada de dicho espacio.",
+  "criteria": [
+   "El sistema deberá permitirle al usuario cambiar de fecha una reserva.",
+   "El sistema deberá permitirle al usuario modificar la persona encargada de manejar dicho espacio.",
+   "El sistema deberá permitirle al usuario cambiar el espacio escogido."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/b0a766e9-aa27-4240-a899-55c52bc6ee27/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_50",
+  "title": "Eliminar reserva",
+  "description": "El sistema deberá permitirle al usuario poder eliminar una reserva del calendario",
+  "criteria": [
+   "El sistema deberá tener una opción la cual le permite al encargado del manejo de los espacios y su calendario eliminar reservaciones en una fecha en específica."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/b02a4341-15c4-4eba-a28b-1ba9cc5250e0/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_51",
+  "title": "Examinar reserva",
+  "description": "El sistema debe permitir al usuario consultar el detalle completo de una reserva específica antes de modificarla, cancelarla, o simplemente para verificar su información.",
+  "criteria": [
+   "El usuario puede seleccionar una reserva (desde el calendario o el historial) para ver su detalle.",
+   "El detalle muestra: espacio, fecha, horario, motivo, cantidad de personas, usuario responsable, estado actual.",
+   "Desde esta vista, el usuario puede acceder directamente a las opciones de modificar o eliminar (si tiene permiso)."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 1,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/87d68088-e028-4386-a6d9-941e434eeef3/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_52",
+  "title": "Historial de reservas",
+  "description": "El sistema debe permitir al usuario consultar el historial de sus reservas (pasadas, presentes y futuras), incluyendo aquellas que fueron canceladas o modificadas.",
+  "criteria": [
+   "El usuario puede ver una lista de todas sus reservas, ordenadas por fecha (de más reciente a más antigua, o viceversa).",
+   "Cada registro muestra: espacio reservado, fecha, horario, estado (activa, cancelada, modificada, finalizada) y motivo de la reserva.",
+   "El usuario puede filtrar el historial por estado (ej. solo canceladas) o por rango de fechas."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/340a7186-088c-4f1e-af26-2bddf0937132/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_53",
+  "title": "Consultar listado de espacios",
+  "description": "El sistema debe permitir visualizar un listado de los espacios registrados en el sistema",
+  "criteria": [
+   "El sistema debe mostrar los espacios registrados en una lista.",
+   "Cada espacio debe mostrar como mínimo su nombre, ubicación, capacidad, tipo y estado.",
+   "El usuario debe poder seleccionar un espacio para consultar su información detallada."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 1,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/1d671bd3-74d1-4950-b6e1-7c1db9e4885a/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_54",
+  "title": "Filtrar espacios por atributos",
+  "description": "El sistema debe permitir filtrar los espacios registrados utilizando atributos relevantes de los mismos",
+  "criteria": [
+   "El sistema debe permitir filtrar espacios por tipo y estado.",
+   "El sistema debe permitir combinar más de un criterio filtrado.",
+   "El sistema debe permitir limpiar los filtros y restaurar el listado completo."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 1,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/1d671bd3-74d1-4950-b6e1-7c1db9e4885a/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_55",
+  "title": "Consultar disponibilidad de un espacio",
+  "description": "El sistema debe permitir consultar la disponibilidad de un espacio para una fecha y hora determinados.",
+  "criteria": [
+   "El usuario debe poder seleccionar un espacio, fecha, hora inicial y hora final.",
+   "El sistema debe indicar si el espacio se encuentra disponible durante el periodo seleccionado.",
+   "El sistema debe indicar cuando exista una reserva que impida utilizar el espacio en el período solicitado."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 1,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/72da75e3-6aee-429b-80df-4e2539e877d2/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_56",
+  "title": "Consultar activos de un espacio",
+  "description": "El sistema debe permitir consultar los activos actualmente asociados a un espacio",
+  "criteria": [
+   "El usuario debe poder seleccionar un espacio y acceder al listado de activos asociados.",
+   "El sistema debe mostrar, como mínimo: identificación, nombre, marca, modelo y estado.",
+   "Si el espacio no tiene activos asignados, el sistema debe mostrar un mensaje indicándolo."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 1,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/221bdcc7-5c44-4b76-b6c5-7a27008bdfd4/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": "RF_35",
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Duplicate of RF_35: the PR that delivers RF_35 closes this issue too."
+  ]
+ },
+ {
+  "code": "RF_57",
+  "title": "Consultar reservas de un espacio",
+  "description": "El sistema debe permitir consultar las reservas asociadas a un espacio específico.",
+  "criteria": [
+   "El sistema debe mostrar las reservas asociadas al espacio seleccionado.",
+   "Cada reserva debe mostrar fecha, horario, responsable, cantidad de personas y estado.",
+   "El usuario debe poder consultar reservas correspondientes a un período determinado."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 1,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/738fb967-73a2-4646-9476-6eea929a116b/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_58",
+  "title": "Cambiar estado de un espacio",
+  "description": "El sistema debe permitir actualizar el estado operativo de un espacio cuando corresponda.",
+  "criteria": [
+   "Los usuarios con permisos de administración deben poder seleccionar un estado para un espacio.",
+   "El sistema debe guardar el nuevo estado y reflejarlo inmediatamente en el listado y detalle del espacio.",
+   "El sistema debe impedir la modificación del estado a usuarios que no tengan permisos suficientes."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 1,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/c4b901b4-ebe6-4d92-a610-0158c03e085e/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": "RF_44",
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Duplicate of RF_44: the PR that delivers RF_44 closes this issue too."
+  ]
+ },
+ {
+  "code": "RF_59",
+  "title": "Consultar ocupación de espacios por período",
+  "description": "El sistema debe permitir consultar la ocupación de los espacios durante un período determinado.",
+  "criteria": [
+   "El usuario debe poder seleccionar una fecha inicial y una fecha final.",
+   "El sistema debe mostrar los espacios que tuvieron reservas durante el período seleccionado.",
+   "El sistema debe indicar para cada espacio la cantidad de reservas registradas durante el período."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "reservations",
+  "owner_name": "Jose Herrera",
+  "diagram": "https://lucid.app/lucidchart/faa098ef-2973-42fd-bc62-7754283b8c6f/edit",
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "Rubiocai",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_60",
+  "title": "Entrar al menú de reportes",
+  "description": "El sistema tendrá una sección de reportes y estadísticas desde la cual el usuario autorizado podrá consultar los diferentes reportes disponibles.",
+  "criteria": [
+   "El sistema debe mostrar un menú que contenga las categorías de reportes disponibles: activos, espacios, auditoría y usuarios.",
+   "Al seleccionar una categoría, el sistema debe mostrar los reportes disponibles.",
+   "El sistema debe mostrar un mensaje informativo cuando no existan reportes disponibles para la categoría seleccionada."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Carried over from Sprint 1: the first item of Sprint 2."
+  ]
+ },
+ {
+  "code": "RF_61",
+  "title": "Visualizar tableros interactivos",
+  "description": "El sistema debe proporcionar tableros interactivos integrados con PowerBI para visualizar estadísticas relacionadas con la información almacenada en el sistema",
+  "criteria": [
+   "El sistema debe integrar los tableros de PowerBI dentro de la interfaz de la página.",
+   "Los tableros deben presentar estadísticas relacionadas con activos, espacios y usuarios.",
+   "El usuario debe poder interactuar con los elementos disponibles del tablero, incluyendo filtros, selección de elementos y visualización de información mediante interacción con el cursor."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Power BI \"secure embed\" iframe (URL in .env) for users with the new permission dashboards.powerbi (add it: enum, seeder, role matrix). Viewers sign in with their licensed Microsoft account. Alejandro builds the .pbix on the reporting views; backup: Sebastián."
+  ]
+ },
+ {
+  "code": "RF_62",
+  "title": "Filtrar información de los reportes",
+  "description": "El sistema debe permitir aplicar filtros a la información utilizada para generar o visualizar reportes, de acuerdo con los atributos disponibles para cada tipo de reporte.",
+  "criteria": [
+   "El sistema debe permitir seleccionar uno o más criterios de filtrado disponibles para el reporte.",
+   "Los resultados mostrados deben corresponder únicamente a los registros que cumplan con los filtros seleccionados.",
+   "El sistema debe permitir limpiar los filtros y volver a mostrar la totalidad de los registros disponibles."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_63",
+  "title": "Generar reporte de inventario de activos",
+  "description": "El sistema debe permitir generar un reporte con información de los activos registrados en el inventario",
+  "criteria": [
+   "El reporte debe incluir como mínimo: identificación, nombre, marca, modelo, estado, espacio, responsable y fecha de adquisición del equipo.",
+   "El reporte debe respetar los filtros aplicados por el usuario antes de su generación.",
+   "El sistema debe permitir visualizar el reporte antes de proceder con su exportación."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Carried over from Sprint 1. The first real report definition: every other report copies it."
+  ]
+ },
+ {
+  "code": "RF_64",
+  "title": "Generar reporte de espacios",
+  "description": "El sistema debe permitir generar un reporte con información de los espacios registrados",
+  "criteria": [
+   "El reporte debe incluir, como mínimo: nombre, ubicación, capacidad, tipo, estado y responsable del espacio.",
+   "El reporte debe permitir aplicar filtros según los criterios disponibles para los espacios.",
+   "La información presentada debe corresponder con los datos actualmente almacenados en la base de datos."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Carried over from Sprint 1."
+  ]
+ },
+ {
+  "code": "RF_65",
+  "title": "Generar reporte de reservaciones",
+  "description": "El sistema debe permitir generar reportes relacionados con las reservas de espacios realizadas en el sistema",
+  "criteria": [
+   "El reporte debe incluir como mínimo: espacio, fecha, horario, motivo, cantidad de personas, responsable y estado de la reserva.",
+   "El sistema debe permitir filtrar las reservas por rango de fechas y estado.",
+   "El reporte debe incluir reservas activas, canceladas, modificadas y finalizadas cuando correspondan al período seleccionado."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Jose Herrera",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "AleQuesada2012",
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from Alejandro (round 3). A report definition on the pipeline (copy RF_63); same data as RF_52. Alejandro reviews."
+  ]
+ },
+ {
+  "code": "RF_66",
+  "title": "Generar reporte de mantenimiento y reparaciones",
+  "description": "El sistema debe permitir generar un reporte de los mantenimientos y reparaciones realizados sobre los activos",
+  "criteria": [
+   "El reporte debe identificar el activo, fecha, tipo de intervención, descripción y usuario responsable del registro.",
+   "El sistema debe permitir filtrar los registros por activo y rango de fechas.",
+   "El reporte debe diferenciar entre mantenimientos y reparaciones realizadas."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_67",
+  "title": "Generar reporte de movimientos de inventario",
+  "description": "El sistema debe permitir generar un reporte de los movimientos realizados sobre los activos de inventario",
+  "criteria": [
+   "El reporte debe incluir el activo, tipo de movimiento, fecha y usuario que realizó el movimiento.",
+   "El sistema debe permitir filtrar los movimientos por activo, tipo de movimiento y rango de fechas.",
+   "El reporte debe permitir identificar el historial de movimientos realizado sobre cada activo."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_68",
+  "title": "Generar reporte de auditoría",
+  "description": "El sistema debe permitir consultar y generar un reporte de las operaciones registradas en la auditoría del sistema",
+  "criteria": [
+   "El reporte debe mostrar, como mínimo: usuario, fecha y hora, tipo de operación y elemento afectado.",
+   "El sistema debe permitir filtrar los registros por usuario, tipo de operación y rango de fechas",
+   "El reporte generado debe conservar la información registrada originalmente en la tabla de auditoría"
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_69",
+  "title": "Generar reporte de usuarios",
+  "description": "El sistema debe permitir generar un reporte con la información de los usuarios registrados en el sistema",
+  "criteria": [
+   "El reporte debe mostrar los usuarios registrados junto con su rol y estado de cuenta.",
+   "El sistema debe permitir filtrar los usuarios según su rol y estado.",
+   "La información del reporte debe corresponder con la información actualmente registrada en el sistema."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_70",
+  "title": "Exportar reportes en formato PDF",
+  "description": "El sistema debe permitir exportar los reportes generados en formato PDF para su almacenamiento, consulta o distribución",
+  "criteria": [
+   "El sistema debe proporcionar una opción para exportar el reporte actualmente visualizado en formato PDF.",
+   "El archivo PDF debe contener la información correspondiente al reporte y los filtros utilizados para generarlo.",
+   "El sistema debe notificar al usuario cuando el archivo PDF haya sido generado correctamente."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": "RF_00_4",
+  "cut_rank": null,
+  "notes": [
+   "Largely delivered by the RF_00_4 pipeline: verify each criterion, add a test, close."
+  ]
+ },
+ {
+  "code": "RF_71",
+  "title": "Exportar reportes en formato XLSX",
+  "description": "El sistema debe permitir exportar los reportes generados en formato XLSX para facilitar el análisis y la manipulación de datos",
+  "criteria": [
+   "El sistema debe permitir exportar en XLSX la información del reporte actualmente visualizado.",
+   "El archivo generado debe conservar las columnas y registros correspondientes a los filtros seleccionados.",
+   "El sistema debe notificar al usuario cuando la generación del archivo haya finalizado correctamente."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": "RF_00_4",
+  "cut_rank": null,
+  "notes": [
+   "Largely delivered by the RF_00_4 pipeline: verify each criterion, add a test, close."
+  ]
+ },
+ {
+  "code": "RF_72",
+  "title": "Mostrar fecha de generación y filtros aplicados",
+  "description": "El sistema debe mostrar información contextual sobre los reportes generados, incluyendo la fecha de generación y los filtros utilizados",
+  "criteria": [
+   "Todo reporte generado debe mostrar la fecha y hora en que fue generado.",
+   "El reporte debe indicar los filtros aplicados para obtener los resultados.",
+   "Cuando no se hayan aplicado filtros, el reporte debe indicar que contiene la totalidad de los registros disponibles."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": "RF_00_4",
+  "cut_rank": null,
+  "notes": [
+   "Largely delivered by the RF_00_4 pipeline: verify each criterion, add a test, close."
+  ]
+ },
+ {
+  "code": "RF_73",
+  "title": "Actualizar información de los tableros",
+  "description": "Los tableros interactivos deben presentar información actualizada proveniente de los datos registrados en el sistema",
+  "criteria": [
+   "Los datos mostrados en los tableros deben corresponder con la información disponible en las fuentes de datos configuradas.",
+   "El sistema debe actualizar los datos del tablero de acuerdo con la periodicidad de actualización establecida.",
+   "El sistema debe mostrar un mensaje al usuario cuando los datos del tablero no puedan actualizarse."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": 5,
+  "notes": [
+   "Starts with the half-day Power BI connectivity test (task issue): direct cloud connection to PostgreSQL first, then an on-premises gateway on a SETI PC, manual refresh as the safety net. Pro allows 8 scheduled refreshes per day.",
+   "Cut order #5: if Sprint 3 runs late, this is dropped #5 (reported as not delivered)."
+  ]
+ },
+ {
+  "code": "RF_74",
+  "title": "Exportar reporte de un espacio",
+  "description": "El sistema debe permitir generar un reporte específico de un espacio, incluyendo la información del espacio y los activos asociados.",
+  "criteria": [
+   "El reporte debe incluir nombre, ubicación, capacidad, tipo y estado del espacio.",
+   "El reporte debe incluir los activos actualmente asociados al espacio, incluyendo su identificación, nombre, marca, modelo y estado.",
+   "El sistema debe permitir exportar el reporte del espacio en formato XLSX y PDF."
+  ],
+  "owner": "Dizabu",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Diego Zamora",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "AleQuesada2012",
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Moved from Alejandro (round 3). A report definition on the pipeline (copy RF_63): the space page (RF_35) exported. Alejandro reviews."
+  ]
+ },
+ {
+  "code": "RF_75",
+  "title": "Generar reporte de garantías",
+  "description": "El sistema debe permitir generar un reporte de las garantías asociadas a los activos registrados.",
+  "criteria": [
+   "El reporte debe mostrar el activo, proveedor, fecha de inicio y fecha de finalización de la garantía.",
+   "El sistema debe permitir filtrar las garantías por estado de vigencia.",
+   "El reporte debe poder exportarse en los formatos disponibles para los reportes."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_76",
+  "title": "Generar reporte de activos dados de baja o perdidos",
+  "description": "El sistema debe permitir generar un reporte de los activos que hayan sido dados de baja o registrados como perdidos.",
+  "criteria": [
+   "El reporte debe identificar el activo y diferenciar entre baja y pérdida.",
+   "El reporte debe incluir la fecha y descripción asociada al evento.",
+   "El sistema debe permitir filtrar los resultados por tipo de evento y rango de fechas."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_77",
+  "title": "Generar reporte de componentes de equipos",
+  "description": "El sistema debe permitir generar un reporte de los componentes registrados para los activos.",
+  "criteria": [
+   "El reporte debe identificar el activo al que pertenece cada componente.",
+   "El reporte debe mostrar la información registrada de cada componente.",
+   "El sistema debe permitir filtrar los componentes por activo."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_78",
+  "title": "Generar reporte de responsables de activos",
+  "description": "El sistema debe permitir generar un reporte que relacione los activos con sus responsables.",
+  "criteria": [
+   "El reporte debe mostrar el activo y el usuario responsable asociado.",
+   "El sistema debe permitir filtrar el reporte por responsable.",
+   "El reporte debe identificar los activos que actualmente no tengan un responsable asignado."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_79",
+  "title": "Generar reporte de ocupación de espacios",
+  "description": "El sistema debe permitir generar un reporte estadístico sobre la utilización de los espacios registrados.",
+  "criteria": [
+   "El reporte debe permitir seleccionar un rango de fechas.",
+   "El reporte debe mostrar la cantidad de reservas asociadas a cada espacio durante el período seleccionado.",
+   "El reporte debe permitir identificar los espacios con mayor y menor cantidad de reservas."
+  ],
+  "owner": "JoseHerrera21",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Jose Herrera",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "original_owner": "AleQuesada2012",
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": 2,
+  "notes": [
+   "Moved from Alejandro (round 3). A report definition on the pipeline (copy RF_63); same query as RF_59. Alejandro reviews.",
+   "Cut order #2: if Sprint 3 runs late, this is dropped #2 (reported as not delivered)."
+  ]
+ },
+ {
+  "code": "RF_80",
+  "title": "Generar estadísticas de estado de activos",
+  "description": "El sistema debe proporcionar estadísticas sobre la distribución de los activos según su estado.",
+  "criteria": [
+   "El sistema debe mostrar la cantidad total de activos registrados por estado.",
+   "El sistema debe representar visualmente la proporción de activos en cada estado.",
+   "Las estadísticas deben actualizarse cuando cambie la información de los activos."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Builds the shared <x-chart> component (Chart.js 4, colors from resources/css/theme.css). Adding Chart.js is approved (planning round 3)."
+  ]
+ },
+ {
+  "code": "RF_81",
+  "title": "Generar estadísticas de inventario por categoría",
+  "description": "El sistema debe proporcionar estadísticas sobre la distribución de los activos según su categoría.",
+  "criteria": [
+   "El sistema debe mostrar la cantidad de activos pertenecientes a cada categoría.",
+   "El usuario debe poder seleccionar una categoría para consultar los activos correspondientes.",
+   "Las estadísticas deben utilizar la información actualizada del inventario."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_82",
+  "title": "Generar estadísticas de mantenimiento",
+  "description": "El sistema debe proporcionar estadísticas relacionadas con los mantenimientos y reparaciones realizadas sobre los activos.",
+  "criteria": [
+   "El sistema debe mostrar la cantidad de mantenimientos y reparaciones realizados durante un período.",
+   "El usuario debe poder filtrar las estadísticas por rango de fechas.",
+   "Las estadísticas deben permitir identificar los activos con mayor cantidad de intervenciones."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_83",
+  "title": "Generar estadísticas de reservas",
+  "description": "El sistema debe proporcionar estadísticas relacionadas con las reservas realizadas en los espacios.",
+  "criteria": [
+   "El sistema debe mostrar la cantidad de reservas realizadas durante un período seleccionado.",
+   "El sistema debe permitir analizar las reservas según espacio y estado.",
+   "Las estadísticas deben actualizarse conforme se registren, modifiquen o cancelen reservas."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 3,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": 3,
+  "notes": [
+   "Cut order #3: if Sprint 3 runs late, this is dropped #3 (reported as not delivered)."
+  ]
+ },
+ {
+  "code": "RF_84",
+  "title": "Consultar reportes previamente generados",
+  "description": "El sistema debe permitir consultar el registro de los reportes que hayan sido generados anteriormente.",
+  "criteria": [
+   "El sistema debe mostrar los reportes generados junto con su fecha y usuario generador.",
+   "El sistema debe permitir identificar el tipo y formato del reporte generado.",
+   "El sistema debe permitir consultar el registro de generaciones realizadas anteriormente."
+  ],
+  "owner": "AleQuesada2012",
+  "sprint": 2,
+  "module": "reports",
+  "owner_name": "Alejandro Quesada",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "DavidZamoraB",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_85",
+  "title": "Asignar Roles",
+  "description": "Rol Esta funcionalidad le permite al super admin asignar roles dentro de los existente a cada usuario",
+  "criteria": [
+   "El sistema debe permitir al Superusuario visualizar el listado completo de usuarios de la aplicación.",
+   "El sistema debe permitir al Superusuario asignar un rol existente a cualquier usuario seleccionado.",
+   "El sistema debe confirmar mediante un mensaje que la asignación del rol se realizó con éxito.",
+   "El sistema debe notificar con un error de autorización si un usuario sin el rol de Superusuario intenta acceder a esta funcionalidad."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 1,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_86",
+  "title": "Eliminar Rol",
+  "description": "Esta funcionalidad le permite al super admin retirar el rol a un usuario existente",
+  "criteria": [
+   "El sistema debe permitir al Superusuario retirar el rol previamente otorgado a cualquier usuario.",
+   "El sistema debe solicitar información antes de retirar el rol de forma definitiva.",
+   "El sistema debe confirmar mediante un mensaje que el rol fue retirado con éxito.",
+   "El usuario al que se le retira el rol no debe conservar los permisos asociados a dicho rol."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_87",
+  "title": "Modificar Rol",
+  "description": "El sistema debe permitir únicamente al Superusuario modificar el rol de un usuario existente.",
+  "criteria": [
+   "El sistema debe permitir al Superusuario seleccionar un usuario existente y cambiar su rol actual por otro disponible.",
+   "El sistema debe notificar con un error de autorización si el usuario que intenta la modificación no posee el rol de Superusuario.",
+   "El sistema debe confirmar mediante un mensaje que el cambio de rol se realizó con éxito.",
+   "Los permisos del usuario deben actualizarse de forma inmediata conforme al nuevo rol asignado."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_88",
+  "title": "Desactivación de cuenta",
+  "description": "El sistema debe permitir al Superusuario desactivar la cuenta de un usuario, revocando su acceso sin borrar su información histórica, para conservar la trazabilidad del sistema.",
+  "criteria": [
+   "El sistema debe permitir al Superusuario desactivar la cuenta de un usuario existente.",
+   "Un usuario con la cuenta desactivada no debe poder iniciar sesión en el sistema.",
+   "El sistema debe conservar la información histórica y los registros de auditoría asociados al usuario desactivado.",
+   "El sistema debe permitir al Superusuario reactivar una cuenta previamente desactivada."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_89",
+  "title": "Restricción de funcionalidades según rol",
+  "description": "El sistema debe ocultar o deshabilitar en toda la interfaz las opciones de creación, edición y eliminación para los usuarios con rol Visualizador, dejando disponibles únicamente funciones de consulta.",
+  "criteria": [
+   "El sistema no debe mostrar las opciones de crear, editar o eliminar en ninguna sección de interfaz para el rol usuario.",
+   "El sistema debe permitir al usuario únicamente funciones de consulta sobre la información disponible.",
+   "El sistema debe notificar con un error de autorización si el usuario intenta acceder directamente a una funcionalidad restringida.",
+   "La restricción debe aplicarse de manera consistente en todos los módulos del sistema."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 1,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": true,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": [
+   "Delivered in the bootstrap: policies, role-aware navigation, Spanish 403, RouteAuthorizationTest."
+  ]
+ },
+ {
+  "code": "RF_90",
+  "title": "Listar Usuarios",
+  "description": "Esta funcionalidad le permite al admin y al super admin conocer todos los usuarios de la aplicación",
+  "criteria": [
+   "El sistema deberá permitirle al admin y Superusuario visualizar el listado completo de usuarios registrados.",
+   "El listado debe mostrar, como mínimo, nombre, correo, rol y estado del usuario.",
+   "El sistema debe permitir buscar y filtrar el listado de usuarios según los criterios disponibles.",
+   "El acceso a esta funcionalidad debe estar restringido por los roles admin y Superusuario."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 1,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_91",
+  "title": "Registrar usuarios",
+  "description": "El super admin podrá crear los usuarios que quiera dentro de la app",
+  "criteria": [
+   "El sistema debe permitir al Superusuario registrar un nuevo usuario indicando, como mínimo, nombre, correo y rol.",
+   "El sistema debe validar que el correo ingresado no esté previamente registrado en el sistema.",
+   "El sistema debe notificar al usuario si algún campo obligatorio no fue completado o tiene formato incorrecto.",
+   "El sistema debe confirmar mediante un mensaje que el usuario fue ingresado con éxito."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 1,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_92",
+  "title": "Filtrar usuarios",
+  "description": "El super admin podrá filtrar a los usuarios administrador y usuarios normales por medio de sus roles",
+  "criteria": [
+   "El sistema deberá permitir al super admin filtrar una lista de usuarios administrador por su nombre o ID",
+   "El sistema deberá permitir al super admin filtrar una lista de usuarios normales por su nombre o ID",
+   "Si no existen usuarios administradores o normales el sistema deberá mostrar un mensaje de que no existen usuarios registrados"
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_93",
+  "title": "Editar información de usuario",
+  "description": "El sistema debe permitir al Superusuario modificar la información de un usuario registrado.",
+  "criteria": [
+   "El Superusuario debe poder seleccionar un usuario existente para editarlo.",
+   "El sistema debe permitir modificar los datos permitidos del usuario.",
+   "El sistema debe validar la información modificada antes de almacenarla."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_94",
+  "title": "Consultar información de usuario",
+  "description": "El sistema debe permitir consultar el detalle de la información de un usuario registrado.",
+  "criteria": [
+   "El sistema debe permitir seleccionar un usuario desde el listado.",
+   "El sistema debe mostrar como mínimo nombre, correo, rol y estado de cuenta.",
+   "El sistema debe informar cuando el usuario consultado no exista."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 1,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_95",
+  "title": "Buscar usuarios",
+  "description": "El sistema debe permitir buscar usuarios mediante criterios de identificación.",
+  "criteria": [
+   "El sistema debe permitir realizar búsquedas mediante nombre o identificador del usuario.",
+   "El sistema debe mostrar los usuarios que coincidan parcial o totalmente con el criterio introducido.",
+   "Si no existen coincidencias, el sistema debe informar que no se encontraron usuarios."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 1,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_96",
+  "title": "Consultar usuarios asignados a un laboratorio",
+  "description": "El sistema debe permitir al Superusuario consultar los administradores asociados a cada laboratorio.",
+  "criteria": [
+   "El Superusuario debe poder seleccionar un laboratorio y consultar sus administradores asignados.",
+   "El sistema debe mostrar los usuarios administradores asociados al laboratorio seleccionado.",
+   "Si el laboratorio no tiene administradores asignados, el sistema debe informar dicha situación."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_97",
+  "title": "Consultar laboratorios asignados a un administrador",
+  "description": "El sistema debe permitir consultar los laboratorios asociados a un usuario administrador.",
+  "criteria": [
+   "El sistema debe permitir seleccionar un administrador existente.",
+   "El sistema debe mostrar los laboratorios actualmente asignados al administrador.",
+   "Si el administrador no tiene laboratorios asignados, el sistema debe mostrar un mensaje indicándolo."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_98",
+  "title": "Reactivar cuenta de usuario",
+  "description": "El sistema debe permitir al Superusuario reactivar una cuenta previamente desactivada.",
+  "criteria": [
+   "El Superusuario debe poder consultar las cuentas desactivadas.",
+   "El sistema debe permitir seleccionar una cuenta y solicitar su reactivación.",
+   "Una cuenta reactivada debe poder iniciar sesión nuevamente."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_99",
+  "title": "Consultar historial de actividad de usuario",
+  "description": "El sistema debe permitir consultar las acciones registradas asociadas a un usuario determinado.",
+  "criteria": [
+   "El sistema debe permitir seleccionar un usuario y consultar sus registros de actividad disponibles.",
+   "El sistema debe mostrar la fecha, hora y tipo de operación registrada.",
+   "El sistema debe permitir filtrar la actividad del usuario por rango de fechas."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": 1,
+  "notes": [
+   "Cut order #1: if Sprint 3 runs late, this is dropped first (reported as not delivered)."
+  ]
+ },
+ {
+  "code": "RF_100",
+  "title": "Consultar roles disponibles",
+  "description": "El sistema debe permitir al Superusuario consultar los roles disponibles dentro del sistema y sus características.",
+  "criteria": [
+   "El sistema debe mostrar los roles definidos en el sistema.",
+   "El sistema debe mostrar una descripción de las funciones asociadas a cada rol.",
+   "El sistema debe permitir consultar los usuarios que poseen un rol seleccionado."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 1,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ },
+ {
+  "code": "RF_101",
+  "title": "Consultar usuarios por estado de cuenta",
+  "description": "El sistema debe permitir al Superusuario consultar los usuarios según el estado de su cuenta.",
+  "criteria": [
+   "El sistema debe permitir seleccionar un estado de cuenta como activo o desactivado.",
+   "El sistema debe mostrar únicamente los usuarios que correspondan al estado seleccionado.",
+   "Si no existen usuarios con el estado seleccionado, el sistema debe mostrar un mensaje informativo."
+  ],
+  "owner": "Rubiocai",
+  "sprint": 3,
+  "module": "users",
+  "owner_name": "Sebastián Sánchez",
+  "diagram": null,
+  "delivered_in_bootstrap": false,
+  "closes_with": null,
+  "reviewer": "AleQuesada2012",
+  "free_with": null,
+  "cut_rank": null,
+  "notes": []
+ }
+]

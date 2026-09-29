@@ -1,0 +1,90 @@
+/*
+ * SETI color palettes: the ONLY place colors are defined. Views use these tokens (bg-canvas, text-ink, bg-brand,
+ * bg-status-good, bg-chart-1…) and never raw palette classes such as bg-blue-600 or dark:bg-zinc-900.
+ *
+ * Every token has an explicit light value (@theme) and an explicit dark value (.dark, below): dark mode is a
+ * designed palette, not an inversion. To change a color, edit it here in both blocks; Tailwind, Flux and the
+ * charts pick it up. Keep text/background pairs at WCAG AA contrast (4.5:1 for body text).
+ */
+
+@theme {
+    /* Brand: fills (primary buttons, logo, active states) with brand-foreground text on them, and brand-ink for
+       brand-colored text and links on surfaces. Flux's accent follows them. */
+    --color-brand: #2563eb;
+    --color-brand-hover: #1d4ed8;
+    --color-brand-foreground: #ffffff;
+    --color-brand-ink: #1d4ed8;
+
+    /* Surfaces and text of the content area. */
+    --color-canvas: #fafafa;          /* page background */
+    --color-surface: #ffffff;         /* cards, top bar, sign-in card */
+    --color-line: #e5e5e5;            /* borders and dividers */
+    --color-ink: #171717;             /* main text */
+    --color-ink-muted: #525252;       /* secondary text */
+
+    /* Navy chrome from the mockups: the sidebar, and the background of sign-in and error pages. The same in both
+       appearances (the sidebar always renders in dark mode), so these are defined here only. */
+    --color-sidebar: #111827;
+    --color-sidebar-line: #1f2937;
+    --color-backdrop: #111827;
+
+    /* Condition color groups (asset_conditions.color_group, space_statuses.color_group). */
+    --color-status-good: #16a34a;
+    --color-status-warning: #d97706;
+    --color-status-bad: #dc2626;
+
+    /* Categorical data series: KPI bars and charts, in this order. */
+    --color-chart-1: #2563eb;
+    --color-chart-2: #16a34a;
+    --color-chart-3: #d97706;
+    --color-chart-4: #dc2626;
+    --color-chart-5: #6b7280;
+
+    /* Neutral scale Flux draws its components with (inputs, tables, menus). Neutral grays, no blue tint. */
+    --color-zinc-50: #fafafa;
+    --color-zinc-100: #f5f5f5;
+    --color-zinc-200: #e5e5e5;
+    --color-zinc-300: #d4d4d4;
+    --color-zinc-400: #a3a3a3;
+    --color-zinc-500: #737373;
+    --color-zinc-600: #525252;
+    --color-zinc-700: #404040;
+    --color-zinc-800: #262626;
+    --color-zinc-900: #171717;
+    --color-zinc-950: #0a0a0a;
+
+    --color-accent: var(--color-brand);
+    --color-accent-content: var(--color-brand-ink);
+    --color-accent-foreground: var(--color-brand-foreground);
+}
+
+@layer theme {
+    /* The dark palette. `.dark` is set on <html> by the appearance setting, and on the sidebar in every appearance. */
+    .dark {
+        --color-brand: #2563eb;
+        --color-brand-hover: #3b63d9;
+        --color-brand-foreground: #ffffff;
+        --color-brand-ink: #93c5fd;
+
+        --color-canvas: #0a0a0a;
+        --color-surface: #171717;
+        --color-line: #2a2a2a;
+        --color-ink: #fafafa;
+        --color-ink-muted: #a3a3a3;
+
+        --color-status-good: #22c55e;
+        --color-status-warning: #f59e0b;
+        --color-status-bad: #f87171;
+
+        --color-chart-1: #60a5fa;
+        --color-chart-2: #4ade80;
+        --color-chart-3: #fbbf24;
+        --color-chart-4: #f87171;
+        --color-chart-5: #9ca3af;
+
+        /* Tokens that reference others are restated so they resolve against the dark values in this subtree. */
+        --color-accent: var(--color-brand);
+        --color-accent-content: var(--color-brand-ink);
+        --color-accent-foreground: var(--color-brand-foreground);
+    }
+}
