@@ -41,7 +41,7 @@ FROM base AS vendor
 COPY --chown=www-data:www-data composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --no-scripts --no-autoloader --prefer-dist
 
-FROM node:24-trixie-slim AS assets
+FROM node:26-trixie-slim AS assets
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
