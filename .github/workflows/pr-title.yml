@@ -31,7 +31,10 @@ jobs:
             exit 1
           }
 
-          [[ "$TITLE" =~ ^($types)\(($modules)\):\ [a-z0-9] ]] \
+          # Dependabot writes "Bump …" with a capital letter; its titles are otherwise conventional.
+          first='[a-z0-9]'
+          [[ "$AUTHOR" == "dependabot[bot]" ]] && first='[A-Za-z0-9]'
+          [[ "$TITLE" =~ ^($types)\(($modules)\):\ $first ]] \
             || fail "Start with type(module): and a lowercase summary. Types: ${types//|/, }. Modules: ${modules//|/, }."
           [[ "$TITLE" != *. ]] || fail "Remove the final period."
           if [[ "$AUTHOR" != "dependabot[bot]" && ${#TITLE} -gt 72 ]]; then
