@@ -28,8 +28,9 @@ run gh api -X PATCH "repos/$REPO" --silent \
   -F delete_branch_on_merge=true -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=PR_BODY
 
 step "2. Collaborators (they receive an invitation by email)"
-for user in Rubiocai; do run gh api -X PUT "repos/$REPO/collaborators/$user" -f permission=maintain --silent; done
-for user in DavidZamoraB Dizabu JoseHerrera21; do run gh api -X PUT "repos/$REPO/collaborators/$user" -f permission=push --silent; done
+# A repository owned by a personal account only offers write ("push") access to collaborators; that is enough for
+# code-owner reviews (Rubiocai is a platform owner through .github/CODEOWNERS).
+for user in Rubiocai DavidZamoraB Dizabu JoseHerrera21; do run gh api -X PUT "repos/$REPO/collaborators/$user" -f permission=push --silent; done
 
 step "3. Labels"
 label() { run gh label create "$1" --repo "$REPO" --color "$2" --description "$3" --force; }

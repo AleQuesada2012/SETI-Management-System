@@ -1,5 +1,7 @@
 # Weekly dependency updates. Dependabot PRs follow the same rules as everyone's: CI green + one approval.
 # Adding a NEW dependency is still a human decision (CONTRIBUTING.md), this only keeps existing ones current.
+# Major versions (PHP, Node, PostgreSQL, Laravel…) were chosen deliberately (docs/decisions.md): Dependabot proposes
+# only minor and patch updates for them; a major upgrade is a team decision and a planned PR.
 version: 2
 updates:
   - package-ecosystem: "composer"
@@ -7,6 +9,9 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     cooldown:
       default-days: 5
     open-pull-requests-limit: 5
@@ -21,6 +26,9 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     cooldown:
       default-days: 5
     open-pull-requests-limit: 5
@@ -34,6 +42,9 @@ updates:
     directory: "/docker/php"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: "chore(deps)"
 
@@ -41,6 +52,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: "chore(deps)"
 
