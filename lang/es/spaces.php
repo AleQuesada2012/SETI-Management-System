@@ -17,18 +17,26 @@ return [
             'type' => 'Tipo',
             'status' => 'Estado',
         ],
-        'filters' => [
-            'type' => 'Tipo de espacio',
-            'status' => 'Estado',
-            'building' => 'Edificio',
-            'min_capacity' => 'Capacidad mínima',
-            'all' => 'Todos',
-            'any' => 'Cualquiera',
-            'active' => '{1} 1 filtro activo|[2,*] :count filtros activos',
-            'clear' => 'Limpiar filtros',
-        ],
+        'active_filters' => 'Filtros activos',
+        'clear_filters' => 'Limpiar filtros',
+        'invalid_filters' => 'Los filtros no son válidos',
     ],
     'show' => [
         'title' => 'Detalle del espacio',
+    ],
+    // The spaces filter contract (.ai/rules/reports.md § Spaces schema), shared by the list and the spaces report.
+    'filters' => [
+        'criteria' => [
+            'space_type' => 'Tipo de espacio',
+            'space_status' => 'Estado',
+            'building' => 'Edificio',
+        ],
+        'removed' => ':name (eliminado)',
+        'errors' => [
+            'unknown_key' => 'El filtro «:key» no existe.',
+            'shape' => 'El filtro «:filter» no tiene un formato válido.',
+            'unknown_value' => 'El filtro «:filter» tiene una opción que no existe.',
+            'search' => 'El texto de búsqueda no es válido (máximo 200 caracteres).',
+        ],
     ],
 ];
