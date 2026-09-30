@@ -51,10 +51,18 @@ return [
             'space' => 'Sin espacio',
             'responsible_user' => 'Sin responsable',
         ],
-        'unknown' => 'Filtros no admitidos: :keys.',
-        'removed_f' => '(eliminada)',
-        'removed_m' => '(eliminado)',
-        'deactivated' => '(desactivado)',
+        'removed' => ':name (eliminado)',
+        'deactivated' => ':name (cuenta desactivada)',
+        // Short messages, identical on the inventory page and in the inventory report's filter panel.
+        'errors' => [
+            'unknown' => 'El filtro :key no está disponible.',
+            'shape' => 'La estructura del filtro no es válida.',
+            'text' => 'Introduce un texto de hasta 200 caracteres.',
+            'value' => 'Selecciona una opción válida del filtro.',
+            'boolean' => 'La selección de valores sin información debe ser verdadera o falsa.',
+            'date' => 'Introduce una fecha válida con formato AAAA-MM-DD.',
+            'range' => 'La fecha final no puede ser anterior a la inicial.',
+        ],
     ],
     'create' => [
         'title' => 'Añadir activo',

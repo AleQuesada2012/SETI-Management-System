@@ -117,7 +117,7 @@ new #[Title('assets.index.title')] class extends Component {
         }
     }
 
-    /** @return array<string, array<int|string, string>> */
+    /** @return array<string, list<array{id: int|string, label: string}>> */
     #[Computed]
     public function choices(): array
     {
@@ -127,7 +127,7 @@ new #[Title('assets.index.title')] class extends Component {
     /** Which RF message explains an empty list. */
     public function emptyMessage(): string
     {
-        $normalized = InventoryFilters::normalize($this->filters());
+        $normalized = InventoryFilters::validate($this->filters());
 
         return match (true) {
             $normalized === [] => __('assets.index.empty.inventory'),
@@ -160,8 +160,8 @@ new #[Title('assets.index.title')] class extends Component {
                     @if (trans()->has('assets.filters.missing.'.$key))
                         <flux:select.option :value="$this::MISSING">{{ __('assets.filters.missing.'.$key) }}</flux:select.option>
                     @endif
-                    @foreach ($this->choices[$key] as $value => $label)
-                        <flux:select.option :value="$value">{{ $label }}</flux:select.option>
+                    @foreach ($this->choices[$key] as $choice)
+                        <flux:select.option :value="$choice['id']">{{ $choice['label'] }}</flux:select.option>
                     @endforeach
                 </flux:select>
             @endforeach

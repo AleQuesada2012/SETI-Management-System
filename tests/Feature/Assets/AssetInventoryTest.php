@@ -117,11 +117,11 @@ test('references to removed brands and deactivated custodians stay valid', funct
 });
 
 test('input is normalized: trimmed, without duplicates or empty restrictions', function () {
-    expect(InventoryFilters::normalize([]))->toBe([])
-        ->and(InventoryFilters::normalize(['search' => '  ', 'brand' => ['values' => []], 'model' => ['contains' => ' '], 'acquired_on' => []]))->toBe([])
-        ->and(InventoryFilters::normalize([
+    expect(InventoryFilters::validate([]))->toBe([])
+        ->and(InventoryFilters::validate(['search' => '  ', 'brand' => ['values' => []], 'model' => ['contains' => ' '], 'acquired_on' => []]))->toBe([])
+        ->and(InventoryFilters::validate([
             'search' => ' Dell ',
-            'brand' => ['values' => [$this->epson->id, $this->dell->id, $this->epson->id], 'include_missing' => false],
+            'brand' => ['values' => [$this->epson->id, (string) $this->dell->id, $this->epson->id], 'include_missing' => false],
             'lifecycle_status' => ['values' => ['lost', 'in_service', 'lost']],
         ]))->toBe([
             'search' => 'Dell',
@@ -130,38 +130,49 @@ test('input is normalized: trimmed, without duplicates or empty restrictions', f
         ]);
 });
 
-test('invalid filters are rejected in Spanish before querying', function (array $filters, string $key) {
+test('invalid filters are rejected with a short Spanish message before querying', function (array $filters, string $key, string $message) {
     try {
-        InventoryFilters::normalize($filters);
+        InventoryFilters::validate($filters);
         $this->fail('The filters were accepted.');
     } catch (ValidationException $e) {
-        expect($e->errors())->toHaveKey($key);
+        expect($e->errors())->toHaveKey($key)
+            ->and($e->errors()[$key][0])->toBe(__('assets.filters.errors.'.$message, ['key' => $key]));
     }
 })->with([
-    'an unsupported key' => [['space_id' => 3], 'filters'],
-    'a criterion that is not an object' => [['brand' => 5], 'brand'],
-    'an unsupported member' => [['condition' => ['values' => [1], 'include_missing' => true]], 'condition'],
-    'a brand that does not exist' => [['brand' => ['values' => [999999]]], 'brand.values.0'],
-    'a color outside the three groups' => [['condition_color' => ['values' => ['gray']]], 'condition_color.values.0'],
-    'an unknown lifecycle status' => [['lifecycle_status' => ['values' => ['stolen']]], 'lifecycle_status.values.0'],
-    'an invalid date' => [['acquired_on' => ['from' => '2026-02-30']], 'acquired_on.from'],
-    'an inverted range' => [['acquired_on' => ['from' => '2026-09-30', 'to' => '2026-09-01']], 'acquired_on.to'],
+    'an unsupported key' => [['space_id' => 3], 'space_id', 'unknown'],
+    'a criterion that is not an object' => [['brand' => 5], 'brand', 'shape'],
+    'an unsupported member' => [['condition' => ['values' => [1], 'include_missing' => true]], 'condition', 'shape'],
+    'values that are not a list' => [['brand' => ['values' => ['a' => 1]]], 'brand.values', 'shape'],
+    'a search that is not text' => [['search' => ['x']], 'search', 'text'],
+    'a brand that does not exist' => [['brand' => ['values' => [999999]]], 'brand.values.0', 'value'],
+    'a color outside the three groups' => [['condition_color' => ['values' => ['gray']]], 'condition_color.values.0', 'value'],
+    'an unknown lifecycle status' => [['lifecycle_status' => ['values' => ['stolen']]], 'lifecycle_status.values.0', 'value'],
+    'a missing selection that is not true or false' => [['brand' => ['include_missing' => 'maybe']], 'brand.include_missing', 'boolean'],
+    'an invalid date' => [['acquired_on' => ['from' => '2026-02-30']], 'acquired_on.from', 'date'],
+    'an inverted range' => [['acquired_on' => ['from' => '2026-09-30', 'to' => '2026-09-01']], 'acquired_on.to', 'range'],
 ]);
+
+test('the supported keys are the contract plus category', function () {
+    expect(InventoryFilters::keys())->toBe([
+        'search', 'brand', 'model', 'category', 'condition', 'condition_color', 'lifecycle_status', 'space',
+        'responsible_user', 'acquired_on',
+    ]);
+});
 
 test('choices are stable and label removed and deactivated references', function () {
     $former = User::factory()->deactivated()->create(['name' => 'Jorge Ramírez']);
-    $unused = User::factory()->deactivated()->create(['name' => 'Nadie Asignado']);
     Asset::factory()->inSpace($this->lab)->create(['brand_id' => $this->epson->id, 'responsible_user_id' => $former->id]);
     $this->epson->delete();
     $gone = Brand::query()->create(['name' => 'Marca sin uso']);
     $gone->delete();
 
     $choices = InventoryFilters::choices();
+    $labels = fn (string $key): array => array_column($choices[$key], 'label', 'id');
 
-    expect($choices['brand'])->toContain('Dell', 'Epson (eliminada)')
-        ->not->toContain('Marca sin uso (eliminada)')
-        ->and($choices['responsible_user'])->toContain('Jorge Ramírez (desactivado)')
-        ->not->toContain('Nadie Asignado (desactivado)')
-        ->and(array_keys($choices['condition_color']))->toBe(['green', 'amber', 'red'])
-        ->and(array_keys($choices['lifecycle_status']))->toBe(['in_service', 'in_maintenance', 'lost', 'decommissioned']);
+    expect($labels('brand'))->toContain('Dell', 'Epson (eliminado)')
+        ->not->toContain('Marca sin uso (eliminado)')
+        ->and($labels('brand')[$this->epson->id])->toBe('Epson (eliminado)')
+        ->and($labels('responsible_user')[$former->id])->toBe('Jorge Ramírez (cuenta desactivada)')
+        ->and(array_column($choices['condition_color'], 'id'))->toBe(['green', 'amber', 'red'])
+        ->and(array_column($choices['lifecycle_status'], 'id'))->toBe(['in_service', 'in_maintenance', 'lost', 'decommissioned']);
 });

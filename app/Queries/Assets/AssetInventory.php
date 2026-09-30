@@ -42,7 +42,7 @@ final class AssetInventory
      */
     public static function query(array $filters = []): Builder
     {
-        $filters = InventoryFilters::normalize($filters);
+        $filters = InventoryFilters::validate($filters);
         $query = AssetRow::query();
 
         if (isset($filters['search'])) {
