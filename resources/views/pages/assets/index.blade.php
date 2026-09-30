@@ -15,14 +15,13 @@ new #[Title('assets.index.title')] class extends Component {
 <div class="flex flex-col gap-6">
     <div class="flex flex-wrap items-center justify-end gap-2">
         @can('create', Asset::class)
-            <flux:button variant="primary" icon="plus" disabled>{{ __('assets.index.create') }}</flux:button>
+            <flux:button variant="primary" icon="plus" :href="route('assets.create')" wire:navigate data-test="create-asset-button">{{ __('assets.index.create') }}</flux:button>
         @endcan
     </div>
 
     <x-module-placeholder owner="David Zamora (@DavidZamoraB)" :requirements="[
         'RF_07' => 'Búsqueda de activos',
         'RF_08' => 'Filtrado de activos por métricas',
-        'RF_03' => 'Añadir activo',
     ]">
         Lista y filtros: <code>App\Queries\Assets\AssetInventory</code>. Permisos: <code>App\Policies\AssetPolicy</code>.
     </x-module-placeholder>
