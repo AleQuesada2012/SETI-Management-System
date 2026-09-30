@@ -75,6 +75,25 @@ test('several values of one criterion combine with OR, and criteria combine with
         ->assertSee('Estado: Disponible');
 });
 
+test('the search box narrows the list and combines with the filters (AND)', function () {
+    $this->actingAs(userWithRole(SystemRole::Visualizador));
+
+    Livewire::test('pages::spaces.index')
+        ->dispatch('space-search-updated', search: 'laboratorio')
+        ->assertSet('search', 'laboratorio')
+        ->assertSee('LAB-110')
+        ->assertSee('LAB-120')
+        ->assertDontSee('OF-1')
+        ->set('filters.space_status.values', [(string) $this->disponible])
+        ->assertSee('LAB-110')
+        ->assertDontSee('LAB-120');
+
+    $this->get(route('spaces.index', ['buscar' => 'oficina']))
+        ->assertOk()
+        ->assertSee('OF-1')
+        ->assertDontSee('LAB-110');
+});
+
 test('spaces are filtered by building', function () {
     $this->actingAs(userWithRole(SystemRole::Visualizador));
 

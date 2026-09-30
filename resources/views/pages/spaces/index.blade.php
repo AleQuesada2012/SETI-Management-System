@@ -5,6 +5,7 @@ use App\Queries\Spaces\SpaceDirectory;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -13,7 +14,8 @@ use Livewire\WithPagination;
 /*
  * Espacios (mockup "Espacios"). Owner of the page: reservations (@JoseHerrera21: list and filters, RF_53/RF_54).
  * The search (RF_42) and "Añadir espacio" (RF_32) belong to spaces (@Dizabu). Both work through
- * App\Queries\Spaces\SpaceDirectory and its filter contract, the same the spaces report (RF_64) uses.
+ * App\Queries\Spaces\SpaceDirectory and its filter contract, the same the spaces report (RF_64) uses: the search box
+ * (<livewire:spaces.space-search>) announces its term and this list combines it with the filters (AND).
  */
 new #[Title('spaces.index.title')] class extends Component {
     use WithPagination;
@@ -23,6 +25,10 @@ new #[Title('spaces.index.title')] class extends Component {
     /** @var array<string, mixed> The filter contract's input, e.g. ['space_type' => ['values' => ['1', '2']]]; kept in the URL so a filtered list can be shared. */
     #[Url(except: [])]
     public array $filters = [];
+
+    /** RF_42's term, shared with the search box through ?buscar= and its space-search-updated event. */
+    #[Url(as: 'buscar')]
+    public string $search = '';
 
     /**
      * The normalized filters, or the Spanish errors that block the list when the input (usually an edited URL) breaks
@@ -34,7 +40,7 @@ new #[Title('spaces.index.title')] class extends Component {
     public function criteria(): array
     {
         try {
-            return ['filters' => SpaceDirectory::validate($this->filters), 'errors' => []];
+            return ['filters' => SpaceDirectory::validate([...$this->filters, 'search' => $this->search]), 'errors' => []];
         } catch (ValidationException $e) {
             return ['filters' => [], 'errors' => array_values(array_unique($e->validator->errors()->all()))];
         }
@@ -71,6 +77,15 @@ new #[Title('spaces.index.title')] class extends Component {
         return $this->criteria['errors'] === []
             ? SpaceDirectory::query($this->criteria['filters'])->paginate(self::PER_PAGE)
             : null;
+    }
+
+    #[On('space-search-updated')]
+    public function applySearch(string $search): void
+    {
+        $this->authorize('viewAny', Space::class);
+
+        $this->search = $search;
+        $this->resetPage();
     }
 
     public function updatedFilters(): void
