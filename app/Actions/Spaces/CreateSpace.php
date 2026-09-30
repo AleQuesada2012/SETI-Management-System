@@ -49,15 +49,19 @@ final class CreateSpace
                 return $space;
             });
         } catch (QueryException $e) {
-            $field = match (ConstraintViolation::ruleName($e)) {
-                'spaces_code_unique', 'spaces_code_check' => 'code',
-                'spaces_name_unique', 'spaces_name_check' => 'name',
-                'spaces_capacity_check' => 'capacity',
-                default => 'form',
-            };
-
-            throw ConstraintViolation::toValidationException($e, field: $field);
+            throw ConstraintViolation::toValidationException($e, field: self::fieldOf($e));
         }
+    }
+
+    /** The form field a violated spaces constraint belongs to, so its message shows under that field. */
+    public static function fieldOf(QueryException $exception): string
+    {
+        return match (ConstraintViolation::ruleName($exception)) {
+            'spaces_code_unique', 'spaces_code_check' => 'code',
+            'spaces_name_unique', 'spaces_name_check' => 'name',
+            'spaces_capacity_check' => 'capacity',
+            default => 'form',
+        };
     }
 
     /**
