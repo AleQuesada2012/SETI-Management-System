@@ -30,4 +30,15 @@ return [
         'capacity' => 'capacidad',
         'notes' => 'notas',
     ],
+    'search' => [
+        'label' => 'Buscar espacios',
+        'placeholder' => 'Buscar por nombre, ubicación o código',
+        'found' => '{1} 1 espacio coincide con la búsqueda.|[2,*] :count espacios coinciden con la búsqueda.',
+        'none' => 'No existe ningún espacio que coincida con «:term».',
+        'code' => 'Código',
+        'name' => 'Nombre',
+        'location' => 'Ubicación',
+        'type' => 'Tipo',
+        'status' => 'Estado',
+    ],
 ];
