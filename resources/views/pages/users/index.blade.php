@@ -17,7 +17,8 @@ use Livewire\WithPagination;
  * Owner: users (@Rubiocai). List, search and filters come from App\Queries\Users\UserDirectory, the same query the
  * users report (RF_69) uses.
  */
-new #[Title('users.index.title')] class extends Component {
+new #[Title('users.index.title')] class extends Component
+{
     use WithPagination;
 
     public const PER_PAGE = 15;
