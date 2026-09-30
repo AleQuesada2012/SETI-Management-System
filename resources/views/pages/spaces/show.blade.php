@@ -42,7 +42,8 @@ new #[Title('spaces.show.title')] class extends Component {
         @if ($this->details->is_occupied)
             <flux:badge size="sm" color="amber">{{ __('spaces.show.occupied') }}</flux:badge>
         @endif
-        <div class="ms-auto">
+        <div class="ms-auto flex gap-2">
+            <livewire:spaces.change-status :space="$space" />
             <livewire:spaces.edit-space :space="$space" />
         </div>
     </div>
@@ -114,10 +115,6 @@ new #[Title('spaces.show.title')] class extends Component {
             </div>
         @endif
     </flux:card>
-
-    <x-module-placeholder owner="Diego Zamora (@Dizabu)" :requirements="[
-        'RF_44' => 'Asignar estado a un laboratorio',
-    ]" />
 
     <div class="grid gap-6 lg:grid-cols-2">
         <livewire:reservations.space-reservations :space="$space" />
