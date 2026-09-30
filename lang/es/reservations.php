@@ -29,6 +29,32 @@ return [
     ],
     'create' => [
         'title' => 'Reservar espacio',
+        'heading' => 'Nueva reserva',
+        'description' => 'Elige un espacio, la fecha y el horario. :hours',
+        'choose_space' => 'Selecciona un espacio',
+        'space_hint' => ':location · Capacidad: :capacity personas',
+        'title_placeholder' => 'Tutoría de cálculo, reunión de proyecto…',
+        'cancel' => 'Cancelar',
+        'submit' => 'Reservar',
+        'done' => 'Se reservó :space.',
+        'errors' => [
+            'not_reservable' => 'Este espacio no se puede reservar por su tipo o su estado actual.',
+            'in_past' => 'La reserva debe comenzar después de este momento.',
+            'outside_hours' => 'Solo se puede reservar los días :days, de :opens a :closes.',
+            'over_capacity' => 'La cantidad de personas supera la capacidad del espacio (:capacity).',
+            'overlap' => 'El espacio ya está reservado en ese horario. Revisa las reservas del espacio o el calendario y elige otro horario.',
+        ],
+    ],
+    // ISO-8601 weekdays of the allowed hours (config/reservations.php).
+    'weekdays' => [
+        1 => 'lunes',
+        2 => 'martes',
+        3 => 'miércoles',
+        4 => 'jueves',
+        5 => 'viernes',
+        6 => 'sábado',
+        7 => 'domingo',
+        'and' => 'y',
     ],
     'show' => [
         'title' => 'Detalle de la reserva',
