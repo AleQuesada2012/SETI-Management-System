@@ -6,9 +6,11 @@ use App\Models\Building;
 use App\Models\Reporting\SpaceRow;
 use App\Models\SpaceStatus;
 use App\Models\SpaceType;
+use App\Queries\TextSearch;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator as ValidatorInstance;
@@ -47,13 +49,34 @@ final class SpaceDirectory
         $filters = self::normalize($filters);
         $query = SpaceRow::query();
 
-        // TODO(RF_42, @Dizabu): TextSearch::apply($query, 'spaces', $filters['search'] ?? null).
+        self::search($query, $filters['search'] ?? null);
 
         foreach (self::CRITERIA as $key => [$column]) {
             $query->when(isset($filters[$key]), fn (Builder $q) => $q->whereIn($column, $filters[$key]['values']));
         }
 
         return $query->orderBy('name');
+    }
+
+    /**
+     * RF_42 · Partial, case- and accent-insensitive search over the identifier, the name and the location: code, name,
+     * floor and location detail through spaces.search_text (TextSearch), and the building's name through the view's
+     * `building` column (Agent-DB.md §14.7: names from other tables are matched through a join).
+     *
+     * @param  Builder<SpaceRow>  $query
+     */
+    private static function search(Builder $query, mixed $term): void
+    {
+        $term = trim(is_scalar($term) ? (string) $term : '');
+
+        if ($term === '') {
+            return;
+        }
+
+        $pattern = '%'.addcslashes(Str::lower($term), '%_\\').'%';
+
+        $query->where(fn (Builder $matches) => TextSearch::apply($matches, 'spaces', $term)
+            ->orWhereRaw('lower(immutable_unaccent(building)) LIKE lower(immutable_unaccent(?))', [$pattern]));
     }
 
     /**

@@ -92,14 +92,10 @@ new #[Title('spaces.index.title')] class extends Component {
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-wrap items-center justify-end gap-2">
-        @can('create', Space::class)
-            <flux:button variant="primary" icon="plus" disabled>{{ __('spaces.index.create') }}</flux:button>
-        @endcan
+        <livewire:spaces.create-space />
     </div>
 
-    <x-module-placeholder owner="Diego Zamora (@Dizabu)" :requirements="['RF_42' => 'Búsqueda de espacios (Diego)']">
-        La búsqueda se agrega en <code>App\Queries\Spaces\SpaceDirectory</code> y como un campo más junto a los filtros.
-    </x-module-placeholder>
+    <livewire:spaces.space-search />
 
     <flux:card class="flex flex-col gap-5">
         @foreach (SpaceDirectory::CRITERIA as $key => $criterion)
