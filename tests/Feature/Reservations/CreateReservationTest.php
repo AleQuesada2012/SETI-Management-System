@@ -18,7 +18,7 @@ beforeEach(function () {
     // Monday 14 October 2030, 08:00: the dates below are a Tuesday (15), a Saturday (19) and a Sunday (20).
     Carbon::setTestNow('2030-10-14 08:00');
 
-    $this->space = Space::factory()->create(['name' => 'Laboratorio 110', 'capacity' => 20]);
+    $this->space = Space::factory()->create(['name' => 'Laboratorio de redes', 'capacity' => 20]);
 });
 
 afterEach(fn () => Carbon::setTestNow());
@@ -80,7 +80,7 @@ test('the form offers only reservable spaces and takes the block chosen in the a
 
     $this->get(route('reservations.create', ['space' => $this->space->id, 'date' => '2030-10-15', 'start' => '13:00', 'end' => '14:00']))
         ->assertOk()
-        ->assertSee('Laboratorio 110')
+        ->assertSee('Laboratorio de redes')
         ->assertDontSee('Oficina de SETI')
         ->assertDontSee('Laboratorio cerrado');
 
@@ -100,7 +100,7 @@ test('an overlapping reservation of the same space is refused, a back-to-back on
         ->toThrow(ValidationException::class, __('reservations.create.errors.overlap'));
 
     $next = reserveAs($user, reservationInput($this->space, ['responsible_id' => $user->id, 'start_time' => '12:00', 'end_time' => '13:00']));
-    $elsewhere = reserveAs($user, reservationInput(Space::factory()->create(), ['responsible_id' => $user->id]));
+    $elsewhere = reserveAs($user, reservationInput(Space::factory()->create(['capacity' => 20]), ['responsible_id' => $user->id]));
 
     expect(Reservation::query()->count())->toBe(3)
         ->and($next->starts_at->format('H:i'))->toBe('12:00')
