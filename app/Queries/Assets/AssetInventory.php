@@ -3,6 +3,7 @@
 namespace App\Queries\Assets;
 
 use App\Models\Reporting\AssetRow;
+use App\Queries\TextSearch;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -10,7 +11,10 @@ use Illuminate\Database\Eloquent\Builder;
  * (RF_07 search, RF_08 filters) and the inventory report (RF_63) both call it, so a search or a filter always means
  * the same thing in both. Owner: assets (@DavidZamoraB); reports (@AleQuesada2012) reuse it.
  *
- *     AssetInventory::query(['search' => 'epson', 'space_id' => 3])->paginate(15);
+ *     AssetInventory::query(['search' => 'epson', 'space' => ['values' => [3]]])->paginate(15);
+ *
+ * InventoryFilters owns search, brand, model, condition, condition_color, lifecycle_status, space,
+ * responsible_user and acquired_on. The internal space_id argument remains for the RF_35 asset list.
  */
 final class AssetInventory
 {
@@ -20,16 +24,43 @@ final class AssetInventory
      */
     public static function query(array $filters = []): Builder
     {
-        $query = AssetRow::query();
+        $spaceId = $filters['space_id'] ?? null;
+        unset($filters['space_id']);
+        $filters = InventoryFilters::validate($filters);
+        $query = AssetRow::query()->when($spaceId !== null, fn (Builder $query) => $query->where('space_id', $spaceId));
 
-        if (filled($filters['space_id'] ?? null)) {
-            $query->where('space_id', (int) $filters['space_id']);
+        if (isset($filters['search'])) {
+            $term = $filters['search'];
+            $pattern = '%'.addcslashes($term, '%_\\').'%';
+            $query->where(fn (Builder $matches) => TextSearch::apply($matches, 'assets', $term)
+                ->orWhereRaw('lower(immutable_unaccent(brand)) LIKE lower(immutable_unaccent(?))', [$pattern]));
         }
-
-        // TODO(RF_07, @DavidZamoraB): TextSearch::apply($query, 'assets', $filters['search'] ?? null), plus brand and
-        //   type names through reporting.assets columns.
-        // TODO(RF_08, @DavidZamoraB): the mockup filters: brand, condition/status, acquisition date range. The space
-        //   filter (space_id) is above: the space page (RF_35) lists its assets with it.
+        $columns = array_map(fn (array $catalog): string => $catalog['column'], InventoryFilters::CATALOGS)
+            + ['condition_color' => 'condition_color', 'lifecycle_status' => 'status', 'model' => 'model', 'acquired_on' => 'acquired_on'];
+        foreach ($columns as $key => $column) {
+            if (! isset($filters[$key])) {
+                continue;
+            }
+            $criterion = $filters[$key];
+            $query->where(function (Builder $matches) use ($criterion, $column): void {
+                if (isset($criterion['values'])) {
+                    $matches->whereIn($column, $criterion['values']);
+                }
+                if (isset($criterion['contains'])) {
+                    $pattern = '%'.addcslashes($criterion['contains'], '%_\\').'%';
+                    $matches->whereRaw("lower(immutable_unaccent({$column})) LIKE lower(immutable_unaccent(?))", [$pattern]);
+                }
+                if (isset($criterion['from'])) {
+                    $matches->where($column, '>=', $criterion['from']);
+                }
+                if (isset($criterion['to'])) {
+                    $matches->where($column, '<=', $criterion['to']);
+                }
+                if ($criterion['include_missing'] ?? false) {
+                    $matches->orWhereNull($column);
+                }
+            });
+        }
 
         return $query->orderBy('id');
     }

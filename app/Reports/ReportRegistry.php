@@ -14,7 +14,9 @@ use InvalidArgumentException;
 final class ReportRegistry
 {
     /** @var array<string, class-string<ReportDefinition>> */
-    private array $definitions = [];
+    private array $definitions = [
+        'assets_inventory' => Definitions\AssetInventoryReport::class,
+    ];
 
     /** @var array<string, array<string, mixed>>|null */
     private ?array $requirements = null;

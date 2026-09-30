@@ -22,3 +22,18 @@ aparecen como **Próximamente**; los que la cuenta no puede consultar se ocultan
 
 ![Menú en computadora](reportes-menu-escritorio.jpg)
 ![Menú a 360 px](reportes-menu-movil.jpg)
+
+## Inventario de activos (RF_63)
+
+En **Reportes → Activos → Inventario de activos**, consulta los datos actuales, incluida la condición física y el
+estado del ciclo de vida en columnas separadas. Despliega **Color de condición**, marca **Ámbar** y compara el total
+con el inventario completo. Puedes combinar marca, modelo, condición, estado, espacio, responsable y fechas.
+**Sin marca**, **Sin modelo**, **Sin espacio**, **Sin responsable** y **Sin fecha de adquisición** son selecciones
+explícitas; dejar un filtro vacío no restringe los registros.
+
+Usa **Limpiar filtros** para volver al inventario completo. **Exportar** ofrece PDF y Excel (XLSX), con todos los
+registros coincidentes, aunque la vista previa tenga varias páginas. Un rango de fechas invertido muestra un
+error y bloquea la vista previa y la exportación hasta corregirlo.
+
+![Inventario en computadora](reportes-inventario-escritorio.jpg)
+![Filtros de inventario a 360 px](reportes-inventario-movil.jpg)
