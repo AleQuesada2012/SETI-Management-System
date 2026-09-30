@@ -1444,7 +1444,7 @@
    "El sistema debe mostrar un mensaje informativo cuando no existan reportes disponibles para la categoría seleccionada."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1454,7 +1454,7 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1: the first item of Sprint 2.",
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn.",
    "2026-09-29 PM/architect agreement: follow the [report menu agreement](../../.ai/rules/reports.md#report-menu-agreement) for permission hiding and future-sprint availability."
   ]
  },
@@ -1514,7 +1514,7 @@
    "El sistema debe permitir visualizar el reporte antes de proceder con su exportación."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1524,7 +1524,7 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1. The first real report definition: every other report copies it.",
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn. The first real report definition: every other report copies it.",
    "2026-09-29 PM/architect agreement: show physical condition and lifecycle status separately and delegate filtering to the [shared inventory contract](../../.ai/rules/reports.md#shared-filter-contract)."
   ]
  },
@@ -1538,7 +1538,7 @@
    "La información presentada debe corresponder con los datos actualmente almacenados en la base de datos."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1548,7 +1548,7 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1.",
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn.",
    "2026-09-29 PM/architect agreement: delegate filters, validation, normalization and choices to the [shared spaces contract](../../.ai/rules/reports.md#shared-filter-contract)."
   ]
  },
