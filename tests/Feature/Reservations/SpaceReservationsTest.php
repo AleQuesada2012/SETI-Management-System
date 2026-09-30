@@ -92,7 +92,7 @@ test('a reservation that crosses the period boundary belongs to the period', fun
         ->between(Carbon::parse('2030-10-31 20:00'), Carbon::parse('2030-11-01 02:00'))
         ->create(['space_id' => $this->space->id]);
 
-    expect(ReservationSchedule::query(['space_id' => $this->space->id, 'from' => '2030-11-01', 'to' => '2030-11-30'])->pluck('id')->all())
+    expect(ReservationSchedule::query(['space' => ['values' => [$this->space->id]], 'date' => ['from' => '2030-11-01', 'to' => '2030-11-30']])->pluck('id')->all())
         ->toBe([$overnight->id, $this->nextMonth->id]);
 });
 

@@ -60,9 +60,8 @@ new class extends Component {
     public function reservations(): LengthAwarePaginator
     {
         return ReservationSchedule::query([
-            'space_id' => $this->space->id,
-            'from' => $this->shownFrom,
-            'to' => $this->shownTo,
+            'space' => ['values' => [$this->space->id]],
+            'date' => ['from' => $this->shownFrom, 'to' => $this->shownTo],
         ])->paginate(self::PER_PAGE, pageName: 'reservas');
     }
 }; ?>
