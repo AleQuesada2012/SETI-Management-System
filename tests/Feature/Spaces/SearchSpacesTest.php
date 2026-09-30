@@ -65,6 +65,14 @@ test('when nothing matches the user is told no space exists with those condition
         ->assertSee('No existe ningún espacio que coincida con');
 });
 
+test('the search tells the spaces list about the new term', function () {
+    actingAsRole(SystemRole::Visualizador);
+
+    Livewire::test('spaces.space-search')
+        ->set('search', 'oficina')
+        ->assertDispatched('space-search-updated', search: 'oficina');
+});
+
 test('the search is kept in the URL of the spaces list', function () {
     actingAsRole(SystemRole::Visualizador);
 

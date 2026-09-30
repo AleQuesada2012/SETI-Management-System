@@ -22,6 +22,12 @@ new class extends Component {
     {
         return SpaceDirectory::query(['search' => $this->search])->get();
     }
+
+    /** Tell the spaces list (RF_53/RF_54) about the new term, so the search and its filters narrow the same list. */
+    public function updatedSearch(): void
+    {
+        $this->dispatch('space-search-updated', search: $this->search);
+    }
 }; ?>
 
 <div class="flex flex-col gap-4">
