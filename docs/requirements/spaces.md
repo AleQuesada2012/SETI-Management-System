@@ -175,6 +175,10 @@ Acceptance criteria:
 - Dado el caso que ningún espacio cumpla con las características de búsqueda el sistema deberá notificarle que no existe espacio con dichas condiciones.
 - El sistema si encuentra uno o más espacio que cumplan dichas características los mostrara al usuario
 
+Notes:
+
+- 2026-09-29 PM/architect agreement: use the space search fields and matching rules in the [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract), coordinated with RF_54.
+
 Diagram: [Lucid](https://lucid.app/lucidchart/1d671bd3-74d1-4950-b6e1-7c1db9e4885a/edit)
 
 ## RF_43
