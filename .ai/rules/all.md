@@ -9,7 +9,7 @@ paths:
 - **Data model.** `docs/Agent-DB.md` is the source of truth for tables, constraints and their reasons; §16 lists the rules every change keeps. Read the section of the tables you touch.
 - **Where code goes.**
   - Business operations: one class per operation in `app/Actions/<Module>` with a `handle()` method. It authorizes, runs in one `DB::transaction()`, writes its audit entries, and dispatches notifications after commit.
-  - Lists and reports: `app/Queries/<Module>` over `reporting.*` views, so a page and its report share one definition of each filter.
+  - Lists and reports: `app/Queries/<Module>` over `reporting.*` views, so a page and its report share one definition of each filter. Before implementing filters, read the [shared filter contract](reports.md#shared-filter-contract) for common conventions and the inventory/space schemas.
   - Permissions: `app/Policies`, checked with `$this->authorize()` in every Livewire action and `can:` on every route.
   - Pages: thin Livewire single-file components in `resources/views/pages/<module>`; reusable components in `resources/views/components/<module>`.
   - Routes: `routes/modules/<module>.php`. Strings: `lang/es/<module>.php`.
