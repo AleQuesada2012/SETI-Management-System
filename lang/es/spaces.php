@@ -25,4 +25,25 @@ return [
         'asset_condition' => 'Condición',
         'asset_status' => 'Estado',
     ],
+    'create' => [
+        'title' => 'Añadir espacio',
+        'description' => 'Registra un laboratorio, oficina o sala. Empieza con el estado Disponible.',
+        'code_placeholder' => 'LAB-110',
+        'location_placeholder' => 'Ala norte, al lado de la biblioteca',
+        'choose' => 'Selecciona una opción',
+        'cancel' => 'Cancelar',
+        'submit' => 'Guardar espacio',
+        'done' => 'El espacio :space se registró correctamente.',
+    ],
+    // Field names used in forms and in validation messages.
+    'fields' => [
+        'code' => 'código',
+        'name' => 'nombre',
+        'space_type_id' => 'tipo de espacio',
+        'building_id' => 'edificio',
+        'floor' => 'piso',
+        'location_detail' => 'detalle de la ubicación',
+        'capacity' => 'capacidad',
+        'notes' => 'notas',
+    ],
 ];
