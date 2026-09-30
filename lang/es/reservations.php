@@ -76,6 +76,19 @@ return [
     ],
     'space_reservations' => [
         'heading' => 'Reservas del espacio',
+        'from' => 'Desde',
+        'to' => 'Hasta',
+        'submit' => 'Consultar',
+        'empty' => 'El espacio no tiene reservas en ese período.',
+        'total' => '{1} 1 reserva entre el :from y el :to|[2,*] :count reservas entre el :from y el :to',
+        'columns' => [
+            'date' => 'Fecha',
+            'time' => 'Horario',
+            'title' => 'Motivo',
+            'responsible' => 'Responsable',
+            'attendees' => 'Personas',
+            'status' => 'Estado',
+        ],
     ],
     'availability_check' => [
         'heading' => 'Disponibilidad',
