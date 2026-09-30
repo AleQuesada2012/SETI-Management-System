@@ -37,3 +37,16 @@ error y bloquea la vista previa y la exportación hasta corregirlo.
 
 ![Inventario en computadora](reportes-inventario-escritorio.jpg)
 ![Filtros de inventario a 360 px](reportes-inventario-movil.jpg)
+
+## Espacios (RF_64)
+
+En **Reportes → Espacios → Espacios**, consulta nombre, ubicación, capacidad, tipo, estado operativo y encargados.
+Combina la búsqueda con **Tipo de espacio**, **Estado operativo** y **Edificio**; varias opciones del mismo filtro
+se aceptan como alternativas. **Limpiar filtros** restaura todos los espacios. **Exportar** ofrece PDF y Excel
+(XLSX) con los datos actuales de todos los espacios coincidentes.
+
+Para demostrar un resultado vacío, busca `No existe espacio`; aparece un mensaje informativo. La cuenta
+`visualizador@seti.test` no tiene acceso a los reportes (contraseña de demostración `password`).
+
+![Espacios en computadora](reportes-espacios-escritorio.jpg)
+![Espacios a 360 px](reportes-espacios-movil.jpg)
