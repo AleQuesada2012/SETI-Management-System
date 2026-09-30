@@ -4,6 +4,7 @@ namespace App\Queries\Users;
 
 use App\Models\Reporting\UserRow;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
  * Users as every list and report sees them (reporting.users, never secrets): the users list (RF_90), search (RF_95),
@@ -13,8 +14,13 @@ use Illuminate\Database\Eloquent\Builder;
  */
 final class UserDirectory
 {
+    /** Values of the account_status filter (reporting.users.account_status). */
+    public const array ACCOUNT_STATUSES = ['active', 'deactivated'];
+
     /**
-     * @param  array<string, mixed>  $filters  the same keys in the page, the report and report_generations.filters
+     * The same filter keys in the page, the report and report_generations.filters.
+     *
+     * @param  array{search?: string|null, role?: string|null, account_status?: string|null}  $filters
      * @return Builder<UserRow>
      */
     public static function query(array $filters = []): Builder
@@ -22,8 +28,22 @@ final class UserDirectory
         $query = UserRow::query();
 
         // TODO(RF_95, @Rubiocai): TextSearch::apply($query, 'users', $filters['search'] ?? null).
-        // TODO(RF_92, RF_101, @Rubiocai): filters by role (reporting.user_roles) and account status.
 
-        return $query->orderBy('name');
+        $role = $filters['role'] ?? null;
+
+        if (filled($role)) {
+            $query->whereIn('id', fn (QueryBuilder $sub) => $sub
+                ->select('user_id')
+                ->from('reporting.user_roles')
+                ->where('role', $role));
+        }
+
+        $status = $filters['account_status'] ?? null;
+
+        if (in_array($status, self::ACCOUNT_STATUSES, true)) {
+            $query->where('account_status', $status);
+        }
+
+        return $query->orderBy('name')->orderBy('id');
     }
 }

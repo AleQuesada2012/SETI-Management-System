@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Space;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -15,16 +14,14 @@ new #[Title('spaces.index.title')] class extends Component {
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-wrap items-center justify-end gap-2">
-        @can('create', Space::class)
-            <flux:button variant="primary" icon="plus" disabled>{{ __('spaces.index.create') }}</flux:button>
-        @endcan
+        <livewire:spaces.create-space />
     </div>
+
+    <livewire:spaces.space-search />
 
     <x-module-placeholder owner="Jose Herrera (@JoseHerrera21) · Diego Zamora (@Dizabu)" :requirements="[
         'RF_53' => 'Consultar listado de espacios (Jose)',
         'RF_54' => 'Filtrar espacios por atributos (Jose)',
-        'RF_42' => 'Búsqueda de espacios (Diego)',
-        'RF_32' => 'Crear espacio (Diego)',
     ]">
         Lista, búsqueda y filtros: <code>App\Queries\Spaces\SpaceDirectory</code>. Permisos: <code>App\Policies\SpacePolicy</code>.
     </x-module-placeholder>

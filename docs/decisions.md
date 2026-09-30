@@ -58,6 +58,21 @@ in [Agent-DB.md §20](Agent-DB.md)). **G3** = planning round 3 (2026-09-29). **B
 | G1 | AI agents: one committed `AGENTS.md` + `.ai/rules`; Laravel Boost; agents never push to `main`, merge, approve, add dependencies or edit merged migrations; AI use is declared in the PR. | The rules must hold whoever (or whatever) writes the code. | [AGENTS.md](../AGENTS.md), PR template |
 | G3 | No AI co-author trailers (`Co-Authored-By: <AI>`) in commits until the team decides otherwise. | Pending team decision on crediting AI tools. | [AGENTS.md](../AGENTS.md) |
 
+## Reports contract agreement (2026-09-29)
+
+Approved by Alejandro (@AleQuesada2012), acting as PM and architect, after the filter-contract interview. These
+entries record the agreed target; Query filtering and report integration are still pending implementation.
+
+| Decision | Why | Contract |
+|---|---|---|
+| Inventory and spaces define the first shared filter schemas; each module owns validation, normalization and choices beside its Query, reused by lists and reports. | Filter meaning and invalid-input handling must agree across screens and exports. | [.ai/rules/reports.md § Shared filter contract](../.ai/rules/reports.md#shared-filter-contract) |
+| Inventory supports both physical condition and lifecycle status as distinct filters and report columns; all three physical color groups are selectable. | ADR-0004's distinction must remain visible and useful. | [Inventory schema](../.ai/rules/reports.md#inventory-schema) |
+| Space filters include type, status and building; later report schemas follow their prescribed RF criteria. | Implement the approved location intent without treating TODOs as requirements. | [Spaces schema](../.ai/rules/reports.md#spaces-schema) |
+| Criteria use AND; alternatives, including explicit missing values, use OR. Invalid filters block preview/export; choices remain stable and preserve historical references. | Users must receive the records their selections describe. | [Matching](../.ai/rules/reports.md#input-and-matching), [validation and choices](../.ai/rules/reports.md#validation-normalization-and-choices) |
+| RF_60 hides inaccessible reports and unavailable types; future-sprint types may appear as "Próximamente" only when authorized. | Availability and permission determine what users can discover. | [Menu agreement](../.ai/rules/reports.md#report-menu-agreement) |
+
+Implementation sequence and module handoffs: [PLANNING.md § Reports opening sequence](PLANNING.md#reports-opening-sequence-contract-agreed-2026-09-29).
+
 ## Open
 
 - Whether AI tools may appear as commit co-authors (team decision pending).
