@@ -42,6 +42,13 @@ return [
         'submit' => 'Guardar cambios',
         'done' => 'Los cambios de :space se guardaron correctamente.',
     ],
+    'status' => [
+        'button' => 'Cambiar estado',
+        'confirm_title' => '¿Cambiar el estado a :status?',
+        'affected' => '{1} Este espacio tiene 1 reserva confirmada que aún no termina. Con este estado no se puede reservar, pero la reserva seguirá confirmada hasta que alguien la cancele.|[2,*] Este espacio tiene :count reservas confirmadas que aún no terminan. Con este estado no se puede reservar, pero las reservas seguirán confirmadas hasta que alguien las cancele.',
+        'confirm' => 'Cambiar estado',
+        'done' => 'El estado de :space ahora es :status.',
+    ],
     // Field names used in forms and in validation messages.
     'fields' => [
         'code' => 'código',
