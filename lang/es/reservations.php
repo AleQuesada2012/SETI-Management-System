@@ -19,6 +19,10 @@ return [
         'end_after_start' => 'La hora de fin debe ser posterior a la hora de inicio.',
         'to_after_from' => 'La fecha final no puede ser anterior a la fecha inicial.',
     ],
+    // Next to the effective status (ReservationEffectiveStatus::label()).
+    'status' => [
+        'modified' => 'Modificada',
+    ],
     'index' => [
         'title' => 'Reservas',
         'create' => 'Reservar espacio',
