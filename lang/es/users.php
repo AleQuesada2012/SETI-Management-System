@@ -34,6 +34,14 @@ return [
         'back' => 'Volver a usuarios',
         'never' => 'Nunca',
     ],
+    'assign_role' => [
+        'heading' => 'Asignar rol',
+        'role' => 'Rol',
+        'submit' => 'Asignar',
+        'done' => 'Se asignó el rol :role a :user.',
+        'already_held' => 'El usuario ya tiene el rol :role.',
+        'none_left' => 'El usuario ya tiene todos los roles disponibles.',
+    ],
     'roles' => [
         'title' => 'Roles',
     ],
