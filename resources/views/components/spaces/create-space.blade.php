@@ -79,33 +79,7 @@ new class extends Component {
                     <flux:text class="mt-1">{{ __('spaces.create.description') }}</flux:text>
                 </div>
 
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <flux:input wire:model="code" :label="Str::ucfirst(__('spaces.fields.code'))" :placeholder="__('spaces.create.code_placeholder')" maxlength="30" required />
-                    <flux:input wire:model="name" :label="Str::ucfirst(__('spaces.fields.name'))" maxlength="120" required />
-                </div>
-
-                <flux:select wire:model="space_type_id" :label="Str::ucfirst(__('spaces.fields.space_type_id'))" :placeholder="__('spaces.create.choose')" required>
-                    @foreach ($this->spaceTypes as $type)
-                        <flux:select.option :value="$type->id">{{ $type->name }}</flux:select.option>
-                    @endforeach
-                </flux:select>
-
-                <flux:select wire:model="building_id" :label="Str::ucfirst(__('spaces.fields.building_id'))" :placeholder="__('spaces.create.choose')" required>
-                    @foreach ($this->buildings as $building)
-                        <flux:select.option :value="$building->id">{{ $building->name }}</flux:select.option>
-                    @endforeach
-                </flux:select>
-
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <flux:input wire:model="floor" :label="Str::ucfirst(__('spaces.fields.floor'))" maxlength="20" />
-                    <flux:input wire:model="capacity" type="number" min="1" step="1" inputmode="numeric" :label="Str::ucfirst(__('spaces.fields.capacity'))" required />
-                </div>
-
-                <flux:input wire:model="location_detail" :label="Str::ucfirst(__('spaces.fields.location_detail'))" :placeholder="__('spaces.create.location_placeholder')" maxlength="200" />
-
-                <flux:textarea wire:model="notes" :label="Str::ucfirst(__('spaces.fields.notes'))" rows="2" />
-
-                <flux:error name="form" />
+                <x-spaces.form-fields :space-types="$this->spaceTypes" :buildings="$this->buildings" />
 
                 <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <flux:modal.close>
