@@ -79,5 +79,15 @@ return [
     ],
     'availability_check' => [
         'heading' => 'Disponibilidad',
+        'date' => 'Fecha',
+        'start_time' => 'Hora de inicio',
+        'end_time' => 'Hora de fin',
+        'submit' => 'Consultar disponibilidad',
+        'range' => ':date, de :start a :end',
+        'available' => 'Disponible',
+        'unavailable' => 'No disponible',
+        'taken_by' => 'Estas reservas ocupan el espacio en ese horario:',
+        'reserve' => 'Reservar este horario',
+        'not_reservable' => 'Este espacio no se puede reservar por su tipo o su estado actual.',
     ],
 ];
