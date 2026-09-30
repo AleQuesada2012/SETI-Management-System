@@ -17,10 +17,11 @@ new #[Title('spaces.index.title')] class extends Component {
         <livewire:spaces.create-space />
     </div>
 
+    <livewire:spaces.space-search />
+
     <x-module-placeholder owner="Jose Herrera (@JoseHerrera21) · Diego Zamora (@Dizabu)" :requirements="[
         'RF_53' => 'Consultar listado de espacios (Jose)',
         'RF_54' => 'Filtrar espacios por atributos (Jose)',
-        'RF_42' => 'Búsqueda de espacios (Diego)',
     ]">
         Lista, búsqueda y filtros: <code>App\Queries\Spaces\SpaceDirectory</code>. Permisos: <code>App\Policies\SpacePolicy</code>.
     </x-module-placeholder>
