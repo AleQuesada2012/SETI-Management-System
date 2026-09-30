@@ -26,6 +26,13 @@ return [
         'deactivated' => 'Desactivada',
         'invitation_pending' => 'Invitación pendiente',
     ],
+    'register' => [
+        'heading' => 'Añadir usuario',
+        'help' => 'La persona recibirá un correo con un enlace para definir su contraseña.',
+        'cancel' => 'Cancelar',
+        'submit' => 'Registrar',
+        'done' => 'Se registró a :user y se envió la invitación a :email.',
+    ],
     'show' => [
         'title' => 'Detalle del usuario',
     ],

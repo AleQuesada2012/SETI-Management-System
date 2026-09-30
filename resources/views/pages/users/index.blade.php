@@ -1,11 +1,14 @@
 <?php
 
+use App\Actions\Users\RegisterUser;
 use App\Models\Reporting\UserRow;
 use App\Models\Role;
 use App\Models\User;
 use App\Queries\Users\UserDirectory;
+use Flux\Flux;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
@@ -13,7 +16,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 /*
- * Usuarios y roles (mockup "Usuarios y Roles"): list (RF_90) with the role and account status filters.
+ * Usuarios y roles (mockup "Usuarios y Roles"): list (RF_90) with the role and account status filters, and the
+ * "Añadir usuario" modal (RF_91, App\Actions\Users\RegisterUser).
  * Owner: users (@Rubiocai). List, search and filters come from App\Queries\Users\UserDirectory, the same query the
  * users report (RF_69) uses.
  */
@@ -34,6 +38,28 @@ new #[Title('users.index.title')] class extends Component {
         if (in_array($property, ['role', 'account_status'], true)) {
             $this->resetPage();
         }
+    }
+
+    /** @var array{name: string, email: string, roles: list<int|string>} The "Añadir usuario" form (RF_91). */
+    public array $newUser = ['name' => '', 'email' => '', 'roles' => []];
+
+    public function registerUser(RegisterUser $registerUser): void
+    {
+        $this->authorize('create', User::class);
+
+        try {
+            $user = $registerUser->handle(auth()->user(), $this->newUser);
+        } catch (ValidationException $exception) {
+            // The Action validates `name`, `email`, `roles.0`…; the form fields live under `newUser.`.
+            throw ValidationException::withMessages(
+                collect($exception->errors())->mapWithKeys(fn (array $messages, string $key): array => ['newUser.'.$key => $messages])->all(),
+            );
+        }
+
+        $this->reset('newUser');
+        unset($this->users);
+        Flux::modal('register-user')->close();
+        Flux::toast(variant: 'success', text: __('users.register.done', ['user' => $user->name, 'email' => $user->email]));
     }
 
     public function clearFilters(): void
@@ -59,6 +85,13 @@ new #[Title('users.index.title')] class extends Component {
         return Role::query()->orderBy('name')->pluck('name');
     }
 
+    /** Roles offered by the "Añadir usuario" form. @return Collection<int, Role> */
+    #[Computed]
+    public function roleOptions(): Collection
+    {
+        return Role::query()->orderBy('name')->get(['id', 'name', 'description']);
+    }
+
     public function hasFilters(): bool
     {
         return $this->role !== '' || $this->account_status !== '';
@@ -71,7 +104,9 @@ new #[Title('users.index.title')] class extends Component {
             <flux:button icon="shield-check" :href="route('roles.index')" wire:navigate>{{ __('users.index.roles') }}</flux:button>
         @endcan
         @can('create', User::class)
-            <flux:button variant="primary" icon="plus" disabled>{{ __('users.index.create') }}</flux:button>
+            <flux:modal.trigger name="register-user">
+                <flux:button variant="primary" icon="plus">{{ __('users.index.create') }}</flux:button>
+            </flux:modal.trigger>
         @endcan
     </div>
 
@@ -139,4 +174,33 @@ new #[Title('users.index.title')] class extends Component {
             </flux:table>
         @endif
     </flux:card>
+
+    @can('create', User::class)
+        <flux:modal name="register-user" class="w-full max-w-md">
+            <form wire:submit="registerUser" class="flex flex-col gap-5">
+                <div>
+                    <flux:heading size="lg">{{ __('users.register.heading') }}</flux:heading>
+                    <flux:text class="mt-1">{{ __('users.register.help') }}</flux:text>
+                </div>
+
+                <flux:input wire:model="newUser.name" :label="__('users.fields.name')" required autocomplete="off" />
+
+                <flux:input wire:model="newUser.email" type="email" :label="__('users.fields.email')" required autocomplete="off" />
+
+                <flux:checkbox.group wire:model="newUser.roles" :label="__('users.fields.roles')">
+                    @foreach ($this->roleOptions as $option)
+                        <flux:checkbox :value="$option->id" :label="$option->name" :description="$option->description" />
+                    @endforeach
+                </flux:checkbox.group>
+                <flux:error name="newUser.roles.*" />
+
+                <div class="flex justify-end gap-2">
+                    <flux:modal.close>
+                        <flux:button variant="ghost">{{ __('users.register.cancel') }}</flux:button>
+                    </flux:modal.close>
+                    <flux:button type="submit" variant="primary">{{ __('users.register.submit') }}</flux:button>
+                </div>
+            </form>
+        </flux:modal>
+    @endcan
 </div>
