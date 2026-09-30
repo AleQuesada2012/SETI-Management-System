@@ -63,6 +63,13 @@ return [
         'submit' => 'Guardar espacio',
         'done' => 'El espacio :space se registró correctamente.',
     ],
+    'edit' => [
+        'button' => 'Editar',
+        'title' => 'Editar espacio',
+        'description' => 'Cambia los datos del espacio. El estado se cambia aparte.',
+        'submit' => 'Guardar cambios',
+        'done' => 'Los cambios de :space se guardaron correctamente.',
+    ],
     // Field names used in forms and in validation messages.
     'fields' => [
         'code' => 'código',
