@@ -10,6 +10,11 @@ Route::prefix('activos')->name('assets.')->group(function () {
         ->middleware('can:viewAny,'.Asset::class)
         ->name('index');
 
+    // Before {asset}, so "nuevo" is not read as an asset id.
+    Route::livewire('nuevo', 'pages::assets.create')
+        ->middleware('can:create,'.Asset::class)
+        ->name('create');
+
     Route::livewire('{asset}', 'pages::assets.show')
         ->middleware('can:view,asset')
         ->name('show');
