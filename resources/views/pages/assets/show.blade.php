@@ -12,6 +12,7 @@ use Livewire\Component;
  *
  * RF_01 · the asset's information, read fresh from the database on every visit, with the fields registered by RF_03
  * and its companions (RF_14–RF_16, RF_18, RF_19, RF_23, RF_24). RF_17 · the warranty and whether it is still valid.
+ * RF_05 · the condition's color. Editing (RF_04, RF_05) happens on pages::assets.edit.
  */
 new #[Title('assets.show.title')] class extends Component {
     public Asset $asset;
@@ -45,6 +46,10 @@ new #[Title('assets.show.title')] class extends Component {
         @else
             <flux:badge color="zinc" size="sm">{{ $asset->status->label() }}</flux:badge>
         @endif
+
+        @can('update', $asset)
+            <flux:button :href="route('assets.edit', $asset)" wire:navigate icon="pencil-square" size="sm" class="ms-auto" data-test="edit-asset-button">{{ __('assets.show.edit') }}</flux:button>
+        @endcan
     </div>
 
     <div class="grid gap-4 lg:grid-cols-2">
@@ -71,7 +76,7 @@ new #[Title('assets.show.title')] class extends Component {
             <flux:heading level="3">{{ __('assets.show.sections.state') }}</flux:heading>
             <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
                 <dt class="text-ink-muted">{{ Str::ucfirst(__('assets.fields.condition_id')) }}</dt>
-                <dd><flux:badge :color="$asset->condition->color_group->badgeColor()" size="sm">{{ $asset->condition->name }}</flux:badge></dd>
+                <dd><flux:badge :color="$asset->condition->color_group->badgeColor()" size="sm" data-test="condition-badge" :data-color="$asset->condition->color_group->value">{{ $asset->condition->name }}</flux:badge></dd>
                 <dt class="text-ink-muted">{{ Str::ucfirst(__('assets.fields.condition_note')) }}</dt>
                 <dd class="text-ink">{{ $asset->condition_note ?: $empty }}</dd>
                 <dt class="text-ink-muted">{{ Str::ucfirst(__('assets.fields.status')) }}</dt>
@@ -134,9 +139,4 @@ new #[Title('assets.show.title')] class extends Component {
         <flux:heading level="3">{{ __('assets.show.sections.observations') }}</flux:heading>
         <flux:text class="whitespace-pre-line">{{ $asset->observations ?: __('assets.show.no_observations') }}</flux:text>
     </flux:card>
-
-    <x-module-placeholder owner="David Zamora (@DavidZamoraB)" :requirements="[
-        'RF_04' => 'Editar activo',
-        'RF_05' => 'Asignar estado a activo',
-    ]" />
 </div>

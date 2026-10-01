@@ -63,7 +63,7 @@ final class RegisterAsset
     }
 
     /**
-     * The asset form's rules; RF_04 (edit) reuses them without `space_id`, since location changes are movements.
+     * The registration form's rules: the space plus the asset's attributes.
      *
      * @return array<string, list<mixed>>
      */
@@ -71,8 +71,21 @@ final class RegisterAsset
     {
         return [
             'space_id' => ['required', 'integer', Rule::exists('spaces', 'id')->whereNull('deleted_at')],
+            ...self::attributeRules(),
+        ];
+    }
+
+    /**
+     * The asset's own attributes, shared with RF_04 (UpdateAsset). The space is not one: it changes through movements.
+     *
+     * @return array<string, list<mixed>>
+     */
+    public static function attributeRules(): array
+    {
+        return [
             'asset_type_id' => ['required', 'integer', Rule::exists('asset_types', 'id')->whereNull('deleted_at')],
             'condition_id' => ['required', 'integer', Rule::exists('asset_conditions', 'id')->whereNull('deleted_at')],
+            'condition_note' => ['nullable', 'string', 'max:2000'],
             'name' => ['nullable', 'string', 'max:150'],
             'asset_tag' => ['nullable', 'string', 'max:50'],
             'serial_number' => ['nullable', 'string', 'max:100'],
