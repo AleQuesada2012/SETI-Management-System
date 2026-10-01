@@ -20,6 +20,9 @@ return [
         'roles' => 'Roles',
         'status' => 'Estado',
         'no_roles' => 'Sin rol',
+        'last_login_at' => 'Último inicio de sesión',
+        'created_at' => 'Registrado',
+        'deactivated_at' => 'Desactivada el',
     ],
     'status' => [
         'active' => 'Activa',
@@ -28,6 +31,8 @@ return [
     ],
     'show' => [
         'title' => 'Detalle del usuario',
+        'back' => 'Volver a usuarios',
+        'never' => 'Nunca',
     ],
     'roles' => [
         'title' => 'Roles',
