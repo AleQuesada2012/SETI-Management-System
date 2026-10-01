@@ -1,17 +1,60 @@
 <?php
 
+use App\Actions\Users\AssignRole;
+use App\Models\Role;
 use App\Models\User;
+use Flux\Flux;
+use Illuminate\Support\Collection;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 /*
- * Detalle del usuario (RF_94). Owner: users (@Rubiocai). A missing user is a 404 from route model binding, rendered
- * by errors/404.blade.php. Role changes (RF_85–RF_87) are audited explicitly (Audit::record with
- * AuditAction::RoleAssigned / RoleRemoved) because pivot changes fire no model events.
+ * Detalle del usuario (RF_94) and role assignment (RF_85). Owner: users (@Rubiocai). A missing user is a 404 from
+ * route model binding, rendered by errors/404.blade.php. Role changes (RF_85–RF_87) go through app/Actions/Users,
+ * which audit them explicitly because pivot changes fire no model events.
  */
 new #[Title('users.show.title')] class extends Component
 {
     public User $user;
+
+    /** The role picked to assign; always one the user does not hold yet, so the select and the state agree. */
+    public ?int $roleId = null;
+
+    public function mount(): void
+    {
+        $this->roleId = $this->assignableRoles->first()?->id;
+    }
+
+    /** Roles the user does not hold yet (RF_85). @return Collection<int, Role> */
+    #[Computed]
+    public function assignableRoles(): Collection
+    {
+        return Role::query()
+            ->whereNotIn('id', $this->user->roles()->pluck('roles.id'))
+            ->orderBy('name')
+            ->get();
+    }
+
+    public function assignRole(AssignRole $assignRole): void
+    {
+        $this->authorize('assignRoles', $this->user);
+
+        $this->validate(
+            ['roleId' => ['required', 'integer', 'exists:roles,id']],
+            attributes: ['roleId' => __('users.assign_role.role')],
+        );
+
+        $role = Role::query()->findOrFail($this->roleId);
+
+        $assignRole->handle(auth()->user(), $this->user, $role);
+
+        $this->user->refresh();
+        unset($this->assignableRoles);
+        $this->roleId = $this->assignableRoles->first()?->id;
+
+        Flux::toast(variant: 'success', text: __('users.assign_role.done', ['role' => $role->name, 'user' => $this->user->name]));
+    }
 }; ?>
 
 <div class="flex flex-col gap-6">
@@ -74,5 +117,23 @@ new #[Title('users.show.title')] class extends Component
         </dl>
     </flux:card>
 
-    <x-module-placeholder owner="Sebastián Sánchez (@Rubiocai)" :requirements="['RF_85' => 'Asignar rol']" />
+    @can('assignRoles', $user)
+        <flux:card>
+            <flux:heading level="3" class="mb-3">{{ __('users.assign_role.heading') }}</flux:heading>
+
+            @if ($this->assignableRoles->isEmpty())
+                <flux:text>{{ __('users.assign_role.none_left') }}</flux:text>
+            @else
+                <form wire:submit="assignRole" class="flex flex-col gap-3 sm:flex-row sm:items-end">
+                    <flux:select wire:model="roleId" :label="__('users.assign_role.role')" class="sm:max-w-64">
+                        @foreach ($this->assignableRoles as $role)
+                            <flux:select.option :value="$role->id">{{ $role->name }}</flux:select.option>
+                        @endforeach
+                    </flux:select>
+
+                    <flux:button type="submit" variant="primary" icon="plus">{{ __('users.assign_role.submit') }}</flux:button>
+                </form>
+            @endif
+        </flux:card>
+    @endcan
 </div>
