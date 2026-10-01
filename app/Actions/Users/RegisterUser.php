@@ -5,6 +5,7 @@ namespace App\Actions\Users;
 use App\Enums\AuditAction;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\UserInvitation;
 use App\Support\Audit\Audit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -68,7 +69,10 @@ final class RegisterUser
 
         $this->permissions->forgetCachedPermissions();
 
-        Password::broker()->sendResetLink(['email' => $user->email]);
+        DB::afterCommit(fn () => Password::broker('invitations')->sendResetLink(
+            ['email' => $user->email],
+            fn (User $recipient, string $token) => $recipient->notify(new UserInvitation($token)),
+        ));
 
         return $user;
     }

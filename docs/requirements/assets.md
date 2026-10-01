@@ -102,6 +102,10 @@ Acceptance criteria:
 - El sistema mostrará los activos en el que su ID coincida
 - Si el texto o ID ingresados no concuerdan con ningún activo registrado, el sistema deberá mostrar una leyenda diciendo que el activo no existe
 
+Notes:
+
+- 2026-09-29 PM/architect agreement: use the inventory search fields and matching rules in the [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract).
+
 Diagram: [Lucid](https://lucid.app/lucidchart/87c3227b-f052-407b-8e37-3c2d4a72910d/edit)
 
 ## RF_08
@@ -115,6 +119,10 @@ Acceptance criteria:
 - El sistema sólo mostrará aquellos activos que cumplan con los atributos deseados por el usuario.
 - Cuando no exista ningún activo en el sistema el cual cumpla con los atributos estipulados por el usuario el sistema deberá informar al usuario que no existe ningún activo que cumpla con dichos filtros.
 - Cuando se seleccione la opción de limpiar filtros el sistema restablece el listado.
+
+Notes:
+
+- 2026-09-29 PM/architect agreement: implement the [inventory filter schema and common conventions](../../.ai/rules/reports.md#shared-filter-contract), including all three physical color groups, distinct condition/lifecycle filters and explicit missing-value selections. RF_63 reuses this module contract.
 
 Diagram: [Lucid](https://lucid.app/lucidchart/87c3227b-f052-407b-8e37-3c2d4a72910d/edit)
 
@@ -515,6 +523,7 @@ Acceptance criteria:
 Notes:
 
 - Closes together with RF_08: include it in that PR (it adds no separate screen).
+- 2026-09-29 PM/architect agreement: use the shared inventory contract's responsible_user criterion, including deactivated users and explicit missing-value selections; see the [contract](../../.ai/rules/reports.md#shared-filter-contract).
 
 Diagram: [Lucid](https://lucid.app/lucidchart/06221247-5392-45eb-876d-7e0a76e2269c/edit)
 

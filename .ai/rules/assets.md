@@ -28,6 +28,6 @@ asset form and close inside RF_03/RF_04; RF_30 is a custodian filter inside RF_0
 - **Delete (RF_02) is a soft delete** for records entered by mistake. **Decommission (RF_29) is an `AssetEvent`**, keeps history forever, and is final.
 - **Movements and events are append-only.** Correct a mistake with a new compensating row.
 - **Space scope (★).** An Administrador acts only on assets in (or last in) the spaces they manage: `AssetPolicy` already encodes it; call `$this->authorize('update', $asset)` etc. in every action.
-- **List, search, filters:** `App\Queries\Assets\AssetInventory` (RF_07, RF_08). The inventory report (RF_63) reuses it, so filter keys are shared with reports: keep them stable and documented in its docblock.
+- **List, search, filters:** `App\Queries\Assets\AssetInventory` (RF_07, RF_08). Before implementing it, read the [shared filter contract](reports.md#shared-filter-contract), approved by the PM/architect on 2026-09-29. Its validation, normalization and option choices belong beside this Query and are reused by RF_63; keep the keys documented in the Query docblock. RF_30 uses its `responsible_user` criterion.
 - Search uses `App\Queries\TextSearch` (accent-insensitive, trigram index).
 - Files (photos RF_21, documents RF_20) go through `files` + `asset_files` (ADR-0007); bytes on `config('filesystems.files_disk')`.

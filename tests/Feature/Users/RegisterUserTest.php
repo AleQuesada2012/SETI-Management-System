@@ -6,8 +6,8 @@ use App\Enums\SystemRole;
 use App\Models\AuditLog;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\UserInvitation;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 
@@ -36,7 +36,7 @@ test('the Superusuario registers a user with name, email and roles, and the invi
         ->and($user->email_verified_at)->toBeNull()
         ->and($user->getRoleNames()->sort()->values()->all())->toBe(['Reservante', 'Visualizador']);
 
-    Notification::assertSentTo($user, ResetPassword::class);
+    Notification::assertSentTo($user, UserInvitation::class);
 
     $entries = AuditLog::query()->where('entity_id', $user->id)->where('entity_type', 'user')->get();
     expect($entries->pluck('action')->all())->toContain(AuditAction::Created)
@@ -55,13 +55,13 @@ test('following the invitation link sets the password and verifies the email', f
     ]);
 
     $token = null;
-    Notification::assertSentTo($user, ResetPassword::class, function (ResetPassword $notification) use (&$token): bool {
+    Notification::assertSentTo($user, UserInvitation::class, function (UserInvitation $notification) use (&$token): bool {
         $token = $notification->token;
 
         return true;
     });
 
-    $this->post(route('password.update'), [
+    $this->post(route('invitations.store'), [
         'token' => $token,
         'email' => 'lvargas@tec.ac.cr',
         'password' => 'una-contraseña-larga',

@@ -16,15 +16,19 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 /*
- * Usuarios y roles (mockup "Usuarios y Roles"): list (RF_90) with the role and account status filters, and the
- * "Añadir usuario" modal (RF_91, App\Actions\Users\RegisterUser).
+ * Usuarios y roles (mockup "Usuarios y Roles"): list (RF_90), search (RF_95) and the role and account status filters.
+ * The "Añadir usuario" modal registers a user and sends an invitation (RF_91).
  * Owner: users (@Rubiocai). List, search and filters come from App\Queries\Users\UserDirectory, the same query the
  * users report (RF_69) uses.
  */
-new #[Title('users.index.title')] class extends Component {
+new #[Title('users.index.title')] class extends Component
+{
     use WithPagination;
 
     public const PER_PAGE = 15;
+
+    #[Url(except: '')]
+    public string $search = '';
 
     #[Url(except: '')]
     public string $role = '';
@@ -32,10 +36,10 @@ new #[Title('users.index.title')] class extends Component {
     #[Url(except: '')]
     public string $account_status = '';
 
-    /** A new filter starts again on the first page. */
+    /** A new search or filter starts again on the first page. */
     public function updated(string $property): void
     {
-        if (in_array($property, ['role', 'account_status'], true)) {
+        if (in_array($property, ['search', 'role', 'account_status'], true)) {
             $this->resetPage();
         }
     }
@@ -64,7 +68,7 @@ new #[Title('users.index.title')] class extends Component {
 
     public function clearFilters(): void
     {
-        $this->reset('role', 'account_status');
+        $this->reset('search', 'role', 'account_status');
         $this->resetPage();
     }
 
@@ -73,6 +77,7 @@ new #[Title('users.index.title')] class extends Component {
     public function users(): LengthAwarePaginator
     {
         return UserDirectory::query([
+            'search' => $this->search,
             'role' => $this->role,
             'account_status' => $this->account_status,
         ])->paginate(self::PER_PAGE);
@@ -94,7 +99,7 @@ new #[Title('users.index.title')] class extends Component {
 
     public function hasFilters(): bool
     {
-        return $this->role !== '' || $this->account_status !== '';
+        return $this->search !== '' || $this->role !== '' || $this->account_status !== '';
     }
 }; ?>
 
@@ -111,6 +116,15 @@ new #[Title('users.index.title')] class extends Component {
     </div>
 
     <div class="flex flex-col gap-3 md:flex-row md:items-end">
+        <flux:input
+            wire:model.live.debounce.300ms="search"
+            icon="magnifying-glass"
+            :label="__('users.index.search')"
+            :placeholder="__('users.index.search_placeholder')"
+            clearable
+            class="md:flex-1"
+        />
+
         <flux:select wire:model.live="role" :label="__('users.index.role')" class="md:max-w-52">
             <flux:select.option value="">{{ __('users.index.all_roles') }}</flux:select.option>
             @foreach ($this->roles as $roleName)

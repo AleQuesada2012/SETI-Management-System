@@ -1,9 +1,9 @@
 -- =============================================================================
 -- SETI · Assets & Spaces · schema smoke tests
--- Proves that the constraints, triggers and views in schema.sql really hold,
+-- Proves that the constraints, triggers and views in the migrated database really hold,
 -- and that each rejection comes from the rule we expect (SQLSTATE + constraint).
--- Run on a THROWAWAY database, after schema.sql and seed.sql:
---   psql -v ON_ERROR_STOP=1 -f schema.sql -f seed.sql -f smoke-test.sql
+-- Run on a THROWAWAY database, after `php artisan migrate:fresh --seed`:
+--   psql -v ON_ERROR_STOP=1 -f docs/db/smoke-test.sql
 -- Everything runs in one transaction that is rolled back at the end.
 -- Each check prints "ok ..."; the first failure aborts with "FAIL ...".
 -- =============================================================================
@@ -100,6 +100,12 @@ SELECT pg_temp.ok(NOT EXISTS (
 -- -----------------------------------------------------------------------------
 -- Fixtures
 -- -----------------------------------------------------------------------------
+INSERT INTO user_invitation_tokens (email, token, created_at)
+VALUES ('invitation@seti.test', 'hashed-test-token', now());
+SELECT pg_temp.fails(
+    $$INSERT INTO user_invitation_tokens (email, token) VALUES ('invitation@seti.test', 'another-hash')$$,
+    '23505', 'user_invitation_tokens_pkey', 'one invitation token per email');
+
 INSERT INTO users (name, email) VALUES
     ('Ana Administradora', 'ana@seti.test'),
     ('Beto Reservante',    'beto@seti.test'),

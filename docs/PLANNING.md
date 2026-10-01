@@ -26,14 +26,14 @@ The reasons behind every decision: [decisions.md](decisions.md).
 
 | Person | Sprint 1 (carry-over) | Sprint 2 | Sprint 3 | Load |
 |---|---|---|---|---|
-| Alejandro · @AleQuesada2012 | — | 60, 62, 63, 64, 68, 69, 70*, 71*, 72*, 75, 78, 80, 81, 84 | 61, 66, 67, 73, 76, 77, 82, 83 + AWS deployment | 11 / 8 |
+| Alejandro · @AleQuesada2012 | 60, 63, 64 | 62, 68, 69, 70*, 71*, 72*, 75, 78, 80, 81, 84 | 61, 66, 67, 73, 76, 77, 82, 83 + AWS deployment | 11 / 8 |
 | David · @DavidZamoraB | 01, 03, 04, 05, 07, 08, 14*, 15*, 16*, 17*, 18*, 19*, 23*, 24* | 06, 25 | 02, 09, 12, 13, 22, 28, 29, 30*, 31* | 8 / 7 |
 | Diego · @Dizabu | 32, 33, 35, 36, 42, 44, 45 | 41 | 20, 21, 34, 37, 38, 39, 74 | 8 / 7 |
 | Jose · @JoseHerrera21 | 46, 51, 53, 54, 55, 57 | 47, 48 | 10, 11, 26, 27, 49, 50, 52, 59, 65, 79 | 8 / 10 |
 | Sebastián · @Rubiocai | 85, 90, 91, 94, 95, 100 | 40, 43 | 86, 87, 88, 92, 93, 96, 97, 98, 99, 101 + AWS deployment | 8 / 10 |
 
 Delivered by the bootstrap (closed): RF_00_1, RF_00_2, RF_00_3, RF_00_4, RF_89. Duplicates RF_56 and RF_58 close with
-RF_35 and RF_44. Alejandro's RF_60, RF_63 and RF_64 open Sprint 2 (RF_63 is the report every other report copies).
+RF_35 and RF_44. On 2026-09-30, Alejandro restored RF_60, RF_63 and RF_64 to his original Sprint 1 backlog; their planned carry-over to Sprint 2 is withdrawn. RF_63 remains the reference report for later definitions.
 
 Two deliberate exceptions to the write/read principle:
 
@@ -41,6 +41,43 @@ Two deliberate exceptions to the write/read principle:
   (the ★ rule), so the system would be unusable.
 - **Maintenance (RF_10, 11, 26, 27) is in Sprint 3**: Jose's Sprint 2 is full with the reservation core. The
   maintenance report and statistics are also Sprint 3 and can be built on demo data.
+
+## Reports opening sequence (contract agreed 2026-09-29)
+
+The PM/architect approved the [shared filter contract](../.ai/rules/reports.md#shared-filter-contract). This section
+plans its implementation; it does not mark RFs delivered or reassign their owners or milestones.
+
+1. **Inventory contract — David (RF_07, RF_08, including RF_30).** Implement validation, normalization, choices and
+   filtering beside `app/Queries/Assets/AssetInventory.php`; align the list/search surface and its `lang/es/assets.php`
+   errors. Cover the prescribed search fields, every criterion, combined selections, missing values, historical
+   references, date boundaries, invalid input, empty results and clearing filters. David owns this module.
+2. **Spaces contract — Diego and Jose (RF_42, RF_53, RF_54).** Coordinate the contract beside
+   `app/Queries/Spaces/SpaceDirectory.php`; Diego supplies search and Jose filters/list integration in
+   `resources/views/pages/spaces/index.blade.php`. Errors belong in `lang/es/spaces.php`. Cover search, type/status/
+   building filters, AND/OR combinations, historical references, invalid input, empty results and clearing.
+3. **Reference report — Alejandro, David reviews (RF_63, #72).** Add the inventory definition in
+   `app/Reports/Definitions`, register it and delegate filters to the inventory contract. Display the required
+   identification/name/brand/model/space/responsible/acquisition columns plus separate condition and lifecycle
+   status. Reuse `pages/reports/show`, the export button and `ExportReport`. Update the existing normalization
+   surface so invalid/unknown filters block both preview and export. Cover columns, preview, unauthorized access,
+   validation and filter parity across preview/PDF/XLSX, including generation metadata and the export audit entry.
+4. **Spaces report — Alejandro, David reviews (RF_64, #73).** Add and register the spaces definition, delegating to
+   the spaces contract. Render name, composed location, capacity, type, status and managers (responsable). Verify
+   current data, all shared filters, preview/export consistency, unauthorized access, validation and audited export.
+5. **Menu — Alejandro, David reviews (RF_60, #69).** Replace `pages/reports/index`'s placeholder; add Spanish strings
+   in `lang/es/reports.php`. Cover four categories, category selection, empty-category messages, available links,
+   hidden inaccessible entries and permitted future-sprint entries. Availability needs runtime access to planned
+   sprint and permission metadata before definitions exist; `report_types` currently has neither. Implement that
+   metadata seam with platform review, keeping the approved role/permission matrix.
+
+Reports reuse the existing `reports.view`/`reports.export` authorization, plus `reports.audit` for the audit type,
+and the current routes. Existing reporting views expose the needed filter fields; this plan needs no dependency
+addition or change to a merged migration. In-report filter controls remain RF_62 (#71), consuming the same contract.
+
+Before each feature PR: follow `.ai/workflow.md`, run affected Pest tests and `docker compose exec app composer test`,
+check the Spanish UI at 360 px, and add the Sprint 2 manual note and screenshot. Query changes require their module
+owners' coordination/review; report integration consumes their contracts. Only completed RFs belong in `Closes`
+lines. Recording this agreement does not close #69, #72 or #73.
 
 ## Cut order
 

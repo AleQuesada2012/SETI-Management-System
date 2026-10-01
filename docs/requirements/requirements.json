@@ -238,7 +238,9 @@
   "reviewer": "Dizabu",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: use the inventory search fields and matching rules in the [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract)."
+  ]
  },
  {
   "code": "RF_08",
@@ -259,7 +261,9 @@
   "reviewer": "Dizabu",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: implement the [inventory filter schema and common conventions](../../.ai/rules/reports.md#shared-filter-contract), including all three physical color groups, distinct condition/lifecycle filters and explicit missing-value selections. RF_63 reuses this module contract."
+  ]
  },
  {
   "code": "RF_09",
@@ -788,7 +792,8 @@
   "free_with": "RF_08",
   "cut_rank": null,
   "notes": [
-   "Closes together with RF_08: include it in that PR (it adds no separate screen)."
+   "Closes together with RF_08: include it in that PR (it adds no separate screen).",
+   "2026-09-29 PM/architect agreement: use the shared inventory contract's responsible_user criterion, including deactivated users and explicit missing-value selections; see the [contract](../../.ai/rules/reports.md#shared-filter-contract)."
   ]
  },
  {
@@ -1055,7 +1060,9 @@
   "reviewer": "JoseHerrera21",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: use the space search fields and matching rules in the [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract), coordinated with RF_54."
+  ]
  },
  {
   "code": "RF_43",
@@ -1314,7 +1321,9 @@
   "reviewer": "Rubiocai",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: implement the [spaces filter schema](../../.ai/rules/reports.md#spaces-schema) and shared validation/normalization. Building filtering covers the approved location intent; RF_64 reuses this contract."
+  ]
  },
  {
   "code": "RF_55",
@@ -1435,7 +1444,7 @@
    "El sistema debe mostrar un mensaje informativo cuando no existan reportes disponibles para la categoría seleccionada."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1445,7 +1454,8 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1: the first item of Sprint 2."
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn.",
+   "2026-09-29 PM/architect agreement: follow the [report menu agreement](../../.ai/rules/reports.md#report-menu-agreement) for permission hiding and future-sprint availability."
   ]
  },
  {
@@ -1490,7 +1500,9 @@
   "reviewer": "DavidZamoraB",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: controls consume the module-owned [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract); lists, previews and exports share validation, normalization and filter meanings."
+  ]
  },
  {
   "code": "RF_63",
@@ -1502,7 +1514,7 @@
    "El sistema debe permitir visualizar el reporte antes de proceder con su exportación."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1512,7 +1524,8 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1. The first real report definition: every other report copies it."
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn. The first real report definition: every other report copies it.",
+   "2026-09-29 PM/architect agreement: show physical condition and lifecycle status separately and delegate filtering to the [shared inventory contract](../../.ai/rules/reports.md#shared-filter-contract)."
   ]
  },
  {
@@ -1525,7 +1538,7 @@
    "La información presentada debe corresponder con los datos actualmente almacenados en la base de datos."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1535,7 +1548,8 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1."
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn.",
+   "2026-09-29 PM/architect agreement: delegate filters, validation, normalization and choices to the [shared spaces contract](../../.ai/rules/reports.md#shared-filter-contract)."
   ]
  },
  {

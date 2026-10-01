@@ -138,6 +138,10 @@ Acceptance criteria:
 - El sistema debe permitir combinar más de un criterio filtrado.
 - El sistema debe permitir limpiar los filtros y restaurar el listado completo.
 
+Notes:
+
+- 2026-09-29 PM/architect agreement: implement the [spaces filter schema](../../.ai/rules/reports.md#spaces-schema) and shared validation/normalization. Building filtering covers the approved location intent; RF_64 reuses this contract.
+
 Diagram: [Lucid](https://lucid.app/lucidchart/1d671bd3-74d1-4950-b6e1-7c1db9e4885a/edit)
 
 ## RF_55

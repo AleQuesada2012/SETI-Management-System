@@ -4,6 +4,7 @@ namespace App\Models\Reporting;
 
 use App\Enums\ReservationEffectiveStatus;
 use App\Enums\ReservationStatus;
+use Illuminate\Support\Carbon;
 
 /**
  * A row of reporting.reservations with the derived effective status and "modified" label
@@ -13,6 +14,8 @@ use App\Enums\ReservationStatus;
  * @property int $space_id
  * @property string $space_code
  * @property string $space_name
+ * @property Carbon $starts_at
+ * @property Carbon $ends_at
  * @property string $title
  * @property int $attendees
  * @property string $responsible_name
