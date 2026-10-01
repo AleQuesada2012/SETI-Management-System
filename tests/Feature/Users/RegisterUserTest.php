@@ -151,3 +151,28 @@ test('a concurrent duplicate email is reported as a Spanish field error without 
     $this->assertDatabaseMissing('users', ['email' => 'race@tec.ac.cr']);
     Notification::assertNothingSent();
 });
+
+test('registration respects the 150-character name limit', function (int $length, bool $valid) {
+    Notification::fake();
+    actingAsRole(SystemRole::Superusuario);
+    $name = str_repeat('á', $length);
+    $page = Livewire::test('pages::users.index')
+        ->set('newUser.name', $name)
+        ->set('newUser.email', 'length@tec.ac.cr')
+        ->set('newUser.roles', [Role::findByName(SystemRole::Reservante->value)->id])
+        ->call('registerUser');
+
+    if ($valid) {
+        $page->assertHasNoErrors();
+        $user = User::query()->where('email', 'length@tec.ac.cr')->sole();
+        expect($user->name)->toBe($name);
+        Notification::assertSentTo($user, UserInvitation::class);
+    } else {
+        $page->assertHasErrors(['newUser.name' => __('validation.max.string', ['attribute' => 'nombre', 'max' => 150])]);
+        $this->assertDatabaseMissing('users', ['email' => 'length@tec.ac.cr']);
+        Notification::assertNothingSent();
+    }
+})->with([
+    'at the limit' => [150, true],
+    'over the limit' => [151, false],
+]);

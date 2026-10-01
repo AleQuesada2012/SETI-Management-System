@@ -198,7 +198,7 @@ new #[Title('users.index.title')] class extends Component
                     <flux:text class="mt-1">{{ __('users.register.help') }}</flux:text>
                 </div>
 
-                <flux:input wire:model="newUser.name" :label="__('users.fields.name')" required autocomplete="off" />
+                <flux:input wire:model="newUser.name" :label="__('users.fields.name')" maxlength="150" required autocomplete="off" />
 
                 <flux:input wire:model="newUser.email" type="email" :label="__('users.fields.email')" required autocomplete="off" />
 

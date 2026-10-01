@@ -41,7 +41,7 @@ final class RegisterUser
 
         /** @var array{name: string, email: string, roles: list<int>} $data */
         $data = Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:150'],
             // Same shape as users_email_format_check, so the database never rejects what passed here.
             'email' => ['required', 'string', 'max:255', 'email', 'regex:/^[^@\s]+@[^@\s]+\.[^@\s]+$/', Rule::unique('users', 'email')],
             'roles' => ['required', 'array', 'min:1'],
