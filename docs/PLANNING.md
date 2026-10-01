@@ -26,14 +26,14 @@ The reasons behind every decision: [decisions.md](decisions.md).
 
 | Person | Sprint 1 (carry-over) | Sprint 2 | Sprint 3 | Load |
 |---|---|---|---|---|
-| Alejandro · @AleQuesada2012 | — | 60, 62, 63, 64, 68, 69, 70*, 71*, 72*, 75, 78, 80, 81, 84 | 61, 66, 67, 73, 76, 77, 82, 83 + AWS deployment | 11 / 8 |
+| Alejandro · @AleQuesada2012 | 60, 63, 64 | 62, 68, 69, 70*, 71*, 72*, 75, 78, 80, 81, 84 | 61, 66, 67, 73, 76, 77, 82, 83 + AWS deployment | 11 / 8 |
 | David · @DavidZamoraB | 01, 03, 04, 05, 07, 08, 14*, 15*, 16*, 17*, 18*, 19*, 23*, 24* | 06, 25 | 02, 09, 12, 13, 22, 28, 29, 30*, 31* | 8 / 7 |
 | Diego · @Dizabu | 32, 33, 35, 36, 42, 44, 45 | 41 | 20, 21, 34, 37, 38, 39, 74 | 8 / 7 |
 | Jose · @JoseHerrera21 | 46, 51, 53, 54, 55, 57 | 47, 48 | 10, 11, 26, 27, 49, 50, 52, 59, 65, 79 | 8 / 10 |
 | Sebastián · @Rubiocai | 85, 90, 91, 94, 95, 100 | 40, 43 | 86, 87, 88, 92, 93, 96, 97, 98, 99, 101 + AWS deployment | 8 / 10 |
 
 Delivered by the bootstrap (closed): RF_00_1, RF_00_2, RF_00_3, RF_00_4, RF_89. Duplicates RF_56 and RF_58 close with
-RF_35 and RF_44. Alejandro's RF_60, RF_63 and RF_64 open Sprint 2 (RF_63 is the report every other report copies).
+RF_35 and RF_44. On 2026-09-30, Alejandro restored RF_60, RF_63 and RF_64 to his original Sprint 1 backlog; their planned carry-over to Sprint 2 is withdrawn. RF_63 remains the reference report for later definitions.
 
 Two deliberate exceptions to the write/read principle:
 

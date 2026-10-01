@@ -2,6 +2,9 @@
 
 namespace App\Reports;
 
+use App\Enums\PermissionName;
+use App\Enums\ReportCategory;
+use App\Models\ReportType;
 use InvalidArgumentException;
 
 /**
@@ -11,10 +14,26 @@ use InvalidArgumentException;
 final class ReportRegistry
 {
     /** @var array<string, class-string<ReportDefinition>> */
-    private array $definitions = [
-        // 'assets_inventory' => Definitions\AssetInventoryReport::class,  // RF_63
-        // 'spaces' => Definitions\SpacesReport::class,                    // RF_64
-    ];
+    private array $definitions = [];
+
+    /** @var array<string, array<string, mixed>>|null */
+    private ?array $requirements = null;
+
+    /** Authorization remains available before a report's implementation exists. */
+    public function permissionFor(ReportType $type): PermissionName
+    {
+        return $this->has($type->code) ? $this->get($type->code)->permission()
+            : ($type->category === ReportCategory::Audit ? PermissionName::ReportsAudit : PermissionName::ReportsView);
+    }
+
+    /** Only approved future-sprint requirements appear as upcoming; unknown types remain hidden. */
+    public function isUpcoming(ReportType $type): bool
+    {
+        $this->requirements ??= array_column(json_decode((string) file_get_contents(base_path('docs/requirements/requirements.json')), true, flags: JSON_THROW_ON_ERROR), null, 'code');
+        $requirement = $this->requirements[$type->description ?? ''] ?? null;
+
+        return $requirement !== null && $requirement['sprint'] > config('reports.current_sprint');
+    }
 
     /** @param  class-string<ReportDefinition>  $definition */
     public function register(string $definition): void

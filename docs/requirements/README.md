@@ -87,11 +87,11 @@ planning round 3 (2026-09-29, see [../PLANNING.md](../PLANNING.md)). Each RF is 
 | [RF_57](reservations.md#rf_57) | Consultar reservas de un espacio | reservations | @JoseHerrera21 | @Rubiocai | Sprint 1 |
 | [RF_58](reservations.md#rf_58) | Cambiar estado de un espacio (duplicate of RF_44) | reservations | @JoseHerrera21 | @Rubiocai | Sprint 1 |
 | [RF_59](reservations.md#rf_59) | Consultar ocupación de espacios por período | reservations | @JoseHerrera21 | @Rubiocai | Sprint 3 |
-| [RF_60](reports.md#rf_60) | Entrar al menú de reportes | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 2 |
+| [RF_60](reports.md#rf_60) | Entrar al menú de reportes | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 1 |
 | [RF_61](reports.md#rf_61) | Visualizar tableros interactivos | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 3 |
 | [RF_62](reports.md#rf_62) | Filtrar información de los reportes | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 2 |
-| [RF_63](reports.md#rf_63) | Generar reporte de inventario de activos | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 2 |
-| [RF_64](reports.md#rf_64) | Generar reporte de espacios | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 2 |
+| [RF_63](reports.md#rf_63) | Generar reporte de inventario de activos | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 1 |
+| [RF_64](reports.md#rf_64) | Generar reporte de espacios | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 1 |
 | [RF_65](reports.md#rf_65) | Generar reporte de reservaciones | reports | @JoseHerrera21 | @AleQuesada2012 | Sprint 3 |
 | [RF_66](reports.md#rf_66) | Generar reporte de mantenimiento y reparaciones | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 3 |
 | [RF_67](reports.md#rf_67) | Generar reporte de movimientos de inventario | reports | @AleQuesada2012 | @DavidZamoraB | Sprint 3 |

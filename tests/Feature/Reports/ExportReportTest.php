@@ -45,8 +45,6 @@ test('exporting stores the file and records the generation (PDF)', function () {
 test('the XLSX keeps the columns and only the filtered records (RF_71, RF_72)', function () {
     $generation = app(ExportReport::class)->handle($this->author, 'users', ReportFormat::Xlsx, [
         'account_status' => 'deactivated',
-        'not_a_filter' => 'ignored',
-        'empty' => '',
     ]);
 
     expect($generation->filters)->toBe(['account_status' => 'deactivated'])

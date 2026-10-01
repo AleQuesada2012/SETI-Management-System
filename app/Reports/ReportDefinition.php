@@ -4,10 +4,12 @@ namespace App\Reports;
 
 use App\Enums\PermissionName;
 use BackedEnum;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 
 /**
  * One report of the catalog (report_types, RF_63–RF_79): what it reads, which columns it shows and which filters it
@@ -37,7 +39,7 @@ abstract class ReportDefinition
     abstract public function query(array $filters): Builder;
 
     /**
-     * Filter keys this report accepts; anything else is dropped before querying and before storing the generation.
+     * Filter keys this report accepts; unsupported keys block preview and export.
      *
      * @return list<string>
      */
@@ -55,7 +57,42 @@ abstract class ReportDefinition
      */
     public function describeFilters(array $filters): array
     {
-        return array_map(fn (mixed $value): string => is_array($value) ? implode(', ', $value) : (string) $value, $filters);
+        $fields = $this->filterFields();
+        $description = [];
+        foreach ($filters as $key => $criterion) {
+            $field = $fields[$key] ?? ['label' => $key];
+            $parts = [];
+            if (is_array($criterion)) {
+                $labels = array_column($field['options'] ?? [], 'label', 'id');
+                foreach ($criterion['values'] ?? [] as $value) {
+                    $parts[] = $labels[$value] ?? (string) $value;
+                }
+                if (isset($criterion['contains'])) {
+                    $parts[] = $criterion['contains'];
+                }
+                foreach (['from', 'to'] as $bound) {
+                    if (isset($criterion[$bound])) {
+                        $parts[] = __('reports.filters.'.$bound).' '.CarbonImmutable::parse($criterion[$bound])->format('d/m/Y');
+                    }
+                }
+                if ($criterion['include_missing'] ?? false) {
+                    $parts[] = $field['missing_label'];
+                }
+            } else {
+                $parts[] = (string) $criterion;
+            }
+            $description[$field['label']] = implode(' · ', $parts);
+        }
+
+        return $description;
+    }
+
+    /** Filter controls, with choices supplied by the module's shared contract.
+     * @return array<string, array<string, mixed>>
+     */
+    public function filterFields(): array
+    {
+        return [];
     }
 
     /** Permission needed to preview and export it, on top of reports.view / reports.export (e.g. reports.audit). */
@@ -71,13 +108,17 @@ abstract class ReportDefinition
     }
 
     /**
-     * Keep only known filter keys with a value: this is what gets queried and stored ({} = all records, RF_72).
+     * Reject unknown keys and remove empty restrictions. Definitions delegate richer validation to their module.
      *
      * @param  array<string, mixed>  $filters
      * @return array<string, mixed>
      */
     public function normalizeFilters(array $filters): array
     {
+        foreach (array_diff(array_keys($filters), $this->filterKeys()) as $key) {
+            throw ValidationException::withMessages([(string) $key => __('reports.filters.errors.unknown', ['key' => $key])]);
+        }
+
         return array_filter(
             Arr::only($filters, $this->filterKeys()),
             fn (mixed $value): bool => $value !== null && $value !== '' && $value !== [],
