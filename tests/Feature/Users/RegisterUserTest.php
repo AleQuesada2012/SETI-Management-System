@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Notifications\UserInvitation;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 
@@ -124,3 +125,29 @@ test('the action refuses anyone without users.create', function () {
         'roles' => [Role::findByName(SystemRole::Reservante->value)->id],
     ]);
 })->throws(AuthorizationException::class);
+
+test('a concurrent duplicate email is reported as a Spanish field error without partial registration', function () {
+    Notification::fake();
+    actingAsRole(SystemRole::Superusuario);
+    $dispatcher = User::getEventDispatcher();
+    User::setEventDispatcher(clone $dispatcher);
+    User::creating(function (User $user): void {
+        if ($user->email === 'race@tec.ac.cr') {
+            DB::table('users')->insert(['name' => 'Concurrent registration', 'email' => $user->email]);
+        }
+    });
+
+    try {
+        Livewire::test('pages::users.index')
+            ->set('newUser.name', 'Laura Vargas')
+            ->set('newUser.email', 'race@tec.ac.cr')
+            ->set('newUser.roles', [Role::findByName(SystemRole::Reservante->value)->id])
+            ->call('registerUser')
+            ->assertHasErrors(['newUser.email' => __('db.users_email_unique')]);
+    } finally {
+        User::setEventDispatcher($dispatcher);
+    }
+
+    $this->assertDatabaseMissing('users', ['email' => 'race@tec.ac.cr']);
+    Notification::assertNothingSent();
+});

@@ -192,6 +192,7 @@ new #[Title('users.index.title')] class extends Component
     @can('create', User::class)
         <flux:modal name="register-user" class="w-full max-w-md">
             <form wire:submit="registerUser" class="flex flex-col gap-5">
+                <flux:error name="newUser.form" />
                 <div>
                     <flux:heading size="lg">{{ __('users.register.heading') }}</flux:heading>
                     <flux:text class="mt-1">{{ __('users.register.help') }}</flux:text>

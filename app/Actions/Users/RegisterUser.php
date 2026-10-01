@@ -7,6 +7,8 @@ use App\Models\Role;
 use App\Models\User;
 use App\Notifications\UserInvitation;
 use App\Support\Audit\Audit;
+use App\Support\Database\ConstraintViolation;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Password;
@@ -51,21 +53,31 @@ final class RegisterUser
             'roles.*' => Str::lower(__('users.fields.roles')),
         ])->validate();
 
-        $user = DB::transaction(function () use ($actor, $data): User {
-            $user = User::query()->create([
-                'name' => trim($data['name']),
-                'email' => $data['email'],
-                'password' => null,
-            ]);
+        try {
+            $user = DB::transaction(function () use ($actor, $data): User {
+                $user = User::query()->create([
+                    'name' => trim($data['name']),
+                    'email' => $data['email'],
+                    'password' => null,
+                ]);
 
-            Role::query()->whereKey($data['roles'])->orderBy('name')->each(function (Role $role) use ($actor, $user): void {
-                $user->assignRole($role);
+                Role::query()->whereKey($data['roles'])->orderBy('name')->each(function (Role $role) use ($actor, $user): void {
+                    $user->assignRole($role);
 
-                Audit::record(AuditAction::RoleAssigned, $user, new: ['role' => $role->name], actor: $actor);
+                    Audit::record(AuditAction::RoleAssigned, $user, new: ['role' => $role->name], actor: $actor);
+                });
+
+                return $user;
             });
+        } catch (QueryException $exception) {
+            $field = match (ConstraintViolation::ruleName($exception)) {
+                'users_email_unique', 'users_email_format_check', 'users_email_lowercase_check' => 'email',
+                'users_name_check' => 'name',
+                default => 'form',
+            };
 
-            return $user;
-        });
+            throw ConstraintViolation::toValidationException($exception, field: $field);
+        }
 
         $this->permissions->forgetCachedPermissions();
 

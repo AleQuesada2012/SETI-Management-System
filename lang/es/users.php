@@ -38,9 +38,6 @@ return [
         'submit' => 'Registrar',
         'done' => 'Se registró a :user y se envió la invitación a :email.',
     ],
-    'show' => [
-        'title' => 'Detalle del usuario',
-    ],
     'invitation' => [
         'subject' => 'Tu invitación a SETI Activos',
         'introduction' => 'Se creó tu cuenta en SETI Activos. Define tu contraseña para comenzar.',
