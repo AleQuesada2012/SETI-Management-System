@@ -1,7 +1,12 @@
 <?php
 
 use App\Enums\AssetStatus;
+use App\Enums\PermissionName;
 use App\Models\Asset;
+use App\Models\Reporting\AssetMovementRow;
+use App\Queries\Assets\AssetMovements;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -13,6 +18,7 @@ use Livewire\Component;
  * RF_01 · the asset's information, read fresh from the database on every visit, with the fields registered by RF_03
  * and its companions (RF_14–RF_16, RF_18, RF_19, RF_23, RF_24). RF_17 · the warranty and whether it is still valid.
  * RF_05 · the condition's color. Editing (RF_04, RF_05) happens on pages::assets.edit.
+ * RF_25 · the asset's movements; registering one (RF_06, RF_25) happens on pages::assets.move.
  */
 new #[Title('assets.show.title')] class extends Component {
     public Asset $asset;
@@ -31,6 +37,25 @@ new #[Title('assets.show.title')] class extends Component {
 
         return $this->asset->warranty_ends_on->isBefore(today()) ? 'expired' : 'valid';
     }
+
+    /**
+     * RF_25: the asset's entries, transfers and exits, newest first.
+     *
+     * @return EloquentCollection<int, AssetMovementRow>
+     */
+    #[Computed]
+    public function movements(): EloquentCollection
+    {
+        return AssetMovements::forAsset($this->asset)->get();
+    }
+
+    /** RF_06: the user may move assets, but not this one, because it is outside the spaces they manage (★). */
+    public function moveDeniedOutsideScope(): bool
+    {
+        $user = auth()->user();
+
+        return $user->can(PermissionName::AssetsMove) && $user->cannot('move', $this->asset);
+    }
 }; ?>
 
 <div class="flex flex-col gap-6">
@@ -47,10 +72,19 @@ new #[Title('assets.show.title')] class extends Component {
             <flux:badge color="zinc" size="sm">{{ $asset->status->label() }}</flux:badge>
         @endif
 
-        @can('update', $asset)
-            <flux:button :href="route('assets.edit', $asset)" wire:navigate icon="pencil-square" size="sm" class="ms-auto" data-test="edit-asset-button">{{ __('assets.show.edit') }}</flux:button>
-        @endcan
+        <div class="ms-auto flex flex-wrap gap-2">
+            @can('move', $asset)
+                <flux:button :href="route('assets.move', $asset)" wire:navigate icon="arrows-right-left" size="sm" data-test="move-asset-button">{{ __('assets.show.move') }}</flux:button>
+            @endcan
+            @can('update', $asset)
+                <flux:button :href="route('assets.edit', $asset)" wire:navigate icon="pencil-square" size="sm" data-test="edit-asset-button">{{ __('assets.show.edit') }}</flux:button>
+            @endcan
+        </div>
     </div>
+
+    @if ($this->moveDeniedOutsideScope())
+        <flux:callout variant="warning" icon="lock-closed" :heading="__('assets.move.not_manager')" data-test="move-denied" />
+    @endif
 
     <div class="grid gap-4 lg:grid-cols-2">
         <flux:card class="flex flex-col gap-3">
@@ -138,5 +172,41 @@ new #[Title('assets.show.title')] class extends Component {
     <flux:card class="flex flex-col gap-3">
         <flux:heading level="3">{{ __('assets.show.sections.observations') }}</flux:heading>
         <flux:text class="whitespace-pre-line">{{ $asset->observations ?: __('assets.show.no_observations') }}</flux:text>
+    </flux:card>
+
+    <flux:card class="flex flex-col gap-3" data-test="asset-movements">
+        <flux:heading level="3">{{ __('assets.show.sections.movements') }}</flux:heading>
+        @if ($this->movements->isEmpty())
+            <flux:text>{{ __('assets.show.movements.empty') }}</flux:text>
+        @else
+            @php
+                $space = fn (?string $code, ?string $name) => $code !== null ? "{$code} · {$name}" : __('assets.show.movements.outside');
+            @endphp
+            <div class="overflow-x-auto">
+                <flux:table>
+                    <flux:table.columns>
+                        <flux:table.column>{{ __('assets.show.movements.moved_at') }}</flux:table.column>
+                        <flux:table.column>{{ __('assets.show.movements.type') }}</flux:table.column>
+                        <flux:table.column>{{ __('assets.show.movements.from') }}</flux:table.column>
+                        <flux:table.column>{{ __('assets.show.movements.to') }}</flux:table.column>
+                        <flux:table.column>{{ __('assets.show.movements.moved_by') }}</flux:table.column>
+                        <flux:table.column>{{ __('assets.show.movements.reason') }}</flux:table.column>
+                    </flux:table.columns>
+
+                    <flux:table.rows>
+                        @foreach ($this->movements as $movement)
+                            <flux:table.row :key="$movement->id">
+                                <flux:table.cell class="whitespace-nowrap">{{ $movement->moved_at->format('d/m/Y H:i') }}</flux:table.cell>
+                                <flux:table.cell variant="strong">{{ $movement->type->label() }}</flux:table.cell>
+                                <flux:table.cell class="whitespace-nowrap">{{ $space($movement->from_space_code, $movement->from_space_name) }}</flux:table.cell>
+                                <flux:table.cell class="whitespace-nowrap">{{ $space($movement->to_space_code, $movement->to_space_name) }}</flux:table.cell>
+                                <flux:table.cell class="whitespace-nowrap">{{ $movement->moved_by_name ?? __('assets.show.movements.system') }}</flux:table.cell>
+                                <flux:table.cell class="min-w-48">{{ $movement->reason ?: $empty }}</flux:table.cell>
+                            </flux:table.row>
+                        @endforeach
+                    </flux:table.rows>
+                </flux:table>
+            </div>
+        @endif
     </flux:card>
 </div>

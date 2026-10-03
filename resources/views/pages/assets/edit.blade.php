@@ -11,7 +11,7 @@ use Livewire\Component;
 /*
  * RF_04 · Editar activo, and RF_05 · Asignar estado (the condition and its color). The route checked `update`
  * (★ for an Administrador); `save` checks it again. The space is shown but not editable: it changes through a
- * transfer (RF_06). Shares its fields with RF_03 (x-assets.fields).
+ * transfer (RF_06, pages::assets.move). Shares its fields with RF_03 (x-assets.fields).
  */
 new #[Title('assets.edit.title')] class extends Component {
     public Asset $asset;
@@ -124,7 +124,12 @@ new #[Title('assets.edit.title')] class extends Component {
                 <flux:text class="text-ink" data-test="asset-space">
                     {{ $asset->currentSpace ? $asset->currentSpace->code.' · '.$asset->currentSpace->name : __('assets.show.empty') }}
                 </flux:text>
-                <flux:description>{{ __('assets.edit.space_help') }}</flux:description>
+                <flux:description>
+                    {{ __('assets.edit.space_help') }}
+                    @can('move', $asset)
+                        <flux:link :href="route('assets.move', $asset)" wire:navigate data-test="edit-move-link">{{ __('assets.edit.move') }}</flux:link>
+                    @endcan
+                </flux:description>
             </flux:field>
 
             <flux:input wire:model="location_detail" :label="Str::ucfirst(__('assets.fields.location_detail'))" :placeholder="__('assets.create.location_placeholder')" maxlength="200" />
