@@ -123,7 +123,7 @@
    "Dado que el usuario intente eliminar un activo el cual no se encuentre en la base de datos deberá notificar al usuario de su inexistencia"
   ],
   "owner": "DavidZamoraB",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "David Zamora",
   "diagram": "https://lucid.app/lucidchart/a2ee6871-a96f-4208-b014-9b54e536f6f2/edit",
@@ -346,7 +346,7 @@
    "El sistema debe permitir modificar o eliminar un componente registrado."
   ],
   "owner": "DavidZamoraB",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "David Zamora",
   "diagram": "https://lucid.app/lucidchart/2d426401-2fe0-4e1e-8c09-d1dba3495d2a/edit",
@@ -538,7 +538,7 @@
    "Los usuarios con permisos adecuados deben poder eliminar documentos adjuntos."
   ],
   "owner": "Dizabu",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "Diego Zamora",
   "diagram": "https://lucid.app/lucidchart/7fefc8f2-6653-4bfc-b4b5-6daca5132624/edit",
@@ -564,7 +564,7 @@
    "El sistema debe validar que el archivo corresponda a un formato de imagen permitido."
   ],
   "owner": "Dizabu",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "Diego Zamora",
   "diagram": "https://lucid.app/lucidchart/4a97d32c-d3b2-4775-8962-981434fec8a9/edit",
@@ -806,7 +806,7 @@
    "Si el activo no posee componentes registrados, el sistema debe informar que no existen componentes asociados"
   ],
   "owner": "DavidZamoraB",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "David Zamora",
   "diagram": "https://lucid.app/lucidchart/2d426401-2fe0-4e1e-8c09-d1dba3495d2a/edit",
@@ -1209,7 +1209,7 @@
    "El sistema deberá permitirle al usuario cambiar el espacio escogido."
   ],
   "owner": "JoseHerrera21",
-  "sprint": 3,
+  "sprint": 2,
   "module": "reservations",
   "owner_name": "Jose Herrera",
   "diagram": "https://lucid.app/lucidchart/b0a766e9-aa27-4240-a899-55c52bc6ee27/edit",
@@ -1228,7 +1228,7 @@
    "El sistema deberá tener una opción la cual le permite al encargado del manejo de los espacios y su calendario eliminar reservaciones en una fecha en específica."
   ],
   "owner": "JoseHerrera21",
-  "sprint": 3,
+  "sprint": 2,
   "module": "reservations",
   "owner_name": "Jose Herrera",
   "diagram": "https://lucid.app/lucidchart/b02a4341-15c4-4eba-a28b-1ba9cc5250e0/edit",
@@ -2161,7 +2161,7 @@
    "Si no existen usuarios administradores o normales el sistema deberá mostrar un mensaje de que no existen usuarios registrados"
   ],
   "owner": "Rubiocai",
-  "sprint": 3,
+  "sprint": 2,
   "module": "users",
   "owner_name": "Sebastián Sánchez",
   "diagram": null,
@@ -2245,7 +2245,7 @@
    "Si el laboratorio no tiene administradores asignados, el sistema debe informar dicha situación."
   ],
   "owner": "Rubiocai",
-  "sprint": 3,
+  "sprint": 2,
   "module": "users",
   "owner_name": "Sebastián Sánchez",
   "diagram": null,
@@ -2266,7 +2266,7 @@
    "Si el administrador no tiene laboratorios asignados, el sistema debe mostrar un mensaje indicándolo."
   ],
   "owner": "Rubiocai",
-  "sprint": 3,
+  "sprint": 2,
   "module": "users",
   "owner_name": "Sebastián Sánchez",
   "diagram": null,
@@ -2352,7 +2352,7 @@
    "Si no existen usuarios con el estado seleccionado, el sistema debe mostrar un mensaje informativo."
   ],
   "owner": "Rubiocai",
-  "sprint": 3,
+  "sprint": 2,
   "module": "users",
   "owner_name": "Sebastián Sánchez",
   "diagram": null,
