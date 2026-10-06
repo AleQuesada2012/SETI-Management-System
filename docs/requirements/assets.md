@@ -20,7 +20,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/762fa85e-5ed3-4210-8599-7d3214b2db
 
 ## RF_02
 
-**Eliminar activo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 3
+**Eliminar activo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 2
 
 > La opción permite eliminar un activo de un espacio específico
 
@@ -179,7 +179,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/609b1df4-fe7a-4ee5-ae06-9e320c17ba
 
 ## RF_12
 
-**Registrar componentes del equipo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 3
+**Registrar componentes del equipo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 2
 
 > El sistema debe permitir registrar los componentes principales asociados a un equipo, con el fin de mantener un inventario detallado de sus partes.
 
@@ -326,7 +326,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/78a6182c-54b5-43e8-8553-9af00cd6ab
 
 ## RF_20
 
-**Adjuntar documentos a los activos** · owner @Dizabu (Diego Zamora) · reviewer @DavidZamoraB · Sprint 3
+**Adjuntar documentos a los activos** · owner @Dizabu (Diego Zamora) · reviewer @DavidZamoraB · Sprint 2
 
 > El sistema debe permitir adjuntar documentos relacionados con un activo, como facturas, manuales o documentos de garantía, para mantener la información del activo centralizada.
 
@@ -346,7 +346,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/7fefc8f2-6653-4bfc-b4b5-6daca51326
 
 ## RF_21
 
-**Adjuntar fotografías a los activos** · owner @Dizabu (Diego Zamora) · reviewer @DavidZamoraB · Sprint 3
+**Adjuntar fotografías a los activos** · owner @Dizabu (Diego Zamora) · reviewer @DavidZamoraB · Sprint 2
 
 > El sistema debe permitir asociar fotografías a un activo para facilitar su identificación y visualizar su estado físico.
 
@@ -529,7 +529,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/06221247-5392-45eb-876d-7e0a76e226
 
 ## RF_31
 
-**Consultar componentes de un activo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 3 (closes with RF_12)
+**Consultar componentes de un activo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 2 (closes with RF_12)
 
 > El sistema debe permitir consultar el detalle de los componentes asociados a un activo.
 

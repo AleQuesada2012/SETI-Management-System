@@ -60,7 +60,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/6291e9c2-f7a1-4d9d-bebb-436d6ea89b
 
 ## RF_49
 
-**Modificar reserva** · owner @JoseHerrera21 (Jose Herrera) · reviewer @Rubiocai · Sprint 3
+**Modificar reserva** · owner @JoseHerrera21 (Jose Herrera) · reviewer @Rubiocai · Sprint 2
 
 > El sistema deberá permitirle al usuario modificar la reserva de modo que se mantenga la información de la misma pero en diferente horario. El sistema deberá permitirle al usuario cambiar la persona encargada de dicho espacio.
 
@@ -74,7 +74,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/b0a766e9-aa27-4240-a899-55c52bc6ee
 
 ## RF_50
 
-**Eliminar reserva** · owner @JoseHerrera21 (Jose Herrera) · reviewer @Rubiocai · Sprint 3
+**Eliminar reserva** · owner @JoseHerrera21 (Jose Herrera) · reviewer @Rubiocai · Sprint 2
 
 > El sistema deberá permitirle al usuario poder eliminar una reserva del calendario
 
