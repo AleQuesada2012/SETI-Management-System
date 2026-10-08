@@ -2,6 +2,7 @@
 
 namespace App\Queries\Assets;
 
+use App\Models\Asset;
 use App\Models\AssetCondition;
 use App\Models\AssetType;
 use App\Models\Brand;
@@ -12,8 +13,8 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
 /**
- * The choices offered by the asset form (RF_03 register, RF_04 edit): catalogs, custodians and the spaces a user
- * may register assets in. Deleted catalog entries and deactivated users are never offered.
+ * The choices offered by the asset form (RF_03 register, RF_04 edit) and the movement form (RF_06, RF_25): catalogs,
+ * custodians and spaces. Deleted catalog entries, deleted spaces and deactivated users are never offered.
  */
 final class AssetFormChoices
 {
@@ -27,6 +28,20 @@ final class AssetFormChoices
         $query = $user->isSuperuser() ? Space::query() : $user->managedSpaces()->getQuery();
 
         return $query->orderBy('spaces.code')->get(['spaces.id', 'spaces.code', 'spaces.name']);
+    }
+
+    /**
+     * Where an asset can enter or be transferred to (RF_06, RF_25): every active space but the one it is in. An
+     * Administrador moves assets out of the spaces they manage into any of them (Agent-DB.md §8.1, Q26).
+     *
+     * @return Collection<int, Space>
+     */
+    public function movementDestinations(Asset $asset): Collection
+    {
+        return Space::query()
+            ->when($asset->current_space_id !== null, fn ($query) => $query->whereKeyNot($asset->current_space_id))
+            ->orderBy('code')
+            ->get(['id', 'code', 'name']);
     }
 
     /**

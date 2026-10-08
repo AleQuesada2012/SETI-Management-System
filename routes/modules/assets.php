@@ -22,4 +22,8 @@ Route::prefix('activos')->name('assets.')->group(function () {
     Route::livewire('{asset}/editar', 'pages::assets.edit')
         ->middleware('can:update,asset')
         ->name('edit');
+
+    Route::livewire('{asset}/movimiento', 'pages::assets.move')
+        ->middleware('can:move,asset')
+        ->name('move');
 });
