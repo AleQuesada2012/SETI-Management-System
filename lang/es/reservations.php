@@ -14,6 +14,7 @@ return [
         'notes' => 'notas',
         'from' => 'fecha inicial',
         'to' => 'fecha final',
+        'cancellation_reason' => 'motivo de la cancelación',
     ],
     'validation' => [
         'end_after_start' => 'La hora de fin debe ser posterior a la hora de inicio.',
@@ -102,5 +103,32 @@ return [
         'taken_by' => 'Estas reservas ocupan el espacio en ese horario:',
         'reserve' => 'Reservar este horario',
         'not_reservable' => 'Este espacio no se puede reservar por su tipo o su estado actual.',
+    ],
+    // Messages of the bell (RF_47, RF_48), built from each notification's snapshot.
+    'notifications' => [
+        'period' => ':date, de :start a :end',
+        'created' => [
+            'title' => 'Nueva reserva en :space',
+            'body' => ':actor reservó el espacio para «:title»: :periods.',
+        ],
+        'cancelled' => [
+            'title' => 'Reserva eliminada en :space',
+            'body' => ':actor eliminó la reserva «:title» y liberó el horario: :periods.',
+        ],
+    ],
+    // "Eliminar reserva" (RF_50): the reservation is cancelled and stays in the history.
+    'cancel' => [
+        'heading' => '¿Eliminar esta reserva?',
+        'description' => 'La reserva de :space del :date, de :start a :end, se cancelará y el horario quedará libre. Seguirá apareciendo en el historial como cancelada.',
+        'reason' => 'Motivo (opcional)',
+        'reason_placeholder' => 'Se suspendió la tutoría, cambio de aula…',
+        'back' => 'Volver',
+        'confirm' => 'Eliminar reserva',
+        'done' => 'Se eliminó la reserva de :space y el horario quedó libre.',
+        'errors' => [
+            'already_cancelled' => 'Esta reserva ya fue eliminada.',
+            'started' => 'Esta reserva ya comenzó o finalizó: solo queda en el historial y no se puede eliminar.',
+            'changed' => 'La reserva cambió mientras la veías. Revisa los datos actualizados y vuelve a intentarlo.',
+        ],
     ],
 ];

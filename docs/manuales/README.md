@@ -23,6 +23,34 @@ aparecen como **Próximamente**; los que la cuenta no puede consultar se ocultan
 ![Menú en computadora](reportes-menu-escritorio.jpg)
 ![Menú a 360 px](reportes-menu-movil.jpg)
 
+## Inventario de activos (RF_63)
+
+En **Reportes → Activos → Inventario de activos**, consulta los datos actuales, incluida la condición física y el
+estado del ciclo de vida en columnas separadas. Despliega **Color de condición**, marca **Ámbar** y compara el total
+con el inventario completo. Puedes combinar marca, modelo, condición, estado, espacio, responsable y fechas.
+**Sin marca**, **Sin modelo**, **Sin espacio**, **Sin responsable** y **Sin fecha de adquisición** son selecciones
+explícitas; dejar un filtro vacío no restringe los registros.
+
+Usa **Limpiar filtros** para volver al inventario completo. **Exportar** ofrece PDF y Excel (XLSX), con todos los
+registros coincidentes, aunque la vista previa tenga varias páginas. Un rango de fechas invertido muestra un
+error y bloquea la vista previa y la exportación hasta corregirlo.
+
+![Inventario en computadora](reportes-inventario-escritorio.jpg)
+![Filtros de inventario a 360 px](reportes-inventario-movil.jpg)
+
+## Espacios (RF_64)
+
+En **Reportes → Espacios → Espacios**, consulta nombre, ubicación, capacidad, tipo, estado operativo y encargados.
+Combina la búsqueda con **Tipo de espacio**, **Estado operativo** y **Edificio**; varias opciones del mismo filtro
+se aceptan como alternativas. **Limpiar filtros** restaura todos los espacios. **Exportar** ofrece PDF y Excel
+(XLSX) con los datos actuales de todos los espacios coincidentes.
+
+Para demostrar un resultado vacío, busca `No existe espacio`; aparece un mensaje informativo. La cuenta
+`visualizador@seti.test` no tiene acceso a los reportes (contraseña de demostración `password`).
+
+![Espacios en computadora](reportes-espacios-escritorio.jpg)
+![Espacios a 360 px](reportes-espacios-movil.jpg)
+
 ## Movimientos de activos (RF_06, RF_25)
 
 Un **Administrador** puede registrar movimientos de los activos que están (o estuvieron por última vez) en los
@@ -58,3 +86,19 @@ Un **Administrador** puede registrar, editar y eliminar los componentes de los a
 3. Para cambiarlo, pulsa el lápiz de su fila; para eliminarlo, la papelera y confirma con **Eliminar componente**.
 
 Los componentes de un activo dado de baja se consultan, pero ya no se modifican.
+
+## Notificaciones de reservas (RF_47, RF_48)
+
+Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
+campana de la barra superior, sin recargar la página. La notificación indica el espacio, la fecha y el horario, el
+motivo y quién reservó; quien hizo la reserva no recibe aviso. Al tocar una notificación se marca como leída y se abre
+el detalle de la reserva; **Marcar todas como leídas** limpia el contador. Para probarlo, reserva **LAB-110** con
+`reservante@seti.test` y abre la campana con `superusuario@seti.test` o `admin@seti.test` (contraseña `password`).
+
+## Eliminar una reserva (RF_50)
+
+Quien hizo la reserva o es su responsable, el Administrador encargado del espacio y el Superusuario ven **Eliminar** en
+el detalle de una reserva que todavía no ha comenzado (en el calendario, toca el día y luego el motivo de la reserva).
+El sistema pide confirmar y permite anotar un motivo opcional. La reserva se cancela: el horario queda libre en el
+calendario, la reserva sigue en el historial como **Cancelada** y el Superusuario y los encargados del espacio reciben
+una notificación. Las reservas en curso o finalizadas no ofrecen esta opción.

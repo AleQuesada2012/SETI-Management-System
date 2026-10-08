@@ -5,11 +5,14 @@ namespace App\Actions\Reservations;
 use App\Models\Reservation;
 use App\Models\Space;
 use App\Models\User;
+use App\Notifications\Reservations\ReservationCreated;
+use App\Notifications\SpaceRecipients;
 use App\Support\Database\ConstraintViolation;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -20,7 +23,7 @@ use Illuminate\Validation\ValidationException;
  * free. The free check gives a friendly message; the reservations_no_overlap constraint stays the final judge, so a
  * concurrent booking that wins the race comes back as the same kind of Spanish message (ADR-0005).
  *
- * RF_47 and RF_48 (Sprint 2) notify the Superusuarios and the space's managers after the commit.
+ * RF_47 and RF_48: the Superusuarios and the space's managers are notified after the commit (SpaceRecipients).
  */
 final class CreateReservation
 {
@@ -44,7 +47,7 @@ final class CreateReservation
         $this->ensureBookable($space, $startsAt, $endsAt, (int) $data['attendees']);
 
         try {
-            return DB::transaction(fn (): Reservation => Reservation::query()->create([
+            $reservation = DB::transaction(fn (): Reservation => Reservation::query()->create([
                 'space_id' => $space->id,
                 'starts_at' => $startsAt,
                 'ends_at' => $endsAt,
@@ -57,6 +60,10 @@ final class CreateReservation
         } catch (QueryException $e) {
             throw ConstraintViolation::toValidationException($e, field: self::fieldOf($e));
         }
+
+        Notification::send(SpaceRecipients::of($space, $actor), ReservationCreated::of($space, [$reservation], $actor));
+
+        return $reservation;
     }
 
     /**

@@ -22,7 +22,8 @@ removing are audited with `Audit::record(AuditAction::ManagerAssigned|ManagerRem
 `$user->refreshManagedSpaces()` afterwards. RF_96/RF_97 then read the same `space_managers` data.
 
 - **Users are never deleted.** Deactivation (RF_88) sets `deactivated_at`/`deactivated_by` and deletes the user's `sessions` rows; reactivation (RF_98) clears them. Both audited (`Deactivated`, `Reactivated`).
-- **Registering (RF_91)** creates the user from name, email and role(s) with `password = NULL`, then sends the invitation: a password-broker link (`Password::broker()->sendResetLink`) that sets the password and `email_verified_at`. Emails are stored lowercase.
+- **Registering (RF_91)** creates the user from name, email and role(s) with `password = NULL`, then sends the invitation: a separate `invitations` broker and `UserInvitation` notification, valid for 48 hours, that set the password and
+  `email_verified_at`. Ordinary password-reset links remain valid for 60 minutes. Emails are stored lowercase.
 - **Invariants no one may break**, enforced in `app/Actions/Users` (policies cannot, the Superusuario bypasses them):
   - a user always holds at least one role;
   - the last active Superusuario keeps that role and stays active;
