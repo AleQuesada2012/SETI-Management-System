@@ -77,3 +77,11 @@ campana de la barra superior, sin recargar la página. La notificación indica e
 motivo y quién reservó; quien hizo la reserva no recibe aviso. Al tocar una notificación se marca como leída y se abre
 el detalle de la reserva; **Marcar todas como leídas** limpia el contador. Para probarlo, reserva **LAB-110** con
 `reservante@seti.test` y abre la campana con `superusuario@seti.test` o `admin@seti.test` (contraseña `password`).
+
+## Eliminar una reserva (RF_50)
+
+Quien hizo la reserva o es su responsable, el Administrador encargado del espacio y el Superusuario ven **Eliminar** en
+el detalle de una reserva que todavía no ha comenzado (en el calendario, toca el día y luego el motivo de la reserva).
+El sistema pide confirmar y permite anotar un motivo opcional. La reserva se cancela: el horario queda libre en el
+calendario, la reserva sigue en el historial como **Cancelada** y el Superusuario y los encargados del espacio reciben
+una notificación. Las reservas en curso o finalizadas no ofrecen esta opción.
