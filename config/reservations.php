@@ -11,4 +11,10 @@ return [
         'opens' => '07:00',
         'closes' => '22:00',
     ],
+
+    /*
+     * Reservations start and end on this grid of minutes from the hour (:00, :15, :30, :45), so the forms offer only
+     * these times and the Actions refuse any other.
+     */
+    'slot_minutes' => 15,
 ];

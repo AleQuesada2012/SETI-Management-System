@@ -14,7 +14,8 @@ use Livewire\Component;
  * Detalle de la reserva (RF_51). Owner: reservations (@JoseHerrera21). Changes call $this->authorize() with
  * ReservationPolicy (update, cancel). Reservations are never deleted: a cancelled one still opens here and says so
  * (RF_51 diagram); an id that never existed answers 404. "Eliminar" (RF_50) asks for confirmation and an optional
- * reason, then cancels it with CancelReservation and returns to the calendar on that day.
+ * reason, then cancels it with CancelReservation and returns to the calendar on that day. "Modificar" opens the RF_49
+ * form, and the reason of the last modification shows next to the other details.
  */
 new #[Title('reservations.show.title')] class extends Component {
     public Reservation $reservation;
@@ -67,9 +68,8 @@ new #[Title('reservations.show.title')] class extends Component {
 
         @if ($this->canBeChanged)
             <div class="flex w-full gap-2 sm:ms-auto sm:w-auto">
-                {{-- RF_49 turns "Modificar" into the modify form. --}}
                 @can('update', $reservation)
-                    <flux:button icon="pencil-square" disabled :title="__('reservations.show.coming_soon')" class="flex-1 sm:flex-none" data-test="reservation-update">
+                    <flux:button icon="pencil-square" :href="route('reservations.edit', $reservation)" wire:navigate class="flex-1 sm:flex-none" data-test="reservation-update">
                         {{ __('reservations.show.update') }}
                     </flux:button>
                 @endcan
@@ -164,6 +164,12 @@ new #[Title('reservations.show.title')] class extends Component {
                 <dt class="text-sm text-ink-muted">{{ __('reservations.show.created_by') }}</dt>
                 <dd class="text-ink">{{ $this->details->created_by_name }}</dd>
             </div>
+            @if ($this->details->was_modified && filled($reservation->modification_reason))
+                <div class="sm:col-span-2">
+                    <dt class="text-sm text-ink-muted">{{ __('reservations.show.modification_reason') }}</dt>
+                    <dd class="whitespace-pre-line text-ink" data-test="modification-reason">{{ $reservation->modification_reason }}</dd>
+                </div>
+            @endif
             @if (filled($this->details->notes))
                 <div class="sm:col-span-2">
                     <dt class="text-sm text-ink-muted">{{ __('reservations.show.notes') }}</dt>

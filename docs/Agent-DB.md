@@ -225,6 +225,7 @@ erDiagram
         bigint created_by FK
         varchar status "confirmed or cancelled"
         integer version "modified when above 1"
+        text modification_reason "why it was last modified"
     }
 ```
 
@@ -671,13 +672,15 @@ The history screens merge, newest first:
 - **Rules in Laravel (Q29).** These come from the process diagrams and are validated with friendly messages:
   - the space is reservable (§6);
   - the booking falls inside the **allowed hours**, a global window in `config/` (placeholder: Monday–Saturday
-    07:00–22:00, to be confirmed with SETI);
+    07:00–22:00, to be confirmed with SETI), starting and ending on its 15-minute slots (`slot_minutes`);
   - `attendees ≤ spaces.capacity` (the database only enforces `attendees > 0` and `ends_at > starts_at`);
   - only the responsible user or creator (`reservations.manage_own`), the space's managers or a Superusuario
     (`reservations.manage_any`) may modify or cancel;
   - reservations that are ongoing or past can't be modified or cancelled (RF_49/RF_50 diagrams).
 - **Modifying (RF_49).** Update in place with `version = version + 1 … WHERE id = ? AND version = ?` (optimistic
-  locking). The exclusion constraint re-checks the new time automatically.
+  locking; `UpdateReservation` locks the row and compares the version the user opened). The exclusion constraint
+  re-checks the new time automatically. Every field of the booking may change, including the space; the optional
+  `modification_reason` holds the reason of the last change, and the audit log keeps each one with its change.
 - **"My reservations" (RF_52)** means `created_by = me OR responsible_id = me`.
 - **Canonical availability check (RF_55).** It uses the same `[)` semantics as the constraint (tested):
 
@@ -713,14 +716,17 @@ reservation never notifies anyone.
 | `type` | Trigger | Recipients |
 |---|---|---|
 | `reservation.created` | RF_46 → RF_47/RF_48 | Active Superusuarios + the space's managers |
-| `reservation.updated` | RF_49 (diagram) | Same |
+| `reservation.updated` | RF_49 (diagram), same space | Same |
+| `reservation.moved_out`, `reservation.moved_in` | RF_49 moving a reservation to another space | `moved_out`: Superusuarios + managers of the space it left; `moved_in`: Superusuarios + managers of the new space |
 | `reservation.cancelled` | RF_50 (diagram) | Same |
 | `maintenance.due` | Daily scheduler: scheduled maintenance due within N days, or overdue (RF_27; Q30) | Managers of the asset's current space |
 | `asset.damage_reported`, `asset.loss_reported` | An `asset_events` row of kind damage/loss (Q30) | Managers of the asset's space + active Superusuarios |
 
 Recipient rules (Q34):
 - active users only, never the person who performed the action;
-- one notification per action, so a whole series produces one notification that lists all its dates;
+- one notification per action, so a whole series produces one notification that lists all its dates; the exception is
+  a reservation moved to another space (RF_49), which notifies the space it left and the new one separately, so a
+  Superusuario, or a manager of both spaces, receives both;
 - a space without managers notifies only the Superusuarios.
 
 Canonical recipient query (tested):
@@ -735,7 +741,7 @@ WHERE u.deactivated_at IS NULL
 ```
 
 Example payload for `reservation.created` (`reservation.updated` and `reservation.cancelled` share the shape; `actor`
-is who performed the action):
+is who performed the action). The RF_49 types add `previous` (`space` and `periods` before the change) and `reason`:
 
 ```json
 {
@@ -1263,7 +1269,7 @@ Each decision was put to the project manager with alternatives and a recommendat
 | RF_46 | Reserve a space | `reservations` + `reservations_no_overlap`; Reservante; capacity and hours in Laravel |
 | RF_47 | Notify the Superuser | `notifications` (`reservation.created`) |
 | RF_48 | Notify the assigned admin | `notifications` via `space_managers` |
-| RF_49 | Modify a reservation | `reservations` update + `version`; EXCLUDE re-checks; `reservation.updated` |
+| RF_49 | Modify a reservation | `reservations` update + `version` + `modification_reason`; EXCLUDE re-checks; `reservation.updated`, or `reservation.moved_out` + `reservation.moved_in` |
 | RF_50 | Delete (cancel) a reservation | `status = cancelled` + `cancelled_*`; `reservation.cancelled` |
 | RF_51 | Reservation detail | `reporting.reservations` |
 | RF_52 | Reservation history | `reservations` by `created_by`/`responsible_id`; filter by effective status and dates |
