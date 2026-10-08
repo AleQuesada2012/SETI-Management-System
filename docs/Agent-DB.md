@@ -734,16 +734,21 @@ WHERE u.deactivated_at IS NULL
     OR EXISTS (SELECT 1 FROM space_managers m WHERE m.space_id = :space_id AND m.user_id = u.id));
 ```
 
-Example payload for `reservation.created`:
+Example payload for `reservation.created` (`reservation.updated` and `reservation.cancelled` share the shape; `actor`
+is who performed the action):
 
 ```json
 {
   "reservation_ids": [812, 813, 814],
   "series_id": "0b7c…",
   "space": { "id": 3, "code": "LAB-110", "name": "Laboratorio 110" },
-  "dates": ["2026-10-06T10:00:00-06:00", "2026-10-13T10:00:00-06:00", "2026-10-20T10:00:00-06:00"],
+  "periods": [
+    { "starts_at": "2026-10-06T10:00:00-06:00", "ends_at": "2026-10-06T12:00:00-06:00" },
+    { "starts_at": "2026-10-13T10:00:00-06:00", "ends_at": "2026-10-13T12:00:00-06:00" },
+    { "starts_at": "2026-10-20T10:00:00-06:00", "ends_at": "2026-10-20T12:00:00-06:00" }
+  ],
   "title": "Tutoría grupal",
-  "booked_by": { "id": 7, "name": "Beto Reservante" }
+  "actor": { "id": 7, "name": "Beto Reservante" }
 }
 ```
 

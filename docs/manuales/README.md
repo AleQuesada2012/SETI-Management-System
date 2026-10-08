@@ -69,3 +69,11 @@ espacios de los que es encargado; el **Superusuario**, de cualquier activo. Pru�
 La ficha del activo lista todos sus movimientos, del más reciente al más antiguo, con la fecha, el tipo, el origen,
 el destino, quién lo registró y el motivo. Un Administrador que abre un activo de un espacio que no tiene asignado
 ve un aviso de que no puede trasladarlo; las cuentas sin el permiso no ven el botón.
+
+## Notificaciones de reservas (RF_47, RF_48)
+
+Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
+campana de la barra superior, sin recargar la página. La notificación indica el espacio, la fecha y el horario, el
+motivo y quién reservó; quien hizo la reserva no recibe aviso. Al tocar una notificación se marca como leída y se abre
+el detalle de la reserva; **Marcar todas como leídas** limpia el contador. Para probarlo, reserva **LAB-110** con
+`reservante@seti.test` y abre la campana con `superusuario@seti.test` o `admin@seti.test` (contraseña `password`).
