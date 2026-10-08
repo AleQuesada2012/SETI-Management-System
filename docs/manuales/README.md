@@ -22,3 +22,11 @@ aparecen como **Próximamente**; los que la cuenta no puede consultar se ocultan
 
 ![Menú en computadora](reportes-menu-escritorio.jpg)
 ![Menú a 360 px](reportes-menu-movil.jpg)
+
+## Notificaciones de reservas (RF_47, RF_48)
+
+Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
+campana de la barra superior, sin recargar la página. La notificación indica el espacio, la fecha y el horario, el
+motivo y quién reservó; quien hizo la reserva no recibe aviso. Al tocar una notificación se marca como leída y se abre
+el detalle de la reserva; **Marcar todas como leídas** limpia el contador. Para probarlo, reserva **LAB-110** con
+`reservante@seti.test` y abre la campana con `superusuario@seti.test` o `admin@seti.test` (contraseña `password`).

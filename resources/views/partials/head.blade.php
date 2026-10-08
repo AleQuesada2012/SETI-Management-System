@@ -1,5 +1,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{{-- Echo sends it when it subscribes to the user's private channel (/broadcasting/auth, ADR-0006). --}}
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 {{-- Page titles may be translation keys (#[Title('assets.index.title')]) or kit strings: both go through __(). --}}
 <title>
