@@ -70,6 +70,9 @@ La ficha del activo lista todos sus movimientos, del más reciente al más antig
 el destino, quién lo registró y el motivo. Un Administrador que abre un activo de un espacio que no tiene asignado
 ve un aviso de que no puede trasladarlo; las cuentas sin el permiso no ven el botón.
 
+![Movimientos de un activo en computadora](activos-movimientos-escritorio.jpg)
+![Movimientos de un activo a 360 px](activos-movimientos-movil.jpg)
+
 ## Eliminar un activo (RF_02)
 
 Eliminar sirve solo para un activo **registrado por error**. Si el activo existe y deja de usarse, no se elimina: se
@@ -83,6 +86,10 @@ los que es encargado; el **Superusuario**, cualquiera. Pruébalo con `admin@seti
 
 Si otra persona eliminó el activo mientras tenías abierta su ficha, un aviso indica que ya no existe. Las cuentas sin el
 permiso, o un Administrador ante un activo de un espacio que no tiene asignado, no ven el botón.
+
+![Confirmación para eliminar en computadora](activos-eliminar-escritorio.jpg)
+![Confirmación para eliminar a 360 px](activos-eliminar-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
