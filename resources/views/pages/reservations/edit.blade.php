@@ -121,7 +121,7 @@ new #[Title('reservations.edit.title')] class extends Component {
                 <flux:text class="mt-1">{{ __('reservations.edit.description', ['hours' => CreateReservation::allowedHoursMessage()]) }}</flux:text>
             </div>
 
-            <x-reservations.form-fields :spaces="$this->spaces" :selected-space="$this->selectedSpace" :responsibles="$this->responsibles" />
+            <x-reservations.form-fields :spaces="$this->spaces" :selected-space="$this->selectedSpace" :responsibles="$this->responsibles" :start-time="$start_time" />
 
             <flux:textarea wire:model="modification_reason" :label="__('reservations.edit.reason')" :placeholder="__('reservations.edit.reason_placeholder')" rows="2" data-test="modification-reason" />
 

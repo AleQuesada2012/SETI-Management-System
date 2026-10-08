@@ -34,6 +34,7 @@ return [
         'heading' => 'Nueva reserva',
         'description' => 'Elige un espacio, la fecha y el horario. :hours',
         'choose_space' => 'Selecciona un espacio',
+        'choose_time' => 'Selecciona una hora',
         'space_hint' => ':location · Capacidad: :capacity personas',
         'title_placeholder' => 'Tutoría de cálculo, reunión de proyecto…',
         'cancel' => 'Cancelar',
@@ -42,6 +43,7 @@ return [
         'errors' => [
             'not_reservable' => 'Este espacio no se puede reservar por su tipo o su estado actual.',
             'in_past' => 'La reserva debe comenzar después de este momento.',
+            'off_slot' => 'Las horas de inicio y fin deben ir en franjas de :minutes minutos.',
             'outside_hours' => 'Solo se puede reservar los días :days, de :opens a :closes.',
             'over_capacity' => 'La cantidad de personas supera la capacidad del espacio (:capacity).',
             'overlap' => 'El espacio ya está reservado en ese horario. Revisa las reservas del espacio o el calendario y elige otro horario.',

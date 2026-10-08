@@ -204,6 +204,7 @@ test('the new values follow the rules of a new booking, as Spanish messages unde
 })->with([
     'overlapping another reservation' => [fn () => ['start_time' => '11:00', 'end_time' => '14:00'], 'start_time', 'El espacio ya está reservado en ese horario. Revisa las reservas del espacio o el calendario y elige otro horario.'],
     'in the past' => [fn () => ['date' => '2030-10-14', 'start_time' => '07:00', 'end_time' => '09:00'], 'start_time', 'La reserva debe comenzar después de este momento.'],
+    'off the 15-minute slots' => [fn () => ['start_time' => '10:05'], 'start_time', 'Las horas de inicio y fin deben ir en franjas de 15 minutos.'],
     'on a Sunday' => [fn () => ['date' => '2030-10-20'], 'start_time', 'Solo se puede reservar los días lunes, martes, miércoles, jueves, viernes y sábado, de 07:00 a 22:00.'],
     'more people than the new space holds' => [fn () => ['space_id' => Space::factory()->create(['capacity' => 5])->id], 'attendees', 'La cantidad de personas supera la capacidad del espacio (5).'],
     'a space that is not reservable' => [fn () => ['space_id' => Space::factory()->office()->create()->id], 'space_id', 'Este espacio no se puede reservar por su tipo o su estado actual.'],

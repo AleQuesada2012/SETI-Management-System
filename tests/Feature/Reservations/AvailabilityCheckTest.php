@@ -48,6 +48,15 @@ test('an overlapping block is reported as unavailable with the reservation that 
         ->assertDontSee(__('reservations.availability_check.reserve'));
 });
 
+test('only the slots of the allowed hours can be checked', function () {
+    actingAsRole(SystemRole::Reservante);
+
+    checkAvailability($this->space, $this->day->toDateString(), '10:42', '11:00')
+        ->assertHasErrors(['start_time' => 'in']);
+    checkAvailability($this->space, $this->day->toDateString(), '21:00', '22:30')
+        ->assertHasErrors(['end_time' => 'in']);
+});
+
 test('a block that starts when another ends is available ([start, end) semantics)', function () {
     actingAsRole(SystemRole::Reservante);
 

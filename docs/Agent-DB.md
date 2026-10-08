@@ -672,7 +672,7 @@ The history screens merge, newest first:
 - **Rules in Laravel (Q29).** These come from the process diagrams and are validated with friendly messages:
   - the space is reservable (§6);
   - the booking falls inside the **allowed hours**, a global window in `config/` (placeholder: Monday–Saturday
-    07:00–22:00, to be confirmed with SETI);
+    07:00–22:00, to be confirmed with SETI), starting and ending on its 15-minute slots (`slot_minutes`);
   - `attendees ≤ spaces.capacity` (the database only enforces `attendees > 0` and `ends_at > starts_at`);
   - only the responsible user or creator (`reservations.manage_own`), the space's managers or a Superusuario
     (`reservations.manage_any`) may modify or cancel;

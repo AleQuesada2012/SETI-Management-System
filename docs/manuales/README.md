@@ -91,8 +91,10 @@ una notificación. Las reservas en curso o finalizadas no ofrecen esta opción.
 Quien hizo la reserva o es su responsable, el Administrador encargado del espacio y el Superusuario ven **Modificar** en
 el detalle de una reserva que todavía no ha comenzado. El formulario trae los datos actuales: se puede cambiar el
 espacio, la fecha, el horario, el motivo, la cantidad de personas, el responsable y las notas, y anotar un motivo
-opcional de la modificación. Se aplican las mismas reglas que al reservar (horario permitido, capacidad, espacio
-reservable y sin choques con otra reserva); la reserva misma no cuenta como choque. Al guardar, la reserva muestra la
-etiqueta **Modificada** y el motivo de la última modificación. El Superusuario y los encargados del espacio reciben una
-notificación; si la reserva cambia de espacio, los encargados del espacio que se liberó y los del espacio nuevo reciben
-cada uno su aviso. Las reservas en curso, finalizadas o eliminadas no ofrecen esta opción.
+opcional de la modificación. Como al reservar, las horas de inicio y fin se eligen de una lista con las franjas de 15
+minutos del horario permitido (07:00, 07:15…), y la hora de fin solo ofrece horas posteriores al inicio. Se aplican las
+mismas reglas que al reservar (horario permitido, capacidad, espacio reservable y sin choques con otra reserva); la
+reserva misma no cuenta como choque. Al guardar, la reserva muestra la etiqueta **Modificada** y el motivo de la última
+modificación. El Superusuario y los encargados del espacio reciben una notificación; si la reserva cambia de espacio,
+los encargados del espacio que se liberó y los del espacio nuevo reciben cada uno su aviso. Las reservas en curso,
+finalizadas o eliminadas no ofrecen esta opción.

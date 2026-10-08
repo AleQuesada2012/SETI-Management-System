@@ -101,7 +101,7 @@ new #[Title('reservations.create.title')] class extends Component {
                 <flux:text class="mt-1">{{ __('reservations.create.description', ['hours' => CreateReservation::allowedHoursMessage()]) }}</flux:text>
             </div>
 
-            <x-reservations.form-fields :spaces="$this->spaces" :selected-space="$this->selectedSpace" :responsibles="$this->responsibles" />
+            <x-reservations.form-fields :spaces="$this->spaces" :selected-space="$this->selectedSpace" :responsibles="$this->responsibles" :start-time="$start_time" />
 
             <flux:error name="form" />
 
