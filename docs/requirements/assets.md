@@ -20,7 +20,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/762fa85e-5ed3-4210-8599-7d3214b2db
 
 ## RF_02
 
-**Eliminar activo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 3
+**Eliminar activo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 2
 
 > La opción permite eliminar un activo de un espacio específico
 
@@ -102,6 +102,10 @@ Acceptance criteria:
 - El sistema mostrará los activos en el que su ID coincida
 - Si el texto o ID ingresados no concuerdan con ningún activo registrado, el sistema deberá mostrar una leyenda diciendo que el activo no existe
 
+Notes:
+
+- 2026-09-29 PM/architect agreement: use the inventory search fields and matching rules in the [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract).
+
 Diagram: [Lucid](https://lucid.app/lucidchart/87c3227b-f052-407b-8e37-3c2d4a72910d/edit)
 
 ## RF_08
@@ -115,6 +119,10 @@ Acceptance criteria:
 - El sistema sólo mostrará aquellos activos que cumplan con los atributos deseados por el usuario.
 - Cuando no exista ningún activo en el sistema el cual cumpla con los atributos estipulados por el usuario el sistema deberá informar al usuario que no existe ningún activo que cumpla con dichos filtros.
 - Cuando se seleccione la opción de limpiar filtros el sistema restablece el listado.
+
+Notes:
+
+- 2026-09-29 PM/architect agreement: implement the [inventory filter schema and common conventions](../../.ai/rules/reports.md#shared-filter-contract), including all three physical color groups, distinct condition/lifecycle filters and explicit missing-value selections. RF_63 reuses this module contract.
 
 Diagram: [Lucid](https://lucid.app/lucidchart/87c3227b-f052-407b-8e37-3c2d4a72910d/edit)
 
@@ -171,7 +179,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/609b1df4-fe7a-4ee5-ae06-9e320c17ba
 
 ## RF_12
 
-**Registrar componentes del equipo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 3
+**Registrar componentes del equipo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 2
 
 > El sistema debe permitir registrar los componentes principales asociados a un equipo, con el fin de mantener un inventario detallado de sus partes.
 
@@ -318,7 +326,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/78a6182c-54b5-43e8-8553-9af00cd6ab
 
 ## RF_20
 
-**Adjuntar documentos a los activos** · owner @Dizabu (Diego Zamora) · reviewer @DavidZamoraB · Sprint 3
+**Adjuntar documentos a los activos** · owner @Dizabu (Diego Zamora) · reviewer @DavidZamoraB · Sprint 2
 
 > El sistema debe permitir adjuntar documentos relacionados con un activo, como facturas, manuales o documentos de garantía, para mantener la información del activo centralizada.
 
@@ -338,7 +346,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/7fefc8f2-6653-4bfc-b4b5-6daca51326
 
 ## RF_21
 
-**Adjuntar fotografías a los activos** · owner @Dizabu (Diego Zamora) · reviewer @DavidZamoraB · Sprint 3
+**Adjuntar fotografías a los activos** · owner @Dizabu (Diego Zamora) · reviewer @DavidZamoraB · Sprint 2
 
 > El sistema debe permitir asociar fotografías a un activo para facilitar su identificación y visualizar su estado físico.
 
@@ -515,12 +523,13 @@ Acceptance criteria:
 Notes:
 
 - Closes together with RF_08: include it in that PR (it adds no separate screen).
+- 2026-09-29 PM/architect agreement: use the shared inventory contract's responsible_user criterion, including deactivated users and explicit missing-value selections; see the [contract](../../.ai/rules/reports.md#shared-filter-contract).
 
 Diagram: [Lucid](https://lucid.app/lucidchart/06221247-5392-45eb-876d-7e0a76e2269c/edit)
 
 ## RF_31
 
-**Consultar componentes de un activo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 3 (closes with RF_12)
+**Consultar componentes de un activo** · owner @DavidZamoraB (David Zamora) · reviewer @Dizabu · Sprint 2 (closes with RF_12)
 
 > El sistema debe permitir consultar el detalle de los componentes asociados a un activo.
 

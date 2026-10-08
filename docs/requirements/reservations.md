@@ -60,7 +60,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/6291e9c2-f7a1-4d9d-bebb-436d6ea89b
 
 ## RF_49
 
-**Modificar reserva** · owner @JoseHerrera21 (Jose Herrera) · reviewer @Rubiocai · Sprint 3
+**Modificar reserva** · owner @JoseHerrera21 (Jose Herrera) · reviewer @Rubiocai · Sprint 2
 
 > El sistema deberá permitirle al usuario modificar la reserva de modo que se mantenga la información de la misma pero en diferente horario. El sistema deberá permitirle al usuario cambiar la persona encargada de dicho espacio.
 
@@ -74,7 +74,7 @@ Diagram: [Lucid](https://lucid.app/lucidchart/b0a766e9-aa27-4240-a899-55c52bc6ee
 
 ## RF_50
 
-**Eliminar reserva** · owner @JoseHerrera21 (Jose Herrera) · reviewer @Rubiocai · Sprint 3
+**Eliminar reserva** · owner @JoseHerrera21 (Jose Herrera) · reviewer @Rubiocai · Sprint 2
 
 > El sistema deberá permitirle al usuario poder eliminar una reserva del calendario
 
@@ -137,6 +137,10 @@ Acceptance criteria:
 - El sistema debe permitir filtrar espacios por tipo y estado.
 - El sistema debe permitir combinar más de un criterio filtrado.
 - El sistema debe permitir limpiar los filtros y restaurar el listado completo.
+
+Notes:
+
+- 2026-09-29 PM/architect agreement: implement the [spaces filter schema](../../.ai/rules/reports.md#spaces-schema) and shared validation/normalization. Building filtering covers the approved location intent; RF_64 reuses this contract.
 
 Diagram: [Lucid](https://lucid.app/lucidchart/1d671bd3-74d1-4950-b6e1-7c1db9e4885a/edit)
 

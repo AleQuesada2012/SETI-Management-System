@@ -31,7 +31,7 @@ final class ExportReport
     public function __construct(private readonly ReportRegistry $registry) {}
 
     /**
-     * @param  array<string, mixed>  $filters  the filters of the preview; unknown keys and empty values are dropped
+     * @param  array<string, mixed>  $filters  validated and normalized by the report's shared module contract
      */
     public function handle(User $user, string $reportCode, ReportFormat $format, array $filters = []): ReportGeneration
     {

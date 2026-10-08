@@ -123,7 +123,7 @@
    "Dado que el usuario intente eliminar un activo el cual no se encuentre en la base de datos deberá notificar al usuario de su inexistencia"
   ],
   "owner": "DavidZamoraB",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "David Zamora",
   "diagram": "https://lucid.app/lucidchart/a2ee6871-a96f-4208-b014-9b54e536f6f2/edit",
@@ -238,7 +238,9 @@
   "reviewer": "Dizabu",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: use the inventory search fields and matching rules in the [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract)."
+  ]
  },
  {
   "code": "RF_08",
@@ -259,7 +261,9 @@
   "reviewer": "Dizabu",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: implement the [inventory filter schema and common conventions](../../.ai/rules/reports.md#shared-filter-contract), including all three physical color groups, distinct condition/lifecycle filters and explicit missing-value selections. RF_63 reuses this module contract."
+  ]
  },
  {
   "code": "RF_09",
@@ -342,7 +346,7 @@
    "El sistema debe permitir modificar o eliminar un componente registrado."
   ],
   "owner": "DavidZamoraB",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "David Zamora",
   "diagram": "https://lucid.app/lucidchart/2d426401-2fe0-4e1e-8c09-d1dba3495d2a/edit",
@@ -534,7 +538,7 @@
    "Los usuarios con permisos adecuados deben poder eliminar documentos adjuntos."
   ],
   "owner": "Dizabu",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "Diego Zamora",
   "diagram": "https://lucid.app/lucidchart/7fefc8f2-6653-4bfc-b4b5-6daca5132624/edit",
@@ -560,7 +564,7 @@
    "El sistema debe validar que el archivo corresponda a un formato de imagen permitido."
   ],
   "owner": "Dizabu",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "Diego Zamora",
   "diagram": "https://lucid.app/lucidchart/4a97d32c-d3b2-4775-8962-981434fec8a9/edit",
@@ -788,7 +792,8 @@
   "free_with": "RF_08",
   "cut_rank": null,
   "notes": [
-   "Closes together with RF_08: include it in that PR (it adds no separate screen)."
+   "Closes together with RF_08: include it in that PR (it adds no separate screen).",
+   "2026-09-29 PM/architect agreement: use the shared inventory contract's responsible_user criterion, including deactivated users and explicit missing-value selections; see the [contract](../../.ai/rules/reports.md#shared-filter-contract)."
   ]
  },
  {
@@ -801,7 +806,7 @@
    "Si el activo no posee componentes registrados, el sistema debe informar que no existen componentes asociados"
   ],
   "owner": "DavidZamoraB",
-  "sprint": 3,
+  "sprint": 2,
   "module": "assets",
   "owner_name": "David Zamora",
   "diagram": "https://lucid.app/lucidchart/2d426401-2fe0-4e1e-8c09-d1dba3495d2a/edit",
@@ -1055,7 +1060,9 @@
   "reviewer": "JoseHerrera21",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: use the space search fields and matching rules in the [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract), coordinated with RF_54."
+  ]
  },
  {
   "code": "RF_43",
@@ -1202,7 +1209,7 @@
    "El sistema deberá permitirle al usuario cambiar el espacio escogido."
   ],
   "owner": "JoseHerrera21",
-  "sprint": 3,
+  "sprint": 2,
   "module": "reservations",
   "owner_name": "Jose Herrera",
   "diagram": "https://lucid.app/lucidchart/b0a766e9-aa27-4240-a899-55c52bc6ee27/edit",
@@ -1221,7 +1228,7 @@
    "El sistema deberá tener una opción la cual le permite al encargado del manejo de los espacios y su calendario eliminar reservaciones en una fecha en específica."
   ],
   "owner": "JoseHerrera21",
-  "sprint": 3,
+  "sprint": 2,
   "module": "reservations",
   "owner_name": "Jose Herrera",
   "diagram": "https://lucid.app/lucidchart/b02a4341-15c4-4eba-a28b-1ba9cc5250e0/edit",
@@ -1314,7 +1321,9 @@
   "reviewer": "Rubiocai",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: implement the [spaces filter schema](../../.ai/rules/reports.md#spaces-schema) and shared validation/normalization. Building filtering covers the approved location intent; RF_64 reuses this contract."
+  ]
  },
  {
   "code": "RF_55",
@@ -1435,7 +1444,7 @@
    "El sistema debe mostrar un mensaje informativo cuando no existan reportes disponibles para la categoría seleccionada."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1445,7 +1454,8 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1: the first item of Sprint 2."
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn.",
+   "2026-09-29 PM/architect agreement: follow the [report menu agreement](../../.ai/rules/reports.md#report-menu-agreement) for permission hiding and future-sprint availability."
   ]
  },
  {
@@ -1490,7 +1500,9 @@
   "reviewer": "DavidZamoraB",
   "free_with": null,
   "cut_rank": null,
-  "notes": []
+  "notes": [
+   "2026-09-29 PM/architect agreement: controls consume the module-owned [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract); lists, previews and exports share validation, normalization and filter meanings."
+  ]
  },
  {
   "code": "RF_63",
@@ -1502,7 +1514,7 @@
    "El sistema debe permitir visualizar el reporte antes de proceder con su exportación."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1512,7 +1524,8 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1. The first real report definition: every other report copies it."
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn. The first real report definition: every other report copies it.",
+   "2026-09-29 PM/architect agreement: show physical condition and lifecycle status separately and delegate filtering to the [shared inventory contract](../../.ai/rules/reports.md#shared-filter-contract)."
   ]
  },
  {
@@ -1525,7 +1538,7 @@
    "La información presentada debe corresponder con los datos actualmente almacenados en la base de datos."
   ],
   "owner": "AleQuesada2012",
-  "sprint": 2,
+  "sprint": 1,
   "module": "reports",
   "owner_name": "Alejandro Quesada",
   "diagram": null,
@@ -1535,7 +1548,8 @@
   "free_with": null,
   "cut_rank": null,
   "notes": [
-   "Carried over from Sprint 1."
+   "2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn.",
+   "2026-09-29 PM/architect agreement: delegate filters, validation, normalization and choices to the [shared spaces contract](../../.ai/rules/reports.md#shared-filter-contract)."
   ]
  },
  {
@@ -2147,7 +2161,7 @@
    "Si no existen usuarios administradores o normales el sistema deberá mostrar un mensaje de que no existen usuarios registrados"
   ],
   "owner": "Rubiocai",
-  "sprint": 3,
+  "sprint": 2,
   "module": "users",
   "owner_name": "Sebastián Sánchez",
   "diagram": null,
@@ -2231,7 +2245,7 @@
    "Si el laboratorio no tiene administradores asignados, el sistema debe informar dicha situación."
   ],
   "owner": "Rubiocai",
-  "sprint": 3,
+  "sprint": 2,
   "module": "users",
   "owner_name": "Sebastián Sánchez",
   "diagram": null,
@@ -2252,7 +2266,7 @@
    "Si el administrador no tiene laboratorios asignados, el sistema debe mostrar un mensaje indicándolo."
   ],
   "owner": "Rubiocai",
-  "sprint": 3,
+  "sprint": 2,
   "module": "users",
   "owner_name": "Sebastián Sánchez",
   "diagram": null,
@@ -2338,7 +2352,7 @@
    "Si no existen usuarios con el estado seleccionado, el sistema debe mostrar un mensaje informativo."
   ],
   "owner": "Rubiocai",
-  "sprint": 3,
+  "sprint": 2,
   "module": "users",
   "owner_name": "Sebastián Sánchez",
   "diagram": null,

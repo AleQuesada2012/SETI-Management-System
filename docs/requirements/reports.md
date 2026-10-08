@@ -6,7 +6,7 @@ Requirements whose code lives in the reports module (module owner: @AleQuesada20
 
 ## RF_60
 
-**Entrar al menú de reportes** · owner @AleQuesada2012 (Alejandro Quesada) · reviewer @DavidZamoraB · Sprint 2
+**Entrar al menú de reportes** · owner @AleQuesada2012 (Alejandro Quesada) · reviewer @DavidZamoraB · Sprint 1
 
 > El sistema tendrá una sección de reportes y estadísticas desde la cual el usuario autorizado podrá consultar los diferentes reportes disponibles.
 
@@ -18,7 +18,8 @@ Acceptance criteria:
 
 Notes:
 
-- Carried over from Sprint 1: the first item of Sprint 2.
+- 2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn.
+- 2026-09-29 PM/architect agreement: follow the [report menu agreement](../../.ai/rules/reports.md#report-menu-agreement) for permission hiding and future-sprint availability.
 
 ## RF_61
 
@@ -48,9 +49,13 @@ Acceptance criteria:
 - Los resultados mostrados deben corresponder únicamente a los registros que cumplan con los filtros seleccionados.
 - El sistema debe permitir limpiar los filtros y volver a mostrar la totalidad de los registros disponibles.
 
+Notes:
+
+- 2026-09-29 PM/architect agreement: controls consume the module-owned [shared filter contract](../../.ai/rules/reports.md#shared-filter-contract); lists, previews and exports share validation, normalization and filter meanings.
+
 ## RF_63
 
-**Generar reporte de inventario de activos** · owner @AleQuesada2012 (Alejandro Quesada) · reviewer @DavidZamoraB · Sprint 2
+**Generar reporte de inventario de activos** · owner @AleQuesada2012 (Alejandro Quesada) · reviewer @DavidZamoraB · Sprint 1
 
 > El sistema debe permitir generar un reporte con información de los activos registrados en el inventario
 
@@ -62,11 +67,12 @@ Acceptance criteria:
 
 Notes:
 
-- Carried over from Sprint 1. The first real report definition: every other report copies it.
+- 2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn. The first real report definition: every other report copies it.
+- 2026-09-29 PM/architect agreement: show physical condition and lifecycle status separately and delegate filtering to the [shared inventory contract](../../.ai/rules/reports.md#shared-filter-contract).
 
 ## RF_64
 
-**Generar reporte de espacios** · owner @AleQuesada2012 (Alejandro Quesada) · reviewer @DavidZamoraB · Sprint 2
+**Generar reporte de espacios** · owner @AleQuesada2012 (Alejandro Quesada) · reviewer @DavidZamoraB · Sprint 1
 
 > El sistema debe permitir generar un reporte con información de los espacios registrados
 
@@ -78,7 +84,8 @@ Acceptance criteria:
 
 Notes:
 
-- Carried over from Sprint 1.
+- 2026-09-30 PM decision: restored to the original Sprint 1 backlog; the carry-over to Sprint 2 is withdrawn.
+- 2026-09-29 PM/architect agreement: delegate filters, validation, normalization and choices to the [shared spaces contract](../../.ai/rules/reports.md#shared-filter-contract).
 
 ## RF_65
 

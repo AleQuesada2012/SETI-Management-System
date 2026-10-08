@@ -58,6 +58,40 @@ in [Agent-DB.md §20](Agent-DB.md)). **G3** = planning round 3 (2026-09-29). **B
 | G1 | AI agents: one committed `AGENTS.md` + `.ai/rules`; Laravel Boost; agents never push to `main`, merge, approve, add dependencies or edit merged migrations; AI use is declared in the PR. | The rules must hold whoever (or whatever) writes the code. | [AGENTS.md](../AGENTS.md), PR template |
 | G3 | No AI co-author trailers (`Co-Authored-By: <AI>`) in commits until the team decides otherwise. | Pending team decision on crediting AI tools. | [AGENTS.md](../AGENTS.md) |
 
+## Reports contract agreement (2026-09-29)
+
+Approved by Alejandro (@AleQuesada2012), acting as PM and architect, after the filter-contract interview. These
+entries record the agreed target; Query filtering and report integration are still pending implementation.
+
+| Decision | Why | Contract |
+|---|---|---|
+| Inventory and spaces define the first shared filter schemas; each module owns validation, normalization and choices beside its Query, reused by lists and reports. | Filter meaning and invalid-input handling must agree across screens and exports. | [.ai/rules/reports.md § Shared filter contract](../.ai/rules/reports.md#shared-filter-contract) |
+| Inventory supports both physical condition and lifecycle status as distinct filters and report columns; all three physical color groups are selectable. | ADR-0004's distinction must remain visible and useful. | [Inventory schema](../.ai/rules/reports.md#inventory-schema) |
+| Space filters include type, status and building; later report schemas follow their prescribed RF criteria. | Implement the approved location intent without treating TODOs as requirements. | [Spaces schema](../.ai/rules/reports.md#spaces-schema) |
+| Criteria use AND; alternatives, including explicit missing values, use OR. Invalid filters block preview/export; choices remain stable and preserve historical references. | Users must receive the records their selections describe. | [Matching](../.ai/rules/reports.md#input-and-matching), [validation and choices](../.ai/rules/reports.md#validation-normalization-and-choices) |
+| RF_60 hides inaccessible reports and unavailable types; future-sprint types may appear as "Próximamente" only when authorized. | Availability and permission determine what users can discover. | [Menu agreement](../.ai/rules/reports.md#report-menu-agreement) |
+
+Implementation sequence and module handoffs: [PLANNING.md § Reports opening sequence](PLANNING.md#reports-opening-sequence-contract-agreed-2026-09-29).
+
+## Remaining-work rebalance (2026-10-06)
+
+Provisionally accepted by Alejandro (@AleQuesada2012), acting as PM and architect, after a planning interview.
+The Sprint 2 planning meeting has not taken place. These dated entries supersede the earlier planning defaults
+where stated; historical G1/G3/B entries above remain unchanged. Tracking:
+[issue #146](https://github.com/AleQuesada2012/SETI-Management-System/issues/146).
+
+| Decision | Why | Enforced in |
+|---|---|---|
+| Balance effort remaining from October 6; counts are secondary, and the earlier eight-RF target is no longer the balancing metric. | Most planned Sprint 1 carry-over is complete; shared infrastructure and partially implemented RFs have unequal remaining effort. | [PLANNING.md § Provisional remaining-effort estimate](PLANNING.md#provisional-remaining-effort-estimate) |
+| Keep owners, reviewers, acceptance criteria and the existing cut order. Allow milestone moves in either direction and replace the strict write/read split with dependency order. | Improve timing without reallocating module responsibility or changing approved scope. | `requirements/requirements.json`, [PLANNING.md](PLANNING.md) |
+| Move RF_02/12/31, RF_20/21, RF_49/50 and RF_92/96/97/101 from Sprint 3 to Sprint 2; keep all other RF milestones. | Components/deletion have existing foundations; attachments reuse RF_41; reservation changes reuse notifications; consultations/filter completion reuse existing assignment and user data. | [PLANNING.md § Milestone changes](PLANNING.md#milestone-changes-accepted-on-2026-10-06), GitHub milestones |
+| Complete the four outstanding Sprint 1 RFs first and count their remaining integration against current capacity, retaining their Sprint 1 milestones in this revision. | Preserve the original delivery backlog/history while accounting for unfinished work; this is a scoped exception to retrospective automatic carry-over. | [PLANNING.md § Plan by person](PLANNING.md#plan-by-person), RF_63/64/91/100 issues |
+| Assume roughly one working day per person per week, assisted by coding agents, with short review windows throughout the week. | Faster implementation still needs testing, manuals, human review and timely dependency integration. | [PLANNING.md § Sprints](PLANNING.md#sprints), existing reviewer ownership |
+| Use explained provisional package estimates; do not wait for teammate estimates before recording this revision. | Provide a concrete plan now while exposing uncertainty and accounting for existing PRs and reusable code. | [PLANNING.md § Provisional remaining-effort estimate](PLANNING.md#provisional-remaining-effort-estimate) |
+| Prepare AWS/Power BI prerequisites in Sprint 2; keep deployment and post-deployment connectivity testing early in Sprint 3. Budget most AWS implementation to Alejandro, with Sebastián supporting. | Discover external access/connectivity blockers early without changing the task assignee or deployment architecture. | [PLANNING.md § Execution and dependency order](PLANNING.md#execution-and-dependency-order), tasks #111/#112 |
+| Target feature completion by October 25; protect October 26–28 for integration, fixes, manuals and demonstration preparation. | Final delivery needs reserved time beyond feature implementation; the October 28 18:30 deadline remains. | [PLANNING.md § Sprints](PLANNING.md#sprints) |
+| Record the plan in a planning PR and synchronize the eleven issue milestones; no additional October 14 feature commitments were identified. | Keep canonical requirement metadata, generated summaries and the live tracker aligned with the PM's adopted provisional distribution. | Issue #146, planning PR, GitHub RF issues |
+
 ## Open
 
 - Whether AI tools may appear as commit co-authors (team decision pending).
