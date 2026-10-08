@@ -31,6 +31,22 @@ return [
         'deactivated' => 'Desactivada',
         'invitation_pending' => 'Invitación pendiente',
     ],
+    'register' => [
+        'heading' => 'Añadir usuario',
+        'help' => 'La persona recibirá un correo con un enlace para definir su contraseña.',
+        'cancel' => 'Cancelar',
+        'submit' => 'Registrar',
+        'done' => 'Se registró a :user y se envió la invitación a :email.',
+    ],
+    'invitation' => [
+        'subject' => 'Tu invitación a SETI Activos',
+        'introduction' => 'Se creó tu cuenta en SETI Activos. Define tu contraseña para comenzar.',
+        'accept' => 'Definir contraseña',
+        'help' => 'Define una contraseña para activar tu cuenta.',
+        'expiry' => 'Este enlace vence en :hours horas. Si vence, solicita otro enlace con «¿Olvidaste tu contraseña?».',
+        'unexpected' => 'Si no esperabas esta invitación, puedes ignorar este correo.',
+        'accepted' => 'Tu contraseña se definió y tu correo quedó verificado. Ya puedes iniciar sesión.',
+    ],
     'show' => [
         'title' => 'Detalle del usuario',
         'back' => 'Volver a usuarios',

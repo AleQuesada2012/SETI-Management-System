@@ -8,6 +8,7 @@
 
 return [
     'unknown' => 'No se pudo guardar porque los datos no cumplen una regla del sistema.',
+    'user_invitation_tokens_pkey' => 'Ya existe una invitación para ese correo.',
 
     // Assets and their history
     'assets_asset_tag_unique' => 'Ya existe un activo con esa placa.',
