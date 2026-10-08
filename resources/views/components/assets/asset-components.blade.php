@@ -151,7 +151,8 @@ new class extends Component {
     @if ($this->components->isEmpty())
         <flux:text data-test="no-components">{{ __('assets.components.empty') }}</flux:text>
     @else
-        <div class="overflow-x-auto">
+        {{-- relative: keeps the sr-only actions header inside the scroll area, or it widens the page on phones. --}}
+        <div class="relative overflow-x-auto">
             <flux:table>
                 <flux:table.columns>
                     <flux:table.column>{{ Str::ucfirst(__('assets.components.fields.name')) }}</flux:table.column>
@@ -168,10 +169,10 @@ new class extends Component {
                     @foreach ($this->components as $component)
                         <flux:table.row :key="$component->id" data-test="component-row">
                             <flux:table.cell variant="strong" class="whitespace-nowrap">{{ $component->name }}</flux:table.cell>
-                            <flux:table.cell class="min-w-40 whitespace-pre-line">{{ $component->specs ?: $empty }}</flux:table.cell>
+                            <flux:table.cell class="min-w-40"><span class="whitespace-pre-line">{{ $component->specs ?: $empty }}</span></flux:table.cell>
                             <flux:table.cell class="whitespace-nowrap">{{ $component->serial_number ?: $empty }}</flux:table.cell>
                             <flux:table.cell>{{ $component->quantity }}</flux:table.cell>
-                            <flux:table.cell class="min-w-40 whitespace-pre-line">{{ $component->notes ?: $empty }}</flux:table.cell>
+                            <flux:table.cell class="min-w-40"><span class="whitespace-pre-line">{{ $component->notes ?: $empty }}</span></flux:table.cell>
                             @if ($canManage)
                                 <flux:table.cell>
                                     <div class="flex justify-end gap-1">
