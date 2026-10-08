@@ -23,6 +23,25 @@ aparecen como **Próximamente**; los que la cuenta no puede consultar se ocultan
 ![Menú en computadora](reportes-menu-escritorio.jpg)
 ![Menú a 360 px](reportes-menu-movil.jpg)
 
+## Movimientos de activos (RF_06, RF_25)
+
+Un **Administrador** puede registrar movimientos de los activos que están (o estuvieron por última vez) en los
+espacios de los que es encargado; el **Superusuario**, de cualquier activo. Pruébalo con `admin@seti.test`
+(contraseña `password`).
+
+1. Abre un activo desde **Inventario de activos** y pulsa **Registrar movimiento**.
+2. Elige el tipo: **Traslado a otro espacio**, **Salida de los espacios de SETI** (reparación externa, préstamo,
+   desecho) o, si el activo está fuera, **Ingreso a un espacio**. Solo aparecen los tipos que el estado del activo
+   permite: un activo perdido no se mueve hasta registrar su recuperación y uno dado de baja solo puede salir.
+3. Elige el espacio destino (no aplica a una salida). La fecha y hora son opcionales: vacías, el movimiento queda con
+   la hora actual; también puedes registrar uno anterior, pero no anterior al último movimiento del activo.
+4. Escribe el motivo (obligatorio en una salida) y pulsa **Registrar movimiento**. Un aviso confirma el espacio al que
+   se trasladó el activo y la ficha muestra su nueva ubicación.
+
+La ficha del activo lista todos sus movimientos, del más reciente al más antiguo, con la fecha, el tipo, el origen,
+el destino, quién lo registró y el motivo. Un Administrador que abre un activo de un espacio que no tiene asignado
+ve un aviso de que no puede trasladarlo; las cuentas sin el permiso no ven el botón.
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la

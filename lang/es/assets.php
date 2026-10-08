@@ -92,10 +92,49 @@ return [
         'submit' => 'Guardar cambios',
         'done' => 'Los cambios del activo :asset se guardaron correctamente.',
         'condition_done' => 'El activo :asset quedó en condición :condition.',
+        'move' => 'Registrar traslado',
+    ],
+    // RF_06 · Traslado de activo entre espacios, RF_25 · Registrar movimientos de inventario.
+    'move' => [
+        'title' => 'Registrar movimiento',
+        'description' => 'Registra un ingreso, traslado o salida del activo :asset.',
+        'current_space' => 'Espacio actual',
+        'outside' => 'Fuera de los espacios de SETI',
+        'types' => [
+            'entry' => 'Ingreso a un espacio',
+            'transfer' => 'Traslado a otro espacio',
+            'exit' => 'Salida de los espacios de SETI',
+        ],
+        'moved_at_help' => 'Déjala vacía para registrar el movimiento con la fecha y hora actuales.',
+        'reason_placeholder' => 'Reparación externa, préstamo, reubicación del laboratorio…',
+        'reason_help' => 'Obligatorio para una salida.',
+        'cannot_move' => [
+            'lost' => 'Este activo está perdido: registra su recuperación antes de moverlo.',
+            'decommissioned' => 'Este activo está dado de baja y ya no está en ningún espacio: no admite más movimientos.',
+        ],
+        'not_manager' => 'No estás asignado como encargado del espacio de este activo, así que no puedes trasladarlo ni registrar sus movimientos.',
+        'submit' => 'Registrar movimiento',
+        'done' => [
+            'entry' => 'El activo :asset ingresó al espacio :space.',
+            'transfer' => 'El activo :asset se trasladó al espacio :space.',
+            'exit' => 'Se registró la salida del activo :asset del espacio :space.',
+        ],
+        'errors' => [
+            'type' => 'El estado del activo no permite ese tipo de movimiento.',
+            'same_space' => 'El activo ya está en ese espacio: elige otro destino.',
+            'future' => 'La fecha del movimiento no puede ser futura.',
+        ],
+        'fields' => [
+            'type' => 'tipo de movimiento',
+            'to_space_id' => 'espacio destino',
+            'moved_at' => 'fecha y hora',
+            'reason' => 'motivo',
+        ],
     ],
     'show' => [
         'title' => 'Detalle del activo',
         'edit' => 'Editar',
+        'move' => 'Registrar movimiento',
         'sections' => [
             'identification' => 'Identificación',
             'state' => 'Estado',
@@ -103,6 +142,18 @@ return [
             'acquisition' => 'Adquisición',
             'warranty' => 'Garantía',
             'observations' => 'Observaciones',
+            'movements' => 'Movimientos',
+        ],
+        'movements' => [
+            'moved_at' => 'Fecha',
+            'type' => 'Tipo',
+            'from' => 'Origen',
+            'to' => 'Destino',
+            'moved_by' => 'Registrado por',
+            'reason' => 'Motivo',
+            'outside' => 'Fuera de SETI',
+            'system' => 'Sistema',
+            'empty' => 'Este activo no tiene movimientos registrados.',
         ],
         'has_warranty' => 'Cuenta con garantía',
         'warranty_states' => [

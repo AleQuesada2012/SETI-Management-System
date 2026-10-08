@@ -91,7 +91,7 @@ a recommended option (§20). Where the documents contradicted each other or the 
 
 | Module | Tables |
 |---|---|
-| Identity & access | `users`, `password_reset_tokens`, `sessions`, `personal_access_tokens`, `roles`, `permissions`, `model_has_roles`, `model_has_permissions`, `role_has_permissions` |
+| Identity & access | `users`, `password_reset_tokens`, `user_invitation_tokens`, `sessions`, `personal_access_tokens`, `roles`, `permissions`, `model_has_roles`, `model_has_permissions`, `role_has_permissions` |
 | Notifications | `notifications` |
 | Catalogs | `buildings`, `space_types`, `space_statuses`, `asset_categories`, `asset_types`, `asset_conditions`, `brands`, `suppliers`, `report_types` |
 | Spaces | `spaces`, `space_managers`, `space_photos` |
@@ -158,7 +158,7 @@ erDiagram
     }
 ```
 
-`sessions`, `password_reset_tokens` and `personal_access_tokens` keep Laravel's default shape and are omitted from the
+`sessions`, `password_reset_tokens`, `user_invitation_tokens` and `personal_access_tokens` keep Laravel's default shape and are omitted from the
 diagram.
 
 ### 4.2 Spaces and reservations
@@ -378,7 +378,8 @@ have a foreign key for that; `actor_id` does have one.
 
 **Tables:**
 - `users`;
-- `password_reset_tokens` (Laravel's password broker, used for both "forgot password" and invitations);
+- `password_reset_tokens` (ordinary password resets, valid for 60 minutes);
+- `user_invitation_tokens` (the separate `invitations` password broker, valid for 48 hours);
 - `sessions` (database sessions);
 - `personal_access_tokens` (Sanctum; reserved for a future non-browser client);
 - the spatie/laravel-permission tables `roles`, `permissions`, `role_has_permissions`, `model_has_roles` and
@@ -392,8 +393,12 @@ have a foreign key for that; `actor_id` does have one.
   rule works unchanged.
 - **No password at creation; users get an invitation (Q21).** RF_91 creates a user from name, email and role only.
   `password` is `NULL` until the user follows a single-use emailed link (Laravel password broker; the token is stored
-  hashed in `password_reset_tokens`) and sets it. Accepting the invitation also sets `email_verified_at`. Passwords are
-  hashed with Laravel `Hash` (bcrypt).
+  hashed in `user_invitation_tokens`) and sets it. Invitation and reset tokens use independent tables and routes;
+  an invitation can only set the password of an active account that still has `password = NULL`. Accepting the
+  invitation also sets `email_verified_at`. Passwords are hashed with Laravel `Hash` (bcrypt).
+- Invitation tokens use Laravel's token-repository shape: email primary key, hashed token, nullable `created_at`
+  (`timestamptz`). Like password reset tokens, they are authentication infrastructure and are excluded from audit
+  values and reporting; setting the first password is audited on the user.
 - **Deactivate, never delete (RF_88, RF_98, Charter §1).** `deactivated_at`/`deactivated_by` revoke access; every
   foreign key into `users` stays valid forever. Laravel rejects login when `deactivated_at IS NOT NULL` and deletes that
   user's `sessions` rows, so access ends immediately.
