@@ -131,6 +131,17 @@ return [
             'reason' => 'motivo',
         ],
     ],
+    // RF_02: soft delete of an asset registered by mistake; never a decommission (RF_29).
+    'delete' => [
+        'button' => 'Eliminar',
+        'title' => '¿Eliminar el activo :asset?',
+        'description' => 'Use esta opción solo para un activo registrado por error. Dejará de aparecer en el inventario y en los reportes, pero su historial se conserva y su placa queda libre.',
+        'not_decommission' => 'Si el activo existe y deja de usarse, no lo elimine: dele de baja.',
+        'cancel' => 'Cancelar',
+        'confirm' => 'Eliminar activo',
+        'done' => 'Se eliminó el activo :asset.',
+        'not_found' => 'El activo :asset ya no existe: fue eliminado anteriormente.',
+    ],
     'show' => [
         'title' => 'Detalle del activo',
         'edit' => 'Editar',
