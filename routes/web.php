@@ -1,10 +1,17 @@
 <?php
 
 use App\Http\Controllers\StartPageController;
+use App\Http\Controllers\UserInvitationController;
 use Illuminate\Support\Facades\Route;
 
 // `/` sends guests to the sign-in page and signed-in users to their start page.
 Route::get('/', fn () => to_route(auth()->check() ? 'start' : 'login'))->name('home');
+
+Route::middleware('guest')->group(function () {
+    Route::get('invitaciones/{token}', [UserInvitationController::class, 'create'])->name('invitations.accept');
+    Route::post('invitaciones', [UserInvitationController::class, 'store'])
+        ->middleware('throttle:5,1')->name('invitations.store');
+});
 
 /*
  * Every module page needs a signed-in, verified, active user (EnsureUserIsActive runs on every web request).

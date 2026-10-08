@@ -103,4 +103,12 @@ return [
         'reserve' => 'Reservar este horario',
         'not_reservable' => 'Este espacio no se puede reservar por su tipo o su estado actual.',
     ],
+    // Messages of the bell (RF_47, RF_48), built from each notification's snapshot.
+    'notifications' => [
+        'period' => ':date, de :start a :end',
+        'created' => [
+            'title' => 'Nueva reserva en :space',
+            'body' => ':actor reservó el espacio para «:title»: :periods.',
+        ],
+    ],
 ];

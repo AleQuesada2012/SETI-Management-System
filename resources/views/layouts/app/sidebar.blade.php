@@ -63,13 +63,15 @@
             </flux:sidebar.nav>
         </flux:sidebar>
 
-        {{-- Top bar: page title on the left, the user menu on the right (mockups). --}}
+        {{-- Top bar: page title on the left, the notification bell and the user menu on the right (mockups, ADR-0006). --}}
         <flux:header class="border-b border-line bg-surface">
             <flux:sidebar.toggle class="me-2 lg:hidden" icon="bars-2" inset="left" :aria-label="__('app.nav.open_menu')" />
 
             <flux:heading size="lg" level="1" class="truncate">{{ filled($title ?? null) ? __($title) : config('app.name') }}</flux:heading>
 
             <flux:spacer />
+
+            <livewire:notifications.bell />
 
             <x-user-menu />
         </flux:header>

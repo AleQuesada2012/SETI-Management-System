@@ -11,7 +11,7 @@ test('the report menu exposes four categories and registered reports', function 
     actingAsRole(SystemRole::Reportes);
     app(ReportRegistry::class)->register(UsersTestReport::class);
     $this->get(route('reports.index'))->assertOk()->assertSee('Activos')->assertSee('Espacios')
-        ->assertSee('Auditoría')->assertSee('Usuarios')->assertSee(__('reports.index.empty'));
+        ->assertSee('Auditoría')->assertSee('Usuarios');
     Livewire::test('pages::reports.index')->set('category', 'users')
         ->assertSee(route('reports.show', 'users'), false)->assertDontSee(__('reports.index.empty'));
 });

@@ -170,7 +170,8 @@ A person with an account, identified by their email address.
 _Avoid_: nombre de usuario (as a login name), cuenta
 
 **Invitation** · _Invitación_:
-The single-use emailed link a new user follows to set their own password.
+The single-use emailed link a new user follows to set their own password. It expires after 48 hours and uses a
+separate broker and token table from ordinary 60-minute password resets.
 _Avoid_: contraseña temporal
 
 **Deactivation** · _Desactivación_:

@@ -32,7 +32,7 @@ return [
         'removed' => ':name (eliminado)', 'deactivated' => ':name (cuenta desactivada)',
         'colors' => ['green' => 'Verde', 'amber' => 'Ámbar', 'red' => 'Rojo'],
         'labels' => [
-            'search' => 'Buscar', 'brand' => 'Marca', 'model' => 'Modelo contiene',
+            'search' => 'Buscar', 'brand' => 'Marca', 'model' => 'Modelo contiene', 'category' => 'Categoría',
             'condition' => 'Condición física', 'condition_color' => 'Color de condición',
             'lifecycle_status' => 'Estado del ciclo de vida', 'space' => 'Espacio',
             'responsible_user' => 'Responsable del activo', 'acquired_on' => 'Fecha de adquisición',
