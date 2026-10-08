@@ -31,7 +31,7 @@ new #[Title('spaces.show.title')] class extends Component {
     #[Computed]
     public function assets(): Collection
     {
-        return AssetInventory::query(['space_id' => $this->space->id])->get();
+        return AssetInventory::query(['space' => ['values' => [$this->space->id]]])->get();
     }
 }; ?>
 

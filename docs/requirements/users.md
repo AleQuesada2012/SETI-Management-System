@@ -101,7 +101,7 @@ Acceptance criteria:
 
 ## RF_92
 
-**Filtrar usuarios** · owner @Rubiocai (Sebastián Sánchez) · reviewer @AleQuesada2012 · Sprint 3
+**Filtrar usuarios** · owner @Rubiocai (Sebastián Sánchez) · reviewer @AleQuesada2012 · Sprint 2
 
 > El super admin podrá filtrar a los usuarios administrador y usuarios normales por medio de sus roles
 
@@ -149,7 +149,7 @@ Acceptance criteria:
 
 ## RF_96
 
-**Consultar usuarios asignados a un laboratorio** · owner @Rubiocai (Sebastián Sánchez) · reviewer @AleQuesada2012 · Sprint 3
+**Consultar usuarios asignados a un laboratorio** · owner @Rubiocai (Sebastián Sánchez) · reviewer @AleQuesada2012 · Sprint 2
 
 > El sistema debe permitir al Superusuario consultar los administradores asociados a cada laboratorio.
 
@@ -161,7 +161,7 @@ Acceptance criteria:
 
 ## RF_97
 
-**Consultar laboratorios asignados a un administrador** · owner @Rubiocai (Sebastián Sánchez) · reviewer @AleQuesada2012 · Sprint 3
+**Consultar laboratorios asignados a un administrador** · owner @Rubiocai (Sebastián Sánchez) · reviewer @AleQuesada2012 · Sprint 2
 
 > El sistema debe permitir consultar los laboratorios asociados a un usuario administrador.
 
@@ -213,7 +213,7 @@ Acceptance criteria:
 
 ## RF_101
 
-**Consultar usuarios por estado de cuenta** · owner @Rubiocai (Sebastián Sánchez) · reviewer @AleQuesada2012 · Sprint 3
+**Consultar usuarios por estado de cuenta** · owner @Rubiocai (Sebastián Sánchez) · reviewer @AleQuesada2012 · Sprint 2
 
 > El sistema debe permitir al Superusuario consultar los usuarios según el estado de su cuenta.
 

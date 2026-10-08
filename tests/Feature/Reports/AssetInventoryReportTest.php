@@ -5,6 +5,7 @@ use App\Enums\AuditAction;
 use App\Enums\ReportFormat;
 use App\Enums\SystemRole;
 use App\Models\Asset;
+use App\Models\AssetCategory;
 use App\Models\AssetCondition;
 use App\Models\AuditLog;
 use App\Models\Brand;
@@ -31,6 +32,22 @@ test('inventory preview separates condition and lifecycle and shows every requir
         ->assertSee('Condición física')->assertSee('Estado del ciclo de vida')->assertSee('Buen estado')
         ->assertSee('En servicio')->assertSee('Ana Responsable')->assertSee('Laboratorio Norte')
         ->assertSee('Marca Demo')->assertSee('Modelo Demo')->assertSee('30/09/2026');
+});
+
+test('the inventory report labels and applies the shared category filter', function () {
+    actingAsRole(SystemRole::Reportes);
+    $category = AssetCategory::query()->where('name', 'Cómputo')->firstOrFail();
+    Asset::factory()->ofType('Monitor')->create(['name' => 'Monitor de categoría']);
+    Asset::factory()->ofType('Escritorio')->create(['name' => 'Escritorio de otra categoría']);
+    $report = ReportType::query()->where('code', 'assets_inventory')->firstOrFail();
+
+    Livewire::test('pages::reports.show', ['report' => $report])
+        ->assertSee('Categoría')
+        ->assertSee('Monitor de categoría')
+        ->assertSee('Escritorio de otra categoría')
+        ->set('filters.category.values', [(string) $category->id])
+        ->assertSee('Monitor de categoría')
+        ->assertDontSee('Escritorio de otra categoría');
 });
 
 test('all inventory criteria combine with AND and selected or missing values combine with OR', function () {

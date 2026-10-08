@@ -3,6 +3,7 @@
 namespace App\Queries\Users;
 
 use App\Models\Reporting\UserRow;
+use App\Queries\TextSearch;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -27,7 +28,8 @@ final class UserDirectory
     {
         $query = UserRow::query();
 
-        // TODO(RF_95, @Rubiocai): TextSearch::apply($query, 'users', $filters['search'] ?? null).
+        // RF_95: partial, accent-insensitive match on name, email or id (users.search_text).
+        TextSearch::apply($query, 'users', $filters['search'] ?? null);
 
         $role = $filters['role'] ?? null;
 
