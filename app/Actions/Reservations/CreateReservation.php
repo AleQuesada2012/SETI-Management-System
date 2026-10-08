@@ -44,7 +44,7 @@ final class CreateReservation
         $startsAt = Carbon::parse("{$data['date']} {$data['start_time']}");
         $endsAt = Carbon::parse("{$data['date']} {$data['end_time']}");
 
-        $this->ensureBookable($space, $startsAt, $endsAt, (int) $data['attendees']);
+        self::ensureBookable($space, $startsAt, $endsAt, (int) $data['attendees']);
 
         try {
             $reservation = DB::transaction(fn (): Reservation => Reservation::query()->create([
@@ -67,11 +67,12 @@ final class CreateReservation
     }
 
     /**
-     * The business rules of the RF_46 diagram, in its order, each as a message under the field to correct.
+     * The business rules of the RF_46 diagram, in its order, each as a message under the field to correct. A
+     * modification (RF_49) checks the same rules and passes its reservation as $ignoreId, so it never overlaps itself.
      *
      * @throws ValidationException
      */
-    private function ensureBookable(Space $space, Carbon $startsAt, Carbon $endsAt, int $attendees): void
+    public static function ensureBookable(Space $space, Carbon $startsAt, Carbon $endsAt, int $attendees, ?int $ignoreId = null): void
     {
         if (! $space->isReservable()) {
             throw ValidationException::withMessages(['space_id' => __('reservations.create.errors.not_reservable')]);
@@ -91,7 +92,7 @@ final class CreateReservation
             ]);
         }
 
-        if (Reservation::query()->overlapping($space->id, $startsAt, $endsAt)->exists()) {
+        if (Reservation::query()->overlapping($space->id, $startsAt, $endsAt, $ignoreId)->exists()) {
             throw ValidationException::withMessages(['start_time' => __('reservations.create.errors.overlap')]);
         }
     }

@@ -15,6 +15,7 @@ return [
         'from' => 'fecha inicial',
         'to' => 'fecha final',
         'cancellation_reason' => 'motivo de la cancelación',
+        'modification_reason' => 'motivo de la modificación',
     ],
     'validation' => [
         'end_after_start' => 'La hora de fin debe ser posterior a la hora de inicio.',
@@ -46,6 +47,23 @@ return [
             'overlap' => 'El espacio ya está reservado en ese horario. Revisa las reservas del espacio o el calendario y elige otro horario.',
         ],
     ],
+    // "Modificar reserva" (RF_49): the same fields as a new booking, plus why it changed.
+    'edit' => [
+        'title' => 'Modificar reserva',
+        'heading' => 'Modificar reserva',
+        'description' => 'Cambia el espacio, la fecha, el horario o los datos de la reserva. :hours',
+        'reason' => 'Motivo de la modificación (opcional)',
+        'reason_placeholder' => 'Cambio de aula, se movió la tutoría…',
+        'back' => 'Volver',
+        'submit' => 'Guardar cambios',
+        'done' => 'Se modificó la reserva de :space.',
+        'errors' => [
+            'unchanged' => 'No hiciste ningún cambio en la reserva.',
+            'cancelled' => 'Esta reserva fue eliminada y ya no se puede modificar.',
+            'started' => 'Esta reserva ya comenzó o finalizó: solo queda en el historial y no se puede modificar.',
+            'changed' => 'La reserva cambió mientras la editabas. Vuelve a abrirla para ver los datos actualizados.',
+        ],
+    ],
     // ISO-8601 weekdays of the allowed hours (config/reservations.php).
     'weekdays' => [
         1 => 'lunes',
@@ -71,9 +89,9 @@ return [
         'deleted_space' => '(espacio eliminado)',
         'cancelled' => 'Esta reserva fue cancelada el :date por :by.',
         'cancellation_reason' => 'Motivo de la cancelación: :reason',
+        'modification_reason' => 'Motivo de la última modificación',
         'update' => 'Modificar',
         'cancel' => 'Eliminar',
-        'coming_soon' => 'Disponible próximamente',
     ],
     'space_reservations' => [
         'heading' => 'Reservas del espacio',
@@ -114,6 +132,19 @@ return [
         'cancelled' => [
             'title' => 'Reserva eliminada en :space',
             'body' => ':actor eliminó la reserva «:title» y liberó el horario: :periods.',
+        ],
+        'reason' => 'Motivo: :reason',
+        'updated' => [
+            'title' => 'Reserva modificada en :space',
+            'body' => ':actor modificó la reserva «:title»: ahora es el :periods (antes, el :previous_periods).:reason',
+        ],
+        'moved_out' => [
+            'title' => 'Se liberó un horario en :space',
+            'body' => ':actor movió la reserva «:title» a :space y liberó el :previous_periods.:reason',
+        ],
+        'moved_in' => [
+            'title' => 'Reserva movida a :space',
+            'body' => ':actor movió la reserva «:title» desde :previous_space: :periods.:reason',
         ],
     ],
     // "Eliminar reserva" (RF_50): the reservation is cancelled and stays in the history.

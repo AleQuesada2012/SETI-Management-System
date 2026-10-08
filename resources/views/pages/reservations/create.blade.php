@@ -101,39 +101,7 @@ new #[Title('reservations.create.title')] class extends Component {
                 <flux:text class="mt-1">{{ __('reservations.create.description', ['hours' => CreateReservation::allowedHoursMessage()]) }}</flux:text>
             </div>
 
-            <div>
-                <flux:select wire:model.live="space_id" :label="Str::ucfirst(__('reservations.fields.space_id'))" :placeholder="__('reservations.create.choose_space')" required data-test="reservation-space">
-                    @foreach ($this->spaces as $space)
-                        <flux:select.option :value="$space->id">{{ $space->code }} · {{ $space->name }}</flux:select.option>
-                    @endforeach
-                </flux:select>
-
-                @if ($this->selectedSpace)
-                    <flux:text size="sm" class="mt-2">
-                        {{ __('reservations.create.space_hint', ['location' => $this->selectedSpace->location(), 'capacity' => $this->selectedSpace->capacity]) }}
-                    </flux:text>
-                @endif
-            </div>
-
-            <div class="grid gap-4 sm:grid-cols-3">
-                <flux:input wire:model="date" type="date" :label="Str::ucfirst(__('reservations.fields.date'))" required />
-                <flux:input wire:model="start_time" type="time" step="900" :label="Str::ucfirst(__('reservations.fields.start_time'))" required />
-                <flux:input wire:model="end_time" type="time" step="900" :label="Str::ucfirst(__('reservations.fields.end_time'))" required />
-            </div>
-
-            <flux:input wire:model="title" :label="Str::ucfirst(__('reservations.fields.title'))" :placeholder="__('reservations.create.title_placeholder')" maxlength="150" required />
-
-            <div class="grid gap-4 sm:grid-cols-2">
-                <flux:input wire:model="attendees" type="number" min="1" step="1" inputmode="numeric" :label="Str::ucfirst(__('reservations.fields.attendees'))" required />
-
-                <flux:select wire:model="responsible_id" :label="Str::ucfirst(__('reservations.fields.responsible_id'))" required>
-                    @foreach ($this->responsibles as $user)
-                        <flux:select.option :value="$user->id">{{ $user->name }}</flux:select.option>
-                    @endforeach
-                </flux:select>
-            </div>
-
-            <flux:textarea wire:model="notes" :label="Str::ucfirst(__('reservations.fields.notes'))" rows="2" />
+            <x-reservations.form-fields :spaces="$this->spaces" :selected-space="$this->selectedSpace" :responsibles="$this->responsibles" />
 
             <flux:error name="form" />
 
