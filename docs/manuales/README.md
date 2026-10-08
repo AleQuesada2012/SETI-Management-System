@@ -87,6 +87,11 @@ Un **Administrador** puede registrar, editar y eliminar los componentes de los a
 
 Los componentes de un activo dado de baja se consultan, pero ya no se modifican.
 
+![Componentes en computadora](activos-componentes-escritorio.jpg)
+![Componentes a 360 px](activos-componentes-movil.jpg)
+![Añadir un componente en computadora](activos-componentes-anadir-escritorio.jpg)
+![Añadir un componente a 360 px](activos-componentes-anadir-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
