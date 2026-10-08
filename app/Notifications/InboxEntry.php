@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Reservations\ReservationCancelled;
 use App\Notifications\Reservations\ReservationCreated;
 use Carbon\CarbonInterface;
 use Illuminate\Notifications\DatabaseNotification;
@@ -15,6 +16,7 @@ final readonly class InboxEntry
     /** @var list<class-string<ShowsInInbox>> */
     private const array TYPES = [
         ReservationCreated::class,
+        ReservationCancelled::class,
     ];
 
     public function __construct(

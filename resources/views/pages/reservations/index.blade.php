@@ -167,7 +167,7 @@ new #[Title('reservations.index.title')] class extends Component {
                     </span>
                     <div class="flex min-w-0 flex-col">
                         <flux:link :href="route('spaces.show', $reservation->space_id)" wire:navigate>{{ $reservation->space_code }} · {{ $reservation->space_name }}</flux:link>
-                        <span class="text-sm text-ink">{{ $reservation->title }}</span>
+                        <flux:link :href="route('reservations.show', $reservation->id)" wire:navigate variant="subtle" class="text-sm text-ink">{{ $reservation->title }}</flux:link>
                         <span class="text-sm text-ink-muted">{{ __('spaces.calendar.by', ['name' => $reservation->responsible_name]) }}</span>
                     </div>
                 </div>
