@@ -17,7 +17,8 @@ use Livewire\WithPagination;
  * permissions.description, seeded from App\Enums\SystemRole and App\Enums\PermissionName), and the users who hold
  * the selected role, from App\Queries\Users\UserDirectory (the same role filter as the users list).
  */
-new #[Title('users.roles.title')] class extends Component {
+new #[Title('users.roles.title')] class extends Component
+{
     use WithPagination;
 
     public const PER_PAGE = 15;
@@ -29,6 +30,8 @@ new #[Title('users.roles.title')] class extends Component {
     /** Show the users of a role, or hide them when it was already selected. */
     public function select(int $roleId): void
     {
+        $this->authorize('viewAny', Role::class);
+
         $roleName = (string) $this->roles->firstWhere('id', $roleId)?->name;
 
         $this->selected = $this->selected === $roleName ? '' : $roleName;

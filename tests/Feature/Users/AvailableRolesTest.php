@@ -54,3 +54,13 @@ test('roles without roles.view cannot open the roles page', function (SystemRole
 
     $this->get(route('roles.index'))->assertForbidden();
 })->with([SystemRole::Administrador, SystemRole::Reportes, SystemRole::Visualizador, SystemRole::Reservante]);
+
+test('selecting a role is forbidden when the current user no longer has roles.view', function () {
+    actingAsRole(SystemRole::Superusuario);
+    $component = Livewire::test('pages::roles.index');
+    $reportes = Role::findByName(SystemRole::Reportes->value);
+
+    actingAsRole(SystemRole::Administrador);
+
+    $component->call('select', $reportes->id)->assertForbidden();
+});
