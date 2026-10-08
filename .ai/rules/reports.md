@@ -56,6 +56,7 @@ criteria remain in their RFs; detail their schemas when implementing them.
 | `search` | Text | No |
 | `brand` | `values`: brand IDs | Yes |
 | `model` | `contains`: text | Yes |
+| `category` | `values`: asset-category IDs (RF_24) | No |
 | `condition` | `values`: physical-condition IDs | No |
 | `condition_color` | `values`: `green`, `amber`, `red` | No |
 | `lifecycle_status` | `values`: `in_service`, `in_maintenance`, `lost`, `decommissioned` | No |
