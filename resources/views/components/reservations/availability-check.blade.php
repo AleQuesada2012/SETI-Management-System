@@ -1,9 +1,11 @@
 <?php
 
+use App\Actions\Reservations\CreateReservation;
 use App\Models\Reservation;
 use App\Models\Space;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -11,7 +13,8 @@ use Livewire\Component;
 /*
  * Is this space free in a given time block? (RF_55), embedded in the space page (pages::spaces.show).
  * Owner: reservations (@JoseHerrera21). Use Reservation::overlapping() ([start, end) semantics, like the database):
- * a block that starts exactly when another ends is free.
+ * a block that starts exactly when another ends is free. The times are the slots of the allowed hours, as in the
+ * booking form.
  */
 new class extends Component {
     public Space $space;
@@ -42,8 +45,8 @@ new class extends Component {
 
         $this->validate([
             'date' => ['required', 'date_format:Y-m-d'],
-            'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'start_time' => ['required', Rule::in(CreateReservation::startTimes())],
+            'end_time' => ['required', Rule::in(CreateReservation::endTimes()), 'after:start_time'],
         ], [
             'end_time.after' => __('reservations.validation.end_after_start'),
         ], __('reservations.fields'));
@@ -95,8 +98,16 @@ new class extends Component {
             <form wire:submit="check" class="flex flex-col gap-4">
                 <div class="grid gap-4 sm:grid-cols-3">
                     <flux:input wire:model="date" type="date" :label="__('reservations.availability_check.date')" required />
-                    <flux:input wire:model="start_time" type="time" step="900" :label="__('reservations.availability_check.start_time')" required />
-                    <flux:input wire:model="end_time" type="time" step="900" :label="__('reservations.availability_check.end_time')" required />
+                    <flux:select wire:model.live="start_time" :label="__('reservations.availability_check.start_time')" :placeholder="__('reservations.create.choose_time')" required>
+                        @foreach (CreateReservation::startTimes() as $time)
+                            <flux:select.option :value="$time">{{ $time }}</flux:select.option>
+                        @endforeach
+                    </flux:select>
+                    <flux:select wire:model="end_time" :label="__('reservations.availability_check.end_time')" :placeholder="__('reservations.create.choose_time')" required>
+                        @foreach (CreateReservation::endTimes($start_time) as $time)
+                            <flux:select.option :value="$time">{{ $time }}</flux:select.option>
+                        @endforeach
+                    </flux:select>
                 </div>
 
                 <div>

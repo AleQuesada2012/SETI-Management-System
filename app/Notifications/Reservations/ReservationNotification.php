@@ -14,7 +14,8 @@ use Illuminate\Support\Carbon;
 /**
  * What a reservation notification carries (ADR-0006, Agent-DB.md §10): a snapshot of the space, the booked periods,
  * the reason and who acted, taken when it is sent, so it keeps saying what was true then. The ids link to the
- * reservations. One notification per action: a whole series is one notification that lists all its periods.
+ * reservations. One notification per action: a whole series is one notification that lists all its periods. A
+ * modification (RF_49) also carries where and when the reservation was before, and its reason (ReservationModification).
  *
  * Queued after the commit, so a rolled-back operation never notifies anyone. Stored in `notifications` and pushed
  * over Reverb on the recipient's private channel (App.Models.User.{id}).
@@ -26,6 +27,8 @@ use Illuminate\Support\Carbon;
  *     periods: list<array{starts_at: string, ends_at: string}>,
  *     title: string,
  *     actor: array{id: int, name: string},
+ *     previous?: array{space: array{id: int, code: string, name: string}, periods: list<array{starts_at: string, ends_at: string}>},
+ *     reason?: string|null,
  * }
  */
 abstract class ReservationNotification extends Notification implements ShouldQueueAfterCommit, ShowsInInbox

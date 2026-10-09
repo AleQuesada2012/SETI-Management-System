@@ -146,11 +146,29 @@ test('the rules of the diagram come back as Spanish messages under their field',
     'end before start' => [['start_time' => '12:00', 'end_time' => '11:00'], 'end_time', 'La hora de fin debe ser posterior a la hora de inicio.'],
     'more people than capacity' => [['attendees' => 21], 'attendees', 'La cantidad de personas supera la capacidad del espacio (20).'],
     'already started' => [['date' => '2030-10-14', 'start_time' => '07:00', 'end_time' => '09:00'], 'start_time', 'La reserva debe comenzar después de este momento.'],
+    'off the 15-minute slots' => [['start_time' => '10:42'], 'start_time', 'Las horas de inicio y fin deben ir en franjas de 15 minutos.'],
     'before opening' => [['start_time' => '06:30', 'end_time' => '08:00'], 'start_time', 'Solo se puede reservar los días lunes, martes, miércoles, jueves, viernes y sábado, de 07:00 a 22:00.'],
     'after closing' => [['start_time' => '21:00', 'end_time' => '22:30'], 'start_time', 'Solo se puede reservar los días lunes, martes, miércoles, jueves, viernes y sábado, de 07:00 a 22:00.'],
     'on a Sunday' => [['date' => '2030-10-20'], 'start_time', 'Solo se puede reservar los días lunes, martes, miércoles, jueves, viernes y sábado, de 07:00 a 22:00.'],
     'without a reason' => [['title' => '   '], 'title', 'El campo motivo es obligatorio.'],
 ]);
+
+test('the form offers only the 15-minute slots of the allowed hours, ending after the chosen start', function () {
+    actingAsRole(SystemRole::Reservante);
+
+    expect(CreateReservation::startTimes())->toHaveCount(60)
+        ->and(CreateReservation::startTimes()[0])->toBe('07:00')
+        ->and(CreateReservation::startTimes()[1])->toBe('07:15')
+        ->and(CreateReservation::startTimes()[59])->toBe('21:45')
+        ->and(CreateReservation::endTimes('21:00'))->toBe(['21:15', '21:30', '21:45', '22:00']);
+
+    Livewire::test('pages::reservations.create')
+        ->assertSeeHtml('value="07:15"')
+        ->assertDontSeeHtml('value="07:10"')
+        ->set('start_time', '21:00')
+        ->assertDontSeeHtml('value="06:45"')
+        ->assertSeeHtml('value="22:00"');
+});
 
 test('a Saturday inside the allowed hours can be reserved', function () {
     $user = userWithRole(SystemRole::Reservante);

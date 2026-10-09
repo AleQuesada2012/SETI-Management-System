@@ -44,7 +44,7 @@ final class CreateReservation
         $startsAt = Carbon::parse("{$data['date']} {$data['start_time']}");
         $endsAt = Carbon::parse("{$data['date']} {$data['end_time']}");
 
-        $this->ensureBookable($space, $startsAt, $endsAt, (int) $data['attendees']);
+        self::ensureBookable($space, $startsAt, $endsAt, (int) $data['attendees']);
 
         try {
             $reservation = DB::transaction(fn (): Reservation => Reservation::query()->create([
@@ -67,11 +67,12 @@ final class CreateReservation
     }
 
     /**
-     * The business rules of the RF_46 diagram, in its order, each as a message under the field to correct.
+     * The business rules of the RF_46 diagram, in its order, each as a message under the field to correct. A
+     * modification (RF_49) checks the same rules and passes its reservation as $ignoreId, so it never overlaps itself.
      *
      * @throws ValidationException
      */
-    private function ensureBookable(Space $space, Carbon $startsAt, Carbon $endsAt, int $attendees): void
+    public static function ensureBookable(Space $space, Carbon $startsAt, Carbon $endsAt, int $attendees, ?int $ignoreId = null): void
     {
         if (! $space->isReservable()) {
             throw ValidationException::withMessages(['space_id' => __('reservations.create.errors.not_reservable')]);
@@ -79,6 +80,12 @@ final class CreateReservation
 
         if ($startsAt->lessThanOrEqualTo(now())) {
             throw ValidationException::withMessages(['start_time' => __('reservations.create.errors.in_past')]);
+        }
+
+        if (! self::onSlot($startsAt) || ! self::onSlot($endsAt)) {
+            throw ValidationException::withMessages([
+                'start_time' => __('reservations.create.errors.off_slot', ['minutes' => self::slotMinutes()]),
+            ]);
         }
 
         if (! self::withinAllowedHours($startsAt, $endsAt)) {
@@ -91,7 +98,7 @@ final class CreateReservation
             ]);
         }
 
-        if (Reservation::query()->overlapping($space->id, $startsAt, $endsAt)->exists()) {
+        if (Reservation::query()->overlapping($space->id, $startsAt, $endsAt, $ignoreId)->exists()) {
             throw ValidationException::withMessages(['start_time' => __('reservations.create.errors.overlap')]);
         }
     }
@@ -106,6 +113,58 @@ final class CreateReservation
             && $startsAt->isSameDay($endsAt)
             && $startsAt->format('H:i') >= $hours['opens']
             && $endsAt->format('H:i') <= $hours['closes'];
+    }
+
+    /** Starts or ends on the grid of config/reservations.php (10:00, 10:15… with 15-minute slots). */
+    public static function onSlot(Carbon $time): bool
+    {
+        return $time->second === 0 && $time->minute % self::slotMinutes() === 0;
+    }
+
+    /**
+     * The times a reservation may start: every slot from opening to the last slot before closing ("07:00" … "21:45").
+     *
+     * @return list<string>
+     */
+    public static function startTimes(): array
+    {
+        return array_slice(self::slotTimes(), 0, -1);
+    }
+
+    /**
+     * The times a reservation may end: every slot after opening up to closing, after $startTime when given.
+     *
+     * @return list<string>
+     */
+    public static function endTimes(?string $startTime = null): array
+    {
+        return array_values(array_filter(
+            array_slice(self::slotTimes(), 1),
+            fn (string $time): bool => blank($startTime) || $time > $startTime,
+        ));
+    }
+
+    /**
+     * Every slot from opening to closing, both included.
+     *
+     * @return list<string>
+     */
+    private static function slotTimes(): array
+    {
+        /** @var array{days: list<int>, opens: string, closes: string} $hours */
+        $hours = config('reservations.allowed_hours');
+        $times = [];
+
+        for ($time = Carbon::parse($hours['opens']); $time->format('H:i') <= $hours['closes'] && $time->isToday(); $time->addMinutes(self::slotMinutes())) {
+            $times[] = $time->format('H:i');
+        }
+
+        return $times;
+    }
+
+    private static function slotMinutes(): int
+    {
+        return (int) config('reservations.slot_minutes');
     }
 
     /** "Solo se puede reservar de lunes a sábado, de 07:00 a 22:00." */

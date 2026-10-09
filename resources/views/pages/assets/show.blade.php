@@ -15,6 +15,7 @@ use Livewire\Component;
  * does not exist (or was deleted, RF_02) answers with the 404 page. Every change made from here must call
  * $this->authorize() with AssetPolicy (update, move, registerEvent…).
  *
+ * RF_12, RF_31 · the asset's components and their management are the assets.asset-components component.
  * RF_01 · the asset's information, read fresh from the database on every visit, with the fields registered by RF_03
  * and its companions (RF_14–RF_16, RF_18, RF_19, RF_23, RF_24). RF_17 · the warranty and whether it is still valid.
  * RF_05 · the condition's color. Editing (RF_04, RF_05) happens on pages::assets.edit.
@@ -177,6 +178,8 @@ new #[Title('assets.show.title')] class extends Component {
         <flux:heading level="3">{{ __('assets.show.sections.observations') }}</flux:heading>
         <flux:text class="whitespace-pre-line">{{ $asset->observations ?: __('assets.show.no_observations') }}</flux:text>
     </flux:card>
+
+    <livewire:assets.asset-components :asset="$asset" />
 
     <flux:card class="flex flex-col gap-3" data-test="asset-movements">
         <flux:heading level="3">{{ __('assets.show.sections.movements') }}</flux:heading>

@@ -18,4 +18,8 @@ Route::prefix('reservas')->name('reservations.')->group(function () {
     Route::livewire('{reservation}', 'pages::reservations.show')
         ->middleware('can:view,reservation')
         ->name('show');
+
+    Route::livewire('{reservation}/editar', 'pages::reservations.edit')
+        ->middleware('can:update,reservation')
+        ->name('edit');
 });

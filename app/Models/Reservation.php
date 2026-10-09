@@ -39,6 +39,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $cancelled_at
  * @property int|null $cancelled_by
  * @property string|null $cancellation_reason
+ * @property string|null $modification_reason
  */
 #[Fillable(['space_id', 'series_id', 'starts_at', 'ends_at', 'title', 'notes', 'attendees', 'responsible_id', 'created_by'])]
 class Reservation extends Model
