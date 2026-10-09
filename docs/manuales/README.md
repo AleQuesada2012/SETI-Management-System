@@ -70,6 +70,28 @@ La ficha del activo lista todos sus movimientos, del más reciente al más antig
 el destino, quién lo registró y el motivo. Un Administrador que abre un activo de un espacio que no tiene asignado
 ve un aviso de que no puede trasladarlo; las cuentas sin el permiso no ven el botón.
 
+## Componentes de un activo (RF_12, RF_31)
+
+La ficha de cada activo tiene una tarjeta **Componentes** con sus partes internas (memoria, disco, fuente de poder):
+nombre, especificaciones, número de serie, cantidad y notas. Toda cuenta que puede ver el activo la consulta; si el
+activo no tiene componentes, la tarjeta lo indica.
+
+Un **Administrador** puede registrar, editar y eliminar los componentes de los activos que están (o estuvieron por
+última vez) en los espacios de los que es encargado; el **Superusuario**, de cualquier activo. Pruébalo con
+`admin@seti.test` (contraseña `password`).
+
+1. Abre un activo desde **Inventario de activos** y, en **Componentes**, pulsa **Añadir componente**.
+2. Escribe el nombre (obligatorio) y la cantidad (1 o más); las especificaciones, la serie y las notas son opcionales.
+   Pulsa **Guardar componente**: un aviso lo confirma y aparece en la lista.
+3. Para cambiarlo, pulsa el lápiz de su fila; para eliminarlo, la papelera y confirma con **Eliminar componente**.
+
+Los componentes de un activo dado de baja se consultan, pero ya no se modifican.
+
+![Componentes en computadora](activos-componentes-escritorio.jpg)
+![Componentes a 360 px](activos-componentes-movil.jpg)
+![Añadir un componente en computadora](activos-componentes-anadir-escritorio.jpg)
+![Añadir un componente a 360 px](activos-componentes-anadir-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la

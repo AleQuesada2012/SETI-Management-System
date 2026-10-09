@@ -166,6 +166,37 @@ return [
         'empty' => '—',
         'no_observations' => 'Sin observaciones.',
     ],
+    // RF_12, RF_31: the "Componentes" card on the asset page.
+    'components' => [
+        'title' => 'Componentes',
+        'empty' => 'Este activo no tiene componentes asociados.',
+        'add' => 'Añadir componente',
+        'add_title' => 'Añadir componente',
+        'edit_title' => 'Editar componente',
+        'edit' => 'Editar :component',
+        'remove' => 'Eliminar :component',
+        'actions' => 'Acciones',
+        'name_placeholder' => 'Ej.: Memoria RAM',
+        'specs_placeholder' => 'Ej.: 16 GB DDR4 3200',
+        'save' => 'Guardar componente',
+        'cancel' => 'Cancelar',
+        'remove_title' => '¿Eliminar el componente :component?',
+        'remove_description' => 'El componente dejará de aparecer en este activo. La auditoría conserva sus datos.',
+        'confirm_remove' => 'Eliminar componente',
+        'added' => 'Se añadió el componente :component.',
+        'updated' => 'Se actualizó el componente :component.',
+        'removed' => 'Se eliminó el componente :component.',
+        'errors' => [
+            'decommissioned' => 'El activo está dado de baja: sus componentes ya no se modifican.',
+        ],
+        'fields' => [
+            'name' => 'nombre',
+            'specs' => 'especificaciones',
+            'serial_number' => 'número de serie',
+            'quantity' => 'cantidad',
+            'notes' => 'notas',
+        ],
+    ],
     // Field names used in forms, details and validation messages.
     'fields' => [
         'code' => 'código',
