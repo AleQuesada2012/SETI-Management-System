@@ -20,7 +20,7 @@ test('the Superusuario puts an Administrador in charge of several spaces at once
     $office = Space::factory()->office()->create(['code' => 'OF-201']);
 
     Livewire::test('pages::users.show', ['user' => $admin])
-        ->assertSee(__('users.managed_spaces.none'))
+        ->assertSee(__('spaces.managers.none_to_remove', ['user' => $admin->name]))
         ->set('spaces', [(string) $lab->id, (string) $office->id])
         ->call('assignSpaces')
         ->assertHasNoErrors()

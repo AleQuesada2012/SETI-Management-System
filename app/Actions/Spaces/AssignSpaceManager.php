@@ -3,6 +3,7 @@
 namespace App\Actions\Spaces;
 
 use App\Enums\AuditAction;
+use App\Enums\PermissionName;
 use App\Enums\SystemRole;
 use App\Models\Space;
 use App\Models\User;
@@ -28,6 +29,8 @@ final class AssignSpaceManager
      */
     public function handle(User $actor, User $manager, array $spaceIds): Collection
     {
+        Gate::forUser($actor)->authorize(PermissionName::SpacesAssignManagers->value);
+
         /** @var array{spaces: list<int>} $data */
         $data = Validator::make(['spaces' => $spaceIds], [
             'spaces' => ['required', 'array', 'min:1'],
