@@ -60,6 +60,16 @@ return [
         'already_held' => 'El usuario ya tiene el rol :role.',
         'none_left' => 'El usuario ya tiene todos los roles disponibles.',
     ],
+    'managed_spaces' => [
+        'heading' => 'Espacios a cargo',
+        'none' => 'No tiene espacios a cargo.',
+        'assign' => 'Asignar espacios',
+        'help' => 'Elige uno o varios espacios. :user podrá gestionar sus datos, activos y reservas.',
+        'spaces' => 'Espacios',
+        'cancel' => 'Cancelar',
+        'submit' => 'Asignar',
+        'done' => '{0} :user ya estaba a cargo de esos espacios.|{1} Se asignó :spaces a :user.|[2,*] Se asignaron :spaces a :user.',
+    ],
     'roles' => [
         'title' => 'Roles',
         'intro' => 'Cada usuario puede tener varios roles; sus permisos son la suma de los permisos de sus roles.',

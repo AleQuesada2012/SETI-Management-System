@@ -114,4 +114,10 @@ return [
             'search' => 'El texto de búsqueda no es válido (máximo 200 caracteres).',
         ],
     ],
+
+    // Space managers (RF_40, RF_43 · @Rubiocai). The user page shows and edits them; see lang/es/users.php.
+    'managers' => [
+        'spaces' => 'espacios',
+        'not_administrador' => ':user no tiene el rol Administrador; solo los Administradores pueden estar a cargo de espacios.',
+    ],
 ];
