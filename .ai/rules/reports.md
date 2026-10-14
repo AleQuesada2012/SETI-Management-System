@@ -84,6 +84,24 @@ These attributes are required, so none supports `include_missing`. Capacity and 
 first contract, despite the existing Query TODO. Building filtering implements the location intent documented
 in `docs/Agent-DB.md` §7. Space search covers name, building, floor, location detail and space code.
 
+### Users schema
+
+Owned by @Rubiocai beside `App\Queries\Users\UserDirectory` (RF_90, RF_92, RF_95, RF_100, RF_101); the users report
+(RF_69) reuses it.
+
+| Key | Input |
+|---|---|
+| `search` | Text |
+| `user_type` | `values`: `administrators`, `regular` |
+| `role` | `values`: role IDs |
+| `account_status` | `values`: `active`, `deactivated` |
+
+None supports `include_missing`. Search covers name, email and user ID (`users.search_text`). `administrators`
+are holders of Administrador without Superusuario; `regular` ("usuarios normales", RF_92) are users holding neither
+Administrador nor Superusuario. Any holder of Superusuario is excluded from both types, including users with
+multiple roles. With no user-type restriction, Superusuarios remain available, including through the role filter.
+Roles are never soft-deleted, so every role is a choice.
+
 ### Input and matching
 
 ```json
