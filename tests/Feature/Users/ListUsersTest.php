@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\SystemRole;
+use App\Models\Role;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -38,8 +39,8 @@ test('filters without matches say no users were found', function () {
     actingAsRole(SystemRole::Superusuario);
 
     Livewire::test('pages::users.index')
-        ->set('role', SystemRole::Reportes->value)
-        ->set('account_status', 'deactivated')
+        ->set('filters.role.values', [(string) Role::findByName(SystemRole::Reportes->value)->id])
+        ->set('filters.account_status.values', ['deactivated'])
         ->assertSee(__('users.index.no_results'));
 });
 
@@ -50,11 +51,11 @@ test('the list filters by role and by account status', function () {
     User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Reservante Activo']);
 
     Livewire::test('pages::users.index')
-        ->set('role', SystemRole::Administrador->value)
+        ->set('filters.role.values', [(string) Role::findByName(SystemRole::Administrador->value)->id])
         ->assertSee('Admin Activo')
         ->assertSee('Admin Inactivo')
         ->assertDontSee('Reservante Activo')
-        ->set('account_status', 'deactivated')
+        ->set('filters.account_status.values', ['deactivated'])
         ->assertSee('Admin Inactivo')
         ->assertDontSee('Admin Activo');
 });
