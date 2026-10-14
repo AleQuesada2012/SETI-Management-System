@@ -2,6 +2,12 @@
 
 // Reports module (RF_00_4, RF_60–RF_84).
 return [
+    'statistics' => [
+        'title' => 'Estadísticas de activos', 'refresh' => 'Datos actuales del inventario. Se actualizan automáticamente cada 15 segundos mientras esta página está visible.',
+        'total' => 'Total de activos: :count', 'empty' => 'No hay activos registrados.',
+        'condition' => 'Condición física', 'lifecycle' => 'Estado del ciclo de vida', 'category' => 'Categoría',
+        'group' => 'Grupo', 'count' => 'Cantidad de activos',
+    ],
     'warranties' => [
         'supplier' => 'Proveedor', 'starts_on' => 'Inicio de la garantía', 'ends_on' => 'Fin de la garantía',
         'state' => 'Vigencia de la garantía', 'states' => ['valid' => 'Vigente', 'expired' => 'Vencida'],
