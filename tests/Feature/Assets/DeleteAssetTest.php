@@ -3,6 +3,7 @@
 // RF_02 · Eliminar activo: a soft delete of an asset registered by mistake, never a decommission (RF_29).
 
 use App\Actions\Assets\DeleteAsset;
+use App\Actions\Assets\RecordAssetMovement;
 use App\Enums\AssetStatus;
 use App\Enums\SystemRole;
 use App\Models\Asset;
@@ -110,6 +111,25 @@ test('roles without assets.delete cannot delete assets', function (SystemRole $r
     expect(fn () => app(DeleteAsset::class)->handle($user, $this->asset))->toThrow(AuthorizationException::class)
         ->and($this->asset->refresh()->trashed())->toBeFalse();
 })->with([SystemRole::Visualizador, SystemRole::Reportes, SystemRole::Reservante]);
+
+test('deletion rechecks the current space when given an asset loaded before a transfer', function () {
+    $destination = Space::factory()->create();
+    $superuser = actingAsRole(SystemRole::Superusuario);
+    app(RecordAssetMovement::class)->handle($superuser, $this->asset, [
+        'type' => 'transfer',
+        'to_space_id' => $destination->id,
+    ]);
+
+    $this->actingAs($this->admin);
+    expect(fn () => app(DeleteAsset::class)->handle($this->admin, $this->asset))
+        ->toThrow(AuthorizationException::class);
+
+    expect($this->asset->refresh()->trashed())->toBeFalse()
+        ->and($this->asset->current_space_id)->toBe($destination->id);
+    $this->assertDatabaseMissing('audit_logs', [
+        'action' => 'deleted', 'entity_type' => 'asset', 'entity_id' => $this->asset->id,
+    ]);
+});
 
 test('an asset may be deleted whatever its lifecycle status', function (AssetStatus $status) {
     $this->asset->forceFill(['status' => $status])->save();

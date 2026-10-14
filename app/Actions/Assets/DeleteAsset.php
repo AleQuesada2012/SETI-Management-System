@@ -25,10 +25,11 @@ final class DeleteAsset
     {
         Gate::forUser($actor)->authorize('delete', $asset);
 
-        return DB::transaction(function () use ($asset): Asset {
+        return DB::transaction(function () use ($actor, $asset): Asset {
             $current = Asset::query()->whereKey($asset->id)->lockForUpdate()->first()
                 ?? throw (new ModelNotFoundException)->setModel(Asset::class, [$asset->id]);
 
+            Gate::forUser($actor)->authorize('delete', $current);
             $current->delete();
 
             return $current;
