@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Users\RegisterUser;
+use App\Enums\PermissionName;
 use App\Models\Reporting\UserRow;
 use App\Models\Role;
 use App\Models\User;
@@ -140,6 +141,9 @@ new #[Title('users.index.title')] class extends Component
     <div class="flex flex-wrap items-center justify-end gap-2">
         @can('viewAny', Role::class)
             <flux:button icon="shield-check" :href="route('roles.index')" wire:navigate>{{ __('users.index.roles') }}</flux:button>
+        @endcan
+        @can(PermissionName::SpacesAssignManagers)
+            <flux:button icon="building-office" :href="route('users.space-managers')" wire:navigate>{{ __('users.index.space_managers') }}</flux:button>
         @endcan
         @can('create', User::class)
             <flux:modal.trigger name="register-user">
