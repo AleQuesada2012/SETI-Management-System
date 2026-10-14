@@ -26,4 +26,10 @@ return [
             'test' => false,
         ],
     ],
+
+    // Temporary uploads (RF_20, RF_21, RF_41). Livewire's default stops at 12 MB; documents go up to 20 MB
+    // (App\Support\Files\FileRules, Agent-DB.md §11). Each Action validates the real per-kind limits.
+    'temporary_file_upload' => [
+        'rules' => ['required', 'file', 'max:20480'],
+    ],
 ];

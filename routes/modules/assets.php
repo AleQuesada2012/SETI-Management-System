@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShowAssetFileController;
 use App\Models\Asset;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,10 @@ Route::prefix('activos')->name('assets.')->group(function () {
     Route::livewire('{asset}/movimiento', 'pages::assets.move')
         ->middleware('can:move,asset')
         ->name('move');
+
+    // An asset's document or photo (RF_20, RF_21): ids in the URL, never a storage path; ?miniatura=1 for a photo's
+    // phone thumbnail.
+    Route::get('{asset}/archivos/{file}', ShowAssetFileController::class)
+        ->middleware('can:view,asset')
+        ->name('files.show');
 });
