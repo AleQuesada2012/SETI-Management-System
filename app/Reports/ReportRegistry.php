@@ -20,6 +20,7 @@ final class ReportRegistry
         'audit' => Definitions\AuditReport::class,
         'users' => Definitions\UsersReport::class,
         'warranties' => Definitions\WarrantiesReport::class,
+        'custodians' => Definitions\CustodiansReport::class,
     ];
 
     /** @var array<string, array<string, mixed>>|null */

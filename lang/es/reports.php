@@ -37,6 +37,7 @@ return [
         'code' => 'Código de activo', 'asset_tag' => 'Placa', 'display_name' => 'Nombre',
         'brand' => 'Marca', 'model' => 'Modelo', 'condition' => 'Condición física',
         'status' => 'Estado del ciclo de vida', 'space_name' => 'Espacio',
+        'responsible_email' => 'Correo del responsable',
         'responsible_name' => 'Responsable del activo', 'acquired_on' => 'Fecha de adquisición',
         'space_report_name' => 'Nombre', 'space_location' => 'Ubicación', 'space_capacity' => 'Capacidad',
         'space_space_type' => 'Tipo', 'space_status' => 'Estado operativo', 'space_managers' => 'Encargados del espacio',
