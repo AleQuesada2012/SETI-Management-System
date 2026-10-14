@@ -2,6 +2,13 @@
 
 // Reports module (RF_00_4, RF_60–RF_84).
 return [
+    'audit' => [
+        'actor' => 'Usuario', 'action' => 'Tipo de operación', 'occurred_at' => 'Fecha de la operación',
+        'columns' => [
+            'actor_label' => 'Usuario registrado', 'occurred_at' => 'Fecha y hora', 'action' => 'Operación',
+            'entity_label' => 'Elemento registrado', 'old_values' => 'Valores anteriores', 'new_values' => 'Valores nuevos',
+        ],
+    ],
     'index' => [
         'title' => 'Reportes',
         'generations' => 'Reportes generados',

@@ -33,7 +33,8 @@ test('inaccessible audit reports are hidden and direct access is refused', funct
         ->assertDontSee('Próximamente')->assertSee(__('reports.index.empty'));
     $this->get(route('reports.show', 'audit'))->assertForbidden();
     actingAsRole(SystemRole::Superusuario);
-    Livewire::test('pages::reports.index')->set('category', 'audit')->assertSee('Próximamente');
+    Livewire::test('pages::reports.index')->set('category', 'audit')
+        ->assertSee(route('reports.show', 'audit'), false)->assertDontSee('Próximamente');
 });
 
 test('users without reports access cannot open the menu or either report', function (string $code) {

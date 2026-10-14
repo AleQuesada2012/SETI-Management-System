@@ -1,6 +1,7 @@
 ---
 paths:
   - 'app/Reports/**'
+  - 'app/Queries/Reports/**'
   - 'app/Actions/Reports/**'
   - 'app/Models/Reporting/**'
   - 'app/Policies/ReportGenerationPolicy.php'
@@ -101,6 +102,13 @@ are holders of Administrador without Superusuario; `regular` ("usuarios normales
 Administrador nor Superusuario. Any holder of Superusuario is excluded from both types, including users with
 multiple roles. With no user-type restriction, Superusuarios remain available, including through the role filter.
 Roles are never soft-deleted, so every role is a choice.
+
+### Audit schema
+
+`App\Queries\Reports\AuditTrail` owns RF_68's `actor` (user ID `values`), `action` (AuditAction code `values`) and
+`occurred_at` (`from`/`to` dates). Date bounds include entire Costa Rica calendar days. Actor choices include active
+and deactivated users; the report preserves the original actor/entity labels and old/new value snapshots.
+An empty actor selection also includes system records with no actor. No criterion supports `include_missing`.
 
 ### Input and matching
 
