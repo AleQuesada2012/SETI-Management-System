@@ -132,6 +132,15 @@ new class extends Component
                 <flux:callout.text>{{ $this->getErrorBag()->first() }}</flux:callout.text>
             </flux:callout>
         @else
+            <flux:callout :heading="__('reports.document.filters')">
+                <flux:callout.text>
+                    @forelse ($this->definition->describeFilters($this->normalizedFilters) as $label => $value)
+                        <span class="block break-words">{{ $label }}: {{ $value }}</span>
+                    @empty
+                        {{ __('reports.document.all_records') }}
+                    @endforelse
+                </flux:callout.text>
+            </flux:callout>
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <flux:heading level="3">{{ __('reports.show.preview') }}</flux:heading>
                 <livewire:reports.export-button :report="$report->code" :filters="$this->normalizedFilters" />
