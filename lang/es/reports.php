@@ -2,6 +2,10 @@
 
 // Reports module (RF_00_4, RF_60–RF_84).
 return [
+    'users' => [
+        'name' => 'Nombre', 'email' => 'Correo', 'roles' => 'Roles',
+        'account_status' => 'Estado de cuenta', 'invitation_pending' => 'Invitación pendiente',
+    ],
     'audit' => [
         'actor' => 'Usuario', 'action' => 'Tipo de operación', 'occurred_at' => 'Fecha de la operación',
         'columns' => [

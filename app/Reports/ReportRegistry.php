@@ -18,6 +18,7 @@ final class ReportRegistry
         'assets_inventory' => Definitions\AssetInventoryReport::class,
         'spaces' => Definitions\SpacesReport::class,
         'audit' => Definitions\AuditReport::class,
+        'users' => Definitions\UsersReport::class,
     ];
 
     /** @var array<string, array<string, mixed>>|null */
