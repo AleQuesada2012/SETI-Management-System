@@ -19,6 +19,7 @@ final class ReportRegistry
         'spaces' => Definitions\SpacesReport::class,
         'audit' => Definitions\AuditReport::class,
         'users' => Definitions\UsersReport::class,
+        'warranties' => Definitions\WarrantiesReport::class,
     ];
 
     /** @var array<string, array<string, mixed>>|null */

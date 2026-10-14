@@ -2,6 +2,11 @@
 
 // Reports module (RF_00_4, RF_60–RF_84).
 return [
+    'warranties' => [
+        'supplier' => 'Proveedor', 'starts_on' => 'Inicio de la garantía', 'ends_on' => 'Fin de la garantía',
+        'state' => 'Vigencia de la garantía', 'states' => ['valid' => 'Vigente', 'expired' => 'Vencida'],
+        'no_supplier' => 'Sin proveedor registrado',
+    ],
     'users' => [
         'name' => 'Nombre', 'email' => 'Correo', 'roles' => 'Roles',
         'account_status' => 'Estado de cuenta', 'invitation_pending' => 'Invitación pendiente',
