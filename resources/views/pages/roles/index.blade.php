@@ -64,11 +64,13 @@ new #[Title('users.roles.title')] class extends Component
     #[Computed]
     public function holders(): ?LengthAwarePaginator
     {
-        if (! $this->roles->contains('name', $this->selected)) {
+        $role = $this->roles->firstWhere('name', $this->selected);
+
+        if ($role === null) {
             return null;
         }
 
-        return UserDirectory::query(['role' => $this->selected])->paginate(self::PER_PAGE);
+        return UserDirectory::query(['role' => ['values' => [$role->id]]])->paginate(self::PER_PAGE);
     }
 }; ?>
 
