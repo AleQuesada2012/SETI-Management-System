@@ -24,7 +24,7 @@ test('the Superusuario picks a space and sees the Administradores in charge of i
     $this->get(route('users.space-managers'))->assertOk()->assertSee('LAB-110')->assertSee('SAL-01');
 
     Livewire::test('pages::users.space-managers')
-        ->set('space', $lab->id)
+        ->set('space', (string) $lab->id)
         ->assertSee('Lucía Campos')
         ->assertSee('lcampos@tec.ac.cr')
         ->assertSee('Mario Solís')
@@ -37,8 +37,31 @@ test('a space without managers says so', function () {
     $room = Space::factory()->create();
 
     Livewire::test('pages::users.space-managers')
-        ->set('space', $room->id)
+        ->set('space', (string) $room->id)
         ->assertSee(__('users.space_managers.none'));
+});
+
+test('until a space is chosen the select shows the selectable empty option, not the first space', function () {
+    actingAsRole(SystemRole::Superusuario);
+    $admin = User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Lucía Campos']);
+    $lab = Space::factory()->managedBy($admin)->create(['code' => 'LAB-110']);
+
+    $this->get(route('users.space-managers'))
+        ->assertOk()
+        ->assertSeeInOrder([__('users.space_managers.choose'), 'LAB-110'])
+        ->assertDontSee('Lucía Campos');
+
+    $page = Livewire::test('pages::users.space-managers');
+
+    // The empty option must be selectable: a disabled one cannot stay selected and the browser shows the first space.
+    expect($page->html())->toMatch('/<option[^>]*value=""/')
+        ->not->toMatch('/<option[^>]*\bdisabled\b/');
+
+    $page->set('space', (string) $lab->id)
+        ->assertSee('Lucía Campos')
+        ->set('space', '')
+        ->assertDontSee('Lucía Campos')
+        ->assertDontSee(__('users.space_managers.unknown_space'));
 });
 
 test('the chosen space is kept in the URL', function () {

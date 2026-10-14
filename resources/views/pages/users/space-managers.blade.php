@@ -16,9 +16,13 @@ use Livewire\Component;
  */
 new #[Title('users.space_managers.title')] class extends Component
 {
-    /** The chosen space, kept in the URL (?espacio=3). */
-    #[Url(as: 'espacio', except: null)]
-    public ?int $space = null;
+    /**
+     * The chosen space id, kept in the URL (?espacio=3); '' while none is chosen. A string, because the select's
+     * "Elige un espacio" option is a real, selectable empty option: Flux's disabled placeholder cannot stay selected,
+     * so the browser showed the first space while none was chosen (RF_96 review).
+     */
+    #[Url(as: 'espacio', except: '')]
+    public string $space = '';
 
     /** @return Collection<int, SpaceRow> */
     #[Computed]
@@ -31,7 +35,7 @@ new #[Title('users.space_managers.title')] class extends Component
     #[Computed]
     public function selectedSpace(): ?SpaceRow
     {
-        return $this->space === null ? null : $this->spaces->firstWhere('id', $this->space);
+        return ctype_digit($this->space) ? $this->spaces->firstWhere('id', (int) $this->space) : null;
     }
 
     /** @return Collection<int, SpaceManagerRow> */
@@ -49,16 +53,17 @@ new #[Title('users.space_managers.title')] class extends Component
     </div>
 
     <flux:card>
-        <flux:select wire:model.live="space" :label="__('users.space_managers.space')" :placeholder="__('users.space_managers.choose')" class="sm:max-w-md">
+        <flux:select wire:model.live="space" :label="__('users.space_managers.space')" class="sm:max-w-md">
+            <flux:select.option value="">{{ __('users.space_managers.choose') }}</flux:select.option>
             @foreach ($this->spaces as $option)
-                <flux:select.option :value="$option->id" wire:key="space-{{ $option->id }}">
+                <flux:select.option :value="(string) $option->id" wire:key="space-{{ $option->id }}">
                     {{ $option->code }} · {{ $option->name }} ({{ $option->space_type }})
                 </flux:select.option>
             @endforeach
         </flux:select>
     </flux:card>
 
-    @if ($space !== null && $this->selectedSpace === null)
+    @if ($space !== '' && $this->selectedSpace === null)
         <flux:callout icon="exclamation-triangle" color="amber" :text="__('users.space_managers.unknown_space')" data-test="unknown-space" />
     @elseif ($this->selectedSpace !== null)
         <flux:card class="overflow-x-auto">
