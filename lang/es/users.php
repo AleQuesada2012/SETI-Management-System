@@ -8,13 +8,34 @@ return [
         'roles' => 'Roles',
         'search' => 'Buscar',
         'search_placeholder' => 'Nombre, correo o ID',
-        'role' => 'Rol',
-        'all_roles' => 'Todos los roles',
-        'account_status' => 'Estado de cuenta',
-        'all_statuses' => 'Todos los estados',
         'clear' => 'Limpiar filtros',
         'empty' => 'No hay usuarios registrados.',
         'no_results' => 'No se encontraron usuarios con los criterios indicados.',
+        'no_registered' => [
+            'administrators' => 'No existen usuarios administradores registrados.',
+            'regular' => 'No existen usuarios normales registrados.',
+        ],
+        'invalid_filters' => 'Los filtros no son válidos',
+    ],
+    // The users filter contract (UserDirectory, .ai/rules/reports.md § Users schema), shared with the users report.
+    'filters' => [
+        'criteria' => [
+            'user_type' => 'Tipo de usuario',
+            'role' => 'Rol',
+            'account_status' => 'Estado de cuenta',
+        ],
+        'options' => [
+            'user_type' => [
+                'administrators' => 'Administradores',
+                'regular' => 'Usuarios normales',
+            ],
+        ],
+        'errors' => [
+            'unknown_key' => 'El filtro «:key» no existe.',
+            'shape' => 'El filtro «:filter» no tiene un formato válido.',
+            'unknown_value' => 'El filtro «:filter» tiene una opción que no existe.',
+            'search' => 'El texto de búsqueda no es válido (máximo 200 caracteres).',
+        ],
     ],
     'fields' => [
         'name' => 'Nombre',
