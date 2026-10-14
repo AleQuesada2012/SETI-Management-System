@@ -97,9 +97,10 @@ Owned by @Rubiocai beside `App\Queries\Users\UserDirectory` (RF_90, RF_92, RF_95
 | `account_status` | `values`: `active`, `deactivated` |
 
 None supports `include_missing`. Search covers name, email and user ID (`users.search_text`). `administrators`
-are holders of the Administrador role; `regular` ("usuarios normales", RF_92) are users holding neither Administrador
-nor Superusuario, so a Superusuario appears under no user type. Roles are never soft-deleted, so every role is a
-choice.
+are holders of Administrador without Superusuario; `regular` ("usuarios normales", RF_92) are users holding neither
+Administrador nor Superusuario. Any holder of Superusuario is excluded from both types, including users with
+multiple roles. With no user-type restriction, Superusuarios remain available, including through the role filter.
+Roles are never soft-deleted, so every role is a choice.
 
 ### Input and matching
 

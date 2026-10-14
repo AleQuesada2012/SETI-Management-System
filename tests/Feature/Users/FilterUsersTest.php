@@ -76,6 +76,27 @@ test('with no Administradores registered the list says so', function () {
         ->assertSee(__('users.index.no_registered.administrators'));
 });
 
+test('every selected user type excludes a Superusuario with additional roles', function (array $types) {
+    User::factory()->withRole(SystemRole::Administrador, SystemRole::Superusuario)->create(['name' => 'Eva Multirrol']);
+    User::factory()->withRole(SystemRole::Reservante, SystemRole::Superusuario)->create(['name' => 'Fabián Multirrol']);
+    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Gina Administradora']);
+    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Hugo Normal']);
+
+    Livewire::test('pages::users.index')
+        ->assertSee('Eva Multirrol')
+        ->assertSee('Fabián Multirrol')
+        ->set('filters.user_type.values', $types)
+        ->assertDontSee('Eva Multirrol')
+        ->assertDontSee('Fabián Multirrol')
+        ->call('clearFilters')
+        ->assertSee('Eva Multirrol')
+        ->assertSee('Fabián Multirrol');
+})->with([
+    'administrators' => [['administrators']],
+    'regular' => [['regular']],
+    'both types' => [['administrators', 'regular']],
+]);
+
 test('with no usuarios normales registered the list says so, even while searching', function () {
     User::factory()->withRole(SystemRole::Administrador)->create();
 

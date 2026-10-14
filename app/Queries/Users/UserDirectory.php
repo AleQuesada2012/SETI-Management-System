@@ -52,6 +52,7 @@ final class UserDirectory
         TextSearch::apply($query, 'users', $filters['search'] ?? null);
 
         if (isset($filters['user_type'])) {
+            $query->whereNotIn('id', self::holdersOf([SystemRole::Superusuario]));
             $query->where(function (Builder $types) use ($filters): void {
                 foreach ($filters['user_type']['values'] as $type) {
                     if ($type === 'administrators') {
