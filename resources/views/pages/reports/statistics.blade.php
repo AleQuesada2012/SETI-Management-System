@@ -38,7 +38,7 @@ new #[Title('reports.statistics.title')] class extends Component
         <flux:callout icon="information-circle" :heading="__('reports.statistics.empty')" />
     @endif
     <div class="grid gap-6 lg:grid-cols-2">
-        @foreach (['condition', 'lifecycle'] as $kind)
+        @foreach (['condition', 'lifecycle', 'category'] as $kind)
             @php($rows = $this->series[$kind])
             <flux:card class="min-w-0">
                 <flux:heading level="3" class="mb-4">{{ __('reports.statistics.'.$kind) }}</flux:heading>
@@ -51,7 +51,11 @@ new #[Title('reports.statistics.title')] class extends Component
                             @foreach ($rows as $row)
                                 <tr class="border-b border-line">
                                     <td class="py-3">
-                                        {{ $row['label'] }}
+                                        @if ($kind === 'category')
+                                            <a class="text-brand-ink underline" wire:navigate href="{{ route('reports.show', ['report' => 'assets_inventory', 'filters' => ['category' => ['values' => [$row['id']]]]]) }}">{{ $row['label'] }}</a>
+                                        @else
+                                            {{ $row['label'] }}
+                                        @endif
                                     </td>
                                     <td class="py-3 text-right tabular-nums">{{ $row['count'] }}</td>
                                 </tr>

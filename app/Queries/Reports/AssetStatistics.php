@@ -6,7 +6,7 @@ use App\Enums\AssetStatus;
 use App\Models\Reporting\AssetRow;
 use App\Queries\Assets\InventoryFilters;
 
-/** RF_80: aggregate current reporting rows, without stored counters. */
+/** RF_80/RF_81: aggregate current reporting rows, without stored counters. */
 final class AssetStatistics
 {
     /** @return array<string, list<array{id: int|string, label: string, count: int, color?: int}>> */
@@ -18,11 +18,11 @@ final class AssetStatistics
             ->mapWithKeys(fn (AssetRow $row): array => [$row->getAttribute('condition_id') => match ($row->condition_color->value) {
                 'green' => 2, 'amber' => 3, 'red' => 4, 'gray' => 5,
             }]);
-        foreach (['condition' => 'condition_id'] as $key => $column) {
+        foreach (['condition' => 'condition_id', 'category' => 'category_id'] as $key => $column) {
             $counts = AssetRow::query()->selectRaw($column.', count(*) AS total')->groupBy($column)->pluck('total', $column);
             $series[$key] = array_map(fn (array $choice): array => [
                 'id' => $choice['id'], 'label' => $choice['label'], 'count' => (int) ($counts[$choice['id']] ?? 0),
-                'color' => $conditionColors[$choice['id']] ?? 5,
+                ...($key === 'condition' ? ['color' => $conditionColors[$choice['id']] ?? 5] : []),
             ], $choices[$key]);
         }
         $counts = AssetRow::query()->selectRaw('status, count(*) AS total')->groupBy('status')->pluck('total', 'status');
