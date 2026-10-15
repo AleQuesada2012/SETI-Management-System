@@ -2,6 +2,9 @@
 
 namespace App\Support\Files;
 
+use Closure;
+use Illuminate\Http\UploadedFile;
+
 /**
  * Validation rules for uploads, the same limits the `files` table enforces (Agent-DB.md §11): images are JPEG, PNG,
  * WebP or GIF up to 10 MB; documents are PDF (or an image) up to 20 MB. Laravel checks them first so users get a
@@ -31,10 +34,17 @@ final class FileRules
     }
 
     /**
-     * @return list<string>
+     * @return list<string|Closure>
      */
     public static function document(): array
     {
-        return ['file', 'mimetypes:'.implode(',', self::DOCUMENT_MIME_TYPES), 'max:'.self::DOCUMENT_MAX_KILOBYTES];
+        return ['file', 'mimetypes:'.implode(',', self::DOCUMENT_MIME_TYPES), 'max:'.self::DOCUMENT_MAX_KILOBYTES,
+            function (string $attribute, mixed $value, Closure $fail): void {
+                if ($value instanceof UploadedFile && in_array($value->getMimeType(), self::IMAGE_MIME_TYPES, true)
+                    && $value->getSize() > self::IMAGE_MAX_KILOBYTES * 1024) {
+                    $fail('validation.max.file')->translate(['attribute' => $attribute, 'max' => self::IMAGE_MAX_KILOBYTES]);
+                }
+            },
+        ];
     }
 }
