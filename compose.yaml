@@ -26,8 +26,8 @@ x-app: &app
     PHP_OPCACHE_ENABLE: "0"
     PHP_DATE_TIMEZONE: America/Costa_Rica
     PHP_UPLOAD_MAX_FILE_SIZE: 20M
-    PHP_POST_MAX_SIZE: 25M
-    NGINX_CLIENT_MAX_BODY_SIZE: 25M
+    PHP_POST_MAX_SIZE: 205M
+    NGINX_CLIENT_MAX_BODY_SIZE: 205M
   depends_on:
     pgsql:
       condition: service_healthy
