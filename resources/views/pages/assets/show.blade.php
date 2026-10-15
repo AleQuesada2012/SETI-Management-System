@@ -21,7 +21,8 @@ use Livewire\Component;
  * RF_05 · the condition's color. Editing (RF_04, RF_05) happens on pages::assets.edit.
  * RF_25 · the asset's movements; registering one (RF_06, RF_25) happens on pages::assets.move.
  * RF_02 · "Eliminar" is the assets.delete-asset component (resources/views/components/assets).
- * RF_20 · the asset's documents are the assets.asset-documents component (by @Dizabu, on RF_41's upload mechanism).
+ * RF_20, RF_21 · the asset's documents and photos are the assets.asset-documents and assets.asset-photos components
+ * (by @Dizabu, on RF_41's upload mechanism).
  */
 new #[Title('assets.show.title')] class extends Component {
     public Asset $asset;
@@ -181,6 +182,8 @@ new #[Title('assets.show.title')] class extends Component {
     </flux:card>
 
     <livewire:assets.asset-components :asset="$asset" />
+
+    <livewire:assets.asset-photos :asset="$asset" />
 
     <livewire:assets.asset-documents :asset="$asset" />
 
