@@ -77,6 +77,8 @@ new #[Title('spaces.show.title')] class extends Component {
         </dl>
     </flux:card>
 
+    <livewire:spaces.space-photos :space="$space" />
+
     <flux:card class="flex flex-col gap-4">
         <flux:heading size="md" level="3">{{ __('spaces.show.assets', ['count' => $this->assets->count()]) }}</flux:heading>
 
