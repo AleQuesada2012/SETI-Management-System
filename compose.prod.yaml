@@ -22,8 +22,8 @@ x-app: &app
   environment:
     PHP_DATE_TIMEZONE: America/Costa_Rica
     PHP_UPLOAD_MAX_FILE_SIZE: 20M
-    PHP_POST_MAX_SIZE: 25M
-    NGINX_CLIENT_MAX_BODY_SIZE: 25M
+    PHP_POST_MAX_SIZE: 205M
+    NGINX_CLIENT_MAX_BODY_SIZE: 205M
     HEALTHCHECK_PATH: /up
     # Only the `app` service runs migrations and caches on start.
     AUTORUN_ENABLED: "false"
@@ -40,8 +40,8 @@ services:
     environment:
       PHP_DATE_TIMEZONE: America/Costa_Rica
       PHP_UPLOAD_MAX_FILE_SIZE: 20M
-      PHP_POST_MAX_SIZE: 25M
-      NGINX_CLIENT_MAX_BODY_SIZE: 25M
+      PHP_POST_MAX_SIZE: 205M
+      NGINX_CLIENT_MAX_BODY_SIZE: 205M
       HEALTHCHECK_PATH: /up
       AUTORUN_ENABLED: "true"
       AUTORUN_LARAVEL_MIGRATION: "true"

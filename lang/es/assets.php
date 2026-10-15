@@ -239,7 +239,7 @@ return [
             'pick' => 'Elegir documentos',
             'nothing_chosen' => 'Ningún documento elegido',
             'chosen' => '{1} 1 documento elegido|[2,*] :count documentos elegidos',
-            'help' => 'Facturas, manuales o garantías en PDF (o una imagen), de hasta 20 MB cada uno; hasta :max a la vez.',
+            'help' => 'Facturas, manuales o garantías en PDF de hasta 20 MB, o imágenes de hasta 10 MB; hasta :max a la vez.',
             'none' => 'Este activo todavía no tiene documentos.',
             'attached' => '{1} Se adjuntó 1 documento.|[2,*] Se adjuntaron :count documentos.',
             'confirm_heading' => '¿Eliminar este documento?',

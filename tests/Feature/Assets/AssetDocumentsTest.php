@@ -3,6 +3,7 @@
 // RF_20 · Adjuntar documentos a los activos (on RF_41's upload mechanism).
 
 use App\Actions\Assets\AttachAssetFiles;
+use App\Actions\Assets\RecordAssetMovement;
 use App\Actions\Assets\RemoveAssetFile;
 use App\Enums\AssetFileKind;
 use App\Enums\SystemRole;
@@ -125,3 +126,26 @@ test('a user who cannot view assets cannot open a document', function () {
 
     $this->get(route('assets.files.show', [$this->asset, $document]))->assertForbidden();
 });
+
+test('file attachment rechecks the current asset space after a transfer', function (AssetFileKind $kind) {
+    $upload = $kind === AssetFileKind::Photo ? UploadedFile::fake()->image('foto.jpg') : invoice();
+    $destination = Space::factory()->create();
+    app(RecordAssetMovement::class)->handle(userWithRole(SystemRole::Superusuario), $this->asset,
+        ['type' => 'transfer', 'to_space_id' => $destination->id]);
+    expect(fn () => app(AttachAssetFiles::class)->handle($this->admin, $this->asset, $kind, [$upload]))
+        ->toThrow(AuthorizationException::class);
+    expect($this->asset->files()->count())->toBe(0);
+    $this->assertDatabaseMissing('audit_logs', ['action' => 'attached', 'entity_type' => 'asset', 'entity_id' => $this->asset->id]);
+})->with([AssetFileKind::Document, AssetFileKind::Photo]);
+
+test('file removal rechecks the current asset space after a transfer', function (AssetFileKind $kind) {
+    $upload = $kind === AssetFileKind::Photo ? UploadedFile::fake()->image('foto.jpg') : invoice();
+    [$file] = app(AttachAssetFiles::class)->handle($this->admin, $this->asset, $kind, [$upload]);
+    $destination = Space::factory()->create();
+    app(RecordAssetMovement::class)->handle(userWithRole(SystemRole::Superusuario), $this->asset,
+        ['type' => 'transfer', 'to_space_id' => $destination->id]);
+    expect(fn () => app(RemoveAssetFile::class)->handle($this->admin, $this->asset, $file))->toThrow(AuthorizationException::class);
+    expect(File::query()->whereKey($file->id)->exists())->toBeTrue();
+    Storage::disk($file->disk)->assertExists($file->path);
+    $this->assertDatabaseMissing('audit_logs', ['action' => 'detached', 'entity_type' => 'asset', 'entity_id' => $this->asset->id]);
+})->with([AssetFileKind::Document, AssetFileKind::Photo]);

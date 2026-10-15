@@ -21,11 +21,13 @@ final class RemoveAssetFile
     {
         Gate::forUser($actor)->authorize('manageFiles', $asset);
 
-        $kind = $asset->files()->whereKey($file->id)->value('asset_files.kind');
+        DB::transaction(function () use ($actor, $asset, $file): void {
+            $asset = Asset::query()->whereKey($asset->id)->lockForUpdate()->firstOrFail();
+            Gate::forUser($actor)->authorize('manageFiles', $asset);
+            $file = File::query()->whereKey($file->id)->lockForUpdate()->firstOrFail();
+            $kind = $asset->files()->whereKey($file->id)->value('asset_files.kind');
+            abort_if($kind === null, 404);
 
-        abort_if($kind === null, 404);
-
-        DB::transaction(function () use ($actor, $asset, $file, $kind): void {
             Audit::record(AuditAction::Detached, $asset, old: [$kind => $file->original_name], actor: $actor);
 
             $file->deleteWithBytes();
