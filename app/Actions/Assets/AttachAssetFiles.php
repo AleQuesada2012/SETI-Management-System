@@ -49,6 +49,9 @@ final class AttachAssetFiles
 
         try {
             return DB::transaction(function () use ($actor, $asset, $kind, $data, $storage): Collection {
+                $asset = Asset::query()->whereKey($asset->id)->lockForUpdate()->firstOrFail();
+                Gate::forUser($actor)->authorize('manageFiles', $asset);
+
                 $sortOrder = (int) $asset->files()->wherePivot('kind', $kind->value)->max('asset_files.sort_order');
 
                 return collect($data['files'])->map(function (UploadedFile $upload) use ($actor, $asset, $kind, $storage, &$sortOrder): File {
