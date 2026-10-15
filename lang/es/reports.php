@@ -77,6 +77,10 @@ return [
     ],
     'generations' => [
         'title' => 'Reportes generados',
+        'description' => 'Consulta las generaciones anteriores y descarga su archivo original. Las fechas corresponden a Costa Rica.',
+        'empty' => 'Todavía no se han generado reportes.', 'when' => 'Fecha y hora', 'who' => 'Generado por',
+        'report' => 'Tipo de reporte', 'category' => 'Categoría', 'format' => 'Formato', 'rows' => 'Registros',
+        'file' => 'Archivo', 'download' => 'Descargar original', 'unavailable' => 'Archivo no disponible',
     ],
     'export' => [
         'button' => 'Exportar',
