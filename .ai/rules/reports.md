@@ -110,6 +110,12 @@ Roles are never soft-deleted, so every role is a choice.
 and deactivated users; the report preserves the original actor/entity labels and old/new value snapshots.
 An empty actor selection also includes system records with no actor. No criterion supports `include_missing`.
 
+### Warranties schema
+
+`App\Queries\Reports\Warranties` supports `warranty_state` with `values` of `valid` and `expired`.
+The dataset contains only recorded warranties (both dates present), using `reporting.assets` validity and supplier
+fields as defined in Agent-DB §7. Empty selections mean all recorded warranties; `include_missing` is unsupported.
+
 ### Input and matching
 
 ```json

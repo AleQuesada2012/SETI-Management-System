@@ -2,6 +2,17 @@
 
 // Reports module (RF_00_4, RF_60–RF_84).
 return [
+    'statistics' => [
+        'title' => 'Estadísticas de activos', 'refresh' => 'Datos actuales del inventario. Se actualizan automáticamente cada 15 segundos mientras esta página está visible.',
+        'total' => 'Total de activos: :count', 'empty' => 'No hay activos registrados.',
+        'condition' => 'Condición física', 'lifecycle' => 'Estado del ciclo de vida', 'category' => 'Categoría',
+        'group' => 'Grupo', 'count' => 'Cantidad de activos',
+    ],
+    'warranties' => [
+        'supplier' => 'Proveedor', 'starts_on' => 'Inicio de la garantía', 'ends_on' => 'Fin de la garantía',
+        'state' => 'Vigencia de la garantía', 'states' => ['valid' => 'Vigente', 'expired' => 'Vencida'],
+        'no_supplier' => 'Sin proveedor registrado',
+    ],
     'users' => [
         'name' => 'Nombre', 'email' => 'Correo', 'roles' => 'Roles',
         'account_status' => 'Estado de cuenta', 'invitation_pending' => 'Invitación pendiente',
@@ -32,6 +43,7 @@ return [
         'code' => 'Código de activo', 'asset_tag' => 'Placa', 'display_name' => 'Nombre',
         'brand' => 'Marca', 'model' => 'Modelo', 'condition' => 'Condición física',
         'status' => 'Estado del ciclo de vida', 'space_name' => 'Espacio',
+        'responsible_email' => 'Correo del responsable',
         'responsible_name' => 'Responsable del activo', 'acquired_on' => 'Fecha de adquisición',
         'space_report_name' => 'Nombre', 'space_location' => 'Ubicación', 'space_capacity' => 'Capacidad',
         'space_space_type' => 'Tipo', 'space_status' => 'Estado operativo', 'space_managers' => 'Encargados del espacio',
