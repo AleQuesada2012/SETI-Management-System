@@ -5,6 +5,8 @@ use App\Enums\ReportFormat;
 use App\Models\ReportGeneration;
 use Flux\Flux;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
@@ -29,6 +31,12 @@ new class extends Component {
 
     public function export(string $format, ExportReport $exportReport): StreamedResponse
     {
+        $this->authorize('create', ReportGeneration::class);
+        Validator::make(['format' => $format], ['format' => ['required', Rule::enum(ReportFormat::class)]], [
+            'format.required' => __('reports.export.invalid_format'),
+            'format.enum' => __('reports.export.invalid_format'),
+        ])->validate();
+
         $generation = $exportReport->handle(auth()->user(), $this->report, ReportFormat::from($format), $this->filters);
 
         Flux::toast(variant: 'success', text: __('reports.export.done'));
@@ -40,6 +48,7 @@ new class extends Component {
 }; ?>
 
 <div>
+    <flux:error name="format" />
     @can('create', ReportGeneration::class)
         <flux:dropdown position="bottom" align="end">
             <flux:button icon="arrow-down-tray" icon:trailing="chevron-down" data-test="export-button">{{ __('reports.export.button') }}</flux:button>

@@ -60,6 +60,7 @@ return [
         'pdf' => 'Exportar PDF',
         'xlsx' => 'Exportar Excel (XLSX)',
         'done' => 'El reporte se generó correctamente.',
+        'invalid_format' => 'Selecciona PDF o Excel (XLSX) para exportar el reporte.',
         'sheet_data' => 'Datos',
         'sheet_info' => 'Información',
     ],

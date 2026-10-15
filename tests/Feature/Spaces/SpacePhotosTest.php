@@ -9,10 +9,12 @@ use App\Models\AuditLog;
 use App\Models\File;
 use App\Models\Space;
 use App\Models\User;
+use App\Support\Files\FileRules;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Livewire\Livewire;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -149,4 +151,11 @@ test('an Administrador of another space and read-only roles cannot upload or rem
     }
 
     expect($this->space->photos()->count())->toBe(1);
+});
+
+test('shared document validation applies the image limit before any bytes are stored', function () {
+    $validator = Validator::make(['document' => UploadedFile::fake()->image('recibo.jpg')->size(10 * 1024 + 1)],
+        ['document' => FileRules::document()]);
+    expect($validator->fails())->toBeTrue()->and($validator->errors()->first('document'))->toContain('10240');
+    expect(File::query()->exists())->toBeFalse();
 });
