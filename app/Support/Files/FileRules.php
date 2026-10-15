@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 
 /**
  * Validation rules for uploads, the same limits the `files` table enforces (Agent-DB.md §11): images are JPEG, PNG,
- * WebP or GIF up to 10 MB; documents are PDF (or an image) up to 20 MB. Laravel checks them first so users get a
+ * WebP or GIF up to 10 MB; documents are PDF up to 20 MB or images up to 10 MB. Laravel checks them first so users get a
  * Spanish message; the database stays the final judge (files_mime_type_check, files_size_check).
  *
  *     'photos.*' => FileRules::image(),      // RF_41, RF_21
