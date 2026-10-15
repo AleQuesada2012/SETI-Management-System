@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShowSpacePhotoController;
 use App\Models\Space;
 use Illuminate\Support\Facades\Route;
 
@@ -13,4 +14,9 @@ Route::prefix('espacios')->name('spaces.')->group(function () {
     Route::livewire('{space}', 'pages::spaces.show')
         ->middleware('can:view,space')
         ->name('show');
+
+    // A space's photo (RF_41): ids in the URL, never a storage path; ?miniatura=1 for the phone thumbnail.
+    Route::get('{space}/fotos/{file}', ShowSpacePhotoController::class)
+        ->middleware('can:view,space')
+        ->name('photos.show');
 });
