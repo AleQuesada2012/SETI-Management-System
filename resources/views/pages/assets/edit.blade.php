@@ -11,7 +11,8 @@ use Livewire\Component;
 /*
  * RF_04 · Editar activo, and RF_05 · Asignar estado (the condition and its color). The route checked `update`
  * (★ for an Administrador); `save` checks it again. The space is shown but not editable: it changes through a
- * transfer (RF_06, pages::assets.move). Shares its fields with RF_03 (x-assets.fields).
+ * transfer (RF_06, pages::assets.move). Shares its fields with RF_03 (x-assets.fields). A decommissioned asset is
+ * read-only (RF_29, Asset::isReadOnly): the page says so instead of showing the form, and UpdateAsset refuses it.
  */
 new #[Title('assets.edit.title')] class extends Component {
     public Asset $asset;
@@ -115,33 +116,40 @@ new #[Title('assets.edit.title')] class extends Component {
         <flux:text class="mt-1">{{ __('assets.edit.description', ['asset' => $asset->code.' · '.$asset->displayName()]) }}</flux:text>
     </div>
 
-    <form wire:submit="save" class="flex flex-col gap-6">
-        <flux:card class="flex flex-col gap-4">
-            <flux:heading level="3">{{ __('assets.create.sections.placement') }}</flux:heading>
-
-            <flux:field>
-                <flux:label>{{ Str::ucfirst(__('assets.fields.space_id')) }}</flux:label>
-                <flux:text class="text-ink" data-test="asset-space">
-                    {{ $asset->currentSpace ? $asset->currentSpace->code.' · '.$asset->currentSpace->name : __('assets.show.empty') }}
-                </flux:text>
-                <flux:description>
-                    {{ __('assets.edit.space_help') }}
-                    @can('move', $asset)
-                        <flux:link :href="route('assets.move', $asset)" wire:navigate data-test="edit-move-link">{{ __('assets.edit.move') }}</flux:link>
-                    @endcan
-                </flux:description>
-            </flux:field>
-
-            <flux:input wire:model="location_detail" :label="Str::ucfirst(__('assets.fields.location_detail'))" :placeholder="__('assets.create.location_placeholder')" maxlength="200" />
-        </flux:card>
-
-        <x-assets.fields :choices="$this->choices" />
-
-        <flux:error name="form" />
-
-        <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-            <flux:button :href="route('assets.show', $asset)" wire:navigate variant="ghost" class="w-full sm:w-auto">{{ __('assets.create.cancel') }}</flux:button>
-            <flux:button type="submit" variant="primary" class="w-full sm:w-auto" data-test="edit-asset-submit">{{ __('assets.edit.submit') }}</flux:button>
+    @if ($asset->isReadOnly())
+        <flux:callout variant="warning" icon="archive-box-x-mark" :heading="__('assets.edit.read_only', ['asset' => $asset->code])" data-test="edit-read-only" />
+        <div>
+            <flux:button :href="route('assets.show', $asset)" wire:navigate icon="arrow-left" class="w-full sm:w-auto">{{ __('assets.show.title') }}</flux:button>
         </div>
-    </form>
+    @else
+        <form wire:submit="save" class="flex flex-col gap-6">
+            <flux:card class="flex flex-col gap-4">
+                <flux:heading level="3">{{ __('assets.create.sections.placement') }}</flux:heading>
+
+                <flux:field>
+                    <flux:label>{{ Str::ucfirst(__('assets.fields.space_id')) }}</flux:label>
+                    <flux:text class="text-ink" data-test="asset-space">
+                        {{ $asset->currentSpace ? $asset->currentSpace->code.' · '.$asset->currentSpace->name : __('assets.show.empty') }}
+                    </flux:text>
+                    <flux:description>
+                        {{ __('assets.edit.space_help') }}
+                        @can('move', $asset)
+                            <flux:link :href="route('assets.move', $asset)" wire:navigate data-test="edit-move-link">{{ __('assets.edit.move') }}</flux:link>
+                        @endcan
+                    </flux:description>
+                </flux:field>
+
+                <flux:input wire:model="location_detail" :label="Str::ucfirst(__('assets.fields.location_detail'))" :placeholder="__('assets.create.location_placeholder')" maxlength="200" />
+            </flux:card>
+
+            <x-assets.fields :choices="$this->choices" />
+
+            <flux:error name="form" />
+
+            <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <flux:button :href="route('assets.show', $asset)" wire:navigate variant="ghost" class="w-full sm:w-auto">{{ __('assets.create.cancel') }}</flux:button>
+                <flux:button type="submit" variant="primary" class="w-full sm:w-auto" data-test="edit-asset-submit">{{ __('assets.edit.submit') }}</flux:button>
+            </div>
+        </form>
+    @endif
 </div>

@@ -17,13 +17,14 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 /**
  * RF_20 · attach documents, RF_21 · attach photos to an asset, on the upload mechanism of RF_41 (App\Support\Files).
  * Space-scoped (★): `manageFiles`. Each file is a `files` row linked through asset_files with its kind, after the
  * asset's existing files of that kind, plus an `attached` audit entry on the asset, in one transaction; if it fails,
- * the stored bytes are removed.
+ * the stored bytes are removed. A decommissioned asset takes no more files (Asset::isReadOnly).
  */
 final class AttachAssetFiles
 {
@@ -51,6 +52,10 @@ final class AttachAssetFiles
             return DB::transaction(function () use ($actor, $asset, $kind, $data, $storage): Collection {
                 $asset = Asset::query()->whereKey($asset->id)->lockForUpdate()->firstOrFail();
                 Gate::forUser($actor)->authorize('manageFiles', $asset);
+
+                if ($asset->isReadOnly()) {
+                    throw ValidationException::withMessages(['files' => __('assets.read_only')]);
+                }
 
                 $sortOrder = (int) $asset->files()->wherePivot('kind', $kind->value)->max('asset_files.sort_order');
 

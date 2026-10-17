@@ -92,6 +92,7 @@ return [
         'submit' => 'Guardar cambios',
         'done' => 'Los cambios del activo :asset se guardaron correctamente.',
         'condition_done' => 'El activo :asset quedó en condición :condition.',
+        'read_only' => 'El activo :asset está dado de baja: su información ya no se modifica.',
         'move' => 'Registrar traslado',
     ],
     // RF_06 · Traslado de activo entre espacios, RF_25 · Registrar movimientos de inventario.
@@ -166,6 +167,12 @@ return [
             'system' => 'Sistema',
             'empty' => 'Este activo no tiene movimientos registrados.',
         ],
+        // RF_22, RF_28: the date of the event that set the current lifecycle status.
+        'status_since' => [
+            'lost' => 'Fecha de la pérdida',
+            'decommissioned' => 'Fecha de baja',
+        ],
+        'decommissioned_notice' => 'Este activo fue dado de baja el :date. Su información y su historial se conservan, pero ya no se modifican.',
         'has_warranty' => 'Cuenta con garantía',
         'warranty_states' => [
             'none' => 'Sin garantía',
@@ -176,6 +183,49 @@ return [
         'no' => 'No',
         'empty' => '—',
         'no_observations' => 'Sin observaciones.',
+    ],
+    // RF_29 (with RF_22): a decommissioned asset is read-only (Asset::isReadOnly).
+    'read_only' => 'El activo está dado de baja: su información ya no se modifica.',
+    // RF_22, RF_28, RF_29: the "Eventos" card on the asset page (components/assets/asset-events).
+    'events' => [
+        'title' => 'Eventos',
+        'empty' => 'Este activo no tiene eventos registrados.',
+        'register' => 'Registrar evento',
+        'form_title' => 'Registrar evento del activo :asset',
+        'kind_help' => [
+            'loss' => 'El activo quedará como perdido: deja de contarse como disponible y no se puede trasladar hasta registrar su recuperación.',
+            'recovery' => 'El activo perdido apareció: vuelve a estar en servicio.',
+            'decommission' => 'La baja es definitiva: el activo deja de estar disponible, conserva su historial y su información ya no se modifica.',
+        ],
+        'description_placeholder' => [
+            'loss' => 'Dónde y cómo se perdió, quién lo reportó…',
+            'recovery' => 'Dónde apareció y en qué estado…',
+            'decommission' => 'Obsolescencia, daño irreparable, donación…',
+        ],
+        'save' => 'Registrar',
+        'cancel' => 'Cancelar',
+        'done' => [
+            'loss' => 'Se registró la pérdida del activo :asset.',
+            'recovery' => 'Se registró la recuperación del activo :asset.',
+            'decommission' => 'Se registró la baja del activo :asset.',
+        ],
+        'columns' => [
+            'occurred_on' => 'Fecha',
+            'kind' => 'Tipo',
+            'description' => 'Descripción',
+            'registered_by' => 'Registrado por',
+        ],
+        'system' => 'Sistema',
+        'errors' => [
+            'kind' => 'El estado del activo no permite registrar ese evento.',
+            'future' => 'La fecha del evento no puede ser futura.',
+            'before_acquisition' => 'La fecha del evento no puede ser anterior a la fecha de adquisición del activo.',
+        ],
+        'fields' => [
+            'kind' => 'tipo de evento',
+            'occurred_on' => 'fecha',
+            'description' => 'descripción',
+        ],
     ],
     // RF_12, RF_31: the "Componentes" card on the asset page.
     'components' => [

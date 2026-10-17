@@ -194,6 +194,15 @@ class Asset extends Model
         ])));
     }
 
+    /**
+     * A decommission is terminal (RF_29, Agent-DB.md §8.4): the asset keeps its history and may still exit its space or
+     * be deleted (RF_02), but its data, components and files no longer change (decision of 2026-10-16).
+     */
+    public function isReadOnly(): bool
+    {
+        return $this->status === AssetStatus::Decommissioned;
+    }
+
     /** The space whose managers answer for this asset: where it is, or where it last was (Agent-DB.md §8.1). */
     public function responsibleSpaceId(): ?int
     {

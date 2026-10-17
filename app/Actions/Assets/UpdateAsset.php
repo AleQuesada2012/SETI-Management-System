@@ -9,12 +9,14 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
  * RF_04 · Edit an asset's attributes, and RF_05 · assign its condition (the green/amber/red "estado") with a
  * description. It validates with the same rules as registration (RF_03). The space is not editable here: it changes
  * only through a transfer movement (RF_06, ADR-0003). The lifecycle status is not either: it follows events (§8.4).
- * The `updated` audit entry, with old and new values, is written by the Auditable model.
+ * A decommissioned asset is read-only (Asset::isReadOnly). The `updated` audit entry, with old and new values, is
+ * written by the Auditable model.
  */
 final class UpdateAsset
 {
@@ -29,6 +31,10 @@ final class UpdateAsset
 
         try {
             return DB::transaction(function () use ($asset, $data): Asset {
+                if (Asset::query()->whereKey($asset->id)->lockForUpdate()->firstOrFail()->isReadOnly()) {
+                    throw ValidationException::withMessages(['form' => __('assets.read_only')]);
+                }
+
                 $asset->update($data);
 
                 return $asset->refresh();
