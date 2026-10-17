@@ -186,25 +186,36 @@ return [
     ],
     // RF_29 (with RF_22): a decommissioned asset is read-only (Asset::isReadOnly).
     'read_only' => 'El activo está dado de baja: su información ya no se modifica.',
-    // RF_22, RF_28, RF_29: the "Eventos" card on the asset page (components/assets/asset-events).
+    // RF_13, RF_22, RF_28, RF_29: the "Eventos" card on the asset page (components/assets/asset-events).
     'events' => [
         'title' => 'Eventos',
         'empty' => 'Este activo no tiene eventos registrados.',
         'register' => 'Registrar evento',
         'form_title' => 'Registrar evento del activo :asset',
         'kind_help' => [
+            'damage' => 'El activo quedará en la condición dañada que elijas. Sigue en servicio hasta que se registre su reparación.',
             'loss' => 'El activo quedará como perdido: deja de contarse como disponible y no se puede trasladar hasta registrar su recuperación.',
             'recovery' => 'El activo perdido apareció: vuelve a estar en servicio.',
             'decommission' => 'La baja es definitiva: el activo deja de estar disponible, conserva su historial y su información ya no se modifica.',
         ],
         'description_placeholder' => [
+            'damage' => 'Qué se dañó, cómo ocurrió, si aún funciona…',
             'loss' => 'Dónde y cómo se perdió, quién lo reportó…',
             'recovery' => 'Dónde apareció y en qué estado…',
             'decommission' => 'Obsolescencia, daño irreparable, donación…',
         ],
         'save' => 'Registrar',
         'cancel' => 'Cancelar',
+        'evidence' => [
+            'label' => 'Evidencia',
+            'pick' => 'Elegir archivos',
+            'nothing_chosen' => 'Ningún archivo elegido',
+            'chosen' => '{1} 1 archivo elegido|[2,*] :count archivos elegidos',
+            'help' => 'Opcional: fotografías (hasta 10 MB) o PDF (hasta 20 MB) que muestren el daño; hasta :max a la vez.',
+            'uploading' => 'Cargando los archivos…',
+        ],
         'done' => [
+            'damage' => 'Se registró el daño del activo :asset.',
             'loss' => 'Se registró la pérdida del activo :asset.',
             'recovery' => 'Se registró la recuperación del activo :asset.',
             'decommission' => 'Se registró la baja del activo :asset.',
@@ -220,11 +231,15 @@ return [
             'kind' => 'El estado del activo no permite registrar ese evento.',
             'future' => 'La fecha del evento no puede ser futura.',
             'before_acquisition' => 'La fecha del evento no puede ser anterior a la fecha de adquisición del activo.',
+            'condition' => 'Elige una condición dañada (del grupo rojo).',
         ],
         'fields' => [
             'kind' => 'tipo de evento',
             'occurred_on' => 'fecha',
             'description' => 'descripción',
+            'condition_id' => 'condición',
+            'evidence' => 'evidencia',
+            'evidence.*' => 'evidencia',
         ],
     ],
     // RF_12, RF_31: the "Componentes" card on the asset page.
