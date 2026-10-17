@@ -184,6 +184,38 @@ return [
         'empty' => '—',
         'no_observations' => 'Sin observaciones.',
     ],
+    // RF_09 · Consulta del historial de un activo (pages/assets/history, App\Queries\Assets\AssetHistory).
+    'history' => [
+        'title' => 'Historial del activo',
+        'link' => 'Historial',
+        'description' => 'Dónde ha estado el activo :asset, qué le ha pasado y quién ha hecho cambios, del más reciente al más antiguo.',
+        'back' => 'Volver al activo',
+        'empty' => 'El historial de este activo se encuentra vacío: todavía no ha recibido cambios.',
+        'types' => [
+            'movement' => 'Movimiento',
+            'event' => 'Evento',
+            'change' => 'Cambio',
+        ],
+        'changes' => [
+            'created' => 'Registro del activo',
+            'updated' => 'Modificación de datos',
+            'deleted' => 'Eliminación del activo',
+            'restored' => 'Restauración del activo',
+            'attached' => 'Archivo adjuntado',
+            'detached' => 'Archivo retirado',
+        ],
+        'route' => ':from → :to',
+        'outside' => 'Fuera de SETI',
+        'reason' => 'Motivo: :reason',
+        'field_change' => ':field: :old → :new',
+        'file' => ':kind: :file',
+        'file_kinds' => [
+            'photo' => 'Fotografía',
+            'document' => 'Documento',
+        ],
+        'by' => 'Por :user',
+        'system' => 'Sistema',
+    ],
     // RF_29 (with RF_22): a decommissioned asset is read-only (Asset::isReadOnly).
     'read_only' => 'El activo está dado de baja: su información ya no se modifica.',
     // RF_13, RF_22, RF_28, RF_29: the "Eventos" card on the asset page (components/assets/asset-events).

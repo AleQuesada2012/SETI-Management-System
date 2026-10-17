@@ -24,6 +24,11 @@ Route::prefix('activos')->name('assets.')->group(function () {
         ->middleware('can:update,asset')
         ->name('edit');
 
+    // RF_09: where the asset has been, what happened to it and who changed it.
+    Route::livewire('{asset}/historial', 'pages::assets.history')
+        ->middleware('can:view,asset')
+        ->name('history');
+
     Route::livewire('{asset}/movimiento', 'pages::assets.move')
         ->middleware('can:move,asset')
         ->name('move');

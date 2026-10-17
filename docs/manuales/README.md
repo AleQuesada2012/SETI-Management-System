@@ -155,6 +155,22 @@ Un activo perdido o dado de baja no admite daños.
 ![Registrar un daño a 360 px](activos-danio-registrar-movil.jpg)
 ![Daño con evidencia en computadora](activos-danio-escritorio.jpg)
 
+## Historial de un activo (RF_09)
+
+En la ficha de un activo, **Historial** abre todo lo que le ha pasado, del más reciente al más antiguo. Lo consulta toda
+cuenta que puede ver activos; por ejemplo, `visualizador@seti.test` (contraseña `password`). Cada entrada indica su
+fecha y quién la hizo:
+
+- **Movimiento:** ingresos, traslados y salidas, con el origen, el destino y el motivo.
+- **Evento:** daños, pérdidas, recuperaciones y la baja, con su descripción.
+- **Cambio:** el registro del activo, cada modificación de sus datos (campo, valor anterior y valor nuevo) y los
+  archivos adjuntados o retirados, hechos por un Administrador o el Superusuario.
+
+Si el activo todavía no ha recibido cambios, la página indica que su historial se encuentra vacío.
+
+![Historial en computadora](activos-historial-escritorio.jpg)
+![Historial a 360 px](activos-historial-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
