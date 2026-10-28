@@ -1,6 +1,6 @@
 <?php
 
-// Reservations module (RF_45–RF_52, RF_55, RF_57).
+// Reservations module (RF_45–RF_52, RF_55, RF_57) and the reservations filter contract.
 return [
     // Field names used in forms and in validation messages.
     'fields' => [
@@ -28,6 +28,43 @@ return [
     'index' => [
         'title' => 'Reservas',
         'create' => 'Reservar espacio',
+        'history' => 'Historial',
+    ],
+    // RF_52: the reservations the user made or is responsible for, or those of the spaces they manage.
+    'history' => [
+        'title' => 'Historial de reservas',
+        'from' => 'Desde',
+        'to' => 'Hasta',
+        'clear' => 'Limpiar filtros',
+        'order' => 'Orden',
+        'newest_first' => 'Más recientes primero',
+        'oldest_first' => 'Más antiguas primero',
+        'empty' => 'Aún no hay reservas registradas.',
+        'no_results' => 'No hay reservas con los criterios aplicados.',
+        'invalid_filters' => 'Los filtros no son válidos',
+        'total' => '{1} 1 reserva|[2,*] :count reservas',
+        'columns' => [
+            'date' => 'Fecha',
+            'time' => 'Horario',
+            'space' => 'Espacio',
+            'title' => 'Motivo',
+            'responsible' => 'Responsable',
+            'status' => 'Estado',
+        ],
+    ],
+    // The reservations filter contract (ReservationSchedule): history (RF_52) and report (RF_65).
+    'filters' => [
+        'criteria' => [
+            'space' => 'Espacio',
+            'status' => 'Estado',
+            'date' => 'Período',
+        ],
+        'errors' => [
+            'shape' => 'El filtro «:filter» no tiene un formato válido.',
+            'unknown_value' => 'El filtro «:filter» incluye una opción que no existe.',
+            'unknown_key' => 'El filtro «:key» no existe.',
+            'date' => 'La :field no es una fecha válida.',
+        ],
     ],
     'create' => [
         'title' => 'Reservar espacio',

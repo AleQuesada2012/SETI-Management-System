@@ -681,7 +681,9 @@ The history screens merge, newest first:
   locking; `UpdateReservation` locks the row and compares the version the user opened). The exclusion constraint
   re-checks the new time automatically. Every field of the booking may change, including the space; the optional
   `modification_reason` holds the reason of the last change, and the audit log keeps each one with its change.
-- **"My reservations" (RF_52)** means `created_by = me OR responsible_id = me`.
+- **Reservation history (RF_52)** shows `created_by = me OR responsible_id = me`; an Administrador also sees the
+  reservations of the spaces they manage and the Superusuario all of them (RF_52 diagram; the reach of
+  `ReservationPolicy::update`).
 - **Canonical availability check (RF_55).** It uses the same `[)` semantics as the constraint (tested):
 
   ```sql
@@ -1272,7 +1274,7 @@ Each decision was put to the project manager with alternatives and a recommendat
 | RF_49 | Modify a reservation | `reservations` update + `version` + `modification_reason`; EXCLUDE re-checks; `reservation.updated`, or `reservation.moved_out` + `reservation.moved_in` |
 | RF_50 | Delete (cancel) a reservation | `status = cancelled` + `cancelled_*`; `reservation.cancelled` |
 | RF_51 | Reservation detail | `reporting.reservations` |
-| RF_52 | Reservation history | `reservations` by `created_by`/`responsible_id`; filter by effective status and dates |
+| RF_52 | Reservation history | `reservations` by `created_by`/`responsible_id` (plus managed spaces for an Administrador, all for the Superusuario); filter by effective status, "modificada" and dates |
 | RF_53 | List spaces | `reporting.spaces` |
 | RF_54 | Filter spaces | `space_type_id`, `space_status_id` (+ capacity, building) |
 | RF_55 | Availability | Canonical overlap query (§9) |
