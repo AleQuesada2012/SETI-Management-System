@@ -47,7 +47,7 @@ test('an Administrador of the asset\'s space attaches documents from the asset p
         ->and($documents->first()->thumbnail_path)->toBeNull();
     Storage::disk(config('filesystems.files_disk'))->assertExists($documents->pluck('path')->all());
 
-    expect(AuditLog::query()->where(['action' => 'attached', 'entity_type' => 'asset', 'entity_id' => $this->asset->id])->pluck('new_values')->pluck('document')->all())
+    expect(AuditLog::query()->where(['action' => 'attached', 'entity_type' => 'asset', 'entity_id' => $this->asset->id])->orderBy('id')->pluck('new_values')->pluck('document')->all())
         ->toBe(['factura-2026.pdf', 'manual.pdf']);
 });
 

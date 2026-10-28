@@ -112,6 +112,31 @@ Los componentes de un activo dado de baja se consultan, pero ya no se modifican.
 ![Añadir un componente en computadora](activos-componentes-anadir-escritorio.jpg)
 ![Añadir un componente a 360 px](activos-componentes-anadir-movil.jpg)
 
+## Pérdida, recuperación y baja de un activo (RF_22, RF_28, RF_29)
+
+La ficha de cada activo tiene una tarjeta **Eventos** con sus pérdidas, recuperaciones y su baja: fecha, tipo,
+descripción y quién lo registró. Toda cuenta que puede ver el activo la consulta. Un **Administrador** registra los
+eventos de los activos que están (o estuvieron por última vez) en los espacios de los que es encargado; el
+**Superusuario**, los de cualquier activo. Pruébalo con `admin@seti.test` (contraseña `password`).
+
+1. Abre un activo desde **Inventario de activos** y, en **Eventos**, pulsa **Registrar evento**.
+2. Elige el tipo; solo aparecen los que el estado del activo permite:
+   - **Pérdida** (activo en servicio o en mantenimiento): queda **Perdido**, deja de contarse como disponible y no se
+     puede trasladar.
+   - **Recuperación** (activo perdido): el activo apareció y vuelve a **En servicio**.
+   - **Baja** (activo en servicio, en mantenimiento o perdido): es definitiva.
+3. Indica la fecha (no puede ser futura ni anterior a la adquisición) y una descripción o el motivo de la baja, y pulsa
+   **Registrar**. Un aviso lo confirma y la tarjeta **Estado** muestra la fecha de la pérdida o de la baja.
+
+Un activo dado de baja sigue en el inventario con el estado **De baja** y conserva todo su historial, pero ya no está
+disponible: no se traslada (solo admite una salida de su espacio), y sus datos, componentes y archivos ya no se
+modifican. Darlo de baja no es eliminarlo: **Eliminar** queda solo para un registro hecho por error.
+
+![Activo dado de baja en computadora](activos-baja-escritorio.jpg)
+![Activo dado de baja a 360 px](activos-baja-movil.jpg)
+![Registrar un evento en computadora](activos-registrar-evento-escritorio.jpg)
+![Registrar un evento a 360 px](activos-registrar-evento-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
