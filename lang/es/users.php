@@ -16,6 +16,10 @@ return [
             'administrators' => 'No existen usuarios administradores registrados.',
             'regular' => 'No existen usuarios normales registrados.',
         ],
+        'no_status' => [
+            'active' => 'No existen usuarios con la cuenta activa.',
+            'deactivated' => 'No existen usuarios con la cuenta desactivada.',
+        ],
         'invalid_filters' => 'Los filtros no son válidos',
     ],
     // The users filter contract (UserDirectory, .ai/rules/reports.md § Users schema), shared with the users report.

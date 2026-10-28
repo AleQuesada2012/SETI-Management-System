@@ -18,7 +18,7 @@ use Livewire\WithPagination;
 
 /*
  * Usuarios y roles (mockup "Usuarios y Roles"): list (RF_90), search (RF_95) and the user type, role and account status
- * filters (RF_92). The "Añadir usuario" modal registers a user and sends an invitation (RF_91).
+ * filters (RF_92, RF_101). The "Añadir usuario" modal registers a user and sends an invitation (RF_91).
  * Owner: users (@Rubiocai). List, search and filters come from App\Queries\Users\UserDirectory and its filter
  * contract, the same the users report (RF_69) uses.
  */
@@ -104,8 +104,8 @@ new #[Title('users.index.title')] class extends Component
     }
 
     /**
-     * RF_92: when a user type is chosen and nobody of that type is registered at all, say so; otherwise an empty list
-     * means the other criteria matched nothing.
+     * When a user type (RF_92) or an account status (RF_101) is chosen and nobody at all has it, say so; otherwise an
+     * empty list means the other criteria matched nothing.
      */
     public function emptyMessage(): string
     {
@@ -115,10 +115,12 @@ new #[Title('users.index.title')] class extends Component
             return __('users.index.empty');
         }
 
-        $types = $filters['user_type']['values'] ?? [];
+        foreach (['user_type' => 'no_registered', 'account_status' => 'no_status'] as $criterion => $messages) {
+            $values = $filters[$criterion]['values'] ?? [];
 
-        if ($types !== [] && UserDirectory::query(['user_type' => ['values' => $types]])->doesntExist()) {
-            return count($types) === 1 ? __('users.index.no_registered.'.$types[0]) : __('users.index.empty');
+            if ($values !== [] && UserDirectory::query([$criterion => ['values' => $values]])->doesntExist()) {
+                return count($values) === 1 ? __("users.index.{$messages}.{$values[0]}") : __('users.index.empty');
+            }
         }
 
         return __('users.index.no_results');
