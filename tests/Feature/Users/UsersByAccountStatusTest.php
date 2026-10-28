@@ -1,0 +1,58 @@
+<?php
+
+use App\Enums\SystemRole;
+use App\Models\User;
+use Livewire\Livewire;
+
+/*
+ * RF_101 Consultar usuarios por estado de cuenta.
+ */
+
+beforeEach(function () {
+    actingAsRole(SystemRole::Superusuario);
+});
+
+test('choosing an account status lists only the users with it', function () {
+    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Ana Activa']);
+    User::factory()->deactivated()->withRole(SystemRole::Reservante)->create(['name' => 'Beto Desactivado']);
+
+    Livewire::test('pages::users.index')
+        ->set('filters.account_status.values', ['deactivated'])
+        ->assertSee('Beto Desactivado')
+        ->assertDontSee('Ana Activa')
+        ->set('filters.account_status.values', ['active'])
+        ->assertSee('Ana Activa')
+        ->assertDontSee('Beto Desactivado');
+});
+
+test('with no deactivated accounts the list says so', function () {
+    User::factory()->withRole(SystemRole::Reservante)->create();
+
+    Livewire::test('pages::users.index')
+        ->set('filters.account_status.values', ['deactivated'])
+        ->assertSee(__('users.index.no_status.deactivated'))
+        ->assertDontSee(__('users.index.no_results'));
+});
+
+test('the status message wins even while searching', function () {
+    Livewire::test('pages::users.index')
+        ->set('filters.account_status.values', ['deactivated'])
+        ->set('search', 'ana')
+        ->assertSee(__('users.index.no_status.deactivated'));
+});
+
+test('a status that exists but matches nothing with the other criteria says no users were found', function () {
+    User::factory()->deactivated()->withRole(SystemRole::Reservante)->create(['name' => 'Beto Desactivado']);
+
+    Livewire::test('pages::users.index')
+        ->set('filters.account_status.values', ['deactivated'])
+        ->set('search', 'zzz-nadie')
+        ->assertSee(__('users.index.no_results'))
+        ->assertDontSee(__('users.index.no_status.deactivated'));
+});
+
+test('roles without users.view cannot consult users by account status', function () {
+    actingAsRole(SystemRole::Reservante);
+
+    $this->get(route('users.index', ['filters' => ['account_status' => ['values' => ['deactivated']]]]))->assertForbidden();
+});
