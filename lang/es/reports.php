@@ -8,6 +8,22 @@ return [
         'condition' => 'Condición física', 'lifecycle' => 'Estado del ciclo de vida', 'category' => 'Categoría',
         'group' => 'Grupo', 'count' => 'Cantidad de activos',
     ],
+    'maintenance_statistics' => [
+        'title' => 'Estadísticas de mantenimiento',
+        'description' => 'Mantenimientos y reparaciones realizados, por su fecha de realización. Se actualizan automáticamente cada 15 segundos mientras esta página está visible.',
+        'from' => 'Realizados desde', 'to' => 'Realizados hasta',
+        'total' => 'Intervenciones realizadas: :count', 'empty' => 'No hay mantenimientos ni reparaciones realizados en este período.',
+        'kinds' => 'Mantenimientos y reparaciones', 'assets' => 'Activos con más intervenciones (hasta :count)',
+        'count' => 'Total',
+    ],
+    'reservation_statistics' => [
+        'title' => 'Estadísticas de reservas',
+        'description' => 'Reservas por su fecha de inicio, con su estado actual. Se actualizan automáticamente cada 15 segundos mientras esta página está visible.',
+        'from' => 'Desde', 'to' => 'Hasta',
+        'total' => 'Reservas en el período: :count', 'empty' => 'No hay reservas en este período.',
+        'statuses' => 'Reservas por estado', 'spaces' => 'Reservas por espacio', 'status' => 'Estado', 'space' => 'Espacio',
+        'count' => 'Total',
+    ],
     'maintenance' => [
         'kind' => 'Tipo de intervención', 'completed_on' => 'Fecha de realización', 'description' => 'Descripción',
         'performed_by' => 'Realizado por', 'kinds' => ['preventive' => 'Mantenimiento', 'corrective' => 'Reparación'],

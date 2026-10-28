@@ -16,6 +16,15 @@ Route::prefix('reportes')->name('reports.')->group(function () {
         ->middleware('can:'.PermissionName::ReportsView->value)
         ->name('statistics');
 
+    // RF_82 and RF_83 · maintenance and reservation statistics.
+    Route::livewire('estadisticas/mantenimiento', 'pages::reports.maintenance-statistics')
+        ->middleware('can:'.PermissionName::ReportsView->value)
+        ->name('statistics.maintenance');
+
+    Route::livewire('estadisticas/reservas', 'pages::reports.reservation-statistics')
+        ->middleware('can:'.PermissionName::ReportsView->value)
+        ->name('statistics.reservations');
+
     // RF_84 · the history of exported reports.
     Route::livewire('generados', 'pages::reports.generations')
         ->middleware('can:viewAny,'.ReportGeneration::class)
