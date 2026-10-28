@@ -21,6 +21,10 @@ final class ReportRegistry
         'users' => Definitions\UsersReport::class,
         'warranties' => Definitions\WarrantiesReport::class,
         'custodians' => Definitions\CustodiansReport::class,
+        'maintenance' => Definitions\MaintenanceReport::class,
+        'movements' => Definitions\MovementsReport::class,
+        'disposals' => Definitions\DisposalsReport::class,
+        'components' => Definitions\ComponentsReport::class,
     ];
 
     /** @var array<string, array<string, mixed>>|null */
