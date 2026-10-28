@@ -8,7 +8,7 @@ use App\Models\AssetType;
 use App\Queries\Reports\AssetStatistics;
 use Livewire\Livewire;
 
-// RF_80 · distinct condition/lifecycle distributions.
+// RF_80/RF_81 · distinct condition/lifecycle distributions and current categories.
 
 test('statistics shows separate physical and lifecycle charts with accurate current totals', function () {
     actingAsRole(SystemRole::Reportes);
@@ -21,7 +21,7 @@ test('statistics shows separate physical and lifecycle charts with accurate curr
     expect(array_column($series['lifecycle'], 'count', 'id'))->toMatchArray(['in_service' => 2, 'lost' => 1, 'in_maintenance' => 0]);
 });
 
-test('refresh reads updated asset conditions statuses and excludes deleted assets', function () {
+test('refresh reads updated asset conditions statuses and categories and excludes deleted assets', function () {
     actingAsRole(SystemRole::Reportes);
     $asset = Asset::factory()->create();
     $page = Livewire::test('pages::reports.statistics')->assertSee('Total de activos: 1');
@@ -29,9 +29,20 @@ test('refresh reads updated asset conditions statuses and excludes deleted asset
     $asset->forceFill(['status' => AssetStatus::InMaintenance, 'asset_type_id' => $type->id, 'condition_id' => AssetCondition::where('name', 'Dañado')->value('id')])->save();
     $page->call('$refresh')->assertSee('En mantenimiento');
     $series = AssetStatistics::current();
-    expect(array_column($series['lifecycle'], 'count', 'id')['in_maintenance'])->toBe(1);
+    expect(array_column($series['lifecycle'], 'count', 'id')['in_maintenance'])->toBe(1)
+        ->and(array_column($series['category'], 'count', 'id')[$type->asset_category_id])->toBe(1);
     $asset->delete();
     $page->call('$refresh')->assertSee('Total de activos: 0')->assertSee('No hay activos registrados.');
+});
+
+test('selecting a category opens the inventory preview with that category only', function () {
+    actingAsRole(SystemRole::Reportes);
+    $computer = Asset::factory()->create(['name' => 'Equipo de cómputo']);
+    Asset::factory()->ofType('Silla')->create(['name' => 'Silla excluida']);
+    $category = $computer->assetType->asset_category_id;
+    $url = route('reports.show', ['report' => 'assets_inventory', 'filters' => ['category' => ['values' => [$category]]]]);
+    $this->get(route('reports.statistics'))->assertSee($url);
+    $this->get($url)->assertOk()->assertSee('Equipo de cómputo')->assertDontSee('Silla excluida');
 });
 
 test('statistics rejects users without report permission', function () {
