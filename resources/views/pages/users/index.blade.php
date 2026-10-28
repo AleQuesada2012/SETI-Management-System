@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Users\RegisterUser;
+use App\Enums\PermissionName;
 use App\Models\Reporting\UserRow;
 use App\Models\Role;
 use App\Models\User;
@@ -16,10 +17,10 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 /*
- * Usuarios y roles (mockup "Usuarios y Roles"): list (RF_90), search (RF_95) and the role and account status filters.
- * The "Añadir usuario" modal registers a user and sends an invitation (RF_91).
- * Owner: users (@Rubiocai). List, search and filters come from App\Queries\Users\UserDirectory, the same query the
- * users report (RF_69) uses.
+ * Usuarios y roles (mockup "Usuarios y Roles"): list (RF_90), search (RF_95) and the user type, role and account status
+ * filters (RF_92). The "Añadir usuario" modal registers a user and sends an invitation (RF_91).
+ * Owner: users (@Rubiocai). List, search and filters come from App\Queries\Users\UserDirectory and its filter
+ * contract, the same the users report (RF_69) uses.
  */
 new #[Title('users.index.title')] class extends Component
 {
@@ -30,16 +31,14 @@ new #[Title('users.index.title')] class extends Component
     #[Url(except: '')]
     public string $search = '';
 
-    #[Url(except: '')]
-    public string $role = '';
-
-    #[Url(except: '')]
-    public string $account_status = '';
+    /** @var array<string, mixed> The criteria as the filter contract writes them: {"user_type": {"values": ["regular"]}}. */
+    #[Url(except: [])]
+    public array $filters = [];
 
     /** A new search or filter starts again on the first page. */
     public function updated(string $property): void
     {
-        if (in_array($property, ['search', 'role', 'account_status'], true)) {
+        if ($property === 'search' || str_starts_with($property, 'filters')) {
             $this->resetPage();
         }
     }
@@ -68,26 +67,61 @@ new #[Title('users.index.title')] class extends Component
 
     public function clearFilters(): void
     {
-        $this->reset('search', 'role', 'account_status');
+        $this->reset('search', 'filters');
         $this->resetPage();
     }
 
-    /** @return LengthAwarePaginator<int, UserRow> */
+    /**
+     * The normalized filters, or the Spanish errors that block the list when the input (usually an edited URL) breaks
+     * the filter contract.
+     *
+     * @return array{filters: array<string, mixed>, errors: list<string>}
+     */
     #[Computed]
-    public function users(): LengthAwarePaginator
+    public function criteria(): array
     {
-        return UserDirectory::query([
-            'search' => $this->search,
-            'role' => $this->role,
-            'account_status' => $this->account_status,
-        ])->paginate(self::PER_PAGE);
+        try {
+            return ['filters' => UserDirectory::validate([...$this->filters, 'search' => $this->search]), 'errors' => []];
+        } catch (ValidationException $e) {
+            return ['filters' => [], 'errors' => array_values(array_unique($e->validator->errors()->all()))];
+        }
     }
 
-    /** @return Collection<int, string> */
+    /** @return array<string, list<array{id: int|string, label: string}>> */
     #[Computed]
-    public function roles(): Collection
+    public function choices(): array
     {
-        return Role::query()->orderBy('name')->pluck('name');
+        return UserDirectory::choices();
+    }
+
+    /** @return LengthAwarePaginator<int, UserRow>|null */
+    #[Computed]
+    public function users(): ?LengthAwarePaginator
+    {
+        return $this->criteria['errors'] === []
+            ? UserDirectory::query($this->criteria['filters'])->paginate(self::PER_PAGE)
+            : null;
+    }
+
+    /**
+     * RF_92: when a user type is chosen and nobody of that type is registered at all, say so; otherwise an empty list
+     * means the other criteria matched nothing.
+     */
+    public function emptyMessage(): string
+    {
+        $filters = $this->criteria['filters'];
+
+        if ($filters === []) {
+            return __('users.index.empty');
+        }
+
+        $types = $filters['user_type']['values'] ?? [];
+
+        if ($types !== [] && UserDirectory::query(['user_type' => ['values' => $types]])->doesntExist()) {
+            return count($types) === 1 ? __('users.index.no_registered.'.$types[0]) : __('users.index.empty');
+        }
+
+        return __('users.index.no_results');
     }
 
     /** Roles offered by the "Añadir usuario" form. @return Collection<int, Role> */
@@ -99,7 +133,7 @@ new #[Title('users.index.title')] class extends Component
 
     public function hasFilters(): bool
     {
-        return $this->search !== '' || $this->role !== '' || $this->account_status !== '';
+        return $this->search !== '' || $this->criteria['filters'] !== [] || $this->criteria['errors'] !== [];
     }
 }; ?>
 
@@ -108,6 +142,9 @@ new #[Title('users.index.title')] class extends Component
         @can('viewAny', Role::class)
             <flux:button icon="shield-check" :href="route('roles.index')" wire:navigate>{{ __('users.index.roles') }}</flux:button>
         @endcan
+        @can(PermissionName::SpacesAssignManagers)
+            <flux:button icon="building-office" :href="route('users.space-managers')" wire:navigate>{{ __('users.index.space_managers') }}</flux:button>
+        @endcan
         @can('create', User::class)
             <flux:modal.trigger name="register-user">
                 <flux:button variant="primary" icon="plus">{{ __('users.index.create') }}</flux:button>
@@ -115,79 +152,90 @@ new #[Title('users.index.title')] class extends Component
         @endcan
     </div>
 
-    <div class="flex flex-col gap-3 md:flex-row md:items-end">
+    <flux:card class="flex flex-col gap-5">
         <flux:input
             wire:model.live.debounce.300ms="search"
             icon="magnifying-glass"
             :label="__('users.index.search')"
             :placeholder="__('users.index.search_placeholder')"
             clearable
-            class="md:flex-1"
         />
 
-        <flux:select wire:model.live="role" :label="__('users.index.role')" class="md:max-w-52">
-            <flux:select.option value="">{{ __('users.index.all_roles') }}</flux:select.option>
-            @foreach ($this->roles as $roleName)
-                <flux:select.option :value="$roleName">{{ $roleName }}</flux:select.option>
-            @endforeach
-        </flux:select>
-
-        <flux:select wire:model.live="account_status" :label="__('users.index.account_status')" class="md:max-w-52">
-            <flux:select.option value="">{{ __('users.index.all_statuses') }}</flux:select.option>
-            @foreach (UserDirectory::ACCOUNT_STATUSES as $status)
-                <flux:select.option :value="$status">{{ __('users.status.'.$status) }}</flux:select.option>
-            @endforeach
-        </flux:select>
+        @foreach (UserDirectory::CRITERIA as $key)
+            <flux:checkbox.group wire:model.live="filters.{{ $key }}.values" variant="pills" :label="__('users.filters.criteria.'.$key)" data-test="filter-{{ $key }}">
+                @foreach ($this->choices[$key] as $choice)
+                    <flux:checkbox :value="(string) $choice['id']" :label="$choice['label']" wire:key="{{ $key }}-{{ $choice['id'] }}" />
+                @endforeach
+            </flux:checkbox.group>
+        @endforeach
 
         @if ($this->hasFilters())
-            <flux:button variant="ghost" icon="x-mark" wire:click="clearFilters">{{ __('users.index.clear') }}</flux:button>
-        @endif
-    </div>
-
-    <flux:card class="overflow-x-auto">
-        @if ($this->users->isEmpty())
-            <flux:text>{{ $this->hasFilters() ? __('users.index.no_results') : __('users.index.empty') }}</flux:text>
-        @else
-            <flux:table :paginate="$this->users">
-                <flux:table.columns>
-                    <flux:table.column>{{ __('users.fields.name') }}</flux:table.column>
-                    <flux:table.column>{{ __('users.fields.email') }}</flux:table.column>
-                    <flux:table.column>{{ __('users.fields.roles') }}</flux:table.column>
-                    <flux:table.column>{{ __('users.fields.status') }}</flux:table.column>
-                </flux:table.columns>
-
-                <flux:table.rows>
-                    @foreach ($this->users as $user)
-                        <flux:table.row :key="$user->id">
-                            <flux:table.cell variant="strong">
-                                <a href="{{ route('users.show', $user->id) }}" class="hover:underline" wire:navigate>{{ $user->name }}</a>
-                            </flux:table.cell>
-                            <flux:table.cell>{{ $user->email }}</flux:table.cell>
-                            <flux:table.cell>
-                                <div class="flex flex-wrap gap-1">
-                                    @forelse (array_filter(explode(', ', (string) $user->roles)) as $roleName)
-                                        <flux:badge size="sm" color="blue">{{ $roleName }}</flux:badge>
-                                    @empty
-                                        <span class="text-ink-muted">{{ __('users.fields.no_roles') }}</span>
-                                    @endforelse
-                                </div>
-                            </flux:table.cell>
-                            <flux:table.cell>
-                                <div class="flex flex-wrap gap-1">
-                                    <flux:badge size="sm" :color="$user->account_status === 'active' ? 'green' : 'red'">
-                                        {{ __('users.status.'.$user->account_status) }}
-                                    </flux:badge>
-                                    @if ($user->invitation_pending)
-                                        <flux:badge size="sm" color="amber">{{ __('users.status.invitation_pending') }}</flux:badge>
-                                    @endif
-                                </div>
-                            </flux:table.cell>
-                        </flux:table.row>
-                    @endforeach
-                </flux:table.rows>
-            </flux:table>
+            <div class="border-t border-line pt-4">
+                <flux:button size="sm" variant="ghost" icon="x-mark" wire:click="clearFilters">{{ __('users.index.clear') }}</flux:button>
+            </div>
         @endif
     </flux:card>
+
+    @if ($this->criteria['errors'] !== [])
+        <flux:callout icon="exclamation-triangle" variant="danger" data-test="filters-invalid">
+            <flux:callout.heading>{{ __('users.index.invalid_filters') }}</flux:callout.heading>
+            <flux:callout.text>
+                <ul class="list-disc space-y-0.5 ps-5">
+                    @foreach ($this->criteria['errors'] as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </flux:callout.text>
+            <x-slot name="actions">
+                <flux:button size="sm" wire:click="clearFilters">{{ __('users.index.clear') }}</flux:button>
+            </x-slot>
+        </flux:callout>
+    @else
+        <flux:card class="overflow-x-auto">
+            @if ($this->users->isEmpty())
+                <flux:text data-test="users-empty">{{ $this->emptyMessage() }}</flux:text>
+            @else
+                <flux:table :paginate="$this->users">
+                    <flux:table.columns>
+                        <flux:table.column>{{ __('users.fields.name') }}</flux:table.column>
+                        <flux:table.column>{{ __('users.fields.email') }}</flux:table.column>
+                        <flux:table.column>{{ __('users.fields.roles') }}</flux:table.column>
+                        <flux:table.column>{{ __('users.fields.status') }}</flux:table.column>
+                    </flux:table.columns>
+
+                    <flux:table.rows>
+                        @foreach ($this->users as $user)
+                            <flux:table.row :key="$user->id">
+                                <flux:table.cell variant="strong">
+                                    <a href="{{ route('users.show', $user->id) }}" class="hover:underline" wire:navigate>{{ $user->name }}</a>
+                                </flux:table.cell>
+                                <flux:table.cell>{{ $user->email }}</flux:table.cell>
+                                <flux:table.cell>
+                                    <div class="flex flex-wrap gap-1">
+                                        @forelse (array_filter(explode(', ', (string) $user->roles)) as $roleName)
+                                            <flux:badge size="sm" color="blue">{{ $roleName }}</flux:badge>
+                                        @empty
+                                            <span class="text-ink-muted">{{ __('users.fields.no_roles') }}</span>
+                                        @endforelse
+                                    </div>
+                                </flux:table.cell>
+                                <flux:table.cell>
+                                    <div class="flex flex-wrap gap-1">
+                                        <flux:badge size="sm" :color="$user->account_status === 'active' ? 'green' : 'red'">
+                                            {{ __('users.status.'.$user->account_status) }}
+                                        </flux:badge>
+                                        @if ($user->invitation_pending)
+                                            <flux:badge size="sm" color="amber">{{ __('users.status.invitation_pending') }}</flux:badge>
+                                        @endif
+                                    </div>
+                                </flux:table.cell>
+                            </flux:table.row>
+                        @endforeach
+                    </flux:table.rows>
+                </flux:table>
+            @endif
+        </flux:card>
+    @endif
 
     @can('create', User::class)
         <flux:modal name="register-user" class="w-full max-w-md">

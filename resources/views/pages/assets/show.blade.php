@@ -20,6 +20,9 @@ use Livewire\Component;
  * and its companions (RF_14–RF_16, RF_18, RF_19, RF_23, RF_24). RF_17 · the warranty and whether it is still valid.
  * RF_05 · the condition's color. Editing (RF_04, RF_05) happens on pages::assets.edit.
  * RF_25 · the asset's movements; registering one (RF_06, RF_25) happens on pages::assets.move.
+ * RF_02 · "Eliminar" is the assets.delete-asset component (resources/views/components/assets).
+ * RF_20, RF_21 · the asset's documents and photos are the assets.asset-documents and assets.asset-photos components
+ * (by @Dizabu, on RF_41's upload mechanism).
  */
 new #[Title('assets.show.title')] class extends Component {
     public Asset $asset;
@@ -79,6 +82,9 @@ new #[Title('assets.show.title')] class extends Component {
             @endcan
             @can('update', $asset)
                 <flux:button :href="route('assets.edit', $asset)" wire:navigate icon="pencil-square" size="sm" data-test="edit-asset-button">{{ __('assets.show.edit') }}</flux:button>
+            @endcan
+            @can('delete', $asset)
+                <livewire:assets.delete-asset :asset="$asset" />
             @endcan
         </div>
     </div>
@@ -176,6 +182,10 @@ new #[Title('assets.show.title')] class extends Component {
     </flux:card>
 
     <livewire:assets.asset-components :asset="$asset" />
+
+    <livewire:assets.asset-photos :asset="$asset" />
+
+    <livewire:assets.asset-documents :asset="$asset" />
 
     <flux:card class="flex flex-col gap-3" data-test="asset-movements">
         <flux:heading level="3">{{ __('assets.show.sections.movements') }}</flux:heading>
