@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
  * @property string $manager_name
  * @property string $manager_email
  * @property Carbon $assigned_at
+ * @property string|null $space_type only when read through SpaceManagers::ofManager() (joined from reporting.spaces)
  */
 class SpaceManagerRow extends ReportingView
 {

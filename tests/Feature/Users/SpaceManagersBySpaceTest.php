@@ -4,11 +4,18 @@ use App\Enums\SystemRole;
 use App\Models\Space;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 
 /*
  * RF_96 Consultar usuarios asignados a un laboratorio (any space type, ADR-0009).
  */
+
+/** The HTML of the "Por espacio" section only: the "Por administrador" select below lists every Administrador. */
+function bySpaceSection(string $html): string
+{
+    return Str::between($html, 'data-test="by-space"', 'data-test="by-administrator"');
+}
 
 test('the Superusuario picks a space and sees the Administradores in charge of it', function () {
     actingAsRole(SystemRole::Superusuario);
@@ -23,13 +30,10 @@ test('the Superusuario picks a space and sees the Administradores in charge of i
 
     $this->get(route('users.space-managers'))->assertOk()->assertSee('LAB-110')->assertSee('SAL-01');
 
-    Livewire::test('pages::users.space-managers')
-        ->set('space', (string) $lab->id)
-        ->assertSee('Lucía Campos')
-        ->assertSee('lcampos@tec.ac.cr')
-        ->assertSee('Mario Solís')
-        ->assertSee('14/10/2026 09:30')
-        ->assertDontSee('Otra Encargada');
+    $section = bySpaceSection(Livewire::test('pages::users.space-managers')->set('space', (string) $lab->id)->html());
+
+    expect($section)->toContain('Lucía Campos', 'lcampos@tec.ac.cr', 'Mario Solís', '14/10/2026 09:30')
+        ->not->toContain('Otra Encargada');
 });
 
 test('a space without managers says so', function () {
@@ -48,8 +52,7 @@ test('until a space is chosen the select shows the selectable empty option, not 
 
     $this->get(route('users.space-managers'))
         ->assertOk()
-        ->assertSeeInOrder([__('users.space_managers.choose'), 'LAB-110'])
-        ->assertDontSee('Lucía Campos');
+        ->assertSeeInOrder([__('users.space_managers.choose'), 'LAB-110']);
 
     $page = Livewire::test('pages::users.space-managers');
 
@@ -57,11 +60,10 @@ test('until a space is chosen the select shows the selectable empty option, not 
     expect($page->html())->toMatch('/<option[^>]*value=""/')
         ->not->toMatch('/<option[^>]*\bdisabled\b/');
 
-    $page->set('space', (string) $lab->id)
-        ->assertSee('Lucía Campos')
-        ->set('space', '')
-        ->assertDontSee('Lucía Campos')
-        ->assertDontSee(__('users.space_managers.unknown_space'));
+    expect(bySpaceSection($page->html()))->not->toContain('Lucía Campos');
+    expect(bySpaceSection($page->set('space', (string) $lab->id)->html()))->toContain('Lucía Campos');
+    expect(bySpaceSection($page->set('space', '')->html()))->not->toContain('Lucía Campos')
+        ->not->toContain(__('users.space_managers.unknown_space'));
 });
 
 test('the chosen space is kept in the URL', function () {
