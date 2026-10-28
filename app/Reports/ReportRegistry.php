@@ -17,6 +17,7 @@ final class ReportRegistry
     private array $definitions = [
         'assets_inventory' => Definitions\AssetInventoryReport::class,
         'spaces' => Definitions\SpacesReport::class,
+        'reservations' => Definitions\ReservationsReport::class,
     ];
 
     /** @var array<string, array<string, mixed>>|null */
