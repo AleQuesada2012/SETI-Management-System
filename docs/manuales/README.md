@@ -216,6 +216,9 @@ Una reparación **En curso** muestra en su fila:
 Un activo en buen estado, perdido, dado de baja o que ya tiene una reparación en curso no ofrece **Registrar
 reparación**.
 
+![Reparación en curso en computadora](activos-reparacion-escritorio.jpg)
+![Finalizar una reparación a 360 px](activos-reparacion-finalizar-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la

@@ -271,9 +271,9 @@ new class extends Component {
                             <flux:table.cell class="min-w-32 whitespace-normal">{{ $record->performed_by ?: __('assets.show.empty') }}</flux:table.cell>
                             <flux:table.cell class="min-w-28 whitespace-normal">{{ $record->registered_by_name ?? __('assets.maintenance.system') }}</flux:table.cell>
                             @if ($hasActions)
-                                <flux:table.cell class="whitespace-nowrap">
+                                <flux:table.cell>
                                     @if ($inProgress)
-                                        <div class="flex gap-2">
+                                        <div class="flex flex-col items-start gap-2">
                                             <flux:button wire:click="openComplete({{ $record->id }})" size="xs" variant="primary" icon="check" data-test="complete-repair-button">{{ __('assets.maintenance.repair.complete') }}</flux:button>
                                             <flux:button wire:click="openCancel({{ $record->id }})" size="xs" variant="ghost" icon="x-mark" data-test="cancel-repair-button">{{ __('assets.maintenance.repair.cancel') }}</flux:button>
                                         </div>
