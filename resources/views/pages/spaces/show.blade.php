@@ -44,6 +44,7 @@ new #[Title('spaces.show.title')] class extends Component {
             <flux:badge size="sm" color="amber">{{ __('spaces.show.occupied') }}</flux:badge>
         @endif
         <div class="flex w-full flex-wrap gap-2 sm:ms-auto sm:w-auto sm:justify-end">
+            <flux:button size="sm" icon="clock" :href="route('spaces.history', $space)" wire:navigate data-test="space-history-link">{{ __('spaces.history.link') }}</flux:button>
             <livewire:reports.export-button report="space_detail" :filters="['space' => ['values' => [$space->id]]]" />
             <livewire:spaces.change-status :space="$space" />
             <livewire:spaces.edit-space :space="$space" />
