@@ -18,6 +18,7 @@ final class ReportRegistry
         'occupancy' => Definitions\SpaceOccupancyReport::class,
         'assets_inventory' => Definitions\AssetInventoryReport::class,
         'spaces' => Definitions\SpacesReport::class,
+        'reservations' => Definitions\ReservationsReport::class,
     ];
 
     /** @var array<string, array<string, mixed>>|null */
