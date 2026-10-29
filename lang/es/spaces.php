@@ -118,6 +118,8 @@ return [
     // Space managers (RF_40, RF_43 · @Rubiocai). The user page shows and edits them; see lang/es/users.php.
     'managers' => [
         'spaces' => 'espacios',
+        'none_to_remove' => ':user no tiene espacios asignados; no hay asignaciones que retirar.',
+        'not_managed' => 'Uno de los espacios elegidos no está a cargo de :user.',
         'not_administrador' => ':user no tiene el rol Administrador; solo los Administradores pueden estar a cargo de espacios.',
     ],
 

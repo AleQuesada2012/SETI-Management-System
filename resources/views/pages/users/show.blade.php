@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Spaces\AssignSpaceManager;
+use App\Actions\Spaces\RemoveSpaceManager;
 use App\Actions\Users\AssignRole;
 use App\Enums\PermissionName;
 use App\Enums\SystemRole;
@@ -9,13 +10,14 @@ use App\Models\Space;
 use App\Models\User;
 use Flux\Flux;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 /*
- * Detalle del usuario (RF_94), role assignment (RF_85) and, for an Administrador, the spaces in their charge (RF_40,
- * through App\Actions\Spaces\AssignSpaceManager, reviewed by spaces). Owner: users (@Rubiocai). A missing user is a 404 from
+ * Detalle del usuario (RF_94), role assignment (RF_85) and, for an Administrador, the spaces in their charge: assign
+ * (RF_40) and remove (RF_43) through App\Actions\Spaces\AssignSpaceManager and RemoveSpaceManager, reviewed by spaces). Owner: users (@Rubiocai). A missing user is a 404 from
  * route model binding, rendered by errors/404.blade.php. Role changes (RF_85–RF_87) go through app/Actions/Users,
  * which audit them explicitly because pivot changes fire no model events.
  */
@@ -64,9 +66,13 @@ new #[Title('users.show.title')] class extends Component
     /** @var list<int|string> Spaces picked in the "Asignar espacios" modal (RF_40). */
     public array $spaces = [];
 
-    public function isAdministrador(): bool
+    /** @var list<int|string> Spaces ticked in the list, to remove after confirming (RF_43). */
+    public array $spacesToRemove = [];
+
+    /** The spaces card shows for Administradores, and for anyone still holding assignments (so they can be removed). */
+    public function showsManagedSpaces(): bool
     {
-        return $this->user->hasRole(SystemRole::Administrador->value);
+        return $this->user->hasRole(SystemRole::Administrador->value) || $this->managedSpaces->isNotEmpty();
     }
 
     /** Spaces this user is in charge of (space_managers). @return Collection<int, Space> */
@@ -98,6 +104,62 @@ new #[Title('users.show.title')] class extends Component
         Flux::modal('assign-spaces')->close();
         Flux::toast(variant: 'success', text: trans_choice('users.managed_spaces.done', $assigned->count(), [
             'spaces' => $assigned->pluck('code')->join(', '),
+            'user' => $this->user->name,
+        ]));
+    }
+
+    /** Spaces listed in the confirmation window. @return Collection<int, Space> */
+    #[Computed]
+    public function spacesPendingRemoval(): Collection
+    {
+        $ids = array_map(intval(...), $this->spacesToRemove);
+
+        return $this->managedSpaces->filter(fn (Space $space): bool => in_array($space->id, $ids, true))->values();
+    }
+
+    /** Open the confirmation window for one space (its row button) or for the ticked ones. */
+    public function confirmRemoval(?int $spaceId = null): void
+    {
+        $this->authorize(PermissionName::SpacesAssignManagers->value);
+
+        if ($spaceId !== null) {
+            $this->spacesToRemove = [$spaceId];
+        }
+
+        unset($this->spacesPendingRemoval);
+
+        if ($this->spacesPendingRemoval->isEmpty()) {
+            $this->addError('spacesToRemove', __('users.managed_spaces.choose_to_remove'));
+
+            return;
+        }
+
+        $this->resetErrorBag('spacesToRemove');
+        Flux::modal('remove-spaces')->show();
+    }
+
+    public function removeSpaces(RemoveSpaceManager $removeSpaceManager): void
+    {
+        $this->authorize(PermissionName::SpacesAssignManagers->value);
+
+        try {
+            $removed = $removeSpaceManager->handle(auth()->user(), $this->user, $this->spacesToRemove);
+        } catch (ValidationException $exception) {
+            Flux::modal('remove-spaces')->close();
+
+            // The Action validates `spaces`, `spaces.0`…; the list's checkboxes live under `spacesToRemove`.
+            throw ValidationException::withMessages(
+                collect($exception->errors())->mapWithKeys(fn (array $messages, string $key): array => [
+                    preg_replace('/^spaces/', 'spacesToRemove', $key) => $messages,
+                ])->all(),
+            );
+        }
+
+        $this->reset('spacesToRemove');
+        unset($this->managedSpaces, $this->assignableSpaces, $this->spacesPendingRemoval);
+        Flux::modal('remove-spaces')->close();
+        Flux::toast(variant: 'success', text: trans_choice('users.managed_spaces.removed', $removed->count(), [
+            'spaces' => $removed->pluck('code')->join(', '),
             'user' => $this->user->name,
         ]));
     }
@@ -183,7 +245,7 @@ new #[Title('users.show.title')] class extends Component
         </flux:card>
     @endcan
 
-    @if ($this->isAdministrador())
+    @if ($this->showsManagedSpaces())
         <flux:card class="flex flex-col gap-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <flux:heading level="3">{{ __('users.managed_spaces.heading') }}</flux:heading>
@@ -197,18 +259,45 @@ new #[Title('users.show.title')] class extends Component
             </div>
 
             @if ($this->managedSpaces->isEmpty())
-                <flux:text>{{ __('users.managed_spaces.none') }}</flux:text>
+                @can(PermissionName::SpacesAssignManagers)
+                    <flux:callout icon="information-circle" color="amber" :text="__('spaces.managers.none_to_remove', ['user' => $user->name])" />
+                @else
+                    <flux:text>{{ __('users.managed_spaces.none') }}</flux:text>
+                @endcan
             @else
                 <ul class="flex flex-col divide-y divide-line">
                     @foreach ($this->managedSpaces as $space)
-                        <li wire:key="managed-{{ $space->id }}" class="flex flex-wrap items-center justify-between gap-2 py-2">
-                            <a href="{{ route('spaces.show', $space) }}" class="font-medium text-ink hover:underline" wire:navigate>
-                                {{ $space->code }} · {{ $space->name }}
-                            </a>
-                            <flux:badge size="sm" color="zinc">{{ $space->spaceType->name }}</flux:badge>
+                        <li wire:key="managed-{{ $space->id }}" class="flex items-center gap-3 py-2">
+                            @can(PermissionName::SpacesAssignManagers)
+                                <flux:checkbox wire:model="spacesToRemove" :value="$space->id" :aria-label="__('users.managed_spaces.select', ['space' => $space->code])" />
+                            @endcan
+
+                            <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
+                                <a href="{{ route('spaces.show', $space) }}" class="font-medium text-ink hover:underline" wire:navigate>
+                                    {{ $space->code }} · {{ $space->name }}
+                                </a>
+                                <flux:badge size="sm" color="zinc">{{ $space->spaceType->name }}</flux:badge>
+                            </div>
+
+                            @can(PermissionName::SpacesAssignManagers)
+                                <flux:button size="sm" variant="ghost" icon="x-mark" wire:click="confirmRemoval({{ $space->id }})">
+                                    {{ __('users.managed_spaces.remove') }}
+                                </flux:button>
+                            @endcan
                         </li>
                     @endforeach
                 </ul>
+
+                @can(PermissionName::SpacesAssignManagers)
+                    <flux:error name="spacesToRemove" />
+                    <flux:error name="spacesToRemove.*" />
+
+                    <div>
+                        <flux:button size="sm" variant="danger" icon="trash" wire:click="confirmRemoval">
+                            {{ __('users.managed_spaces.remove_selected') }}
+                        </flux:button>
+                    </div>
+                @endcan
             @endif
         </flux:card>
 
@@ -232,6 +321,30 @@ new #[Title('users.show.title')] class extends Component
                             <flux:button variant="ghost">{{ __('users.managed_spaces.cancel') }}</flux:button>
                         </flux:modal.close>
                         <flux:button type="submit" variant="primary">{{ __('users.managed_spaces.submit') }}</flux:button>
+                    </div>
+                </form>
+            </flux:modal>
+        @endcan
+
+        @can(PermissionName::SpacesAssignManagers)
+            <flux:modal name="remove-spaces" class="w-full max-w-md">
+                <form wire:submit="removeSpaces" class="flex flex-col gap-5">
+                    <div>
+                        <flux:heading size="lg">{{ __('users.managed_spaces.confirm_heading') }}</flux:heading>
+                        <flux:text class="mt-1">{{ __('users.managed_spaces.confirm_help', ['user' => $user->name]) }}</flux:text>
+                    </div>
+
+                    <ul class="list-disc space-y-1 ps-5 text-sm text-ink">
+                        @foreach ($this->spacesPendingRemoval as $space)
+                            <li wire:key="pending-{{ $space->id }}">{{ $space->code }} · {{ $space->name }}</li>
+                        @endforeach
+                    </ul>
+
+                    <div class="flex justify-end gap-2">
+                        <flux:modal.close>
+                            <flux:button variant="ghost">{{ __('users.managed_spaces.cancel') }}</flux:button>
+                        </flux:modal.close>
+                        <flux:button type="submit" variant="danger">{{ __('users.managed_spaces.confirm_submit') }}</flux:button>
                     </div>
                 </form>
             </flux:modal>
