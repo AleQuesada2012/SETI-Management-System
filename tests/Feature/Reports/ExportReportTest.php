@@ -7,6 +7,7 @@ use App\Enums\SystemRole;
 use App\Models\AuditLog;
 use App\Models\File;
 use App\Models\ReportGeneration;
+use App\Models\ReportType;
 use App\Models\User;
 use App\Reports\ReportRegistry;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -117,8 +118,9 @@ test('the report page previews the rows and offers the export', function () {
 });
 
 test('a report type without a definition says it is not available yet', function () {
+    ReportType::forceCreate(['code' => 'upcoming_report', 'name' => 'Reporte futuro', 'category' => 'assets', 'description' => 'RF_73', 'sort_order' => 99]);
     $this->actingAs($this->author)
-        ->get(route('reports.show', 'space_detail'))
+        ->get(route('reports.show', 'upcoming_report'))
         ->assertOk()
         ->assertSee(__('reports.show.unavailable'));
 });

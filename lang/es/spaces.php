@@ -116,6 +116,15 @@ return [
             'search' => 'El texto de búsqueda no es válido (máximo 200 caracteres).',
         ],
     ],
+
+    // Space managers (RF_40, RF_43 · @Rubiocai). The user page shows and edits them; see lang/es/users.php.
+    'managers' => [
+        'spaces' => 'espacios',
+        'none_to_remove' => ':user no tiene espacios asignados; no hay asignaciones que retirar.',
+        'not_managed' => 'Uno de los espacios elegidos no está a cargo de :user.',
+        'not_administrador' => ':user no tiene el rol Administrador; solo los Administradores pueden estar a cargo de espacios.',
+    ],
+
     // RF_41 · photos of a space (components/spaces/space-photos).
     'photos' => [
         'heading' => 'Fotografías (:count)',
@@ -135,6 +144,45 @@ return [
         'confirm_help' => 'Se eliminará «:photo» del espacio. Esta acción no se puede deshacer.',
         'confirm_submit' => 'Sí, eliminar',
         'removed' => 'Se eliminó la fotografía «:photo».',
+    ],
+    // RF_39 · a space's history (pages/spaces/history).
+    'history' => [
+        'title' => 'Historial del espacio',
+        'link' => 'Ver historial',
+        'back' => 'Volver al espacio',
+        'heading' => 'Historial de :space',
+        'empty' => 'El historial de este espacio se encuentra vacío: no ha recibido cambios, reservas ni movimientos de activos desde que se registró.',
+        'system' => 'El sistema',
+        'created' => ':actor registró el espacio.',
+        'updated' => ':actor editó el espacio.',
+        'deleted' => ':actor eliminó el espacio.',
+        'restored' => ':actor restauró el espacio.',
+        'photo_added' => ':actor agregó la fotografía «:photo».',
+        'photo_removed' => ':actor eliminó la fotografía «:photo».',
+        'manager_assigned' => ':actor asignó a :manager como encargado.',
+        'manager_removed' => ':actor retiró a :manager como encargado.',
+        'other' => ':actor: :action.',
+        'field_change' => ':field: :old → :new',
+        'empty_value' => '(vacío)',
+        'reserved' => ':actor reservó el espacio: «:title».',
+        'reservation_when' => 'El :date de :from a :to.',
+        'reservation_for' => 'Para :responsible.',
+        'cancelled' => 'Cancelada',
+        'asset_entered' => ':actor registró la entrada del activo :asset.',
+        'asset_left' => ':actor registró la salida del activo :asset.',
+        'asset_transferred_in' => ':actor trasladó el activo :asset desde :space.',
+        'asset_transferred_out' => ':actor trasladó el activo :asset a :space.',
+        'fields' => [
+            'code' => 'código',
+            'name' => 'nombre',
+            'space_type_id' => 'tipo de espacio',
+            'building_id' => 'edificio',
+            'floor' => 'piso',
+            'location_detail' => 'detalle de la ubicación',
+            'capacity' => 'capacidad',
+            'notes' => 'notas',
+            'space_status_id' => 'estado',
+        ],
     ],
     // RF_34 · deleting a space (components/spaces/delete-space).
     'delete' => [

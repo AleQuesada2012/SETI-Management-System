@@ -12,6 +12,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $asset_id
  * @property string $asset_code
+ * @property string $asset_name
  * @property MovementType $type
  * @property int|null $from_space_id
  * @property string|null $from_space_code

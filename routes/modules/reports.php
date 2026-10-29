@@ -12,6 +12,10 @@ Route::prefix('reportes')->name('reports.')->group(function () {
         ->middleware('can:'.PermissionName::ReportsView->value)
         ->name('index');
 
+    Route::livewire('estadisticas', 'pages::reports.statistics')
+        ->middleware('can:'.PermissionName::ReportsView->value)
+        ->name('statistics');
+
     // RF_84 · the history of exported reports.
     Route::livewire('generados', 'pages::reports.generations')
         ->middleware('can:viewAny,'.ReportGeneration::class)
