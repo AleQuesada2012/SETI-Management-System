@@ -1,6 +1,8 @@
 <?php
 
 use App\Actions\Users\AssignRole;
+use App\Actions\Users\DeactivateUser;
+use App\Actions\Users\ReactivateUser;
 use App\Models\Role;
 use App\Models\User;
 use Flux\Flux;
@@ -10,7 +12,8 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 /*
- * Detalle del usuario (RF_94) and role assignment (RF_85). Owner: users (@Rubiocai). A missing user is a 404 from
+ * Detalle del usuario (RF_94), role assignment (RF_85) and the account status card: deactivate (RF_88) and reactivate
+ * (RF_88, RF_98) through app/Actions/Users. Owner: users (@Rubiocai). A missing user is a 404 from
  * route model binding, rendered by errors/404.blade.php. Role changes (RF_85–RF_87) go through app/Actions/Users,
  * which audit them explicitly because pivot changes fire no model events.
  */
@@ -54,6 +57,36 @@ new #[Title('users.show.title')] class extends Component
         $this->roleId = $this->assignableRoles->first()?->id;
 
         Flux::toast(variant: 'success', text: __('users.assign_role.done', ['role' => $role->name, 'user' => $this->user->name]));
+    }
+
+    /** RF_88: revoke access after the confirmation window. */
+    public function deactivate(DeactivateUser $deactivateUser): void
+    {
+        $this->authorize('deactivate', $this->user);
+
+        try {
+            $deactivateUser->handle(auth()->user(), $this->user);
+        } finally {
+            Flux::modal('deactivate-account')->close();
+        }
+
+        $this->user->refresh();
+        Flux::toast(variant: 'success', text: __('users.account.deactivated', ['user' => $this->user->name]));
+    }
+
+    /** RF_88 criterion 4, RF_98: give access back after the confirmation window. */
+    public function reactivate(ReactivateUser $reactivateUser): void
+    {
+        $this->authorize('deactivate', $this->user);
+
+        try {
+            $reactivateUser->handle(auth()->user(), $this->user);
+        } finally {
+            Flux::modal('reactivate-account')->close();
+        }
+
+        $this->user->refresh();
+        Flux::toast(variant: 'success', text: __('users.account.reactivated', ['user' => $this->user->name]));
     }
 }; ?>
 
@@ -135,5 +168,70 @@ new #[Title('users.show.title')] class extends Component
                 </form>
             @endif
         </flux:card>
+    @endcan
+
+    @can('deactivate', $user)
+        <flux:card class="flex flex-col gap-3" data-test="account-status">
+            <flux:heading level="3">{{ __('users.account.heading') }}</flux:heading>
+
+            @if ($user->isActive())
+                <flux:text>{{ __('users.account.active_help') }}</flux:text>
+
+                @if (auth()->user()->is($user))
+                    <flux:text class="text-ink-muted">{{ __('users.account.errors.self') }}</flux:text>
+                @else
+                    <div>
+                        <flux:modal.trigger name="deactivate-account">
+                            <flux:button variant="danger" icon="no-symbol">{{ __('users.account.deactivate') }}</flux:button>
+                        </flux:modal.trigger>
+                    </div>
+                @endif
+            @else
+                <flux:text>
+                    {{ __('users.account.deactivated_on', [
+                        'date' => $user->deactivated_at->format('d/m/Y H:i'),
+                        'by' => $user->deactivatedBy?->name ?? __('users.account.unknown_actor'),
+                    ]) }}
+                </flux:text>
+
+                <div>
+                    <flux:modal.trigger name="reactivate-account">
+                        <flux:button variant="primary" icon="arrow-path">{{ __('users.account.reactivate') }}</flux:button>
+                    </flux:modal.trigger>
+                </div>
+            @endif
+
+            <flux:error name="account" />
+        </flux:card>
+
+        <flux:modal name="deactivate-account" class="w-full max-w-md">
+            <form wire:submit="deactivate" class="flex flex-col gap-5">
+                <div>
+                    <flux:heading size="lg">{{ __('users.account.confirm_deactivate_heading') }}</flux:heading>
+                    <flux:text class="mt-2">{{ __('users.account.confirm_deactivate_help', ['user' => $user->name]) }}</flux:text>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <flux:modal.close>
+                        <flux:button variant="ghost">{{ __('users.account.cancel') }}</flux:button>
+                    </flux:modal.close>
+                    <flux:button type="submit" variant="danger">{{ __('users.account.confirm_deactivate') }}</flux:button>
+                </div>
+            </form>
+        </flux:modal>
+
+        <flux:modal name="reactivate-account" class="w-full max-w-md">
+            <form wire:submit="reactivate" class="flex flex-col gap-5">
+                <div>
+                    <flux:heading size="lg">{{ __('users.account.confirm_reactivate_heading') }}</flux:heading>
+                    <flux:text class="mt-2">{{ __('users.account.confirm_reactivate_help', ['user' => $user->name]) }}</flux:text>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <flux:modal.close>
+                        <flux:button variant="ghost">{{ __('users.account.cancel') }}</flux:button>
+                    </flux:modal.close>
+                    <flux:button type="submit" variant="primary">{{ __('users.account.confirm_reactivate') }}</flux:button>
+                </div>
+            </form>
+        </flux:modal>
     @endcan
 </div>

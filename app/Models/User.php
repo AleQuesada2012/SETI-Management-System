@@ -164,6 +164,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @return list<string> */
     public function auditExclude(): array
     {
-        return ['last_login_at', 'email_verified_at'];
+        // Deactivation and reactivation write their own `deactivated` / `reactivated` entries (RF_88, RF_98).
+        return ['last_login_at', 'email_verified_at', 'deactivated_at', 'deactivated_by'];
     }
 }
