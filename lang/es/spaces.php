@@ -134,4 +134,19 @@ return [
         'confirm_submit' => 'Sí, eliminar',
         'removed' => 'Se eliminó la fotografía «:photo».',
     ],
+    // RF_34 · deleting a space (components/spaces/delete-space).
+    'delete' => [
+        'button' => 'Eliminar',
+        'title' => '¿Eliminar :space?',
+        'description' => 'El espacio dejará de aparecer en listas, reservas y reportes. Su historial se conserva, y su código y nombre quedan libres. Esta acción no se puede deshacer desde el sistema.',
+        'confirm' => 'Sí, eliminar',
+        'blocked_title' => 'No se puede eliminar :space',
+        'refused' => 'Este espacio no se puede eliminar porque:',
+        'has_assets' => '{1} tiene 1 activo en servicio o en mantenimiento.|[2,*] tiene :count activos en servicio o en mantenimiento.',
+        'has_reservations' => '{1} tiene 1 reserva confirmada que aún no termina.|[2,*] tiene :count reservas confirmadas que aún no terminan.',
+        'how_to_free' => 'Traslade sus activos a otro espacio y cancele sus reservas activas; después podrá eliminarlo.',
+        'understood' => 'Entendido',
+        'done' => 'Se eliminó el espacio :space.',
+        'not_found' => 'El espacio :space ya no existe.',
+    ],
 ];
