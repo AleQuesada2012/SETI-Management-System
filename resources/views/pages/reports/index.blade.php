@@ -39,10 +39,14 @@ new #[Title('reports.index.title')] class extends Component
 <div class="flex flex-col gap-6">
     <div class="flex flex-wrap items-center justify-between gap-2">
         <flux:heading level="2">{{ __('reports.index.title') }}</flux:heading>
-        <flux:button icon="chart-pie" :href="route('reports.statistics')" wire:navigate>{{ __('reports.statistics.title') }}</flux:button>
-        @can('viewAny', ReportGeneration::class)
-            <flux:button icon="clock" :href="route('reports.generations')" wire:navigate>{{ __('reports.index.generations') }}</flux:button>
-        @endcan
+        <div class="flex flex-wrap gap-2">
+            <flux:button icon="chart-pie" :href="route('reports.statistics')" wire:navigate>{{ __('reports.statistics.title') }}</flux:button>
+            <flux:button icon="wrench-screwdriver" :href="route('reports.statistics.maintenance')" wire:navigate>{{ __('reports.maintenance_statistics.title') }}</flux:button>
+            <flux:button icon="calendar-days" :href="route('reports.statistics.reservations')" wire:navigate>{{ __('reports.reservation_statistics.title') }}</flux:button>
+            @can('viewAny', ReportGeneration::class)
+                <flux:button icon="clock" :href="route('reports.generations')" wire:navigate>{{ __('reports.index.generations') }}</flux:button>
+            @endcan
+        </div>
     </div>
 
     <flux:select wire:model.live="category" :label="__('reports.index.category')" class="md:max-w-sm">
