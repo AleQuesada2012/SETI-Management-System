@@ -47,6 +47,7 @@ new #[Title('spaces.show.title')] class extends Component {
             <livewire:reports.export-button report="space_detail" :filters="['space' => ['values' => [$space->id]]]" />
             <livewire:spaces.change-status :space="$space" />
             <livewire:spaces.edit-space :space="$space" />
+            <livewire:spaces.delete-space :space="$space" />
         </div>
     </div>
 
