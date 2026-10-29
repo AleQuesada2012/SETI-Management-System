@@ -42,9 +42,10 @@ new #[Title('spaces.show.title')] class extends Component {
         @if ($this->details->is_occupied)
             <flux:badge size="sm" color="amber">{{ __('spaces.show.occupied') }}</flux:badge>
         @endif
-        <div class="ms-auto flex gap-2">
+        <div class="flex w-full flex-wrap gap-2 sm:ms-auto sm:w-auto sm:justify-end">
             <livewire:spaces.change-status :space="$space" />
             <livewire:spaces.edit-space :space="$space" />
+            <livewire:spaces.delete-space :space="$space" />
         </div>
     </div>
 

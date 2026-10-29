@@ -37,6 +37,8 @@ test('roles without users.view cannot open the users list', function (SystemRole
 
 test('filters without matches say no users were found', function () {
     actingAsRole(SystemRole::Superusuario);
+    // A deactivated account exists, so the empty list comes from combining the criteria (RF_101 covers "none at all").
+    User::factory()->deactivated()->withRole(SystemRole::Visualizador)->create();
 
     Livewire::test('pages::users.index')
         ->set('filters.role.values', [(string) Role::findByName(SystemRole::Reportes->value)->id])

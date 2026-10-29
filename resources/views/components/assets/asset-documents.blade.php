@@ -18,7 +18,8 @@ use Livewire\WithFileUploads;
 /*
  * RF_20 · "Documentos" on the asset page (pages/assets/show): invoices, manuals and warranties, each opening in the
  * browser through the asset's authorized file route. Users who may manage the asset's files (★ `manageFiles`) attach
- * one or more documents and remove one after confirming. Built on RF_41's upload mechanism (App\Support\Files).
+ * one or more documents and remove one after confirming. Built on RF_41's upload mechanism (App\Support\Files). A
+ * decommissioned asset shows its documents read-only.
  */
 new class extends Component {
     use WithFileUploads;
@@ -37,6 +38,12 @@ new class extends Component {
     public function attached(): Collection
     {
         return $this->asset->files()->wherePivot('kind', AssetFileKind::Document->value)->with('uploader')->get();
+    }
+
+    /** ★ `manageFiles`, and the asset is not decommissioned (read-only, Asset::isReadOnly). */
+    public function canManage(): bool
+    {
+        return ! $this->asset->isReadOnly() && (auth()->user()?->can('manageFiles', $this->asset) ?? false);
     }
 
     #[Computed]
@@ -90,7 +97,7 @@ new class extends Component {
 <flux:card class="flex flex-col gap-4" data-test="asset-documents">
     <flux:heading level="3">{{ __('assets.files.document.heading', ['count' => $this->attached->count()]) }}</flux:heading>
 
-    @can('manageFiles', $asset)
+    @if ($this->canManage())
         <form wire:submit="saveDocuments" class="flex flex-col gap-3 sm:flex-row sm:items-end">
             <flux:field class="min-w-0 flex-1">
                 <flux:label>{{ __('assets.files.document.choose') }}</flux:label>
@@ -113,7 +120,7 @@ new class extends Component {
             </flux:button>
         </form>
         <flux:text wire:loading wire:target="documents" class="text-sm">{{ __('assets.files.uploading') }}</flux:text>
-    @endcan
+    @endif
 
     @if ($this->attached->isEmpty())
         <flux:text data-test="asset-no-documents">{{ __('assets.files.document.none') }}</flux:text>
@@ -128,17 +135,17 @@ new class extends Component {
                             {{ __('assets.files.meta', ['size' => Number::fileSize($document->size_bytes, maxPrecision: 1), 'date' => $document->created_at?->timezone(config('app.timezone'))->format('d/m/Y'), 'user' => $document->uploader?->name]) }}
                         </span>
                     </div>
-                    @can('manageFiles', $asset)
+                    @if ($this->canManage())
                         <flux:button size="sm" variant="ghost" icon="trash" wire:click="confirmRemoval({{ $document->id }})" :aria-label="__('assets.files.remove_label', ['file' => $document->original_name])">
                             {{ __('assets.files.remove') }}
                         </flux:button>
-                    @endcan
+                    @endif
                 </li>
             @endforeach
         </ul>
     @endif
 
-    @can('manageFiles', $asset)
+    @if ($this->canManage())
         <flux:modal name="remove-asset-document" class="w-full max-w-md">
             <form wire:submit="remove" class="flex flex-col gap-5">
                 <flux:heading size="lg">{{ __('assets.files.document.confirm_heading') }}</flux:heading>
@@ -153,5 +160,5 @@ new class extends Component {
                 </div>
             </form>
         </flux:modal>
-    @endcan
+    @endif
 </flux:card>

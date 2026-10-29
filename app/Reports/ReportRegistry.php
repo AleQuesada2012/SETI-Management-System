@@ -15,8 +15,10 @@ final class ReportRegistry
 {
     /** @var array<string, class-string<ReportDefinition>> */
     private array $definitions = [
+        'occupancy' => Definitions\SpaceOccupancyReport::class,
         'assets_inventory' => Definitions\AssetInventoryReport::class,
         'spaces' => Definitions\SpacesReport::class,
+        'reservations' => Definitions\ReservationsReport::class,
     ];
 
     /** @var array<string, array<string, mixed>>|null */

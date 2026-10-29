@@ -24,6 +24,9 @@ return [
         'responsible_name' => 'Responsable del activo', 'acquired_on' => 'Fecha de adquisición',
         'space_report_name' => 'Nombre', 'space_location' => 'Ubicación', 'space_capacity' => 'Capacidad',
         'space_space_type' => 'Tipo', 'space_status' => 'Estado operativo', 'space_managers' => 'Encargados del espacio',
+        'reservation_space' => 'Espacio', 'reservation_date' => 'Fecha', 'reservation_time' => 'Horario',
+        'reservation_title' => 'Motivo', 'reservation_attendees' => 'Cantidad de personas',
+        'reservation_responsible' => 'Responsable', 'reservation_status' => 'Estado',
     ],
     'filters' => [
         'instructions' => 'Selecciona una o varias opciones. Sin selección, no se restringen los registros. Los criterios se combinan entre sí.',
@@ -37,6 +40,7 @@ return [
             'lifecycle_status' => 'Estado del ciclo de vida', 'space' => 'Espacio',
             'responsible_user' => 'Responsable del activo', 'acquired_on' => 'Fecha de adquisición',
             'space_type' => 'Tipo de espacio', 'space_status' => 'Estado operativo', 'building' => 'Edificio',
+            'reservation_status' => 'Estado de la reserva', 'reservation_date' => 'Fecha de la reserva',
         ],
         'missing' => [
             'brand' => 'Sin marca', 'model' => 'Sin modelo', 'space' => 'Sin espacio',

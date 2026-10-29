@@ -17,7 +17,8 @@ use Livewire\WithFileUploads;
 /*
  * RF_21 · "Fotografías" on the asset page (pages/assets/show): phone thumbnails that open the full photo, to identify
  * the asset and see its physical state. Users who may manage the asset's files (★ `manageFiles`) add one or more
- * photos and remove one after confirming. Built on RF_41's upload mechanism and RF_20's asset file Actions.
+ * photos and remove one after confirming. Built on RF_41's upload mechanism and RF_20's asset file Actions. A
+ * decommissioned asset shows its photos read-only.
  */
 new class extends Component {
     use WithFileUploads;
@@ -36,6 +37,12 @@ new class extends Component {
     public function gallery(): Collection
     {
         return $this->asset->files()->wherePivot('kind', AssetFileKind::Photo->value)->get();
+    }
+
+    /** ★ `manageFiles`, and the asset is not decommissioned (read-only, Asset::isReadOnly). */
+    public function canManage(): bool
+    {
+        return ! $this->asset->isReadOnly() && (auth()->user()?->can('manageFiles', $this->asset) ?? false);
     }
 
     #[Computed]
@@ -89,7 +96,7 @@ new class extends Component {
 <flux:card class="flex flex-col gap-4" data-test="asset-photos">
     <flux:heading level="3">{{ __('assets.files.photo.heading', ['count' => $this->gallery->count()]) }}</flux:heading>
 
-    @can('manageFiles', $asset)
+    @if ($this->canManage())
         <form wire:submit="savePhotos" class="flex flex-col gap-3 sm:flex-row sm:items-end">
             <flux:field class="min-w-0 flex-1">
                 <flux:label>{{ __('assets.files.photo.choose') }}</flux:label>
@@ -112,7 +119,7 @@ new class extends Component {
             </flux:button>
         </form>
         <flux:text wire:loading wire:target="photos" class="text-sm">{{ __('assets.files.uploading') }}</flux:text>
-    @endcan
+    @endif
 
     @if ($this->gallery->isEmpty())
         <flux:text data-test="asset-no-photos">{{ __('assets.files.photo.none') }}</flux:text>
@@ -124,17 +131,17 @@ new class extends Component {
                         <img src="{{ route('assets.files.show', [$asset, $photo, 'miniatura' => 1]) }}" alt="{{ $photo->original_name }}" loading="lazy"
                             class="aspect-[4/3] w-full object-cover" @if ($photo->width && $photo->height) width="{{ $photo->width }}" height="{{ $photo->height }}" @endif />
                     </a>
-                    @can('manageFiles', $asset)
+                    @if ($this->canManage())
                         <flux:button size="sm" variant="ghost" icon="trash" wire:click="confirmRemoval({{ $photo->id }})" :aria-label="__('assets.files.remove_label', ['file' => $photo->original_name])">
                             {{ __('assets.files.remove') }}
                         </flux:button>
-                    @endcan
+                    @endif
                 </li>
             @endforeach
         </ul>
     @endif
 
-    @can('manageFiles', $asset)
+    @if ($this->canManage())
         <flux:modal name="remove-asset-photo" class="w-full max-w-md">
             <form wire:submit="remove" class="flex flex-col gap-5">
                 <flux:heading size="lg">{{ __('assets.files.photo.confirm_heading') }}</flux:heading>
@@ -150,5 +157,5 @@ new class extends Component {
                 </div>
             </form>
         </flux:modal>
-    @endcan
+    @endif
 </flux:card>

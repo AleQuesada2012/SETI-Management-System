@@ -38,7 +38,7 @@ test('an Administrador of the asset\'s space adds several photos, with phone thu
         ->and($photos->pluck('thumbnail_path')->filter()->count())->toBe(2);
     Storage::disk(config('filesystems.files_disk'))->assertExists($photos->pluck('thumbnail_path')->all());
 
-    expect(AuditLog::query()->where(['action' => 'attached', 'entity_type' => 'asset', 'entity_id' => $this->asset->id])->pluck('new_values')->pluck('photo')->all())
+    expect(AuditLog::query()->where(['action' => 'attached', 'entity_type' => 'asset', 'entity_id' => $this->asset->id])->orderBy('id')->pluck('new_values')->pluck('photo')->all())
         ->toBe(['frente.jpg', 'placa.png']);
 });
 
