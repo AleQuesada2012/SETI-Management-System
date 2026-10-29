@@ -17,6 +17,9 @@ class SpaceOccupancyRow extends ReportingView
 {
     protected $table = 'reporting.space_occupancy';
 
+    /** Unique in the totals SpaceOccupancy returns, which have one row per space; it keys the report preview rows. */
+    protected $primaryKey = 'space_id';
+
     /**
      * @return array<string, string>
      */

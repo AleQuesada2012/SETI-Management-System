@@ -8,6 +8,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator as ValidatorInstance;
 
@@ -19,9 +20,12 @@ use Illuminate\Validation\Validator as ValidatorInstance;
  *
  * Its filter contract follows the shared conventions (.ai/rules/reports.md):
  *
- * | Key    | Input                                                     |
- * |--------|-----------------------------------------------------------|
- * | `date` | Optional `from` and `to` dates (`YYYY-MM-DD`), inclusive  |
+ * | Key     | Input                                                              |
+ * |---------|--------------------------------------------------------------------|
+ * | `month` | `values`: calendar months (`YYYY-MM`); several months combine (OR) |
+ * | `date`  | Optional `from` and `to` dates (`YYYY-MM-DD`), inclusive           |
+ *
+ * Both criteria combine with AND: `month` gives monthly reports, `date` any other period.
  *
  *     $filters = SpaceOccupancy::validate(['date' => ['from' => '2026-10-01', 'to' => '2026-10-31']]);
  *     SpaceOccupancy::query($filters)->paginate(15);
@@ -59,6 +63,12 @@ final class SpaceOccupancy
             ->selectRaw('sum(reservations)::integer AS reservations, sum(booked_hours) AS booked_hours')
             ->when(isset($filters['date']['from']), fn (Builder $query) => $query->where('local_date', '>=', $filters['date']['from']))
             ->when(isset($filters['date']['to']), fn (Builder $query) => $query->where('local_date', '<=', $filters['date']['to']))
+            ->when(isset($filters['month']), fn (Builder $query) => $query->where(function (Builder $months) use ($filters): void {
+                foreach ($filters['month']['values'] as $month) {
+                    $first = CarbonImmutable::createFromFormat('!Y-m', $month);
+                    $months->orWhereBetween('local_date', [$first->toDateString(), $first->endOfMonth()->toDateString()]);
+                }
+            }))
             ->groupBy('space_id', 'space_code', 'space_name')
             ->orderBy($column, $direction)
             ->orderBy($column === 'reservations' ? 'booked_hours' : 'reservations', $direction)
@@ -67,30 +77,37 @@ final class SpaceOccupancy
     }
 
     /**
-     * Check the shape of the filters, then normalize them. Unsupported keys, invalid dates and a final date before
-     * the initial one are Spanish validation errors.
+     * Check the shape of the filters, then normalize them. Unsupported keys, invalid months or dates and a final date
+     * before the initial one are Spanish validation errors.
      *
      * @param  array<string, mixed>  $filters
-     * @return array{date?: array{from?: string, to?: string}}
+     * @return array{month?: array{values: list<string>}, date?: array{from?: string, to?: string}}
      *
      * @throws ValidationException
      */
     public static function validate(array $filters): array
     {
         $rules = [
+            'month' => ['nullable', 'array:values'],
+            'month.values' => ['nullable', 'array'],
+            'month.values.*' => ['string', 'date_format:Y-m'],
             'date' => ['nullable', 'array:from,to'],
             'date.from' => ['nullable', 'date_format:Y-m-d'],
             'date.to' => ['nullable', 'date_format:Y-m-d'],
         ];
 
         $messages = [
+            'month.array' => __('reservations.occupancy.errors.month'),
+            'month.values.array' => __('reservations.occupancy.errors.month'),
+            'month.values.*.string' => __('reservations.occupancy.errors.month'),
+            'month.values.*.date_format' => __('reservations.occupancy.errors.month'),
             'date.array' => __('reservations.occupancy.errors.shape'),
             'date.from.date_format' => __('reservations.occupancy.errors.date', ['field' => __('reservations.fields.from')]),
             'date.to.date_format' => __('reservations.occupancy.errors.date', ['field' => __('reservations.fields.to')]),
         ];
 
         Validator::make($filters, $rules, $messages)->after(function (ValidatorInstance $validator) use ($filters): void {
-            foreach (array_diff(array_keys($filters), ['date']) as $key) {
+            foreach (array_diff(array_keys($filters), ['month', 'date']) as $key) {
                 $validator->errors()->add((string) $key, __('reservations.occupancy.errors.unknown_key', ['key' => $key]));
             }
 
@@ -106,14 +123,23 @@ final class SpaceOccupancy
     }
 
     /**
-     * Keep only the valid bounds, so `{}` means "the whole history" and equal periods store the same way.
+     * Keep only the valid months and bounds, without duplicates, so `{}` means "the whole history" and equal periods
+     * store the same way.
      *
      * @param  array<string, mixed>  $filters
-     * @return array{date?: array{from?: string, to?: string}}
+     * @return array{month?: array{values: list<string>}, date?: array{from?: string, to?: string}}
      */
     public static function normalize(array $filters): array
     {
         $normalized = [];
+
+        $months = collect(is_array($filters['month']['values'] ?? null) ? $filters['month']['values'] : [])
+            ->filter(fn (mixed $month): bool => is_string($month) && preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $month) === 1)
+            ->unique()->sort()->values()->all();
+
+        if ($months !== []) {
+            $normalized['month'] = ['values' => $months];
+        }
 
         foreach (['from', 'to'] as $bound) {
             $date = self::date($filters['date'][$bound] ?? null);
@@ -137,6 +163,30 @@ final class SpaceOccupancy
         $day = CarbonImmutable::instance($day);
 
         return ['date' => ['from' => $day->startOfMonth()->toDateString(), 'to' => $day->endOfMonth()->toDateString()]];
+    }
+
+    /**
+     * The months a report can choose, newest first: the current one and every month with reservations, so the
+     * choices stay the same whatever else is filtered.
+     *
+     * @return list<array{id: string, label: string}>
+     */
+    public static function monthChoices(): array
+    {
+        return SpaceOccupancyRow::query()
+            ->selectRaw("to_char(local_date, 'YYYY-MM') AS month")
+            ->distinct()
+            ->pluck('month')
+            ->push(now()->format('Y-m'))
+            ->unique()->sortDesc()->values()
+            ->map(fn (string $month): array => ['id' => $month, 'label' => self::monthName(CarbonImmutable::createFromFormat('!Y-m', $month))])
+            ->all();
+    }
+
+    /** "Octubre de 2026": how the page heading and the report name a month. */
+    public static function monthName(CarbonInterface $month): string
+    {
+        return Str::ucfirst($month->locale('es')->translatedFormat('F \d\e Y'));
     }
 
     /**
