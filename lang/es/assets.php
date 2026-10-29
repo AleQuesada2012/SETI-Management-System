@@ -194,6 +194,7 @@ return [
         'types' => [
             'movement' => 'Movimiento',
             'event' => 'Evento',
+            'maintenance' => 'Mantenimiento',
             'change' => 'Cambio',
         ],
         'changes' => [
@@ -215,6 +216,7 @@ return [
         ],
         'by' => 'Por :user',
         'system' => 'Sistema',
+        'performed_by' => 'Realizado por :name',
     ],
     // RF_29 (with RF_22): a decommissioned asset is read-only (Asset::isReadOnly).
     'read_only' => 'El activo está dado de baja: su información ya no se modifica.',
@@ -272,6 +274,42 @@ return [
             'condition_id' => 'condición',
             'evidence' => 'evidencia',
             'evidence.*' => 'evidencia',
+        ],
+    ],
+    // RF_10, RF_26: the "Mantenimientos" card on the asset page (components/assets/asset-maintenance).
+    'maintenance' => [
+        'title' => 'Mantenimientos',
+        'empty' => 'Este activo no tiene mantenimientos registrados.',
+        'register' => 'Registrar mantenimiento',
+        'form_title' => 'Registrar mantenimiento del activo :asset',
+        'form_help' => 'Registra un mantenimiento ya realizado. El estado del activo no cambia.',
+        'kind_help' => [
+            'corrective' => 'Correctivo: se corrigió una falla o un daño del activo.',
+            'preventive' => 'Preventivo: una revisión periódica para evitar fallas.',
+        ],
+        'description_placeholder' => 'Qué se revisó o reparó, piezas cambiadas, resultado…',
+        'performed_by_placeholder' => 'Nombre del técnico o de la empresa',
+        'save' => 'Registrar',
+        'cancel' => 'Cancelar',
+        'done' => 'Se registró el mantenimiento del activo :asset.',
+        'columns' => [
+            'performed_on' => 'Fecha',
+            'kind' => 'Tipo',
+            'description' => 'Descripción',
+            'performed_by' => 'Responsable',
+            'registered_by' => 'Registrado por',
+        ],
+        'system' => 'Sistema',
+        'errors' => [
+            'status' => 'Solo se registra mantenimiento de un activo en servicio o en mantenimiento.',
+            'future' => 'La fecha del mantenimiento no puede ser futura.',
+            'before_acquisition' => 'La fecha del mantenimiento no puede ser anterior a la fecha de adquisición del activo.',
+        ],
+        'fields' => [
+            'kind' => 'tipo de mantenimiento',
+            'performed_on' => 'fecha',
+            'performed_by' => 'responsable',
+            'description' => 'descripción',
         ],
     ],
     // RF_12, RF_31: the "Componentes" card on the asset page.
