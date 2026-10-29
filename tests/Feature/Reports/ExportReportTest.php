@@ -10,6 +10,7 @@ use App\Models\ReportGeneration;
 use App\Models\User;
 use App\Reports\ReportRegistry;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Spatie\SimpleExcel\SimpleExcelReader;
@@ -117,8 +118,14 @@ test('the report page previews the rows and offers the export', function () {
 });
 
 test('a report type without a definition says it is not available yet', function () {
+    // Its own catalog entry, so the test does not depend on which seeded report still lacks a definition.
+    DB::table('report_types')->insert([
+        'code' => 'pending_example', 'name' => 'Reporte pendiente', 'category' => 'spaces', 'description' => 'RF_00',
+        'sort_order' => 99, 'created_at' => now(), 'updated_at' => now(),
+    ]);
+
     $this->actingAs($this->author)
-        ->get(route('reports.show', 'warranties'))
+        ->get(route('reports.show', 'pending_example'))
         ->assertOk()
         ->assertSee(__('reports.show.unavailable'));
 });
