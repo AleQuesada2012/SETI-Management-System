@@ -19,6 +19,7 @@ final class ReportRegistry
         'assets_inventory' => Definitions\AssetInventoryReport::class,
         'spaces' => Definitions\SpacesReport::class,
         'reservations' => Definitions\ReservationsReport::class,
+        'space_detail' => Definitions\SpaceDetailReport::class,
         'audit' => Definitions\AuditReport::class,
         'users' => Definitions\UsersReport::class,
         'warranties' => Definitions\WarrantiesReport::class,
