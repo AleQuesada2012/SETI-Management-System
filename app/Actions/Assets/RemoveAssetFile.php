@@ -9,11 +9,13 @@ use App\Models\User;
 use App\Support\Audit\Audit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\ValidationException;
 
 /**
  * RF_20, RF_21 · Remove a document or a photo from an asset. Space-scoped (★): `manageFiles`. Attachments are
  * hard-deleted (Agent-DB.md §11): the `files` row goes (cascading to asset_files) with a `detached` audit entry in one
- * transaction, and its bytes and thumbnail are removed after the commit.
+ * transaction, and its bytes and thumbnail are removed after the commit. A decommissioned asset keeps its files
+ * (Asset::isReadOnly).
  */
 final class RemoveAssetFile
 {
@@ -24,6 +26,11 @@ final class RemoveAssetFile
         DB::transaction(function () use ($actor, $asset, $file): void {
             $asset = Asset::query()->whereKey($asset->id)->lockForUpdate()->firstOrFail();
             Gate::forUser($actor)->authorize('manageFiles', $asset);
+
+            if ($asset->isReadOnly()) {
+                throw ValidationException::withMessages(['form' => __('assets.read_only')]);
+            }
+
             $file = File::query()->whereKey($file->id)->lockForUpdate()->firstOrFail();
             $kind = $asset->files()->whereKey($file->id)->value('asset_files.kind');
             abort_if($kind === null, 404);

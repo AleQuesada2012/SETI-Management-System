@@ -112,6 +112,65 @@ Los componentes de un activo dado de baja se consultan, pero ya no se modifican.
 ![Añadir un componente en computadora](activos-componentes-anadir-escritorio.jpg)
 ![Añadir un componente a 360 px](activos-componentes-anadir-movil.jpg)
 
+## Pérdida, recuperación y baja de un activo (RF_22, RF_28, RF_29)
+
+La ficha de cada activo tiene una tarjeta **Eventos** con sus pérdidas, recuperaciones y su baja: fecha, tipo,
+descripción y quién lo registró. Toda cuenta que puede ver el activo la consulta. Un **Administrador** registra los
+eventos de los activos que están (o estuvieron por última vez) en los espacios de los que es encargado; el
+**Superusuario**, los de cualquier activo. Pruébalo con `admin@seti.test` (contraseña `password`).
+
+1. Abre un activo desde **Inventario de activos** y, en **Eventos**, pulsa **Registrar evento**.
+2. Elige el tipo; solo aparecen los que el estado del activo permite:
+   - **Pérdida** (activo en servicio o en mantenimiento): queda **Perdido**, deja de contarse como disponible y no se
+     puede trasladar.
+   - **Recuperación** (activo perdido): el activo apareció y vuelve a **En servicio**.
+   - **Baja** (activo en servicio, en mantenimiento o perdido): es definitiva.
+3. Indica la fecha (no puede ser futura ni anterior a la adquisición) y una descripción o el motivo de la baja, y pulsa
+   **Registrar**. Un aviso lo confirma y la tarjeta **Estado** muestra la fecha de la pérdida o de la baja.
+
+Un activo dado de baja sigue en el inventario con el estado **De baja** y conserva todo su historial, pero ya no está
+disponible: no se traslada (solo admite una salida de su espacio), y sus datos, componentes y archivos ya no se
+modifican. Darlo de baja no es eliminarlo: **Eliminar** queda solo para un registro hecho por error.
+
+![Activo dado de baja en computadora](activos-baja-escritorio.jpg)
+![Activo dado de baja a 360 px](activos-baja-movil.jpg)
+![Registrar un evento en computadora](activos-registrar-evento-escritorio.jpg)
+![Registrar un evento a 360 px](activos-registrar-evento-movil.jpg)
+
+## Daño de un activo (RF_13)
+
+En la tarjeta **Eventos** de un activo en servicio o en mantenimiento, **Registrar evento** ofrece el tipo **Daño**. Lo
+registran las mismas cuentas que los demás eventos: el **Administrador** encargado del espacio del activo o el
+**Superusuario**. Pruébalo con `admin@seti.test` (contraseña `password`).
+
+1. Pulsa **Registrar evento** y deja el tipo **Daño**.
+2. Indica la fecha y describe el daño. Elige la condición dañada (grupo rojo; por defecto **Dañado**): sin ella no se
+   puede registrar el daño.
+3. Opcionalmente, pulsa **Elegir archivos** y adjunta hasta diez fotografías (10 MB) o PDF (20 MB) como evidencia.
+4. Pulsa **Registrar**. El activo queda en la condición elegida y sigue en servicio; el daño aparece en **Eventos**
+   con enlaces a su evidencia, que solo se abre desde la ficha de ese activo.
+
+Un activo perdido o dado de baja no admite daños.
+
+![Registrar un daño a 360 px](activos-danio-registrar-movil.jpg)
+![Daño con evidencia en computadora](activos-danio-escritorio.jpg)
+
+## Historial de un activo (RF_09)
+
+En la ficha de un activo, **Historial** abre todo lo que le ha pasado, del más reciente al más antiguo. Lo consulta toda
+cuenta que puede ver activos; por ejemplo, `visualizador@seti.test` (contraseña `password`). Cada entrada indica su
+fecha y quién la hizo:
+
+- **Movimiento:** ingresos, traslados y salidas, con el origen, el destino y el motivo.
+- **Evento:** daños, pérdidas, recuperaciones y la baja, con su descripción.
+- **Cambio:** el registro del activo, cada modificación de sus datos (campo, valor anterior y valor nuevo) y los
+  archivos adjuntados o retirados, hechos por un Administrador o el Superusuario.
+
+Si el activo todavía no ha recibido cambios, la página indica que su historial se encuentra vacío.
+
+![Historial en computadora](activos-historial-escritorio.jpg)
+![Historial a 360 px](activos-historial-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la

@@ -20,10 +20,11 @@ test('the report menu exposes four categories and registered reports', function 
 test('future entries are labelled upcoming and do not suppress the empty category message', function () {
     actingAsRole(SystemRole::Reportes);
     config(['reports.current_sprint' => 2]);
-    ReportType::where('code', 'spaces')->delete();
+    ReportType::where('category', 'spaces')->delete();
+    ReportType::forceCreate(['code' => 'upcoming_report', 'name' => 'Reporte futuro', 'category' => 'spaces', 'description' => 'RF_73', 'sort_order' => 1]);
     Livewire::test('pages::reports.index')->set('category', 'spaces')
         ->assertSee('Próximamente')->assertSee(__('reports.index.empty'))
-        ->assertDontSee(route('reports.show', 'reservations'), false);
+        ->assertDontSee(route('reports.show', 'upcoming_report'), false);
     config(['reports.current_sprint' => 3]);
     Livewire::test('pages::reports.index')->set('category', 'spaces')->assertDontSee('Próximamente');
 });
