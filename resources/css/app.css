@@ -4,6 +4,8 @@
 @import './theme.css';
 
 @source '../views';
+/* Chart.js reads all five palette tokens dynamically, including zero-count series. */
+@source inline('bg-chart-1 bg-chart-2 bg-chart-3 bg-chart-4 bg-chart-5');
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';

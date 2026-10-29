@@ -3,15 +3,19 @@
 namespace App\Models\Reporting;
 
 use App\Enums\AssetEventKind;
+use App\Enums\AssetStatus;
 use Illuminate\Support\Carbon;
 
 /**
- * A row of reporting.asset_events: one damage, loss, recovery or decommission with the user who registered it resolved
- * (asset history RF_09; losses and decommissions report RF_76).
+ * A row of reporting.asset_events: a dated damage, loss, recovery or decommission of an asset, with the user who
+ * registered it resolved (RF_13, RF_22, RF_28, RF_29; asset history RF_09; disposals report RF_76).
+ * `asset_display_name` and `asset_status` exist when ReportFilters::withCurrentAsset joins them.
  *
  * @property int $id
  * @property int $asset_id
  * @property string $asset_code
+ * @property string|null $asset_tag
+ * @property string $asset_name
  * @property AssetEventKind $kind
  * @property Carbon $occurred_on
  * @property string $description
@@ -19,6 +23,8 @@ use Illuminate\Support\Carbon;
  * @property string|null $registered_by_name
  * @property int $evidence_count
  * @property Carbon $created_at
+ * @property string|null $asset_display_name
+ * @property AssetStatus|null $asset_status
  */
 class AssetEventRow extends ReportingView
 {
@@ -31,6 +37,7 @@ class AssetEventRow extends ReportingView
     {
         return [
             'kind' => AssetEventKind::class,
+            'asset_status' => AssetStatus::class,
             'occurred_on' => 'date',
             'evidence_count' => 'integer',
             'created_at' => 'datetime',

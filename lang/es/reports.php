@@ -2,6 +2,44 @@
 
 // Reports module (RF_00_4, RF_60–RF_84).
 return [
+    'statistics' => [
+        'title' => 'Estadísticas de activos', 'refresh' => 'Datos actuales del inventario. Se actualizan automáticamente cada 15 segundos mientras esta página está visible.',
+        'total' => 'Total de activos: :count', 'empty' => 'No hay activos registrados.',
+        'condition' => 'Condición física', 'lifecycle' => 'Estado del ciclo de vida', 'category' => 'Categoría',
+        'group' => 'Grupo', 'count' => 'Cantidad de activos',
+    ],
+    'maintenance' => [
+        'kind' => 'Tipo de intervención', 'completed_on' => 'Fecha de realización', 'description' => 'Descripción',
+        'performed_by' => 'Realizado por', 'kinds' => ['preventive' => 'Mantenimiento', 'corrective' => 'Reparación'],
+    ],
+    'movements' => [
+        'type' => 'Tipo de movimiento', 'moved_at' => 'Fecha del movimiento', 'from_space' => 'Espacio de origen',
+        'to_space' => 'Espacio de destino', 'moved_by' => 'Realizado por', 'reason' => 'Motivo',
+    ],
+    'disposals' => [
+        'kind' => 'Tipo de evento', 'occurred_on' => 'Fecha del evento', 'description' => 'Descripción',
+        'current_status' => 'Estado actual del activo',
+    ],
+    'components' => [
+        'name' => 'Componente', 'specs' => 'Especificaciones', 'serial_number' => 'Número de serie',
+        'quantity' => 'Cantidad', 'notes' => 'Notas',
+    ],
+    'warranties' => [
+        'supplier' => 'Proveedor', 'starts_on' => 'Inicio de la garantía', 'ends_on' => 'Fin de la garantía',
+        'state' => 'Vigencia de la garantía', 'states' => ['valid' => 'Vigente', 'expired' => 'Vencida'],
+        'no_supplier' => 'Sin proveedor registrado',
+    ],
+    'users' => [
+        'name' => 'Nombre', 'email' => 'Correo', 'roles' => 'Roles',
+        'account_status' => 'Estado de cuenta', 'invitation_pending' => 'Invitación pendiente',
+    ],
+    'audit' => [
+        'actor' => 'Usuario', 'action' => 'Tipo de operación', 'occurred_at' => 'Fecha de la operación',
+        'columns' => [
+            'actor_label' => 'Usuario registrado', 'occurred_at' => 'Fecha y hora', 'action' => 'Operación',
+            'entity_label' => 'Elemento registrado', 'old_values' => 'Valores anteriores', 'new_values' => 'Valores nuevos',
+        ],
+    ],
     'index' => [
         'title' => 'Reportes',
         'generations' => 'Reportes generados',
@@ -18,9 +56,11 @@ return [
         'total' => ':total registros',
     ],
     'columns' => [
-        'code' => 'Código de activo', 'asset_tag' => 'Placa', 'display_name' => 'Nombre',
+        'code' => 'Código de activo', 'asset_tag' => 'Placa', 'display_name' => 'Nombre', 'asset' => 'Activo',
+        'registered_by' => 'Registrado por',
         'brand' => 'Marca', 'model' => 'Modelo', 'condition' => 'Condición física',
         'status' => 'Estado del ciclo de vida', 'space_name' => 'Espacio',
+        'responsible_email' => 'Correo del responsable',
         'responsible_name' => 'Responsable del activo', 'acquired_on' => 'Fecha de adquisición',
         'space_report_name' => 'Nombre', 'space_location' => 'Ubicación', 'space_capacity' => 'Capacidad',
         'space_space_type' => 'Tipo', 'space_status' => 'Estado operativo', 'space_managers' => 'Encargados del espacio',
@@ -35,7 +75,7 @@ return [
         'removed' => ':name (eliminado)', 'deactivated' => ':name (cuenta desactivada)',
         'colors' => ['green' => 'Verde', 'amber' => 'Ámbar', 'red' => 'Rojo'],
         'labels' => [
-            'search' => 'Buscar', 'brand' => 'Marca', 'model' => 'Modelo contiene', 'category' => 'Categoría',
+            'search' => 'Buscar', 'asset' => 'Activo', 'brand' => 'Marca', 'model' => 'Modelo contiene', 'category' => 'Categoría',
             'condition' => 'Condición física', 'condition_color' => 'Color de condición',
             'lifecycle_status' => 'Estado del ciclo de vida', 'space' => 'Espacio',
             'responsible_user' => 'Responsable del activo', 'acquired_on' => 'Fecha de adquisición',
@@ -58,6 +98,10 @@ return [
     ],
     'generations' => [
         'title' => 'Reportes generados',
+        'description' => 'Consulta las generaciones anteriores y descarga su archivo original. Las fechas corresponden a Costa Rica.',
+        'empty' => 'Todavía no se han generado reportes.', 'when' => 'Fecha y hora', 'who' => 'Generado por',
+        'report' => 'Tipo de reporte', 'category' => 'Categoría', 'format' => 'Formato', 'rows' => 'Registros',
+        'file' => 'Archivo', 'download' => 'Descargar original', 'unavailable' => 'Archivo no disponible',
     ],
     'export' => [
         'button' => 'Exportar',
@@ -78,5 +122,17 @@ return [
         'all_records' => 'ninguno (contiene la totalidad de los registros)',
         'empty' => 'No hay registros que cumplan los filtros.',
         'page' => 'Página',
+    ],
+    // RF_74 · the report of one space (App\Reports\Definitions\SpaceDetailReport · @Dizabu).
+    'space_detail' => [
+        'choose_one' => 'Elige un espacio: este reporte describe un solo espacio.',
+        'space' => 'Espacio',
+        'location' => 'Ubicación',
+        'capacity' => 'Capacidad',
+        'people' => '{1} :count persona|[2,*] :count personas',
+        'type' => 'Tipo de espacio',
+        'status' => 'Estado operativo',
+        'managers' => 'Encargados del espacio',
+        'no_managers' => 'Sin encargados asignados',
     ],
 ];
