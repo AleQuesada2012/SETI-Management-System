@@ -5,6 +5,7 @@ return [
     'nav' => [
         'dashboard' => 'Tablero',
         'assets' => 'Activos',
+        'maintenance' => 'Mantenimientos',
         'spaces' => 'Espacios',
         'reservations' => 'Reservas',
         'reports' => 'Reportes',

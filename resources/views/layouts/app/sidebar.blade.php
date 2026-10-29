@@ -25,6 +25,12 @@
                     </flux:sidebar.item>
                 @endcan
 
+                @can('viewAny', App\Models\MaintenanceRecord::class)
+                    <flux:sidebar.item icon="wrench-screwdriver" :href="route('maintenance.index')" :current="request()->routeIs('maintenance.*')" wire:navigate>
+                        {{ __('app.nav.maintenance') }}
+                    </flux:sidebar.item>
+                @endcan
+
                 @can('viewAny', App\Models\Space::class)
                     <flux:sidebar.item icon="building-office-2" :href="route('spaces.index')" :current="request()->routeIs('spaces.*')" wire:navigate>
                         {{ __('app.nav.spaces') }}

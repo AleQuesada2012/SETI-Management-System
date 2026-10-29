@@ -292,6 +292,41 @@ return [
         'save' => 'Registrar',
         'cancel' => 'Cancelar',
         'done' => 'Se registró el mantenimiento del activo :asset.',
+        // RF_27: maintenance scheduled for a later day, changed, marked as done or cancelled from its row.
+        'scheduled' => [
+            'register' => 'Programar mantenimiento',
+            'form_title' => 'Programar mantenimiento del activo :asset',
+            'form_help' => 'Planifica un mantenimiento para una fecha posterior a hoy. Los encargados del espacio reciben un recordatorio :days días antes y otro si la fecha pasa sin registrarlo.',
+            'edit' => 'Modificar',
+            'edit_title' => 'Modificar el mantenimiento programado del activo :asset',
+            'complete' => 'Realizado',
+            'complete_title' => 'Registrar como realizado el mantenimiento del activo :asset',
+            'complete_help' => 'Indica cuándo se hizo y quién lo hizo. El estado y la condición del activo no cambian; para reparar un daño usa Registrar reparación.',
+            'cancel_title' => '¿Cancelar el mantenimiento programado del activo :asset?',
+            'cancel_help' => 'El mantenimiento queda en el historial como cancelado. El activo no cambia.',
+            'confirm_cancel' => 'Sí, cancelar el mantenimiento',
+            'description_placeholder' => 'Revisión semestral, cambio de filtros, calibración…',
+            'overdue' => 'Vencido',
+            'today' => 'Hoy',
+            'scheduled_for_line' => 'Programado para el :date.',
+            'done' => [
+                'created' => 'Se programó el mantenimiento del activo :asset para el :date.',
+                'updated' => 'Se modificó el mantenimiento programado del activo :asset.',
+                'completed' => 'Se registró como realizado el mantenimiento del activo :asset.',
+                'cancelled' => 'Se canceló el mantenimiento programado del activo :asset.',
+            ],
+        ],
+        // RF_27: the daily reminder (maintenance.due) in the bell.
+        'notifications' => [
+            'upcoming' => [
+                'title' => 'Mantenimiento próximo: :asset',
+                'body' => ':kind de :asset programado para el :date: :description',
+            ],
+            'overdue' => [
+                'title' => 'Mantenimiento vencido: :asset',
+                'body' => ':kind de :asset programado para el :date sigue sin registrarse: :description',
+            ],
+        ],
         // RF_11: repairs of a damaged asset (corrective maintenance in progress or finished).
         'repair' => [
             'register' => 'Registrar reparación',
@@ -339,6 +374,8 @@ return [
             'condition' => 'Elige una condición en funcionamiento (verde o ámbar).',
             'repair_not_allowed' => 'Solo se registra una reparación de un activo dañado (condición roja), en servicio o en mantenimiento, que no tenga otra reparación en curso.',
             'not_in_progress' => 'Esta reparación ya no está en curso.',
+            'not_after_today' => 'La fecha programada debe ser posterior a hoy.',
+            'not_scheduled' => 'Este mantenimiento ya no está programado.',
         ],
         'fields' => [
             'kind' => 'tipo de mantenimiento',
@@ -350,6 +387,29 @@ return [
             'condition_id' => 'nueva condición del activo',
             'completed_on' => 'fecha de finalización',
             'cancellation_reason' => 'motivo de la cancelación',
+            'scheduled_for' => 'fecha programada',
+        ],
+    ],
+    // RF_27: the scheduled maintenance of every asset (pages/assets/maintenance).
+    'scheduled' => [
+        'title' => 'Mantenimientos programados',
+        'description' => 'Los mantenimientos programados de todos los activos, del más próximo (o más vencido) al más lejano. Se programan, modifican y cancelan desde la tarjeta Mantenimientos de cada activo.',
+        'when' => 'Mostrar',
+        'when_options' => [
+            'all' => 'Todos los programados',
+            'overdue' => 'Vencidos',
+            'week' => 'Próximos 7 días',
+            'month' => 'Próximos 30 días',
+        ],
+        'empty' => 'No hay mantenimientos programados.',
+        'empty_filtered' => 'No hay mantenimientos programados en ese periodo.',
+        'columns' => [
+            'scheduled_for' => 'Fecha programada',
+            'asset' => 'Activo',
+            'space' => 'Espacio',
+            'kind' => 'Tipo',
+            'description' => 'Descripción',
+            'registered_by' => 'Programado por',
         ],
     ],
     // RF_12, RF_31: the "Componentes" card on the asset page.

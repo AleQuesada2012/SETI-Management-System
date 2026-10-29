@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Maintenance\MaintenanceDue;
 use App\Notifications\Reservations\ReservationCancelled;
 use App\Notifications\Reservations\ReservationCreated;
 use App\Notifications\Reservations\ReservationMovedIn;
@@ -23,6 +24,7 @@ final readonly class InboxEntry
         ReservationUpdated::class,
         ReservationMovedOut::class,
         ReservationMovedIn::class,
+        MaintenanceDue::class,
     ];
 
     public function __construct(

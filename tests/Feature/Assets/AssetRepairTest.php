@@ -145,7 +145,7 @@ test('cancelling a repair in progress keeps it with its reason and puts the asse
     Livewire::test('assets.asset-maintenance', ['asset' => $this->asset->refresh()])
         ->call('openCancel', $repair->id)
         ->set('cancellation_reason', 'Se registró en el activo equivocado.')
-        ->call('cancelRepair')
+        ->call('cancelRecord')
         ->assertHasNoErrors()
         ->assertRedirect(route('assets.show', $this->asset));
 

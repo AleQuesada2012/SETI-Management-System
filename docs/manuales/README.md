@@ -219,6 +219,29 @@ reparación**.
 ![Reparación en curso en computadora](activos-reparacion-escritorio.jpg)
 ![Finalizar una reparación a 360 px](activos-reparacion-finalizar-movil.jpg)
 
+## Programar mantenimiento (RF_27)
+
+En la tarjeta **Mantenimientos** de un activo en servicio o en mantenimiento, el **Administrador** encargado del
+espacio y el **Superusuario** ven **Programar mantenimiento**. Pruébalo con `admin@seti.test` (contraseña `password`).
+
+1. Pulsa **Programar mantenimiento**. Elige el tipo (por defecto **Preventivo**), una fecha posterior a hoy y la
+   descripción o motivo.
+2. Pulsa **Registrar**. El mantenimiento aparece en la tarjeta como **Programado** (o **Vencido** si su fecha pasó).
+3. En su fila:
+   - **Realizado:** indica cuándo se hizo, quién lo hizo y ajusta la descripción; queda como mantenimiento completado.
+   - **Modificar:** cambia el tipo, la fecha (siempre posterior a hoy) o la descripción. El cambio queda auditado.
+   - **Cancelar:** con un motivo opcional; queda en el historial como **Cancelado**. Se puede cancelar aunque el
+     activo se haya perdido o dado de baja.
+
+**Mantenimientos** en el menú lateral abre **Mantenimientos programados**: todos los programados de todos los
+activos, del más próximo (o más vencido) al más lejano, con su activo, espacio, tipo y descripción. **Mostrar** filtra
+los vencidos o los de los próximos 7 o 30 días. Lo consulta toda cuenta que puede ver mantenimientos, por ejemplo
+`visualizador@seti.test`.
+
+**Recordatorios:** cada día a las 07:00, los encargados del espacio del activo reciben en la campana un aviso cuando un
+mantenimiento programado está a 3 días o menos, y otro si su fecha pasa sin registrarlo. Si el espacio no tiene
+encargados, el aviso llega al Superusuario. Al tocar el aviso se abre el activo.
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
