@@ -104,6 +104,22 @@ return [
             'last_superuser' => 'No se puede retirar el rol Superusuario al último Superusuario activo: el sistema se quedaría sin quien lo administre.',
         ],
     ],
+    'change_role' => [
+        'change' => 'Cambiar',
+        'heading' => 'Cambiar el rol :role',
+        'help' => 'Elige el rol que reemplazará a :role para :user. El cambio se aplica de inmediato.',
+        'new_role' => 'Nuevo rol',
+        'choose' => 'Elige un rol',
+        'gains' => 'Podrá además:',
+        'gains_nothing' => 'Nada nuevo: sus otros roles ya le dan esos permisos.',
+        'loses_nothing' => 'Nada: conserva todos sus permisos con el nuevo rol o sus otros roles.',
+        'submit' => 'Cambiar rol',
+        'done' => 'Se cambió el rol :from por :to a :user.',
+        'errors' => [
+            'same_role' => 'Elige un rol distinto del actual.',
+            'unavailable' => 'El rol elegido ya no está disponible para este usuario. Elige otro.',
+        ],
+    ],
     'managed_spaces' => [
         'heading' => 'Espacios a cargo',
         'none' => 'No tiene espacios a cargo.',
