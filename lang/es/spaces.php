@@ -29,6 +29,8 @@ return [
             'capacity' => 'Capacidad',
             'type' => 'Tipo',
             'status' => 'Estado',
+            'created' => 'Creado',
+            'updated' => 'Modificado',
         ],
         'active_filters' => 'Filtros activos',
         'clear_filters' => 'Limpiar filtros',

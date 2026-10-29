@@ -25,6 +25,9 @@ use Illuminate\Validation\Validator as ValidatorInstance;
  */
 final class SpaceDirectory
 {
+    /** Columns the list can be sorted by (RF_37 modification date, RF_38 creation date). */
+    public const SORTABLE = ['updated_at', 'created_at'];
+
     /**
      * The categorical criteria: filter key => [reporting.spaces column, catalog model]. None is nullable, so none
      * accepts `include_missing`.
@@ -41,10 +44,14 @@ final class SpaceDirectory
      * Criteria combine with AND; the values inside one criterion combine with OR. Pass validated filters (validate());
      * anything else is normalized first, so blank criteria never restrict.
      *
+     * RF_37, RF_38: `$sortBy` orders by modification or creation date (`updated_at`, `created_at`, see SORTABLE) in
+     * `$direction`; anything else keeps the default order by name. Sorting is not a filter, so it stays out of the
+     * filter contract shared with the spaces report.
+     *
      * @param  array<string, mixed>  $filters  the same keys in the page, the report and report_generations.filters
      * @return Builder<SpaceRow>
      */
-    public static function query(array $filters = []): Builder
+    public static function query(array $filters = [], ?string $sortBy = null, string $direction = 'asc'): Builder
     {
         $filters = self::normalize($filters);
         $query = SpaceRow::query();
@@ -53,6 +60,12 @@ final class SpaceDirectory
 
         foreach (self::CRITERIA as $key => [$column]) {
             $query->when(isset($filters[$key]), fn (Builder $q) => $q->whereIn($column, $filters[$key]['values']));
+        }
+
+        if (in_array($sortBy, self::SORTABLE, true)) {
+            $direction = $direction === 'desc' ? 'desc' : 'asc';
+
+            return $query->orderBy($sortBy, $direction)->orderBy('id', $direction);
         }
 
         return $query->orderBy('name');

@@ -16,6 +16,7 @@ use Livewire\WithPagination;
  * The search (RF_42) and "Añadir espacio" (RF_32) belong to spaces (@Dizabu). Both work through
  * App\Queries\Spaces\SpaceDirectory and its filter contract, the same the spaces report (RF_64) uses: the search box
  * (<livewire:spaces.space-search>) announces its term and this list combines it with the filters (AND).
+ * Sorting by creation or modification date (RF_37, RF_38) is @Dizabu's, through SpaceDirectory::query()'s sort option.
  */
 new #[Title('spaces.index.title')] class extends Component {
     use WithPagination;
@@ -25,6 +26,14 @@ new #[Title('spaces.index.title')] class extends Component {
     /** @var array<string, mixed> The filter contract's input, e.g. ['space_type' => ['values' => ['1', '2']]]; kept in the URL so a filtered list can be shared. */
     #[Url(except: [])]
     public array $filters = [];
+
+    /** RF_37/RF_38 (@Dizabu): the date column the list is sorted by (updated_at or created_at), or '' for by name. */
+    #[Url(as: 'orden')]
+    public string $sortBy = '';
+
+    /** asc or desc; each click on the sorted column's header switches it. */
+    #[Url(as: 'sentido')]
+    public string $sortDirection = 'asc';
 
     /** RF_42's term, shared with the search box through ?buscar= and its space-search-updated event. */
     #[Url(as: 'buscar')]
@@ -75,7 +84,7 @@ new #[Title('spaces.index.title')] class extends Component {
     public function spaces(): ?LengthAwarePaginator
     {
         return $this->criteria['errors'] === []
-            ? SpaceDirectory::query($this->criteria['filters'])->paginate(self::PER_PAGE)
+            ? SpaceDirectory::query($this->criteria['filters'], $this->sortBy, $this->sortDirection)->paginate(self::PER_PAGE)
             : null;
     }
 
@@ -92,6 +101,20 @@ new #[Title('spaces.index.title')] class extends Component {
     {
         $this->authorize('viewAny', Space::class);
 
+        $this->resetPage();
+    }
+
+    /** RF_37, RF_38: sort by a date column; clicking the column already sorted switches ascending and descending. */
+    public function sortByDate(string $column): void
+    {
+        $this->authorize('viewAny', Space::class);
+
+        if (! in_array($column, SpaceDirectory::SORTABLE, true)) {
+            return;
+        }
+
+        $this->sortDirection = $this->sortBy === $column && $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        $this->sortBy = $column;
         $this->resetPage();
     }
 
@@ -164,6 +187,8 @@ new #[Title('spaces.index.title')] class extends Component {
                         <flux:table.column align="end">{{ __('spaces.index.columns.capacity') }}</flux:table.column>
                         <flux:table.column>{{ __('spaces.index.columns.type') }}</flux:table.column>
                         <flux:table.column>{{ __('spaces.index.columns.status') }}</flux:table.column>
+                        <flux:table.column sortable :sorted="$sortBy === 'created_at'" :direction="$sortDirection" wire:click="sortByDate('created_at')" class="whitespace-nowrap" data-test="sort-created">{{ __('spaces.index.columns.created') }}</flux:table.column>
+                        <flux:table.column sortable :sorted="$sortBy === 'updated_at'" :direction="$sortDirection" wire:click="sortByDate('updated_at')" class="whitespace-nowrap" data-test="sort-updated">{{ __('spaces.index.columns.updated') }}</flux:table.column>
                     </flux:table.columns>
 
                     <flux:table.rows>
@@ -186,6 +211,8 @@ new #[Title('spaces.index.title')] class extends Component {
                                         @endif
                                     </div>
                                 </flux:table.cell>
+                                <flux:table.cell class="whitespace-nowrap tabular-nums">{{ $space->created_at?->timezone(config('app.timezone'))->format('d/m') }}</flux:table.cell>
+                                <flux:table.cell class="whitespace-nowrap tabular-nums">{{ $space->updated_at?->timezone(config('app.timezone'))->format('d/m/y H:i') }}</flux:table.cell>
                             </flux:table.row>
                         @endforeach
                     </flux:table.rows>
