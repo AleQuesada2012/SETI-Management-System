@@ -91,6 +91,7 @@ new #[Title('reservations.index.title')] class extends Component {
     @php($today = now()->toDateString())
 
     <div class="flex flex-wrap items-center justify-end gap-2">
+        <flux:button icon="clock" :href="route('reservations.history')" wire:navigate data-test="reservation-history">{{ __('reservations.index.history') }}</flux:button>
         @can('create', Reservation::class)
             <flux:button variant="primary" icon="plus" :href="route('reservations.create')" wire:navigate>{{ __('reservations.index.create') }}</flux:button>
         @endcan
