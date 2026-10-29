@@ -188,6 +188,9 @@ mantenimientos el **Administrador** encargado del espacio del activo y el **Supe
 
 Un activo perdido o dado de baja no admite mantenimientos.
 
+![Mantenimientos de un activo en computadora](activos-mantenimiento-escritorio.jpg)
+![Registrar mantenimiento a 360 px](activos-mantenimiento-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la

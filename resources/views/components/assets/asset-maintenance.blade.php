@@ -113,8 +113,8 @@ new class extends Component {
                                 @endif
                             </flux:table.cell>
                             <flux:table.cell class="min-w-48"><span class="whitespace-pre-line">{{ $record->description }}</span></flux:table.cell>
-                            <flux:table.cell class="whitespace-nowrap">{{ $record->performed_by ?: __('assets.show.empty') }}</flux:table.cell>
-                            <flux:table.cell class="whitespace-nowrap">{{ $record->registered_by_name ?? __('assets.maintenance.system') }}</flux:table.cell>
+                            <flux:table.cell class="min-w-32 whitespace-normal">{{ $record->performed_by ?: __('assets.show.empty') }}</flux:table.cell>
+                            <flux:table.cell class="min-w-28 whitespace-normal">{{ $record->registered_by_name ?? __('assets.maintenance.system') }}</flux:table.cell>
                         </flux:table.row>
                     @endforeach
                 </flux:table.rows>
