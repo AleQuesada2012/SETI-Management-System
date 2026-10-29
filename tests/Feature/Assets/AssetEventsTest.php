@@ -62,7 +62,7 @@ test('an Administrador decommissions an asset of their space with its date, whic
     Livewire::test('assets.asset-events', ['asset' => $this->asset])
         ->assertSee('data-test="register-event-button"', false)
         ->call('open')
-        ->assertSet('kind', AssetEventKind::Loss->value)
+        ->assertSet('kind', AssetEventKind::Damage->value)
         ->assertSet('occurred_on', today()->toDateString())
         ->set('kind', AssetEventKind::Decommission->value)
         ->set('occurred_on', '2026-10-01')

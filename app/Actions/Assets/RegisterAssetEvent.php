@@ -81,7 +81,7 @@ final class RegisterAssetEvent
     }
 
     /**
-     * The events the asset's lifecycle status allows (Agent-DB.md §8.4). Damage (RF_13) is registered on its own form.
+     * The events the asset's lifecycle status allows (Agent-DB.md §8.4). A damage (RF_13) is RegisterAssetDamage.
      *
      * @return list<AssetEventKind>
      */
@@ -105,29 +105,38 @@ final class RegisterAssetEvent
     }
 
     /**
-     * The date is a real calendar day, not in the future and not before the asset was acquired (RF_22).
-     *
      * @return array<string, list<mixed>>
      */
     public static function rules(Asset $asset): array
     {
-        $occurredOn = ['required', 'date_format:'.self::OCCURRED_ON_FORMAT, 'before_or_equal:today'];
-
-        if ($asset->acquired_on !== null) {
-            $occurredOn[] = 'after_or_equal:'.$asset->acquired_on->toDateString();
-        }
-
         return [
             'kind' => ['required', Rule::in(array_map(fn (AssetEventKind $kind): string => $kind->value, self::allowedKinds($asset)))],
-            'occurred_on' => $occurredOn,
+            'occurred_on' => self::occurredOnRules($asset),
             'description' => ['required', 'string', 'max:1000'],
         ];
     }
 
     /**
+     * Every event's date (RF_22, shared with RF_13's damage): a real calendar day, not in the future and not before the
+     * asset was acquired.
+     *
+     * @return list<string>
+     */
+    public static function occurredOnRules(Asset $asset): array
+    {
+        $rules = ['required', 'date_format:'.self::OCCURRED_ON_FORMAT, 'before_or_equal:today'];
+
+        if ($asset->acquired_on !== null) {
+            $rules[] = 'after_or_equal:'.$asset->acquired_on->toDateString();
+        }
+
+        return $rules;
+    }
+
+    /**
      * @return array<string, string>
      */
-    private static function messages(): array
+    public static function messages(): array
     {
         return [
             'kind.in' => __('assets.events.errors.kind'),

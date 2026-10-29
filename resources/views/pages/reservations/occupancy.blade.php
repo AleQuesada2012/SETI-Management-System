@@ -6,7 +6,6 @@ use App\Queries\Reservations\SpaceOccupancy;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -71,7 +70,7 @@ new #[Title('reservations.occupancy.title')] class extends Component {
         $month = $this->shownMonth();
 
         return SpaceOccupancy::normalize($this->filters) === SpaceOccupancy::month($month)
-            ? Str::ucfirst($month->locale('es')->translatedFormat('F \d\e Y'))
+            ? SpaceOccupancy::monthName($month)
             : null;
     }
 

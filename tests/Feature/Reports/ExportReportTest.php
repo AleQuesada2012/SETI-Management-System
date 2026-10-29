@@ -118,7 +118,7 @@ test('the report page previews the rows and offers the export', function () {
 
 test('a report type without a definition says it is not available yet', function () {
     $this->actingAs($this->author)
-        ->get(route('reports.show', 'occupancy'))
+        ->get(route('reports.show', 'space_detail'))
         ->assertOk()
         ->assertSee(__('reports.show.unavailable'));
 });
