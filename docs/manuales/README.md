@@ -191,6 +191,31 @@ Un activo perdido o dado de baja no admite mantenimientos.
 ![Mantenimientos de un activo en computadora](activos-mantenimiento-escritorio.jpg)
 ![Registrar mantenimiento a 360 px](activos-mantenimiento-movil.jpg)
 
+## Reparación de un activo (RF_11)
+
+En la tarjeta **Mantenimientos** de un activo **dañado** (condición roja, por ejemplo después de registrar un daño),
+el **Administrador** encargado del espacio del activo y el **Superusuario** ven **Registrar reparación**. Pruébalo con
+`admin@seti.test` (contraseña `password`).
+
+1. Pulsa **Registrar reparación**. El daño más reciente del activo viene elegido; puedes cambiarlo o elegir **Sin daño
+   asociado**.
+2. Indica la fecha, el responsable (técnico o empresa) y qué se reparó.
+3. Elige el estado:
+   - **En curso:** el activo queda **En mantenimiento** y conserva su condición dañada.
+   - **Finalizada:** elige la nueva condición del activo (verde o ámbar, por defecto **Buen estado**); el activo sigue
+     en servicio.
+4. Pulsa **Registrar**. La reparación aparece en la tarjeta, con el daño que repara, y en el **Historial**.
+
+Una reparación **En curso** muestra en su fila:
+
+- **Finalizar:** pide la fecha de finalización (no anterior al inicio) y la nueva condición. El activo vuelve a estar
+  **En servicio**.
+- **Cancelar:** para una reparación registrada por error o que no se hará, con un motivo opcional. El activo vuelve a
+  estar en servicio sin cambiar su condición, y la reparación queda como **Cancelado**.
+
+Un activo en buen estado, perdido, dado de baja o que ya tiene una reparación en curso no ofrece **Registrar
+reparación**.
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
