@@ -168,7 +168,12 @@ new #[Title('users.show.title')] class extends Component
 <div class="flex flex-col gap-6">
     <div class="flex flex-wrap items-center justify-between gap-2">
         <flux:heading size="lg" level="2">{{ $user->name }}</flux:heading>
-        <flux:button icon="arrow-left" :href="route('users.index')" wire:navigate>{{ __('users.show.back') }}</flux:button>
+        <div class="flex flex-wrap gap-2">
+            @can('update', $user)
+                <flux:button icon="pencil-square" :href="route('users.edit', $user)" wire:navigate>{{ __('users.edit.edit') }}</flux:button>
+            @endcan
+            <flux:button icon="arrow-left" :href="route('users.index')" wire:navigate>{{ __('users.show.back') }}</flux:button>
+        </div>
     </div>
 
     <flux:card>
