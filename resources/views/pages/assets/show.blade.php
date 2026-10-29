@@ -1,11 +1,13 @@
 <?php
 
+use App\Enums\AssetEventKind;
 use App\Enums\AssetStatus;
 use App\Enums\PermissionName;
 use App\Models\Asset;
 use App\Models\Reporting\AssetMovementRow;
 use App\Queries\Assets\AssetMovements;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Carbon\CarbonInterface;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -23,6 +25,10 @@ use Livewire\Component;
  * RF_02 · "Eliminar" is the assets.delete-asset component (resources/views/components/assets).
  * RF_20, RF_21 · the asset's documents and photos are the assets.asset-documents and assets.asset-photos components
  * (by @Dizabu, on RF_41's upload mechanism).
+ * RF_09 · "Historial" opens pages::assets.history (movements, events and audited changes, with who made them).
+ * RF_13, RF_22, RF_28, RF_29 · damage, losses, recoveries and the decommission are the assets.asset-events component;
+ * the date of the event behind the current status shows in "Estado". A decommissioned asset is read-only
+ * (Asset::isReadOnly).
  */
 new #[Title('assets.show.title')] class extends Component {
     public Asset $asset;
@@ -53,6 +59,18 @@ new #[Title('assets.show.title')] class extends Component {
         return AssetMovements::forAsset($this->asset)->get();
     }
 
+    /** RF_22, RF_28: when the asset was lost or decommissioned, from the latest event of that kind. */
+    public function statusSince(): ?CarbonInterface
+    {
+        $kind = match ($this->asset->status) {
+            AssetStatus::Lost => AssetEventKind::Loss,
+            AssetStatus::Decommissioned => AssetEventKind::Decommission,
+            default => null,
+        };
+
+        return $kind === null ? null : $this->asset->events()->where('kind', $kind)->reorder()->latest('occurred_on')->latest('id')->first()?->occurred_on;
+    }
+
     /** RF_06: the user may move assets, but not this one, because it is outside the spaces they manage (★). */
     public function moveDeniedOutsideScope(): bool
     {
@@ -67,6 +85,7 @@ new #[Title('assets.show.title')] class extends Component {
         $empty = __('assets.show.empty');
         $date = fn ($value) => $value?->format('d/m/Y') ?? $empty;
         $warranty = $this->warrantyState();
+        $statusSince = $this->statusSince();
     @endphp
     <div class="flex flex-wrap items-center gap-3">
         <flux:heading size="lg" level="2">{{ $asset->code }} · {{ $asset->displayName() }}</flux:heading>
@@ -77,17 +96,24 @@ new #[Title('assets.show.title')] class extends Component {
         @endif
 
         <div class="ms-auto flex flex-wrap gap-2">
+            <flux:button :href="route('assets.history', $asset)" wire:navigate icon="clock" size="sm" data-test="asset-history-button">{{ __('assets.history.link') }}</flux:button>
             @can('move', $asset)
                 <flux:button :href="route('assets.move', $asset)" wire:navigate icon="arrows-right-left" size="sm" data-test="move-asset-button">{{ __('assets.show.move') }}</flux:button>
             @endcan
-            @can('update', $asset)
-                <flux:button :href="route('assets.edit', $asset)" wire:navigate icon="pencil-square" size="sm" data-test="edit-asset-button">{{ __('assets.show.edit') }}</flux:button>
-            @endcan
+            @if (! $asset->isReadOnly())
+                @can('update', $asset)
+                    <flux:button :href="route('assets.edit', $asset)" wire:navigate icon="pencil-square" size="sm" data-test="edit-asset-button">{{ __('assets.show.edit') }}</flux:button>
+                @endcan
+            @endif
             @can('delete', $asset)
                 <livewire:assets.delete-asset :asset="$asset" />
             @endcan
         </div>
     </div>
+
+    @if ($asset->isReadOnly())
+        <flux:callout variant="warning" icon="archive-box-x-mark" :heading="__('assets.show.decommissioned_notice', ['date' => $date($statusSince)])" data-test="decommissioned-notice" />
+    @endif
 
     @if ($this->moveDeniedOutsideScope())
         <flux:callout variant="warning" icon="lock-closed" :heading="__('assets.move.not_manager')" data-test="move-denied" />
@@ -121,7 +147,11 @@ new #[Title('assets.show.title')] class extends Component {
                 <dt class="text-ink-muted">{{ Str::ucfirst(__('assets.fields.condition_note')) }}</dt>
                 <dd class="text-ink">{{ $asset->condition_note ?: $empty }}</dd>
                 <dt class="text-ink-muted">{{ Str::ucfirst(__('assets.fields.status')) }}</dt>
-                <dd class="text-ink">{{ $asset->status->label() }}</dd>
+                <dd class="text-ink" data-test="asset-status">{{ $asset->status->label() }}</dd>
+                @if ($statusSince)
+                    <dt class="text-ink-muted">{{ __('assets.show.status_since.'.$asset->status->value) }}</dt>
+                    <dd class="text-ink" data-test="asset-status-since">{{ $date($statusSince) }}</dd>
+                @endif
             </dl>
         </flux:card>
 
@@ -186,6 +216,8 @@ new #[Title('assets.show.title')] class extends Component {
     <livewire:assets.asset-photos :asset="$asset" />
 
     <livewire:assets.asset-documents :asset="$asset" />
+
+    <livewire:assets.asset-events :asset="$asset" />
 
     <flux:card class="flex flex-col gap-3" data-test="asset-movements">
         <flux:heading level="3">{{ __('assets.show.sections.movements') }}</flux:heading>

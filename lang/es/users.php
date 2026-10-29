@@ -16,6 +16,10 @@ return [
             'administrators' => 'No existen usuarios administradores registrados.',
             'regular' => 'No existen usuarios normales registrados.',
         ],
+        'no_status' => [
+            'active' => 'No existen usuarios con la cuenta activa.',
+            'deactivated' => 'No existen usuarios con la cuenta desactivada.',
+        ],
         'invalid_filters' => 'Los filtros no son válidos',
     ],
     // The users filter contract (UserDirectory, .ai/rules/reports.md § Users schema), shared with the users report.
@@ -120,13 +124,20 @@ return [
     ],
     'space_managers' => [
         'title' => 'Encargados de espacios',
-        'intro' => 'Elige un espacio para ver los Administradores que están a cargo de él.',
+        'intro' => 'Consulta qué Administradores están a cargo de cada espacio, o qué espacios tiene a cargo cada Administrador.',
+        'by_space' => 'Por espacio',
+        'by_administrator' => 'Por administrador',
         'back' => 'Volver a usuarios',
         'space' => 'Espacio',
         'choose' => 'Elige un espacio',
         'assigned_at' => 'Asignado el',
         'none' => 'Este espacio no tiene encargados asignados.',
         'unknown_space' => 'El espacio elegido no existe o fue eliminado. Elige otro de la lista.',
+        'administrator' => 'Administrador',
+        'choose_administrator' => 'Elige un administrador',
+        'type' => 'Tipo',
+        'no_spaces' => 'Este administrador no tiene espacios asignados.',
+        'unknown_administrator' => 'El usuario elegido no existe o no tiene el rol Administrador. Elige otro de la lista.',
     ],
     'roles' => [
         'title' => 'Roles',

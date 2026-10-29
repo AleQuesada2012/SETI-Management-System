@@ -90,6 +90,49 @@ test('marking all as read clears only the user\'s own unread notifications', fun
         ->and($otherUser->unreadNotifications()->count())->toBe(1);
 });
 
+test('a user deletes one of their notifications and the others stay', function () {
+    $superuser = actingAsRole(SystemRole::Superusuario);
+    $reservation = Reservation::factory()->create();
+    notifyAboutReservation($superuser, $reservation, 'Tutoría de cálculo');
+    notifyAboutReservation($superuser, $reservation, 'Reunión de proyecto');
+    $notification = $superuser->notifications()->where('data->title', 'Tutoría de cálculo')->sole();
+
+    Livewire::test('notifications.bell')
+        ->call('delete', $notification->id)
+        ->assertDontSee('«Tutoría de cálculo»')
+        ->assertSee('«Reunión de proyecto»');
+
+    expect($superuser->notifications()->pluck('data')->pluck('title')->all())->toBe(['Reunión de proyecto']);
+});
+
+test('nobody deletes another user\'s notification', function () {
+    actingAsRole(SystemRole::Superusuario);
+    $otherUser = userWithRole(SystemRole::Administrador);
+    notifyAboutReservation($otherUser, Reservation::factory()->create());
+
+    Livewire::test('notifications.bell')
+        ->call('delete', $otherUser->notifications()->sole()->id)
+        ->assertNotFound();
+
+    expect($otherUser->notifications()->count())->toBe(1);
+});
+
+test('deleting all removes only the user\'s own notifications', function () {
+    $superuser = actingAsRole(SystemRole::Superusuario);
+    $otherUser = userWithRole(SystemRole::Administrador);
+    $reservation = Reservation::factory()->create();
+    notifyAboutReservation($superuser, $reservation);
+    notifyAboutReservation($superuser, $reservation);
+    notifyAboutReservation($otherUser, $reservation);
+
+    Livewire::test('notifications.bell')
+        ->call('deleteAll')
+        ->assertSee(__('notifications.empty'));
+
+    expect($superuser->notifications()->count())->toBe(0)
+        ->and($otherUser->notifications()->count())->toBe(1);
+});
+
 test('read notifications older than 180 days are pruned, unread and recent ones stay', function () {
     $user = userWithRole(SystemRole::Superusuario);
     $reservation = Reservation::factory()->create();

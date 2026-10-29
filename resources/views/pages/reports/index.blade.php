@@ -39,6 +39,7 @@ new #[Title('reports.index.title')] class extends Component
 <div class="flex flex-col gap-6">
     <div class="flex flex-wrap items-center justify-between gap-2">
         <flux:heading level="2">{{ __('reports.index.title') }}</flux:heading>
+        <flux:button icon="chart-pie" :href="route('reports.statistics')" wire:navigate>{{ __('reports.statistics.title') }}</flux:button>
         @can('viewAny', ReportGeneration::class)
             <flux:button icon="clock" :href="route('reports.generations')" wire:navigate>{{ __('reports.index.generations') }}</flux:button>
         @endcan

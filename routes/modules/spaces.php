@@ -15,6 +15,10 @@ Route::prefix('espacios')->name('spaces.')->group(function () {
         ->middleware('can:view,space')
         ->name('show');
 
+    Route::livewire('{space}/historial', 'pages::spaces.history')
+        ->middleware('can:view,space')
+        ->name('history');
+
     // A space's photo (RF_41): ids in the URL, never a storage path; ?miniatura=1 for the phone thumbnail.
     Route::get('{space}/fotos/{file}', ShowSpacePhotoController::class)
         ->middleware('can:view,space')
