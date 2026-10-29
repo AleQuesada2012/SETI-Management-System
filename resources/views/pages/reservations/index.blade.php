@@ -95,6 +95,7 @@ new #[Title('reservations.index.title')] class extends Component {
         @can('create', Reservation::class)
             <flux:button variant="primary" icon="plus" :href="route('reservations.create')" wire:navigate>{{ __('reservations.index.create') }}</flux:button>
         @endcan
+        <flux:button icon="chart-bar" :href="route('reservations.occupancy')" wire:navigate class="order-first" data-test="space-occupancy">{{ __('reservations.occupancy.link') }}</flux:button>
     </div>
 
     <flux:card class="flex flex-col gap-4">
