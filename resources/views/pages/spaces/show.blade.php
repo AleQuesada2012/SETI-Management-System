@@ -17,6 +17,7 @@ use Livewire\Component;
  * with SpacePolicy (update, delete, managePhotos…). A missing or deleted space never reaches this page: the route's
  * model binding answers 404.
  */
+/* RF_74 · "Exportar" (reports.export-button) exports this page as the space_detail report (PDF or XLSX). */
 new #[Title('spaces.show.title')] class extends Component {
     public Space $space;
 
@@ -42,10 +43,12 @@ new #[Title('spaces.show.title')] class extends Component {
         @if ($this->details->is_occupied)
             <flux:badge size="sm" color="amber">{{ __('spaces.show.occupied') }}</flux:badge>
         @endif
-        <div class="ms-auto flex gap-2">
+        <div class="flex w-full flex-wrap gap-2 sm:ms-auto sm:w-auto sm:justify-end">
             <flux:button size="sm" icon="clock" :href="route('spaces.history', $space)" wire:navigate data-test="space-history-link">{{ __('spaces.history.link') }}</flux:button>
+            <livewire:reports.export-button report="space_detail" :filters="['space' => ['values' => [$space->id]]]" />
             <livewire:spaces.change-status :space="$space" />
             <livewire:spaces.edit-space :space="$space" />
+            <livewire:spaces.delete-space :space="$space" />
         </div>
     </div>
 

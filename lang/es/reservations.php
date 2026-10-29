@@ -209,6 +209,8 @@ return [
         'next_month' => 'Mes siguiente',
         'this_month' => 'Mes actual',
         'custom_period' => 'Período personalizado',
+        'period' => 'Período',
+        'month' => 'Mes',
         'from' => 'Fecha inicial',
         'to' => 'Fecha final',
         'order' => 'Orden',
@@ -233,6 +235,7 @@ return [
         ],
         'errors' => [
             'shape' => 'El período no tiene un formato válido.',
+            'month' => 'El mes seleccionado no es válido.',
             'date' => 'La :field no es una fecha válida.',
             'unknown_key' => 'El filtro «:key» no existe.',
         ],

@@ -79,4 +79,16 @@ return [
         'empty' => 'No hay registros que cumplan los filtros.',
         'page' => 'Página',
     ],
+    // RF_74 · the report of one space (App\Reports\Definitions\SpaceDetailReport · @Dizabu).
+    'space_detail' => [
+        'choose_one' => 'Elige un espacio: este reporte describe un solo espacio.',
+        'space' => 'Espacio',
+        'location' => 'Ubicación',
+        'capacity' => 'Capacidad',
+        'people' => '{1} :count persona|[2,*] :count personas',
+        'type' => 'Tipo de espacio',
+        'status' => 'Estado operativo',
+        'managers' => 'Encargados del espacio',
+        'no_managers' => 'Sin encargados asignados',
+    ],
 ];
