@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Route;
 // Loaded by routes/web.php inside the auth + verified group. Module: reservations (RF_45–RF_52).
 
 Route::prefix('reservas')->name('reservations.')->group(function () {
+    // RF_59. Before {reservation}, so "ocupacion" is not read as a reservation id.
+    Route::livewire('ocupacion', 'pages::reservations.occupancy')
+        ->middleware('can:viewAny,'.Reservation::class)
+        ->name('occupancy');
+
     Route::livewire('/', 'pages::reservations.index')
         ->middleware('can:viewAny,'.Reservation::class)
         ->name('index');

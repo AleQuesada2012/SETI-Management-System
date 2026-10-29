@@ -164,4 +164,40 @@ return [
             'changed' => 'La reserva cambió mientras la veías. Revisa los datos actualizados y vuelve a intentarlo.',
         ],
     ],
+    // RF_59: the spaces with reservations in a period and how many each had (SpaceOccupancy).
+    'occupancy' => [
+        'title' => 'Ocupación de espacios',
+        'link' => 'Ocupación',
+        'previous_month' => 'Mes anterior',
+        'next_month' => 'Mes siguiente',
+        'this_month' => 'Mes actual',
+        'custom_period' => 'Período personalizado',
+        'from' => 'Fecha inicial',
+        'to' => 'Fecha final',
+        'order' => 'Orden',
+        'orders' => [
+            'most_reservations' => 'Más reservas primero',
+            'fewest_reservations' => 'Menos reservas primero',
+            'most_hours' => 'Más horas reservadas primero',
+            'fewest_hours' => 'Menos horas reservadas primero',
+        ],
+        'empty' => 'Ningún espacio registra reservas en el período seleccionado.',
+        'invalid_period' => 'El período seleccionado no es válido',
+        'total' => '{1} 1 espacio con reservas|[2,*] :count espacios con reservas',
+        'columns' => [
+            'space' => 'Espacio',
+            'reservations' => 'Reservas',
+            'booked_hours' => 'Tiempo reservado',
+        ],
+        'duration' => [
+            'hours' => ':hours h',
+            'minutes' => ':minutes min',
+            'both' => ':hours h :minutes min',
+        ],
+        'errors' => [
+            'shape' => 'El período no tiene un formato válido.',
+            'date' => 'La :field no es una fecha válida.',
+            'unknown_key' => 'El filtro «:key» no existe.',
+        ],
+    ],
 ];
