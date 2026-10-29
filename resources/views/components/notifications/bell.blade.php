@@ -12,7 +12,8 @@ use Livewire\Component;
  * The bell in the top bar: the signed-in user's inbox (RF_47, RF_48; ADR-0006, Agent-DB.md §10). Reverb pushes each
  * new notification on the private channel App.Models.User.{id} and the bell re-reads the database, which stays the
  * source of truth. Every action goes through the user's own notifications() relation, so nobody touches another
- * user's inbox.
+ * user's inbox. A user may delete one notification or all of theirs to keep the list short; notifications are not
+ * audited (Agent-DB.md §10).
  */
 new class extends Component {
     /** How many of the latest notifications the bell lists. */
@@ -66,6 +67,16 @@ new class extends Component {
         $this->user()->unreadNotifications()->update(['read_at' => now()]);
     }
 
+    public function delete(string $id): void
+    {
+        $this->user()->notifications()->findOrFail($id)->delete();
+    }
+
+    public function deleteAll(): void
+    {
+        $this->user()->notifications()->delete();
+    }
+
     private function user(): User
     {
         /** @var User */
@@ -94,22 +105,33 @@ new class extends Component {
                     @endif
                 </div>
 
-                @if ($this->unreadCount > 0)
-                    <flux:button size="xs" variant="ghost" wire:click="markAllAsRead">{{ __('notifications.mark_all_read') }}</flux:button>
-                @endif
+                <div class="flex flex-col items-end gap-1">
+                    @if ($this->unreadCount > 0)
+                        <flux:button size="xs" variant="ghost" wire:click="markAllAsRead">{{ __('notifications.mark_all_read') }}</flux:button>
+                    @endif
+                    @if ($this->entries->isNotEmpty())
+                        <flux:button size="xs" variant="ghost" icon="trash" wire:click="deleteAll" wire:confirm="{{ __('notifications.delete_all_confirm') }}" data-test="notifications-delete-all">
+                            {{ __('notifications.delete_all') }}
+                        </flux:button>
+                    @endif
+                </div>
             </div>
 
             <flux:menu.separator />
 
             @forelse ($this->entries as $entry)
-                <flux:menu.item wire:key="notification-{{ $entry->id }}" wire:click="open('{{ $entry->id }}')" class="h-auto! items-start! whitespace-normal! py-2!">
-                    <span class="mt-1.5 me-2 size-2 shrink-0 rounded-full {{ $entry->isUnread ? 'bg-brand' : '' }}"></span>
-                    <span class="grid gap-0.5 text-start">
-                        <span class="font-medium text-ink">{{ $entry->title }}</span>
-                        <span class="text-xs text-ink-muted">{{ $entry->body }}</span>
-                        <span class="text-xs text-ink-muted">{{ $entry->receivedAt->setTimezone(config('app.timezone'))->format('d/m/Y H:i') }}</span>
-                    </span>
-                </flux:menu.item>
+                <div wire:key="notification-{{ $entry->id }}" class="flex items-start gap-1">
+                    <flux:menu.item wire:click="open('{{ $entry->id }}')" class="h-auto! min-w-0 flex-1 items-start! whitespace-normal! py-2!">
+                        <span class="mt-1.5 me-2 size-2 shrink-0 rounded-full {{ $entry->isUnread ? 'bg-brand' : '' }}"></span>
+                        <span class="grid gap-0.5 text-start">
+                            <span class="font-medium text-ink">{{ $entry->title }}</span>
+                            <span class="text-xs text-ink-muted">{{ $entry->body }}</span>
+                            <span class="text-xs text-ink-muted">{{ $entry->receivedAt->setTimezone(config('app.timezone'))->format('d/m/Y H:i') }}</span>
+                        </span>
+                    </flux:menu.item>
+                    {{-- keep-open: Flux closes the menu on any button inside it; the user deletes one after another. --}}
+                    <flux:button size="xs" variant="ghost" icon="x-mark" class="mt-1.5" keep-open wire:click="delete('{{ $entry->id }}')" :aria-label="__('notifications.delete')" data-test="notification-delete" />
+                </div>
             @empty
                 <flux:text class="px-2 py-3">{{ __('notifications.empty') }}</flux:text>
             @endforelse

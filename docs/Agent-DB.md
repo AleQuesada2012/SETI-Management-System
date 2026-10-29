@@ -760,7 +760,8 @@ is who performed the action). The RF_49 types add `previous` (`space` and `perio
 }
 ```
 
-**Retention:** read notifications older than 180 days are pruned (`model:prune`). New notification types need no
+**Retention:** read notifications older than 180 days are pruned (`model:prune`). A user may also delete their own
+notifications from the bell, one or all at once; nothing is audited. New notification types need no
 migration.
 
 ---
