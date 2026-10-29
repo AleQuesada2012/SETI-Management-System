@@ -242,6 +242,9 @@ los vencidos o los de los próximos 7 o 30 días. Lo consulta toda cuenta que pu
 mantenimiento programado está a 3 días o menos, y otro si su fecha pasa sin registrarlo. Si el espacio no tiene
 encargados, el aviso llega al Superusuario. Al tocar el aviso se abre el activo.
 
+![Mantenimientos programados en computadora](mantenimientos-programados-escritorio.jpg)
+![Programar mantenimiento a 360 px](mantenimientos-programar-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la

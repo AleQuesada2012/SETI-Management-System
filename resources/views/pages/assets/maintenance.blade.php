@@ -82,18 +82,18 @@ new #[Title('assets.scheduled.title')] class extends Component {
                                     <flux:badge size="sm" color="amber" class="ms-1">{{ __('assets.maintenance.scheduled.today') }}</flux:badge>
                                 @endif
                             </flux:table.cell>
-                            <flux:table.cell class="min-w-48">
+                            <flux:table.cell class="min-w-40 whitespace-normal">
                                 <flux:link :href="route('assets.show', $record->asset_id)" wire:navigate>{{ $record->asset_code }} · {{ $record->getAttribute('asset_display_name') }}</flux:link>
                                 @if ($assetStatus && $assetStatus !== AssetStatus::InService)
                                     <flux:badge size="sm" color="zinc" class="ms-1">{{ $assetStatus->label() }}</flux:badge>
                                 @endif
                             </flux:table.cell>
-                            <flux:table.cell class="whitespace-nowrap">
+                            <flux:table.cell class="min-w-32 whitespace-normal">
                                 {{ $record->getAttribute('asset_space_code') ? $record->getAttribute('asset_space_code').' · '.$record->getAttribute('asset_space_name') : __('assets.show.empty') }}
                             </flux:table.cell>
                             <flux:table.cell variant="strong" class="whitespace-nowrap">{{ $record->kind->label() }}</flux:table.cell>
-                            <flux:table.cell class="min-w-48"><span class="whitespace-pre-line">{{ $record->description }}</span></flux:table.cell>
-                            <flux:table.cell class="whitespace-nowrap">{{ $record->registered_by_name ?? __('assets.maintenance.system') }}</flux:table.cell>
+                            <flux:table.cell class="min-w-40"><span class="whitespace-pre-line">{{ $record->description }}</span></flux:table.cell>
+                            <flux:table.cell class="min-w-28 whitespace-normal">{{ $record->registered_by_name ?? __('assets.maintenance.system') }}</flux:table.cell>
                         </flux:table.row>
                     @endforeach
                 </flux:table.rows>
