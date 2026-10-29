@@ -43,6 +43,7 @@ new #[Title('spaces.show.title')] class extends Component {
             <flux:badge size="sm" color="amber">{{ __('spaces.show.occupied') }}</flux:badge>
         @endif
         <div class="ms-auto flex gap-2">
+            <flux:button size="sm" icon="clock" :href="route('spaces.history', $space)" wire:navigate data-test="space-history-link">{{ __('spaces.history.link') }}</flux:button>
             <livewire:spaces.change-status :space="$space" />
             <livewire:spaces.edit-space :space="$space" />
         </div>
