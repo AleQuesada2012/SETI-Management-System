@@ -4,6 +4,7 @@ namespace App\Queries\Assets;
 
 use App\Enums\AssetStatus;
 use App\Enums\AuditAction;
+use App\Enums\MaintenanceStatus;
 use App\Models\Asset;
 use App\Models\AssetCondition;
 use App\Models\AssetType;
@@ -11,6 +12,7 @@ use App\Models\Brand;
 use App\Models\Reporting\AssetEventRow;
 use App\Models\Reporting\AssetMovementRow;
 use App\Models\Reporting\AuditLogRow;
+use App\Models\Reporting\MaintenanceRow;
 use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -19,8 +21,8 @@ use Illuminate\Support\Collection;
 /**
  * RF_09 · An asset's history, newest first (Agent-DB.md §8.5): where it has been (reporting.asset_movements, through
  * AssetMovements), what happened to it (reporting.asset_events) and who changed its record, with the old and new values
- * (reporting.audit_logs rows of the asset). Every entry names the user responsible. Maintenance (RF_10, RF_11) joins it
- * when it is built. Owner: assets (@DavidZamoraB).
+ * (reporting.audit_logs rows of the asset), and the work done on it (reporting.maintenance: RF_10, RF_26). Every entry
+ * names the user responsible. Owner: assets (@DavidZamoraB).
  *
  * A status-only update is left out: the lifecycle status changes only as a side effect of an event or maintenance
  * (§8.4), which is already an entry of its own.
@@ -38,6 +40,7 @@ final class AssetHistory
         $entries = collect()
             ->concat(AssetMovements::forAsset($asset)->get()->map(self::movement(...)))
             ->concat(AssetEventRow::query()->where('asset_id', $asset->id)->orderByDesc('occurred_on')->orderByDesc('id')->get()->map(self::event(...)))
+            ->concat(MaintenanceRow::query()->where('asset_id', $asset->id)->orderByDesc('reference_date')->orderByDesc('id')->get()->map(self::maintenance(...)))
             ->concat(self::changes($asset));
 
         // Each source comes newest first and the sort is stable, so entries of the same instant keep a fixed order.
@@ -75,6 +78,26 @@ final class AssetHistory
             dateOnly: true,
             title: $row->kind->label(),
             details: [$row->description],
+            actor: $row->registered_by_name,
+        );
+    }
+
+    /** Dated by the day of the work, like events; its kind is the title, with the status unless it is completed. */
+    private static function maintenance(MaintenanceRow $row): AssetHistoryEntry
+    {
+        /** @var Carbon $createdAt */
+        $createdAt = $row->getAttribute('created_at');
+        $registeredAt = $createdAt->timezone(config('app.timezone'));
+
+        return new AssetHistoryEntry(
+            type: 'maintenance',
+            at: $row->reference_date->setTimeFrom($registeredAt)->setMicrosecond($registeredAt->microsecond),
+            dateOnly: true,
+            title: $row->status === MaintenanceStatus::Completed ? $row->kind->label() : "{$row->kind->label()} · {$row->status->label()}",
+            details: array_values(array_filter([
+                $row->description,
+                $row->performed_by !== null && $row->performed_by !== '' ? __('assets.history.performed_by', ['name' => $row->performed_by]) : null,
+            ])),
             actor: $row->registered_by_name,
         );
     }

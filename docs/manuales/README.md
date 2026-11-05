@@ -163,6 +163,7 @@ fecha y quién la hizo:
 
 - **Movimiento:** ingresos, traslados y salidas, con el origen, el destino y el motivo.
 - **Evento:** daños, pérdidas, recuperaciones y la baja, con su descripción.
+- **Mantenimiento:** los mantenimientos correctivos y preventivos, con su descripción y quién hizo el trabajo.
 - **Cambio:** el registro del activo, cada modificación de sus datos (campo, valor anterior y valor nuevo) y los
   archivos adjuntados o retirados, hechos por un Administrador o el Superusuario.
 
@@ -170,6 +171,25 @@ Si el activo todavía no ha recibido cambios, la página indica que su historial
 
 ![Historial en computadora](activos-historial-escritorio.jpg)
 ![Historial a 360 px](activos-historial-movil.jpg)
+
+## Mantenimiento de un activo (RF_10, RF_26)
+
+La ficha de un activo muestra la tarjeta **Mantenimientos**, con los mantenimientos ya realizados: fecha, tipo,
+descripción, responsable del trabajo y quién lo registró. La consulta toda cuenta que puede ver activos. Registran
+mantenimientos el **Administrador** encargado del espacio del activo y el **Superusuario**. Pruébalo con
+`admin@seti.test` (contraseña `password`).
+
+1. Pulsa **Registrar mantenimiento**.
+2. Elige el tipo: **Correctivo** (se corrigió una falla o un daño) o **Preventivo** (una revisión periódica).
+3. Indica la fecha en que se hizo (no puede ser futura ni anterior a la adquisición del activo), el responsable (el
+   técnico o la empresa que hizo el trabajo) y una descripción.
+4. Pulsa **Registrar**. El mantenimiento aparece en la tarjeta y en el **Historial** del activo; el estado del activo no
+   cambia.
+
+Un activo perdido o dado de baja no admite mantenimientos.
+
+![Mantenimientos de un activo en computadora](activos-mantenimiento-escritorio.jpg)
+![Registrar mantenimiento a 360 px](activos-mantenimiento-movil.jpg)
 
 ## Notificaciones de reservas (RF_47, RF_48)
 

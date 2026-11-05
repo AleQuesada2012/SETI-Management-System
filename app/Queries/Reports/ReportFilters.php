@@ -170,7 +170,8 @@ final class ReportFilters
             ->values()->all();
     }
 
-    private static function displayName(string $view): string
+    /** SQL for the asset's inventory name; needs the `current_asset` join of withCurrentAsset(). */
+    public static function displayName(string $view): string
     {
         return "COALESCE(current_asset.display_name, $view.asset_name, $view.asset_code)";
     }
