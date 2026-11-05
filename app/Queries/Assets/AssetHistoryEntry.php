@@ -5,14 +5,14 @@ namespace App\Queries\Assets;
 use Carbon\CarbonInterface;
 
 /**
- * One line of an asset's history (RF_09), whatever its source: a movement, an event or an audited change.
+ * One line of an asset's history (RF_09), whatever its source: a movement, an event, maintenance or an audited change.
  */
 final readonly class AssetHistoryEntry
 {
     /**
-     * @param  'movement'|'event'|'change'  $type
+     * @param  'movement'|'event'|'maintenance'|'change'  $type
      * @param  list<string>  $details  ready-to-show Spanish lines
-     * @param  bool  $dateOnly  events are dated by day; movements and changes carry a time
+     * @param  bool  $dateOnly  events and maintenance are dated by day; movements and changes carry a time
      */
     public function __construct(
         public string $type,

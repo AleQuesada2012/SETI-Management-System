@@ -29,6 +29,8 @@ use Livewire\Component;
  * RF_13, RF_22, RF_28, RF_29 · damage, losses, recoveries and the decommission are the assets.asset-events component;
  * the date of the event behind the current status shows in "Estado". A decommissioned asset is read-only
  * (Asset::isReadOnly).
+ * RF_10, RF_26 · the asset's maintenance, and registering corrective or preventive maintenance already done, are the
+ * assets.asset-maintenance component (by @JoseHerrera21), shown to users who may consult maintenance.
  */
 new #[Title('assets.show.title')] class extends Component {
     public Asset $asset;
@@ -218,6 +220,10 @@ new #[Title('assets.show.title')] class extends Component {
     <livewire:assets.asset-documents :asset="$asset" />
 
     <livewire:assets.asset-events :asset="$asset" />
+
+    @can('viewAny', App\Models\MaintenanceRecord::class)
+        <livewire:assets.asset-maintenance :asset="$asset" />
+    @endcan
 
     <flux:card class="flex flex-col gap-3" data-test="asset-movements">
         <flux:heading level="3">{{ __('assets.show.sections.movements') }}</flux:heading>

@@ -10,7 +10,7 @@ use Livewire\Component;
 
 /*
  * RF_09 · Consulta del historial de un activo. Owner: assets. Everyone who may view the asset (the route checked `view`)
- * sees, newest first, its movements, events and the changes made to its record, each with the user responsible
+ * sees, newest first, its movements, events, maintenance and the changes made to its record, each with the user responsible
  * (App\Queries\Assets\AssetHistory), or a notice that the history is empty. Read-only: nothing changes from here.
  */
 new #[Title('assets.history.title')] class extends Component {
@@ -41,7 +41,7 @@ new #[Title('assets.history.title')] class extends Component {
                 <li wire:key="history-{{ $loop->index }}" data-test="history-entry" data-type="{{ $entry->type }}">
                     <flux:card class="flex flex-col gap-2 p-4">
                         <div class="flex flex-wrap items-center gap-2">
-                            <flux:badge size="sm" :color="match ($entry->type) { 'movement' => 'blue', 'event' => 'amber', default => 'zinc' }">{{ __('assets.history.types.'.$entry->type) }}</flux:badge>
+                            <flux:badge size="sm" :color="match ($entry->type) { 'movement' => 'blue', 'event' => 'amber', 'maintenance' => 'green', default => 'zinc' }">{{ __('assets.history.types.'.$entry->type) }}</flux:badge>
                             <flux:heading level="3" class="min-w-0">{{ $entry->title }}</flux:heading>
                             <flux:text class="ms-auto whitespace-nowrap text-sm">{{ $entry->at->format($entry->dateOnly ? 'd/m/Y' : 'd/m/Y H:i') }}</flux:text>
                         </div>
