@@ -20,6 +20,11 @@ Route::prefix('usuarios')->name('users.')->group(function () {
     Route::livewire('{user}', 'pages::users.show')
         ->middleware('can:view,user')
         ->name('show');
+
+    // RF_93: name and email, Superusuario only (users.update).
+    Route::livewire('{user}/editar', 'pages::users.edit')
+        ->middleware('can:update,user')
+        ->name('edit');
 });
 
 Route::prefix('roles')->name('roles.')->group(function () {
