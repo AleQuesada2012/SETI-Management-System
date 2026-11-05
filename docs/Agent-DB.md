@@ -612,7 +612,9 @@ maintenance**. So there is one table, `maintenance_records`:
 | `registered_by` | The user who recorded it (RF_10.3) |
 | `asset_event_id` | The damage a corrective job fixes (RF_11). The composite FK `(asset_event_id, asset_id)` guarantees the damage belongs to **the same asset**, and only corrective work may reference one. |
 
-RF_27's modify/cancel is a plain update of a `scheduled` row. The dashboard's "Mantenimientos pendientes" means
+RF_27's modify/cancel is a plain update of a `scheduled` row: the planned day is after today; changing it or marking it
+as done (→ `completed`, keeping `scheduled_for`) needs the asset in service or in maintenance, while cancelling is
+allowed whatever its status, to clean up after a loss or decommission. The dashboard's "Mantenimientos pendientes" means
 `status IN ('scheduled','in_progress')`. RF_66 and RF_82 separate maintenance from repairs by `kind`.
 
 ### 8.4 Side effects (Q25)
@@ -724,7 +726,7 @@ reservation never notifies anyone.
 | `reservation.updated` | RF_49 (diagram), same space | Same |
 | `reservation.moved_out`, `reservation.moved_in` | RF_49 moving a reservation to another space | `moved_out`: Superusuarios + managers of the space it left; `moved_in`: Superusuarios + managers of the new space |
 | `reservation.cancelled` | RF_50 (diagram) | Same |
-| `maintenance.due` | Daily scheduler: scheduled maintenance due within N days, or overdue (RF_27; Q30) | Managers of the asset's current space |
+| `maintenance.due` | Daily scheduler (`maintenance:notify-due`, 07:00): a scheduled maintenance of an asset in service or in maintenance comes within 3 days (`upcoming`), and again once its day has passed (`overdue`); once per maintenance, planned day and stage (RF_27; Q30) | Active managers of the asset's space (where it is or last was); none → active Superusuarios |
 | `asset.damage_reported`, `asset.loss_reported` | An `asset_events` row of kind damage/loss (Q30) | Managers of the asset's space + active Superusuarios |
 
 Recipient rules (Q34):
