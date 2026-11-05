@@ -5,6 +5,7 @@ use App\Actions\Spaces\RemoveSpaceManager;
 use App\Actions\Users\AssignRole;
 use App\Actions\Users\DeactivateUser;
 use App\Actions\Users\ReactivateUser;
+use App\Actions\Users\RemoveRole;
 use App\Enums\PermissionName;
 use App\Enums\SystemRole;
 use App\Models\Role;
@@ -18,9 +19,10 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 /*
- * Detalle del usuario (RF_94), role assignment (RF_85) and, for an Administrador, the spaces in their charge: assign
- * (RF_40) and remove (RF_43) through App\Actions\Spaces\AssignSpaceManager and RemoveSpaceManager, reviewed by spaces). Owner: users (@Rubiocai). A missing user is a 404 from
- * route model binding, rendered by errors/404.blade.php. Role changes (RF_85–RF_87) go through app/Actions/Users,
+ * Detalle del usuario (RF_94), its roles (assign RF_85, remove RF_86) and, for an Administrador, the spaces in their
+ * charge: assign (RF_40) and remove (RF_43) through App\Actions\Spaces\AssignSpaceManager and RemoveSpaceManager,
+ * reviewed by spaces. Owner: users (@Rubiocai). A missing user is a 404 from route model binding, rendered by
+ * errors/404.blade.php. Role changes (RF_85–RF_87) go through app/Actions/Users,
  * which audit them explicitly because pivot changes fire no model events. The account status card deactivates (RF_88)
  * and reactivates (RF_88, RF_98) a user through DeactivateUser and ReactivateUser.
  */
@@ -64,6 +66,71 @@ new #[Title('users.show.title')] class extends Component
         $this->roleId = $this->assignableRoles->first()?->id;
 
         Flux::toast(variant: 'success', text: __('users.assign_role.done', ['role' => $role->name, 'user' => $this->user->name]));
+    }
+
+    /** The role whose removal is being confirmed (RF_86). */
+    public ?int $roleToRemove = null;
+
+    /** Open the confirmation window that explains what removing this role takes away (RF_86 criterion 2). */
+    public function confirmRoleRemoval(int $roleId): void
+    {
+        $this->authorize('assignRoles', $this->user);
+
+        $this->roleToRemove = $roleId;
+        unset($this->roleRemoval);
+        $this->resetErrorBag('roles');
+
+        Flux::modal('remove-role')->show();
+    }
+
+    /**
+     * What removing the chosen role takes away: the permissions no other role of the user still grants, and, for the
+     * Administrador role, the spaces in their charge.
+     *
+     * @return array{role: Role, permissions: Collection<int, string>, spaces: Collection<int, Space>}|null
+     */
+    #[Computed]
+    public function roleRemoval(): ?array
+    {
+        $role = $this->user->roles()->with('permissions')->find($this->roleToRemove);
+
+        if ($role === null) {
+            return null;
+        }
+
+        $kept = $this->user->roles()->whereKeyNot($role->id)->with('permissions')->get()
+            ->flatMap(fn (Role $other) => $other->permissions->pluck('name'));
+
+        return [
+            'role' => $role,
+            'permissions' => $role->permissions->reject(fn ($permission): bool => $kept->contains($permission->name))
+                ->sortBy('name')->map(fn ($permission): string => $permission->description ?? $permission->name)->values(),
+            'spaces' => $role->name === SystemRole::Administrador->value ? $this->managedSpaces : new Collection,
+        ];
+    }
+
+    public function removeRole(RemoveRole $removeRole): void
+    {
+        $this->authorize('assignRoles', $this->user);
+
+        $role = $this->roleRemoval['role'] ?? null;
+
+        try {
+            if ($role === null) {
+                throw ValidationException::withMessages(['roles' => __('users.remove_role.errors.not_held', ['role' => ''])]);
+            }
+
+            $removeRole->handle(auth()->user(), $this->user, $role);
+        } finally {
+            Flux::modal('remove-role')->close();
+        }
+
+        $this->user->refresh();
+        $this->reset('roleToRemove');
+        unset($this->assignableRoles, $this->managedSpaces, $this->assignableSpaces, $this->roleRemoval);
+        $this->roleId = $this->assignableRoles->first()?->id;
+
+        Flux::toast(variant: 'success', text: __('users.remove_role.done', ['role' => $role->name, 'user' => $this->user->name]));
     }
 
     /** @var list<int|string> Spaces picked in the "Asignar espacios" modal (RF_40). */
@@ -259,8 +326,27 @@ new #[Title('users.show.title')] class extends Component
     </flux:card>
 
     @can('assignRoles', $user)
-        <flux:card>
-            <flux:heading level="3" class="mb-3">{{ __('users.assign_role.heading') }}</flux:heading>
+        <flux:card class="flex flex-col gap-3" data-test="roles-card">
+            <flux:heading level="3">{{ __('users.remove_role.heading') }}</flux:heading>
+
+            <ul class="flex flex-col divide-y divide-line">
+                @foreach ($user->roles->sortBy('name') as $heldRole)
+                    <li wire:key="held-role-{{ $heldRole->id }}" class="flex flex-wrap items-center justify-between gap-2 py-2">
+                        <flux:badge size="sm" color="blue">{{ $heldRole->name }}</flux:badge>
+                        @if ($user->roles->count() > 1)
+                            <flux:button size="sm" variant="ghost" icon="x-mark" wire:click="confirmRoleRemoval({{ $heldRole->id }})">
+                                {{ __('users.remove_role.remove') }}
+                            </flux:button>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+            @if ($user->roles->count() <= 1)
+                <flux:text size="sm">{{ __('users.remove_role.only_role') }}</flux:text>
+            @endif
+            <flux:error name="roles" />
+
+            <flux:heading level="3" class="mt-2">{{ __('users.assign_role.heading') }}</flux:heading>
 
             @if ($this->assignableRoles->isEmpty())
                 <flux:text>{{ __('users.assign_role.none_left') }}</flux:text>
@@ -276,6 +362,48 @@ new #[Title('users.show.title')] class extends Component
                 </form>
             @endif
         </flux:card>
+
+        <flux:modal name="remove-role" class="w-full max-w-md">
+            <form wire:submit="removeRole" class="flex flex-col gap-4">
+                @if ($this->roleRemoval !== null)
+                    <div>
+                        <flux:heading size="lg">{{ __('users.remove_role.confirm_heading', ['role' => $this->roleRemoval['role']->name]) }}</flux:heading>
+                        <flux:text class="mt-2">{{ __('users.remove_role.confirm_help', ['user' => $user->name, 'role' => $this->roleRemoval['role']->name]) }}</flux:text>
+                    </div>
+
+                    <div>
+                        <flux:text class="font-medium text-ink">{{ __('users.remove_role.loses') }}</flux:text>
+                        @if ($this->roleRemoval['permissions']->isEmpty())
+                            <flux:text size="sm">{{ __('users.remove_role.loses_nothing') }}</flux:text>
+                        @else
+                            <ul class="mt-1 list-disc space-y-0.5 ps-5 text-sm text-ink">
+                                @foreach ($this->roleRemoval['permissions'] as $description)
+                                    <li>{{ $description }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+
+                    @if ($this->roleRemoval['spaces']->isNotEmpty())
+                        <div>
+                            <flux:text class="font-medium text-ink">{{ __('users.remove_role.loses_spaces') }}</flux:text>
+                            <ul class="mt-1 list-disc space-y-0.5 ps-5 text-sm text-ink">
+                                @foreach ($this->roleRemoval['spaces'] as $space)
+                                    <li>{{ $space->code }} · {{ $space->name }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                @endif
+
+                <div class="flex justify-end gap-2">
+                    <flux:modal.close>
+                        <flux:button variant="ghost">{{ __('users.remove_role.cancel') }}</flux:button>
+                    </flux:modal.close>
+                    <flux:button type="submit" variant="danger">{{ __('users.remove_role.confirm') }}</flux:button>
+                </div>
+            </form>
+        </flux:modal>
     @endcan
 
     @if ($this->showsManagedSpaces())
