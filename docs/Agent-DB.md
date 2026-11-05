@@ -622,14 +622,17 @@ Laravel services apply these **in the same transaction**, audited under one `req
 | Action | Rows written | Change to the asset |
 |---|---|---|
 | Register a damage (RF_13) | `asset_events(damage)` + evidence | condition → a red-group condition the user picks (default "Dañado"). This removes RF_13's circular "the asset must already be red". |
-| Start corrective maintenance | `maintenance_records(corrective, in_progress)` | status → `in_maintenance` |
-| Complete corrective maintenance (RF_11) | update → `completed` | status → `in_service`; the user picks the new condition ("en funcionamiento") |
+| Start corrective maintenance (RF_11) | `maintenance_records(corrective, in_progress)` | status → `in_maintenance`; the red condition stays |
+| Complete corrective maintenance (RF_11) | update → `completed` (or inserted already `completed`) | status → `in_service`; the user picks the new condition ("en funcionamiento": green or amber group) |
 | Cancel an in-progress corrective job | update → `cancelled` | status → `in_service`; condition unchanged |
 | Register a loss (RF_28) | `asset_events(loss)` | status → `lost` |
 | Register a recovery | `asset_events(recovery)` | status → `in_service` |
 | Decommission (RF_29) | `asset_events(decommission)` | status → `decommissioned`. Terminal: no transfers, maintenance or components afterwards. |
 
-Preventive maintenance doesn't change the status; it is usually done in place.
+Preventive maintenance doesn't change the status; it is usually done in place. Maintenance registered as already done
+(RF_10, RF_26) doesn't either. A repair (RF_11) is registered only for an asset with a red condition, in service or
+in maintenance, with no other repair in progress; it may point at one of the asset's damages (`asset_event_id`) or at
+none, since a condition can also turn red through an edit.
 
 ### 8.5 Asset history (RF_09) and space history (RF_39)
 

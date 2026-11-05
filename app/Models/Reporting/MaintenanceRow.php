@@ -17,11 +17,18 @@ use Illuminate\Support\Carbon;
  * @property string $asset_name
  * @property MaintenanceKind $kind
  * @property MaintenanceStatus $status
+ * @property Carbon|null $scheduled_for
+ * @property Carbon|null $started_on
  * @property Carbon|null $completed_on
  * @property Carbon $reference_date
  * @property string $description
  * @property string|null $performed_by
+ * @property int|null $asset_event_id
+ * @property int|null $registered_by
  * @property string|null $registered_by_name
+ * @property string|null $cancellation_reason
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class MaintenanceRow extends ReportingView
 {
