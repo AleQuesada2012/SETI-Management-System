@@ -356,6 +356,9 @@ new #[Title('users.show.title')] class extends Component
             @can('update', $user)
                 <flux:button icon="pencil-square" :href="route('users.edit', $user)" wire:navigate>{{ __('users.edit.edit') }}</flux:button>
             @endcan
+            @can(App\Enums\PermissionName::ReportsAudit)
+                <flux:button icon="clock" :href="route('users.activity', ['usuario' => $user->id])" wire:navigate>{{ __('users.activity.open') }}</flux:button>
+            @endcan
             <flux:button icon="arrow-left" :href="route('users.index')" wire:navigate>{{ __('users.show.back') }}</flux:button>
         </div>
     </div>
