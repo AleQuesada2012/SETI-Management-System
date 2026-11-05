@@ -26,14 +26,15 @@ test('the Superusuario picks an Administrador and sees the spaces in their charg
     $mario = User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Mario Solís']);
 
     Carbon::setTestNow('2026-10-15 20:15');
-    Space::factory()->managedBy($lucia)->create(['code' => 'LAB-316', 'name' => 'Laboratorio 316']);
+    // A name the factory never generates (it makes "Laboratorio <random number>"), so it cannot collide.
+    Space::factory()->managedBy($lucia)->create(['code' => 'LAB-316', 'name' => 'Laboratorio de Redes']);
     Space::factory()->office()->managedBy($lucia)->create(['code' => 'OF-SETI']);
     Space::factory()->managedBy($mario)->create(['code' => 'SAL-01']);
     Carbon::setTestNow();
 
     $section = byAdministratorSection(Livewire::test('pages::users.space-managers')->set('administrator', (string) $lucia->id)->html());
 
-    expect($section)->toContain('LAB-316 · Laboratorio 316', 'Laboratorio', 'OF-SETI', 'Oficina', '15/10/2026 20:15')
+    expect($section)->toContain('LAB-316 · Laboratorio de Redes', 'Laboratorio', 'OF-SETI', 'Oficina', '15/10/2026 20:15')
         ->not->toContain('SAL-01');
 });
 
