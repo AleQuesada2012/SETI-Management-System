@@ -3,6 +3,7 @@
 use App\Actions\Spaces\AssignSpaceManager;
 use App\Actions\Spaces\RemoveSpaceManager;
 use App\Actions\Users\AssignRole;
+use App\Actions\Users\ChangeRole;
 use App\Actions\Users\DeactivateUser;
 use App\Actions\Users\ReactivateUser;
 use App\Actions\Users\RemoveRole;
@@ -19,7 +20,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 /*
- * Detalle del usuario (RF_94), its roles (assign RF_85, remove RF_86) and, for an Administrador, the spaces in their
+ * Detalle del usuario (RF_94), its roles (assign RF_85, remove RF_86, change RF_87) and, for an Administrador, the spaces in their
  * charge: assign (RF_40) and remove (RF_43) through App\Actions\Spaces\AssignSpaceManager and RemoveSpaceManager,
  * reviewed by spaces. Owner: users (@Rubiocai). A missing user is a 404 from route model binding, rendered by
  * errors/404.blade.php. Role changes (RF_85–RF_87) go through app/Actions/Users,
@@ -107,6 +108,89 @@ new #[Title('users.show.title')] class extends Component
                 ->sortBy('name')->map(fn ($permission): string => $permission->description ?? $permission->name)->values(),
             'spaces' => $role->name === SystemRole::Administrador->value ? $this->managedSpaces : new Collection,
         ];
+    }
+
+    /** The role being changed (RF_87). */
+    public ?int $roleToChange = null;
+
+    /** The new role picked in the change window; '' while none is chosen (a real, selectable empty option). */
+    public string $newRoleId = '';
+
+    /** Open the window that swaps this role for another (RF_87). */
+    public function confirmRoleChange(int $roleId): void
+    {
+        $this->authorize('assignRoles', $this->user);
+
+        $this->roleToChange = $roleId;
+        $this->newRoleId = '';
+        unset($this->roleChange);
+        $this->resetErrorBag(['roles', 'newRoleId']);
+
+        Flux::modal('change-role')->show();
+    }
+
+    /**
+     * What swapping the role changes: the permissions the user gains and loses (counting their other roles), and, when
+     * leaving Administrador, the spaces in their charge.
+     *
+     * @return array{from: Role, to: Role|null, gains: Collection<int, string>, loses: Collection<int, string>, spaces: Collection<int, Space>}|null
+     */
+    #[Computed]
+    public function roleChange(): ?array
+    {
+        $from = $this->user->roles()->with('permissions')->find($this->roleToChange);
+
+        if ($from === null) {
+            return null;
+        }
+
+        $to = ctype_digit($this->newRoleId) ? $this->assignableRoles->load('permissions')->firstWhere('id', (int) $this->newRoleId) : null;
+        $kept = $this->user->roles()->whereKeyNot($from->id)->with('permissions')->get()
+            ->flatMap(fn (Role $other) => $other->permissions->pluck('name'));
+        $describe = fn (Collection $permissions): Collection => $permissions->sortBy('name')
+            ->map(fn ($permission): string => $permission->description ?? $permission->name)->values();
+        $after = $kept->merge($to?->permissions->pluck('name') ?? []);
+        $before = $kept->merge($from->permissions->pluck('name'));
+
+        return [
+            'from' => $from,
+            'to' => $to,
+            'gains' => $to === null ? new Collection : $describe($to->permissions->reject(fn ($p): bool => $before->contains($p->name))),
+            'loses' => $to === null ? new Collection : $describe($from->permissions->reject(fn ($p): bool => $after->contains($p->name))),
+            'spaces' => $to !== null && $from->name === SystemRole::Administrador->value && $to->name !== SystemRole::Administrador->value
+                ? $this->managedSpaces : new Collection,
+        ];
+    }
+
+    public function changeRole(ChangeRole $changeRole): void
+    {
+        $this->authorize('assignRoles', $this->user);
+
+        $this->validate(
+            ['newRoleId' => ['required', 'integer', 'exists:roles,id']],
+            attributes: ['newRoleId' => __('users.change_role.new_role')],
+        );
+
+        $change = $this->roleChange;
+
+        if ($change === null || $change['to'] === null) {
+            throw ValidationException::withMessages(['newRoleId' => __('users.change_role.errors.unavailable')]);
+        }
+
+        try {
+            $changeRole->handle(auth()->user(), $this->user, $change['from'], $change['to']);
+        } finally {
+            Flux::modal('change-role')->close();
+        }
+
+        $this->user->refresh();
+        $this->reset('roleToChange', 'newRoleId');
+        unset($this->assignableRoles, $this->managedSpaces, $this->assignableSpaces, $this->roleChange, $this->roleRemoval);
+        $this->roleId = $this->assignableRoles->first()?->id;
+
+        Flux::toast(variant: 'success', text: __('users.change_role.done', [
+            'from' => $change['from']->name, 'to' => $change['to']->name, 'user' => $this->user->name,
+        ]));
     }
 
     public function removeRole(RemoveRole $removeRole): void
@@ -333,11 +417,18 @@ new #[Title('users.show.title')] class extends Component
                 @foreach ($user->roles->sortBy('name') as $heldRole)
                     <li wire:key="held-role-{{ $heldRole->id }}" class="flex flex-wrap items-center justify-between gap-2 py-2">
                         <flux:badge size="sm" color="blue">{{ $heldRole->name }}</flux:badge>
-                        @if ($user->roles->count() > 1)
-                            <flux:button size="sm" variant="ghost" icon="x-mark" wire:click="confirmRoleRemoval({{ $heldRole->id }})">
-                                {{ __('users.remove_role.remove') }}
-                            </flux:button>
-                        @endif
+                        <div class="flex flex-wrap gap-1">
+                            @if ($this->assignableRoles->isNotEmpty())
+                                <flux:button size="sm" variant="ghost" icon="arrows-right-left" wire:click="confirmRoleChange({{ $heldRole->id }})">
+                                    {{ __('users.change_role.change') }}
+                                </flux:button>
+                            @endif
+                            @if ($user->roles->count() > 1)
+                                <flux:button size="sm" variant="ghost" icon="x-mark" wire:click="confirmRoleRemoval({{ $heldRole->id }})">
+                                    {{ __('users.remove_role.remove') }}
+                                </flux:button>
+                            @endif
+                        </div>
                     </li>
                 @endforeach
             </ul>
@@ -362,6 +453,70 @@ new #[Title('users.show.title')] class extends Component
                 </form>
             @endif
         </flux:card>
+
+        <flux:modal name="change-role" class="w-full max-w-md">
+            <form wire:submit="changeRole" class="flex flex-col gap-4">
+                @if ($this->roleChange !== null)
+                    <div>
+                        <flux:heading size="lg">{{ __('users.change_role.heading', ['role' => $this->roleChange['from']->name]) }}</flux:heading>
+                        <flux:text class="mt-2">{{ __('users.change_role.help', ['user' => $user->name, 'role' => $this->roleChange['from']->name]) }}</flux:text>
+                    </div>
+
+                    <flux:select wire:model.live="newRoleId" :label="__('users.change_role.new_role')">
+                        <flux:select.option value="">{{ __('users.change_role.choose') }}</flux:select.option>
+                        @foreach ($this->assignableRoles as $option)
+                            <flux:select.option :value="(string) $option->id" wire:key="change-to-{{ $option->id }}">{{ $option->name }}</flux:select.option>
+                        @endforeach
+                    </flux:select>
+
+                    @if ($this->roleChange['to'] !== null)
+                        <div data-test="change-preview" class="flex flex-col gap-3">
+                            <div>
+                                <flux:text class="font-medium text-ink">{{ __('users.change_role.gains') }}</flux:text>
+                                @if ($this->roleChange['gains']->isEmpty())
+                                    <flux:text size="sm">{{ __('users.change_role.gains_nothing') }}</flux:text>
+                                @else
+                                    <ul class="mt-1 list-disc space-y-0.5 ps-5 text-sm text-ink">
+                                        @foreach ($this->roleChange['gains'] as $description)
+                                            <li>{{ $description }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </div>
+                            <div>
+                                <flux:text class="font-medium text-ink">{{ __('users.remove_role.loses') }}</flux:text>
+                                @if ($this->roleChange['loses']->isEmpty())
+                                    <flux:text size="sm">{{ __('users.change_role.loses_nothing') }}</flux:text>
+                                @else
+                                    <ul class="mt-1 list-disc space-y-0.5 ps-5 text-sm text-ink">
+                                        @foreach ($this->roleChange['loses'] as $description)
+                                            <li>{{ $description }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </div>
+                            @if ($this->roleChange['spaces']->isNotEmpty())
+                                <div>
+                                    <flux:text class="font-medium text-ink">{{ __('users.remove_role.loses_spaces') }}</flux:text>
+                                    <ul class="mt-1 list-disc space-y-0.5 ps-5 text-sm text-ink">
+                                        @foreach ($this->roleChange['spaces'] as $space)
+                                            <li>{{ $space->code }} · {{ $space->name }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+                @endif
+
+                <div class="flex justify-end gap-2">
+                    <flux:modal.close>
+                        <flux:button variant="ghost">{{ __('users.remove_role.cancel') }}</flux:button>
+                    </flux:modal.close>
+                    <flux:button type="submit" variant="primary">{{ __('users.change_role.submit') }}</flux:button>
+                </div>
+            </form>
+        </flux:modal>
 
         <flux:modal name="remove-role" class="w-full max-w-md">
             <form wire:submit="removeRole" class="flex flex-col gap-4">
