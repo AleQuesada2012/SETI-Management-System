@@ -7,6 +7,9 @@ use Livewire\Livewire;
 /*
  * RF_92 Filtrar usuarios: Administradores and "usuarios normales" (neither Administrador nor Superusuario), by name
  * or id.
+ *
+ * Every user gets a fixed email: the search also matches emails, and a random Faker email that happened to contain
+ * the searched text made a "should not match" assertion flaky in CI.
  */
 
 beforeEach(function () {
@@ -14,9 +17,9 @@ beforeEach(function () {
 });
 
 test('the Superusuario filters the Administradores by name', function () {
-    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Ana Rojas']);
-    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Bruno Mena']);
-    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Ana Normal']);
+    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Ana Rojas', 'email' => 'ana.rojas@seti.test']);
+    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Bruno Mena', 'email' => 'bruno.mena@seti.test']);
+    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Ana Normal', 'email' => 'ana.normal@seti.test']);
 
     Livewire::test('pages::users.index')
         ->set('filters.user_type.values', ['administrators'])
@@ -27,8 +30,8 @@ test('the Superusuario filters the Administradores by name', function () {
 });
 
 test('the Superusuario filters the Administradores by id', function () {
-    $wanted = User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Ana Rojas']);
-    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Carla Normal']);
+    $wanted = User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Ana Rojas', 'email' => 'ana.rojas@seti.test']);
+    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Carla Normal', 'email' => 'carla.normal@seti.test']);
 
     Livewire::test('pages::users.index')
         ->set('filters.user_type.values', ['administrators'])
@@ -38,10 +41,10 @@ test('the Superusuario filters the Administradores by id', function () {
 });
 
 test('usuarios normales hold neither Administrador nor Superusuario, and are filtered by name or id', function () {
-    $normal = User::factory()->withRole(SystemRole::Visualizador, SystemRole::Reservante)->create(['name' => 'Daniela Quirós']);
-    User::factory()->withRole(SystemRole::Reportes)->create(['name' => 'Diego Reportes']);
-    User::factory()->withRole(SystemRole::Reservante, SystemRole::Administrador)->create(['name' => 'Daniel Admin']);
-    User::factory()->withRole(SystemRole::Superusuario)->create(['name' => 'Dora Super']);
+    $normal = User::factory()->withRole(SystemRole::Visualizador, SystemRole::Reservante)->create(['name' => 'Daniela Quirós', 'email' => 'daniela.quiros@seti.test']);
+    User::factory()->withRole(SystemRole::Reportes)->create(['name' => 'Diego Reportes', 'email' => 'diego.reportes@seti.test']);
+    User::factory()->withRole(SystemRole::Reservante, SystemRole::Administrador)->create(['name' => 'Daniel Admin', 'email' => 'daniel.admin@seti.test']);
+    User::factory()->withRole(SystemRole::Superusuario)->create(['name' => 'Dora Super', 'email' => 'dora.super@seti.test']);
 
     Livewire::test('pages::users.index')
         ->set('filters.user_type.values', ['regular'])
@@ -57,9 +60,9 @@ test('usuarios normales hold neither Administrador nor Superusuario, and are fil
 });
 
 test('both user types together list Administradores and usuarios normales, not Superusuarios', function () {
-    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Ana Rojas']);
-    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Carla Normal']);
-    User::factory()->withRole(SystemRole::Superusuario)->create(['name' => 'Dora Super']);
+    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Ana Rojas', 'email' => 'ana.rojas@seti.test']);
+    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Carla Normal', 'email' => 'carla.normal@seti.test']);
+    User::factory()->withRole(SystemRole::Superusuario)->create(['name' => 'Dora Super', 'email' => 'dora.super@seti.test']);
 
     Livewire::test('pages::users.index')
         ->set('filters.user_type.values', ['administrators', 'regular'])
@@ -77,10 +80,10 @@ test('with no Administradores registered the list says so', function () {
 });
 
 test('every selected user type excludes a Superusuario with additional roles', function (array $types) {
-    User::factory()->withRole(SystemRole::Administrador, SystemRole::Superusuario)->create(['name' => 'Eva Multirrol']);
-    User::factory()->withRole(SystemRole::Reservante, SystemRole::Superusuario)->create(['name' => 'Fabián Multirrol']);
-    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Gina Administradora']);
-    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Hugo Normal']);
+    User::factory()->withRole(SystemRole::Administrador, SystemRole::Superusuario)->create(['name' => 'Eva Multirrol', 'email' => 'eva.multirrol@seti.test']);
+    User::factory()->withRole(SystemRole::Reservante, SystemRole::Superusuario)->create(['name' => 'Fabián Multirrol', 'email' => 'fabian.multirrol@seti.test']);
+    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Gina Administradora', 'email' => 'gina.administradora@seti.test']);
+    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Hugo Normal', 'email' => 'hugo.normal@seti.test']);
 
     Livewire::test('pages::users.index')
         ->assertSee('Eva Multirrol')
@@ -107,7 +110,7 @@ test('with no usuarios normales registered the list says so, even while searchin
 });
 
 test('a search that matches nobody of an existing type says no users were found', function () {
-    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Ana Rojas']);
+    User::factory()->withRole(SystemRole::Administrador)->create(['name' => 'Ana Rojas', 'email' => 'ana.rojas@seti.test']);
 
     Livewire::test('pages::users.index')
         ->set('filters.user_type.values', ['administrators'])
