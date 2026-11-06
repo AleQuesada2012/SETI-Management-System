@@ -1,0 +1,120 @@
+relationship 33d471fa-f8d8-4f94-b56d-85f2125af1fa
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting assets'.acquired_on
+	toColumn: LocalDateTable_8d0fd38a-ff49-4d3b-b713-05ae5076b974.Date
+
+relationship e76b48ce-8d28-4e96-a019-9c1f631b3b60
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting assets'.warranty_starts_on
+	toColumn: LocalDateTable_5d0e481b-506c-4093-b45a-02595e7d130f.Date
+
+relationship 36f61f69-301f-4a6f-a09d-e9c1a3ad26f0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting assets'.warranty_ends_on
+	toColumn: LocalDateTable_7711cb6f-6ef4-4129-8874-d7995e650b21.Date
+
+relationship 8388db78-0208-4e51-b10c-676f9a6e9134
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting assets'.created_at
+	toColumn: LocalDateTable_61e4c356-d6bd-4836-a765-2e3498b95dad.Date
+
+relationship a679093d-683f-4176-841c-f44e4c75fde2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting assets'.updated_at
+	toColumn: LocalDateTable_3749ef09-65ee-4062-aff7-3b6c91b2fd9d.Date
+
+relationship d7338875-67c9-4b1b-9790-f6d2a5e811d6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting maintenance'.scheduled_for
+	toColumn: LocalDateTable_2d63bf95-adca-4573-b3cb-1a99b0470efa.Date
+
+relationship e6fb1c9b-78b7-4691-8c47-26f53645c283
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting maintenance'.started_on
+	toColumn: LocalDateTable_5c59a7ec-eea1-49b0-87b3-bfd3a8f1f813.Date
+
+relationship da815651-a469-4f3a-9bf1-77e76394bfe9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting maintenance'.completed_on
+	toColumn: LocalDateTable_a0fea214-34bb-4d0f-8970-1969a0570458.Date
+
+relationship 7e8443fc-fd71-4e37-be71-61cc4104942b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting maintenance'.reference_date
+	toColumn: LocalDateTable_e8f9f46f-1665-4b83-afed-967767119fd2.Date
+
+relationship bf7830b0-282b-4693-94b7-74a6f431f5bf
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting maintenance'.created_at
+	toColumn: LocalDateTable_4ce94b2f-6278-4fef-9519-51df85cc1916.Date
+
+relationship 9519eba8-cbd0-4d20-97a6-b5c8dfcd5df6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting maintenance'.updated_at
+	toColumn: LocalDateTable_26c50bcd-33d3-4864-ab11-7a67b1624b70.Date
+
+relationship 8e72d068-d230-4eeb-ac6b-605d4d7062e9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting reservations'.starts_at
+	toColumn: LocalDateTable_52b4863d-8d0f-4e6b-8396-84ed81c87344.Date
+
+relationship 66bff6cc-51a8-4e2f-9f4a-35da9fd7d844
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting reservations'.ends_at
+	toColumn: LocalDateTable_155fb3fd-a6a4-42fc-ae2c-6bf5d564fa3c.Date
+
+relationship 9537115a-f1c5-4b46-8a45-7913ec21107e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting reservations'.local_date
+	toColumn: LocalDateTable_57cf0102-48be-41f2-9b4d-369a78e5da47.Date
+
+relationship b9f2343e-52a5-428f-9e69-8de57e7666ef
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting reservations'.cancelled_at
+	toColumn: LocalDateTable_226bdf6a-32e4-4eb4-8db4-7a6d4d7d1895.Date
+
+relationship 642fe61c-4500-4f20-a3b6-58228f3bcfb9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting reservations'.created_at
+	toColumn: LocalDateTable_9fd9eeed-bbab-4cfa-9dca-403a4e8bf58e.Date
+
+relationship 16081783-e508-4765-a4b0-9ba33e5afde2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting reservations'.updated_at
+	toColumn: LocalDateTable_13cc96db-a4c8-41e0-9765-08b9df863011.Date
+
+relationship af925103-912a-4539-9e70-776fb61d0e51
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting space_occupancy'.local_date
+	toColumn: LocalDateTable_3ee05bcc-7616-419c-a540-c82ee7a4fa6b.Date
+
+relationship 1bf9dd5a-e8bc-4246-861d-e9434be30713
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting spaces'.created_at
+	toColumn: LocalDateTable_94c03130-9db6-42dd-8968-1581cc37b502.Date
+
+relationship 9781aece-4417-48df-a1c5-9f3c91b52a69
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting spaces'.updated_at
+	toColumn: LocalDateTable_702ccefc-b272-430f-9880-0442583df13a.Date
+
+relationship cca07f24-b22e-4e26-97e0-132d913b8b2e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting users'.last_login_at
+	toColumn: LocalDateTable_cc5db8e3-ac1c-43f3-bcca-f58c9d54fa6c.Date
+
+relationship 8630e00d-847c-4e26-a917-40734dcea1f4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting users'.deactivated_at
+	toColumn: LocalDateTable_aa7ec014-4dcd-44e9-b75b-a3dfe0b654cb.Date
+
+relationship f8d7e3d2-39da-4d33-856d-bd7109fefc23
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting users'.created_at
+	toColumn: LocalDateTable_85b020c1-09de-4766-865c-547d31e4cf13.Date
+
+relationship b7a259d5-3a5b-42c6-9baf-0b36386b9697
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'reporting users'.updated_at
+	toColumn: LocalDateTable_76b6d9d1-cd14-4d50-8288-223b6aff256f.Date
+

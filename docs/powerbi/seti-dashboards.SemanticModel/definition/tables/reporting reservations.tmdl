@@ -1,0 +1,269 @@
+table 'reporting reservations'
+	lineageTag: a5ca0af3-5fb5-4d13-88ed-e36ac4021c1a
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: a68924b9-d5cc-48a9-b8f6-5e3f8ee54f82
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column series_id
+		dataType: string
+		lineageTag: d1d02262-2b7f-44bc-a1f6-4c64f78268f2
+		summarizeBy: none
+		sourceColumn: series_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 16dda9b1-4139-4b11-bf1a-b1b9297cad31
+		summarizeBy: sum
+		sourceColumn: space_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_code
+		dataType: string
+		lineageTag: e288f489-cac5-46f3-8374-593125c4b362
+		summarizeBy: none
+		sourceColumn: space_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_name
+		dataType: string
+		lineageTag: edec9bd8-9825-4e9b-a608-8b1e70350f3f
+		summarizeBy: none
+		sourceColumn: space_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_deleted
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b5fba588-a0ae-4c1d-a00d-640ac057e3cb
+		summarizeBy: none
+		sourceColumn: space_deleted
+
+		annotation SummarizationSetBy = Automatic
+
+	column starts_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9863a8b2-b236-4ce9-b125-8b4ea5a6c523
+		summarizeBy: none
+		sourceColumn: starts_at
+
+		variation Variation
+			isDefault
+			relationship: 8e72d068-d230-4eeb-ac6b-605d4d7062e9
+			defaultHierarchy: LocalDateTable_52b4863d-8d0f-4e6b-8396-84ed81c87344.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column ends_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 53541e87-9643-4368-8dd9-16f63c373f42
+		summarizeBy: none
+		sourceColumn: ends_at
+
+		variation Variation
+			isDefault
+			relationship: 66bff6cc-51a8-4e2f-9f4a-35da9fd7d844
+			defaultHierarchy: LocalDateTable_155fb3fd-a6a4-42fc-ae2c-6bf5d564fa3c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column local_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 54aea115-2987-4bff-bc1e-bc411c011de2
+		summarizeBy: none
+		sourceColumn: local_date
+
+		variation Variation
+			isDefault
+			relationship: 9537115a-f1c5-4b46-8a45-7913ec21107e
+			defaultHierarchy: LocalDateTable_57cf0102-48be-41f2-9b4d-369a78e5da47.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column title
+		dataType: string
+		lineageTag: 41706dc3-6846-4ed3-99e0-75fd6b14b63c
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column notes
+		dataType: string
+		lineageTag: fcf71754-9765-4f5f-a266-b97f90a21f6a
+		summarizeBy: none
+		sourceColumn: notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column attendees
+		dataType: int64
+		formatString: 0
+		lineageTag: 1ab2d1bd-ec59-4678-a414-d5c947d48870
+		summarizeBy: sum
+		sourceColumn: attendees
+
+		annotation SummarizationSetBy = Automatic
+
+	column responsible_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a338a5f8-0dee-4fea-b399-4ceb79efd8f3
+		summarizeBy: sum
+		sourceColumn: responsible_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column responsible_name
+		dataType: string
+		lineageTag: ef6e6a6b-06f1-4e0c-be3b-3dabd27ffdc4
+		summarizeBy: none
+		sourceColumn: responsible_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: int64
+		formatString: 0
+		lineageTag: ca44d4f5-6f35-4d90-927a-c167891509b5
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by_name
+		dataType: string
+		lineageTag: 8c8fcee3-e70d-436f-8d75-545767c88497
+		summarizeBy: none
+		sourceColumn: created_by_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: cac16d7f-571a-4df6-8f31-8f97a8d810ea
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column effective_status
+		dataType: string
+		lineageTag: e649650c-892f-468a-9624-e2c00cfc21f0
+		summarizeBy: none
+		sourceColumn: effective_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column was_modified
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a8ab25e4-98f0-41c8-91fd-b92fd4e5f778
+		summarizeBy: none
+		sourceColumn: was_modified
+
+		annotation SummarizationSetBy = Automatic
+
+	column version
+		dataType: int64
+		formatString: 0
+		lineageTag: bc3b8eb6-f11d-45ee-b1a1-b7e5c633053f
+		summarizeBy: sum
+		sourceColumn: version
+
+		annotation SummarizationSetBy = Automatic
+
+	column cancelled_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e4cd0465-5206-4a56-bebf-1a921f0f1630
+		summarizeBy: none
+		sourceColumn: cancelled_at
+
+		variation Variation
+			isDefault
+			relationship: b9f2343e-52a5-428f-9e69-8de57e7666ef
+			defaultHierarchy: LocalDateTable_226bdf6a-32e4-4eb4-8db4-7a6d4d7d1895.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column cancelled_by
+		dataType: int64
+		formatString: 0
+		lineageTag: 7236ba3e-be15-49e7-9443-ed13796e53e4
+		summarizeBy: sum
+		sourceColumn: cancelled_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column cancelled_by_name
+		dataType: string
+		lineageTag: 6566bdc9-7116-4751-a0c9-fa29e5431ff0
+		summarizeBy: none
+		sourceColumn: cancelled_by_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column cancellation_reason
+		dataType: string
+		lineageTag: 16a54537-d9ed-420e-98e0-bf8c8cd43f6b
+		summarizeBy: none
+		sourceColumn: cancellation_reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3b7b732c-dd53-4769-93fa-b30f7df84a11
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 642fe61c-4500-4f20-a3b6-58228f3bcfb9
+			defaultHierarchy: LocalDateTable_9fd9eeed-bbab-4cfa-9dca-403a4e8bf58e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f0c727e7-0a0d-46f2-bd1d-e54febb91270
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 16081783-e508-4765-a4b0-9ba33e5afde2
+			defaultHierarchy: LocalDateTable_13cc96db-a4c8-41e0-9765-08b9df863011.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'reporting reservations' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("192.168.1.205:5434", "seti"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "reservations"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

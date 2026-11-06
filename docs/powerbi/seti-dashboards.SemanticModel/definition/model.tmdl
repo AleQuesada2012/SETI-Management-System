@@ -1,0 +1,50 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["reporting assets","reporting maintenance","reporting reservations","reporting space_occupancy","reporting spaces","reporting user_roles","reporting users"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'reporting assets'
+ref table DateTableTemplate_71c812fd-9509-49f7-ac09-40f8ae35c6ca
+ref table LocalDateTable_8d0fd38a-ff49-4d3b-b713-05ae5076b974
+ref table LocalDateTable_5d0e481b-506c-4093-b45a-02595e7d130f
+ref table LocalDateTable_7711cb6f-6ef4-4129-8874-d7995e650b21
+ref table LocalDateTable_61e4c356-d6bd-4836-a765-2e3498b95dad
+ref table LocalDateTable_3749ef09-65ee-4062-aff7-3b6c91b2fd9d
+ref table 'reporting maintenance'
+ref table LocalDateTable_2d63bf95-adca-4573-b3cb-1a99b0470efa
+ref table LocalDateTable_5c59a7ec-eea1-49b0-87b3-bfd3a8f1f813
+ref table LocalDateTable_a0fea214-34bb-4d0f-8970-1969a0570458
+ref table LocalDateTable_e8f9f46f-1665-4b83-afed-967767119fd2
+ref table LocalDateTable_4ce94b2f-6278-4fef-9519-51df85cc1916
+ref table LocalDateTable_26c50bcd-33d3-4864-ab11-7a67b1624b70
+ref table 'reporting reservations'
+ref table LocalDateTable_52b4863d-8d0f-4e6b-8396-84ed81c87344
+ref table LocalDateTable_155fb3fd-a6a4-42fc-ae2c-6bf5d564fa3c
+ref table LocalDateTable_57cf0102-48be-41f2-9b4d-369a78e5da47
+ref table LocalDateTable_226bdf6a-32e4-4eb4-8db4-7a6d4d7d1895
+ref table LocalDateTable_9fd9eeed-bbab-4cfa-9dca-403a4e8bf58e
+ref table LocalDateTable_13cc96db-a4c8-41e0-9765-08b9df863011
+ref table 'reporting space_occupancy'
+ref table LocalDateTable_3ee05bcc-7616-419c-a540-c82ee7a4fa6b
+ref table 'reporting spaces'
+ref table LocalDateTable_94c03130-9db6-42dd-8968-1581cc37b502
+ref table LocalDateTable_702ccefc-b272-430f-9880-0442583df13a
+ref table 'reporting user_roles'
+ref table 'reporting users'
+ref table LocalDateTable_cc5db8e3-ac1c-43f3-bcca-f58c9d54fa6c
+ref table LocalDateTable_aa7ec014-4dcd-44e9-b75b-a3dfe0b654cb
+ref table LocalDateTable_85b020c1-09de-4766-865c-547d31e4cf13
+ref table LocalDateTable_76b6d9d1-cd14-4d50-8288-223b6aff256f
+
+ref cultureInfo en-US
+
