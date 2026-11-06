@@ -127,7 +127,7 @@ new class extends Component {
     @else
         <ul class="flex flex-col divide-y divide-line">
             @foreach ($this->attached as $document)
-                <li wire:key="document-{{ $document->id }}" class="flex flex-wrap items-center gap-x-3 gap-y-1 py-2">
+                <li wire:key="document-{{ $document->id }}" class="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 even:bg-row-alt">
                     <flux:icon.document-text class="size-5 shrink-0 text-ink-muted" />
                     <div class="flex min-w-0 flex-1 flex-col">
                         <a href="{{ route('assets.files.show', [$asset, $document]) }}" target="_blank" rel="noopener" class="truncate font-medium text-ink hover:underline">{{ $document->original_name }}</a>

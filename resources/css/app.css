@@ -42,6 +42,27 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+/*
+ * Alternating row backgrounds on every table, Flux or plain, in both palettes. Flux removes the padding at a table's
+ * edges, so it is restored for the text not to touch the band. Lists laid out as rows use `even:bg-row-alt` and `px-3`.
+ */
+tbody > tr:nth-child(even) {
+    background-color: var(--color-row-alt);
+}
+
+table :is(th, td):first-child {
+    padding-inline-start: 0.75rem;
+}
+
+table :is(th, td):last-child {
+    padding-inline-end: 0.75rem;
+}
+
+/* Flux's secondary text in tables (zinc-500) drops below WCAG AA on a band of the light palette. */
+:root:not(.dark) tbody .text-zinc-500 {
+    color: var(--color-ink-muted);
+}
+
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */

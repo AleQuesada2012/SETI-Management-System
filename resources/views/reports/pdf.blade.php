@@ -15,6 +15,7 @@
         table { width: 100%; border-collapse: collapse; }
         th { background: #f4f4f5; text-align: left; font-weight: bold; }
         th, td { border-bottom: 1px solid #e4e4e7; padding: 4px 5px; vertical-align: top; }
+        tbody tr:nth-child(even) td { background: #f4f4f5; }
         tr { page-break-inside: avoid; }
         .filters { margin: 0 0 10px 0; color: #3f3f46; }
         .empty { color: #71717a; padding: 12px 0; }
