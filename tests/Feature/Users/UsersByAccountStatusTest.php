@@ -6,6 +6,9 @@ use Livewire\Livewire;
 
 /*
  * RF_101 Consultar usuarios por estado de cuenta.
+ *
+ * Every user gets a fixed email: the search also matches emails, and a random Faker email that happened to contain
+ * the searched text made a "should not match" assertion flaky in CI.
  */
 
 beforeEach(function () {
@@ -13,8 +16,8 @@ beforeEach(function () {
 });
 
 test('choosing an account status lists only the users with it', function () {
-    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Ana Activa']);
-    User::factory()->deactivated()->withRole(SystemRole::Reservante)->create(['name' => 'Beto Desactivado']);
+    User::factory()->withRole(SystemRole::Reservante)->create(['name' => 'Ana Activa', 'email' => 'ana.activa@seti.test']);
+    User::factory()->deactivated()->withRole(SystemRole::Reservante)->create(['name' => 'Beto Desactivado', 'email' => 'beto.desactivado@seti.test']);
 
     Livewire::test('pages::users.index')
         ->set('filters.account_status.values', ['deactivated'])
@@ -42,7 +45,7 @@ test('the status message wins even while searching', function () {
 });
 
 test('a status that exists but matches nothing with the other criteria says no users were found', function () {
-    User::factory()->deactivated()->withRole(SystemRole::Reservante)->create(['name' => 'Beto Desactivado']);
+    User::factory()->deactivated()->withRole(SystemRole::Reservante)->create(['name' => 'Beto Desactivado', 'email' => 'beto.desactivado@seti.test']);
 
     Livewire::test('pages::users.index')
         ->set('filters.account_status.values', ['deactivated'])

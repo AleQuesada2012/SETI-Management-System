@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ShowAssetFileController;
 use App\Models\Asset;
+use App\Models\MaintenanceRecord;
 use Illuminate\Support\Facades\Route;
 
 // Loaded by routes/web.php inside the auth + verified group. Module: assets (RF_01–RF_31).
@@ -39,3 +40,8 @@ Route::prefix('activos')->name('assets.')->group(function () {
         ->middleware('can:view,asset')
         ->name('files.show');
 });
+
+// RF_27: the scheduled maintenance of every asset; each one is managed on its asset's "Mantenimientos" card.
+Route::livewire('mantenimientos', 'pages::assets.maintenance')
+    ->middleware('can:viewAny,'.MaintenanceRecord::class)
+    ->name('maintenance.index');

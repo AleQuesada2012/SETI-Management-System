@@ -17,9 +17,19 @@ Route::prefix('usuarios')->name('users.')->group(function () {
         ->middleware('can:'.PermissionName::SpacesAssignManagers->value)
         ->name('space-managers');
 
+    // RF_99: before {user}. Reads the audit trail, so it needs reports.audit (Superusuario, Reportes).
+    Route::livewire('actividad', 'pages::users.activity')
+        ->middleware('can:'.PermissionName::ReportsAudit->value)
+        ->name('activity');
+
     Route::livewire('{user}', 'pages::users.show')
         ->middleware('can:view,user')
         ->name('show');
+
+    // RF_93: name and email, Superusuario only (users.update).
+    Route::livewire('{user}/editar', 'pages::users.edit')
+        ->middleware('can:update,user')
+        ->name('edit');
 });
 
 Route::prefix('roles')->name('roles.')->group(function () {

@@ -191,6 +191,60 @@ Un activo perdido o dado de baja no admite mantenimientos.
 ![Mantenimientos de un activo en computadora](activos-mantenimiento-escritorio.jpg)
 ![Registrar mantenimiento a 360 px](activos-mantenimiento-movil.jpg)
 
+## Reparación de un activo (RF_11)
+
+En la tarjeta **Mantenimientos** de un activo **dañado** (condición roja, por ejemplo después de registrar un daño),
+el **Administrador** encargado del espacio del activo y el **Superusuario** ven **Registrar reparación**. Pruébalo con
+`admin@seti.test` (contraseña `password`).
+
+1. Pulsa **Registrar reparación**. El daño más reciente del activo viene elegido; puedes cambiarlo o elegir **Sin daño
+   asociado**.
+2. Indica la fecha, el responsable (técnico o empresa) y qué se reparó.
+3. Elige el estado:
+   - **En curso:** el activo queda **En mantenimiento** y conserva su condición dañada.
+   - **Finalizada:** elige la nueva condición del activo (verde o ámbar, por defecto **Buen estado**); el activo sigue
+     en servicio.
+4. Pulsa **Registrar**. La reparación aparece en la tarjeta, con el daño que repara, y en el **Historial**.
+
+Una reparación **En curso** muestra en su fila:
+
+- **Finalizar:** pide la fecha de finalización (no anterior al inicio) y la nueva condición. El activo vuelve a estar
+  **En servicio**.
+- **Cancelar:** para una reparación registrada por error o que no se hará, con un motivo opcional. El activo vuelve a
+  estar en servicio sin cambiar su condición, y la reparación queda como **Cancelado**.
+
+Un activo en buen estado, perdido, dado de baja o que ya tiene una reparación en curso no ofrece **Registrar
+reparación**.
+
+![Reparación en curso en computadora](activos-reparacion-escritorio.jpg)
+![Finalizar una reparación a 360 px](activos-reparacion-finalizar-movil.jpg)
+
+## Programar mantenimiento (RF_27)
+
+En la tarjeta **Mantenimientos** de un activo en servicio o en mantenimiento, el **Administrador** encargado del
+espacio y el **Superusuario** ven **Programar mantenimiento**. Pruébalo con `admin@seti.test` (contraseña `password`).
+
+1. Pulsa **Programar mantenimiento**. Elige el tipo (por defecto **Preventivo**), una fecha posterior a hoy y la
+   descripción o motivo.
+2. Pulsa **Registrar**. El mantenimiento aparece en la tarjeta como **Programado** (o **Vencido** si su fecha pasó).
+3. En su fila:
+   - **Realizado:** indica cuándo se hizo, quién lo hizo y ajusta la descripción; queda como mantenimiento completado.
+   - **Modificar:** cambia el tipo, la fecha (siempre posterior a hoy) o la descripción. El cambio queda auditado.
+   - **Cancelar:** con un motivo opcional; queda en el historial como **Cancelado**. Se puede cancelar aunque el
+     activo se haya perdido o dado de baja.
+
+**Mantenimientos** en el menú lateral abre **Mantenimientos programados**: todos los programados de todos los
+activos, del más próximo (o más vencido) al más lejano, con su activo, espacio, tipo y descripción. **Mostrar** filtra
+los vencidos o los de los próximos 7 o 30 días. Lo consulta toda cuenta que puede ver mantenimientos, por ejemplo
+`visualizador@seti.test`.
+
+**Recordatorios:** cada día a las 07:00, los encargados del espacio del activo reciben en la campana un aviso cuando un
+mantenimiento programado está a 3 días o menos, y otro si su fecha pasa sin registrarlo. Si el espacio no tiene
+encargados, el aviso llega al Superusuario. Al tocar el aviso se abre el activo.
+
+![Mantenimientos programados en computadora](mantenimientos-programados-escritorio.jpg)
+![Programar mantenimiento a 360 px](mantenimientos-programar-movil.jpg)
+
 ## Notificaciones de reservas (RF_47, RF_48)
 
 Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la

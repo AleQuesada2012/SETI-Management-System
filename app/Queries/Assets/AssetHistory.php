@@ -7,6 +7,7 @@ use App\Enums\AuditAction;
 use App\Enums\MaintenanceStatus;
 use App\Models\Asset;
 use App\Models\AssetCondition;
+use App\Models\AssetEvent;
 use App\Models\AssetType;
 use App\Models\Brand;
 use App\Models\Reporting\AssetEventRow;
@@ -82,12 +83,13 @@ final class AssetHistory
         );
     }
 
-    /** Dated by the day of the work, like events; its kind is the title, with the status unless it is completed. */
+    /**
+     * Dated by the day of the work, like events; its kind is the title, with the status unless it is completed. A repair
+     * (RF_11) names the damage it addresses and, when cancelled, the reason.
+     */
     private static function maintenance(MaintenanceRow $row): AssetHistoryEntry
     {
-        /** @var Carbon $createdAt */
-        $createdAt = $row->getAttribute('created_at');
-        $registeredAt = $createdAt->timezone(config('app.timezone'));
+        $registeredAt = $row->created_at->timezone(config('app.timezone'));
 
         return new AssetHistoryEntry(
             type: 'maintenance',
@@ -97,6 +99,10 @@ final class AssetHistory
             details: array_values(array_filter([
                 $row->description,
                 $row->performed_by !== null && $row->performed_by !== '' ? __('assets.history.performed_by', ['name' => $row->performed_by]) : null,
+                $row->asset_event_id !== null && ($damage = AssetEvent::query()->find($row->asset_event_id)) !== null
+                    ? __('assets.maintenance.repair.repairs_damage', ['date' => $damage->occurred_on->format('d/m/Y')])
+                    : null,
+                $row->cancellation_reason !== null && $row->cancellation_reason !== '' ? __('assets.maintenance.repair.cancellation_reason', ['reason' => $row->cancellation_reason]) : null,
             ])),
             actor: $row->registered_by_name,
         );
