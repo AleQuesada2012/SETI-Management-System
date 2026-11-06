@@ -1,0 +1,83 @@
+table 'Ocupación'
+	lineageTag: e4234c60-da4b-4a71-a2c9-988125c271de
+
+	measure 'Horas reservadas' = SUM('Ocupación'[booked_hours]) + 0
+		formatString: #,0
+		lineageTag: e847f405-685d-421e-a9cb-a6b0084b1fd2
+
+	column space_id
+		dataType: int64
+		formatString: 0
+		lineageTag: fd68daf0-41cb-458c-afa1-2592c89832c0
+		summarizeBy: none
+		sourceColumn: space_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_code
+		dataType: string
+		lineageTag: 6a0e877b-fd85-4fee-bece-88d8da5864ff
+		summarizeBy: none
+		sourceColumn: space_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_name
+		dataType: string
+		lineageTag: 6ade76e4-75e5-4fa4-a983-3b22a8cf1aa7
+		summarizeBy: none
+		sourceColumn: space_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column local_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 80de1282-264e-445d-8629-5ab5cf72a85e
+		summarizeBy: none
+		sourceColumn: local_date
+
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column reservations
+		dataType: int64
+		formatString: 0
+		lineageTag: 7b6eee64-c97b-4856-9031-49ad71def9cf
+		summarizeBy: sum
+		sourceColumn: reservations
+
+		annotation SummarizationSetBy = Automatic
+
+	column booked_hours
+		dataType: double
+		lineageTag: 5287f76e-2c81-4601-bb45-cc30b326a3eb
+		summarizeBy: sum
+		sourceColumn: booked_hours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column attendees
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ad4efc6-6996-4aeb-bcdb-4acca9f4ff56
+		summarizeBy: sum
+		sourceColumn: attendees
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Ocupación' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("192.168.1.205:5434", "seti"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "space_occupancy"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

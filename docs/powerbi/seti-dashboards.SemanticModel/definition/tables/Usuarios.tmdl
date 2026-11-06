@@ -1,0 +1,127 @@
+table Usuarios
+	lineageTag: 5664e8b6-1c18-4240-b589-2b97f7390bbb
+
+	measure 'Total usuarios' = COUNTROWS(Usuarios)
+		formatString: #,0
+		lineageTag: ba94a923-b4de-44d9-adfc-d331f0a3679a
+
+	measure 'Usuarios activos' = CALCULATE(COUNTROWS(Usuarios), Usuarios[account_status] = "active") + 0
+		formatString: #,0
+		lineageTag: b03d4134-f528-4871-a79b-90ecc1ca17e5
+
+	measure 'Usuarios desactivados' = CALCULATE(COUNTROWS(Usuarios), Usuarios[account_status] = "deactivated") + 0
+		formatString: #,0
+		lineageTag: 16b3f3c8-1422-4f8d-a6bc-3e50c642c88e
+
+	measure 'Invitaciones pendientes' = CALCULATE(COUNTROWS(Usuarios), Usuarios[invitation_pending] = TRUE()) + 0
+		formatString: #,0
+		lineageTag: 29c45220-96b3-43a2-a2e9-1dda27ec22d3
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: d92350ee-001e-4b4c-84b2-6da7f572b6f2
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: d5f0987c-8f52-4224-9c62-ecb184e82291
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: 253b0e1e-85cf-4c06-b676-ffc0c137923d
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_status
+		dataType: string
+		lineageTag: 1d870586-94be-44b9-ac55-f36b783b7d39
+		summarizeBy: none
+		sourceColumn: account_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column invitation_pending
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 140130f2-0405-481f-b5d4-4b4914afc761
+		summarizeBy: none
+		sourceColumn: invitation_pending
+
+		annotation SummarizationSetBy = Automatic
+
+	column roles
+		dataType: string
+		lineageTag: f0d50750-4f78-4977-810f-34f51b20c734
+		summarizeBy: none
+		sourceColumn: roles
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_login_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 699da7dd-3a48-4111-8c27-d4505a73baf4
+		summarizeBy: none
+		sourceColumn: last_login_at
+
+
+		annotation SummarizationSetBy = Automatic
+
+	column deactivated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9822af64-2ae1-4a32-8a16-cda23a5aca48
+		summarizeBy: none
+		sourceColumn: deactivated_at
+
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2fb7b778-6dda-42e1-ac09-967c27e69a78
+		summarizeBy: none
+		sourceColumn: created_at
+
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 81088753-429d-46c3-babf-01f832258329
+		summarizeBy: none
+		sourceColumn: updated_at
+
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Estado de cuenta' = SWITCH([account_status], "active", "Activa", "deactivated", "Desactivada", [account_status])
+		dataType: string
+		lineageTag: 2293d9fa-ae26-49b0-ad61-f84ad406065f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Usuarios = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("192.168.1.205:5434", "seti"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "users"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

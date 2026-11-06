@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "d9c9d2d8e38f8c49b17e",
+  "position": {
+    "x": 331,
+    "y": 84,
+    "z": 500,
+    "height": 96,
+    "width": 303,
+    "tabOrder": 500
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "Activos en servicio"
+                }
+              },
+              "queryRef": "Activos.Activos en servicio",
+              "nativeQueryRef": "En servicio",
+              "displayName": "En servicio"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

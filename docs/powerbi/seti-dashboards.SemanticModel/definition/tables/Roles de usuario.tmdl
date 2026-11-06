@@ -1,0 +1,44 @@
+table 'Roles de usuario'
+	lineageTag: 790c77d1-5a0b-4639-b570-467e340b8308
+
+	measure 'Usuarios con rol' = COUNTROWS('Roles de usuario')
+		formatString: #,0
+		lineageTag: 74cc9fc9-23c8-4db9-a8cd-1c9887ebb3fa
+
+	column user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 72f6c0f2-3de9-48d4-b6fe-3f864eefdfea
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column role_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d258d05b-f221-4a9c-a8d0-8be24d247684
+		summarizeBy: none
+		sourceColumn: role_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column role
+		dataType: string
+		lineageTag: 32e3d9c2-4635-4258-abbd-2a328510b3b9
+		summarizeBy: none
+		sourceColumn: role
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Roles de usuario' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("192.168.1.205:5434", "seti"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "user_roles"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+
