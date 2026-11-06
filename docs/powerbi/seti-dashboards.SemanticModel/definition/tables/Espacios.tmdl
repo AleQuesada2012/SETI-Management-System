@@ -164,7 +164,6 @@ table Espacios
 		summarizeBy: none
 		sourceColumn: created_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -173,7 +172,6 @@ table Espacios
 		lineageTag: 1b3179c9-e5b1-4268-b7e6-7828d44704e4
 		summarizeBy: none
 		sourceColumn: updated_at
-
 
 		annotation SummarizationSetBy = Automatic
 

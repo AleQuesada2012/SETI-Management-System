@@ -74,7 +74,6 @@ table Usuarios
 		summarizeBy: none
 		sourceColumn: last_login_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column deactivated_at
@@ -83,7 +82,6 @@ table Usuarios
 		lineageTag: 9822af64-2ae1-4a32-8a16-cda23a5aca48
 		summarizeBy: none
 		sourceColumn: deactivated_at
-
 
 		annotation SummarizationSetBy = Automatic
 
@@ -94,7 +92,6 @@ table Usuarios
 		summarizeBy: none
 		sourceColumn: created_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -103,7 +100,6 @@ table Usuarios
 		lineageTag: 81088753-429d-46c3-babf-01f832258329
 		summarizeBy: none
 		sourceColumn: updated_at
-
 
 		annotation SummarizationSetBy = Automatic
 

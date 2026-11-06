@@ -256,7 +256,6 @@ table Activos
 		summarizeBy: none
 		sourceColumn: acquired_on
 
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -268,7 +267,6 @@ table Activos
 		summarizeBy: none
 		sourceColumn: warranty_starts_on
 
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -279,7 +277,6 @@ table Activos
 		lineageTag: e2e2d605-a150-4fe2-8678-1a32a5cdd146
 		summarizeBy: none
 		sourceColumn: warranty_ends_on
-
 
 		annotation SummarizationSetBy = Automatic
 
@@ -308,7 +305,6 @@ table Activos
 		summarizeBy: none
 		sourceColumn: created_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -317,7 +313,6 @@ table Activos
 		lineageTag: d71b5e84-545b-4da4-9c59-1322736ace4a
 		summarizeBy: none
 		sourceColumn: updated_at
-
 
 		annotation SummarizationSetBy = Automatic
 

@@ -63,7 +63,6 @@ table Reservas
 		summarizeBy: none
 		sourceColumn: starts_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column ends_at
@@ -73,7 +72,6 @@ table Reservas
 		summarizeBy: none
 		sourceColumn: ends_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column local_date
@@ -82,7 +80,6 @@ table Reservas
 		lineageTag: 54aea115-2987-4bff-bc1e-bc411c011de2
 		summarizeBy: none
 		sourceColumn: local_date
-
 
 		annotation SummarizationSetBy = Automatic
 
@@ -188,7 +185,6 @@ table Reservas
 		summarizeBy: none
 		sourceColumn: cancelled_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column cancelled_by
@@ -223,7 +219,6 @@ table Reservas
 		summarizeBy: none
 		sourceColumn: created_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -232,7 +227,6 @@ table Reservas
 		lineageTag: f0c727e7-0a0d-46f2-bd1d-e54febb91270
 		summarizeBy: none
 		sourceColumn: updated_at
-
 
 		annotation SummarizationSetBy = Automatic
 

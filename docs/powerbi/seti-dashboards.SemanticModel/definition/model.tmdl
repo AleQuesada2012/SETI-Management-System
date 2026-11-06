@@ -13,14 +13,13 @@ annotation PBI_QueryOrder = ["Activos","Espacios","Usuarios","Roles de usuario",
 
 annotation PBI_ProTooling = ["DevMode"]
 
-
 ref table Activos
 ref table Espacios
 ref table Usuarios
 ref table 'Roles de usuario'
 ref table Reservas
 ref table Mantenimientos
-ref table 'Ocupación'
+ref table Ocupación
 
 ref cultureInfo en-US
 

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "c085f1f04e2a233fcfff",
   "position": {
     "x": 16,
@@ -28,8 +28,8 @@
               },
               "queryRef": "Activos.category",
               "nativeQueryRef": "Categoría",
-              "displayName": "Categoría",
-              "active": true
+              "active": true,
+              "displayName": "Categoría"
             }
           ]
         }
@@ -47,6 +47,11 @@
               }
             }
           }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
         }
       ]
     },

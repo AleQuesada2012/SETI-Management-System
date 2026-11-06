@@ -66,7 +66,6 @@ table Mantenimientos
 		summarizeBy: none
 		sourceColumn: scheduled_for
 
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -77,7 +76,6 @@ table Mantenimientos
 		lineageTag: 48d387e8-436f-4682-8e51-b3664442c786
 		summarizeBy: none
 		sourceColumn: started_on
-
 
 		annotation SummarizationSetBy = Automatic
 
@@ -90,7 +88,6 @@ table Mantenimientos
 		summarizeBy: none
 		sourceColumn: completed_on
 
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -101,7 +98,6 @@ table Mantenimientos
 		lineageTag: 1531d2c7-e297-430d-b6a4-8f26dd77f852
 		summarizeBy: none
 		sourceColumn: reference_date
-
 
 		annotation SummarizationSetBy = Automatic
 
@@ -164,7 +160,6 @@ table Mantenimientos
 		summarizeBy: none
 		sourceColumn: created_at
 
-
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -173,7 +168,6 @@ table Mantenimientos
 		lineageTag: f7cf352a-53df-48ec-bae5-6eefced3f9bd
 		summarizeBy: none
 		sourceColumn: updated_at
-
 
 		annotation SummarizationSetBy = Automatic
 

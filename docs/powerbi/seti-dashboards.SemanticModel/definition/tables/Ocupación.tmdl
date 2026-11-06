@@ -1,4 +1,4 @@
-table 'Ocupación'
+table Ocupación
 	lineageTag: e4234c60-da4b-4a71-a2c9-988125c271de
 
 	measure 'Horas reservadas' = SUM('Ocupación'[booked_hours]) + 0
@@ -37,7 +37,6 @@ table 'Ocupación'
 		summarizeBy: none
 		sourceColumn: local_date
 
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -70,7 +69,7 @@ table 'Ocupación'
 
 		annotation SummarizationSetBy = Automatic
 
-	partition 'Ocupación' = m
+	partition Ocupación = m
 		mode: import
 		source =
 				let

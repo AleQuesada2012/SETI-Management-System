@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "1ba17482327917170a4e",
   "position": {
     "x": 16,
@@ -28,8 +28,8 @@
               },
               "queryRef": "Activos.Estado",
               "nativeQueryRef": "Estado",
-              "displayName": "Estado",
-              "active": true
+              "active": true,
+              "displayName": "Estado"
             }
           ]
         },
@@ -95,5 +95,37 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7fd6455b323705aa4d0e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "Estado"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "219a18cf405bd003b060",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "Total activos"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "f64051e72ffc9c545b7e",
   "position": {
     "x": 331,
@@ -28,8 +28,8 @@
               },
               "queryRef": "Activos.Estado",
               "nativeQueryRef": "Estado",
-              "displayName": "Estado",
-              "active": true
+              "active": true,
+              "displayName": "Estado"
             }
           ]
         }
@@ -47,6 +47,11 @@
               }
             }
           }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
         }
       ]
     },

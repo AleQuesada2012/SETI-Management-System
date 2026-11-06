@@ -15,10 +15,11 @@ relationship 62be48da-2f00-48f6-aa9b-9cd1abcd61dd
 	toColumn: Espacios.id
 
 relationship 5aaf1152-e6e9-416c-a91b-f9fc35ad097b
-	fromColumn: 'Ocupación'.space_id
+	fromColumn: Ocupación.space_id
 	toColumn: Espacios.id
 
 relationship 13980fc2-f02a-42c9-a455-539ec03e197c
 	crossFilteringBehavior: bothDirections
 	fromColumn: 'Roles de usuario'.user_id
 	toColumn: Usuarios.id
+
