@@ -122,7 +122,7 @@ new #[Title('spaces.show.title')] class extends Component {
         @endif
     </flux:card>
 
-    <div class="grid gap-6 lg:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <livewire:reservations.space-reservations :space="$space" />
         <livewire:reservations.availability-check :space="$space" />
     </div>
