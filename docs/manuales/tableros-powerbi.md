@@ -17,4 +17,23 @@ Cada tablero tiene tres páginas, **Activos**, **Espacios** y **Usuarios**, que 
 Los datos se actualizan de forma programada, no en el momento. Si una actualización falla, Power BI muestra un aviso
 dentro del tablero.
 
+## Si el tablero sigue pidiendo iniciar sesión
+
+Si ya iniciaste sesión y el tablero lo sigue pidiendo, recarga la página. Si continúa, lo más probable es que tu
+navegador esté bloqueando las cookies de terceros que Power BI necesita dentro del sistema. Tienes dos opciones:
+
+- Usa el enlace **Abrir en Power BI**, debajo del tablero, para verlo en su propia pestaña.
+- Permite esas cookies en tu navegador:
+  - **Safari:** en **Ajustes > Privacidad**, desactiva la prevención de seguimiento entre sitios
+    (*Prevent cross-site tracking*). Este ajuste se aplica a todos los sitios, no solo a Power BI.
+  - **Firefox:** en **Ajustes > Privacidad y seguridad > Cookies y datos del sitio > Administrar excepciones**, agrega
+    `app.powerbi.com`.
+  - **Edge y Chrome:** no bloquees las cookies de terceros, o agrega `app.powerbi.com` a los sitios que pueden usarlas.
+
+Si la ventana de inicio de sesión queda en negro o no carga, revisa las extensiones del navegador: las que limpian o
+modifican direcciones web, como ClearURLs, pueden interrumpir el inicio de sesión. Desactívalas para Power BI o prueba
+con otro navegador.
+
+## Si los tableros no están configurados
+
 Si la página indica que los tableros no están configurados, comunícate con el Superusuario del sistema.

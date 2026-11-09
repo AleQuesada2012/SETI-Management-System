@@ -29,13 +29,23 @@ test('a user with the permission sees the dashboards embedded in the page', func
         ->assertDontSee(__('reports.powerbi.not_configured'));
 });
 
+test('the page links to the report in Power BI for browsers that block its sign-in in the frame', function () {
+    config(['reports.powerbi_embed_url' => POWERBI_TEST_URL]);
+
+    $this->actingAs(userWithPowerBi())->get(route('reports.powerbi'))
+        ->assertSee(__('reports.powerbi.sign_in_help'))
+        ->assertSee(__('reports.powerbi.open_direct'))
+        ->assertSee('target="_blank"', false);
+});
+
 test('without an embed URL the page says the dashboards are not configured', function () {
     config(['reports.powerbi_embed_url' => null]);
 
     $this->actingAs(userWithPowerBi())->get(route('reports.powerbi'))
         ->assertOk()
         ->assertSee(__('reports.powerbi.not_configured'))
-        ->assertDontSee('<iframe', false);
+        ->assertDontSee('<iframe', false)
+        ->assertDontSee(__('reports.powerbi.open_direct'));
 });
 
 test('only the Superusuario holds the permission among the system roles', function (SystemRole $role, int $status) {

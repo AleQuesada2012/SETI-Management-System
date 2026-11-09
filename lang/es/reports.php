@@ -6,6 +6,8 @@ return [
         'title' => 'Tableros de Power BI',
         'intro' => 'Estadísticas interactivas de activos, espacios y usuarios. Para verlas, inicia sesión con tu cuenta de Microsoft con licencia de Power BI.',
         'refresh' => 'Los datos se actualizan de forma programada. Si una actualización falla, Power BI muestra un aviso dentro del tablero.',
+        'sign_in_help' => '¿Sigue pidiendo iniciar sesión? Tu navegador puede estar bloqueando las cookies que Power BI necesita dentro del sistema.',
+        'open_direct' => 'Abrir en Power BI',
         'not_configured' => 'Los tableros de Power BI todavía no están configurados. Comunícate con el Superusuario del sistema.',
     ],
     'statistics' => [

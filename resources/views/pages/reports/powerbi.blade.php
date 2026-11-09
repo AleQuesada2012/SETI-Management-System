@@ -35,7 +35,13 @@ new #[Title('reports.powerbi.title')] class extends Component
             allowfullscreen
             class="h-[75vh] w-full rounded-lg border border-line bg-surface"
         ></iframe>
-        <flux:text>{{ __('reports.powerbi.refresh') }}</flux:text>
+        <div class="flex flex-col gap-2">
+            <flux:text>{{ __('reports.powerbi.refresh') }}</flux:text>
+            <flux:text>
+                {{ __('reports.powerbi.sign_in_help') }}
+                <flux:link :href="$this->embedUrl" target="_blank" rel="noopener">{{ __('reports.powerbi.open_direct') }}</flux:link>
+            </flux:text>
+        </div>
     @else
         <flux:callout icon="information-circle" :text="__('reports.powerbi.not_configured')" />
     @endif
