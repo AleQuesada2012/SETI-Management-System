@@ -1,0 +1,5 @@
+expression DatabaseServer = "192.168.1.205:5434" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 67e004a1-487e-4347-ab21-8cf9a60f8884
+
+	annotation PBI_ResultType = Text
+

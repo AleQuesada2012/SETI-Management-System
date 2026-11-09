@@ -9,7 +9,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBI_QueryOrder = ["Activos","Espacios","Usuarios","Roles de usuario","Reservas","Mantenimientos","Ocupación"]
+annotation PBI_QueryOrder = ["DatabaseServer","Activos","Espacios","Usuarios","Roles de usuario","Reservas","Mantenimientos","Ocupación"]
 
 annotation PBI_ProTooling = ["DevMode"]
 

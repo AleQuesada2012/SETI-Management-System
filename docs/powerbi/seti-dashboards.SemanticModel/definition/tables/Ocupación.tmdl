@@ -73,7 +73,7 @@ table Ocupación
 		mode: import
 		source =
 				let
-				  Source = PostgreSQL.Database("192.168.1.205:5434", "seti"),
+				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
 				  #"Navigation 1" = Source{[Schema = "reporting", Item = "space_occupancy"]}[Data]
 				in
 				  #"Navigation 1"
