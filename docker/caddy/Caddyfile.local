@@ -1,0 +1,22 @@
+# Optional HTTPS for the development stack (`docker compose --profile https up -d caddy`), to open the app from another
+# computer: browsers only treat http://localhost as secure, and the Power BI sign-in needs a secure page.
+# The certificate comes from Caddy's own local CA, so browsers warn until that CA is trusted.
+{
+	auto_https disable_redirects
+	# Browsers send no server name when connecting to an IP address; without this Caddy has no certificate to offer.
+	default_sni {$LOCAL_HTTPS_HOST}
+}
+
+localhost, {$LOCAL_HTTPS_HOST} {
+	tls internal
+	encode zstd gzip
+
+	# HSTS on localhost would force HTTPS on every other local project and port.
+	header -Strict-Transport-Security
+
+	# WebSockets for Reverb (notifications, live dashboards).
+	@reverb path /app/* /apps/*
+	reverse_proxy @reverb reverb:8000
+
+	reverse_proxy app:8080
+}

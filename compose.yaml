@@ -6,6 +6,7 @@
 #   mailpit    http://localhost:8025   every email the app sends lands here
 #   pgsql      localhost:5433          PostgreSQL 18 (databases: seti, seti_testing)
 #   queue, scheduler                   background workers (no ports)
+#   caddy                              https://localhost:8443, optional: `docker compose --profile https up -d caddy`
 #
 # Host ports can be changed in .env (APP_PORT, VITE_PORT, ...).
 
@@ -108,5 +109,21 @@ services:
       - "${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025"
     restart: unless-stopped
 
+  caddy:
+    image: caddy:2.11-alpine
+    profiles: [https]
+    environment:
+      LOCAL_HTTPS_HOST: ${LOCAL_HTTPS_HOST:-127.0.0.1}
+    ports:
+      - "${APP_HTTPS_PORT:-8443}:443"
+    volumes:
+      - ./docker/caddy/Caddyfile.local:/etc/caddy/Caddyfile:ro
+      # Keeps the local CA, so a computer that trusted it does not have to do so again.
+      - caddy-data:/data
+    depends_on:
+      - app
+    restart: unless-stopped
+
 volumes:
   pgsql-data:
+  caddy-data:
