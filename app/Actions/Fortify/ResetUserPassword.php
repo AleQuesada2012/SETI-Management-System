@@ -27,5 +27,8 @@ class ResetUserPassword implements ResetsUserPasswords
             'password' => $input['password'],
             'email_verified_at' => $user->email_verified_at ?? now(),
         ])->save();
+
+        // Whoever was signed in with the old password, on any device, is signed out.
+        $user->endSessions();
     }
 }

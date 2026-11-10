@@ -22,5 +22,6 @@ paths:
 - **Secrets never reach** audit values, notifications or logs: passwords, remember tokens, 2FA secrets, API tokens.
 - **Authorization (RF_89)** has three layers, all required: `can:` middleware on the route, `$this->authorize()` in every Livewire action (Livewire requests bypass route middleware), and `@can` to hide what the user cannot use. `tests/Feature/Authorization/RouteAuthorizationTest.php` fails for a route without `can:`.
 - **Check permissions through `App\Enums\PermissionName`** (`$user->can(PermissionName::AssetsView)`), never string literals. The Superusuario passes every Gate check (`Gate::before`).
-- **Sessions**: database sessions, 120 minutes, encrypted; no "remember me"; no self-registration; passwords ≥ 12 characters (+ breach check in production); 2FA optional.
+- **Sessions**: database sessions, 120 minutes, encrypted; no "remember me" (the login drops the field); no self-registration; passwords ≥ 12 characters (+ breach check in production); 2FA optional. Anything that changes who may be signed in (deactivation, password change or reset) calls `User::endSessions()`.
+- **Never tell a visitor whether an email has an account**: sign-in and "forgot password" answer the same, in text and in time, for registered and unregistered emails.
 - A deactivated user is rejected at sign-in (`FortifyServiceProvider`) and logged out on the next request (`EnsureUserIsActive`).

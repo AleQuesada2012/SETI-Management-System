@@ -13,7 +13,8 @@ what data it exposes. We answer within two working days.
   minute per email and IP; no self-registration (accounts are created by the Superusuario and activated by an emailed,
   single-use invitation link).
 - **Sessions**: server-side (database), encrypted, HttpOnly, `SameSite=Lax`, `Secure` in production, 120 minutes.
-  Deactivating an account ends its sessions immediately.
+  Deactivating an account ends its sessions immediately; changing the password ends the user's other sessions and
+  resetting it ends all of them. There is no "remember me" cookie, even for a crafted request.
 - **Authorization** (RF_89): every route and every Livewire action checks a policy or permission; the test suite
   fails when a route has no authorization check.
 - **Audit trail** (RF_00_2, RF_00_3, RF_00_4): who did what, to which element, when and from where, in an append-only

@@ -63,6 +63,9 @@ new #[Title('Security settings')] class extends Component {
             'password' => $validated['password'],
         ]);
 
+        // Sessions opened with the old password on other devices end now; this one stays.
+        Auth::user()->endSessions(exceptSessionId: session()->getId());
+
         $this->reset('current_password', 'password', 'password_confirmation');
 
         Flux::toast(variant: 'success', text: __('Password updated.'));

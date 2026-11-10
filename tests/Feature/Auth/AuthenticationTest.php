@@ -4,6 +4,7 @@ use App\Enums\AuditAction;
 use App\Enums\AuditChannel;
 use App\Models\AuditLog;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -125,4 +126,14 @@ test('users with two-factor enabled are sent to the challenge', function () {
         ->assertRedirect(route('two-factor.login'));
 
     $this->assertGuest();
+});
+
+test('a crafted "remember" field gets no long-lived cookie: sessions end after 120 minutes', function () {
+    $user = User::factory()->create();
+
+    $this->post(route('login.store'), ['email' => $user->email, 'password' => 'password', 'remember' => 'on'])
+        ->assertSessionHasNoErrors()
+        ->assertCookieMissing(Auth::guard('web')->getRecallerName());
+
+    $this->assertAuthenticatedAs($user);
 });

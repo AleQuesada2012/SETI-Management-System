@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Features;
 use Livewire\Livewire;
@@ -71,4 +72,23 @@ test('passwords shorter than 12 characters are rejected', function () {
         ->set('password_confirmation', 'corta123')
         ->call('updatePassword')
         ->assertHasErrors(['password']);
+});
+
+test('updating the password ends the user\'s other sessions and keeps the current one', function () {
+    $user = User::factory()->create(['password' => Hash::make('password')]);
+    $this->actingAs($user);
+    $session = fn (string $id): array => [
+        'id' => $id, 'user_id' => $user->id, 'ip_address' => '127.0.0.1', 'user_agent' => 'Pest', 'payload' => '',
+        'last_activity' => now()->timestamp,
+    ];
+    DB::table('sessions')->insert([$session(session()->getId()), $session('session-on-another-device')]);
+
+    Livewire::test('pages::settings.security')
+        ->set('current_password', 'password')
+        ->set('password', 'una-contrasena-nueva')
+        ->set('password_confirmation', 'una-contrasena-nueva')
+        ->call('updatePassword')
+        ->assertHasNoErrors();
+
+    expect(DB::table('sessions')->where('user_id', $user->id)->pluck('id')->all())->toBe([session()->getId()]);
 });

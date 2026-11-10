@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
@@ -100,6 +101,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function deactivatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'deactivated_by');
+    }
+
+    /**
+     * End the user's sessions at once (database sessions, SECURITY.md): on deactivation and whenever the password
+     * changes, so whoever held a session with the old password loses it. Pass the current session id to keep it.
+     */
+    public function endSessions(?string $exceptSessionId = null): void
+    {
+        DB::table((string) config('session.table'))
+            ->where('user_id', $this->id)
+            ->when($exceptSessionId !== null, fn ($sessions) => $sessions->where('id', '!=', $exceptSessionId))
+            ->delete();
     }
 
     public function isActive(): bool

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\ResetUserPassword;
+use App\Http\Responses\PasswordResetLinkRequested;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -11,13 +12,15 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Contracts\FailedPasswordResetLinkRequestResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        // "No link sent" answers exactly like "link sent": the form never reveals which emails have an account.
+        $this->app->bind(FailedPasswordResetLinkRequestResponse::class, PasswordResetLinkRequested::class);
     }
 
     public function boot(): void
@@ -32,14 +35,27 @@ class FortifyServiceProvider extends ServiceProvider
      * RF_00_1: sign in with email + password (Q32). Emails are compared lowercase; accounts that
      * are deactivated (RF_88) or still waiting for their invitation (no password yet) cannot sign in.
      * Failed attempts fire Laravel's Failed event, which the audit log records.
+     *
+     * There is no "remember me": the field is dropped here, before Fortify reads it, so a crafted request cannot get
+     * the long-lived cookie that would outlive the 120-minute session. An email without a usable account costs one
+     * hash too, so the response time does not tell a visitor which emails are registered.
      */
     private function configureAuthentication(): void
     {
         Fortify::authenticateUsing(function (Request $request): ?User {
             $email = Str::lower(trim((string) $request->input(Fortify::username())));
+            $password = (string) $request->input('password');
+            $request->merge(['remember' => false]);
+
             $user = User::query()->where('email', $email)->first();
 
-            if ($user === null || $user->password === null || ! Hash::check((string) $request->input('password'), $user->password)) {
+            if ($user === null || $user->password === null) {
+                Hash::make($password);
+
+                return null;
+            }
+
+            if (! Hash::check($password, $user->password)) {
                 return null;
             }
 
