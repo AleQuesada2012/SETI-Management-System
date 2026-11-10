@@ -218,7 +218,7 @@ return [
     'two_factor' => [
         'heading' => 'Autenticación en dos pasos',
         'enabled_help' => 'Esta persona inicia sesión con un código de su teléfono. Si perdió el teléfono y sus códigos de recuperación, restablécela para que pueda volver a entrar.',
-        'reset' => 'Restablecer autenticación en dos pasos',
+        'reset' => 'Restablecer',
         'confirm_heading' => '¿Restablecer la autenticación en dos pasos?',
         'confirm_help' => 'Confirma primero, por otro medio, que es :user quien lo pide. Se cerrarán sus sesiones abiertas y entrará solo con su contraseña hasta que la active de nuevo.',
         'confirm' => 'Sí, restablecer',
