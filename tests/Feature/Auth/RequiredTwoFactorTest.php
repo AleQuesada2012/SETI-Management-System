@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Users\AssignRole;
+use App\Actions\Users\ChangeRole;
 use App\Actions\Users\ResetTwoFactor;
 use App\Enums\AuditAction;
 use App\Enums\SystemRole;
@@ -56,15 +57,18 @@ test('the requirement can be turned off for local demo data', function () {
     $this->get(route('dashboard'))->assertOk();
 });
 
-test('a user who is given a role that needs it is signed out, so no open page keeps working', function () {
+test('a user who is given a role that needs it is signed out, so no open page keeps working', function (bool $swap) {
     $superuser = userWithRole(SystemRole::Superusuario);
     $user = userWithRole(SystemRole::Reservante);
     DB::table('sessions')->insert(sessionRow('open-page', $user));
+    $administrador = Role::findByName(SystemRole::Administrador->value);
 
-    app(AssignRole::class)->handle($superuser, $user, Role::findByName(SystemRole::Administrador->value));
+    $swap
+        ? app(ChangeRole::class)->handle($superuser, $user, Role::findByName(SystemRole::Reservante->value), $administrador)
+        : app(AssignRole::class)->handle($superuser, $user, $administrador);
 
     expect(DB::table('sessions')->where('user_id', $user->id)->exists())->toBeFalse();
-});
+})->with(['added (RF_85)' => false, 'swapped in (RF_87)' => true]);
 
 test('the Superusuario resets a user\'s two-factor authentication after confirming: sessions end and it is audited without secrets', function () {
     $superuser = actingAsRole(SystemRole::Superusuario);
