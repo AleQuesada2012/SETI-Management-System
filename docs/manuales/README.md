@@ -123,7 +123,8 @@ eventos de los activos que están (o estuvieron por última vez) en los espacios
 2. Elige el tipo; solo aparecen los que el estado del activo permite:
    - **Pérdida** (activo en servicio o en mantenimiento): queda **Perdido**, deja de contarse como disponible y no se
      puede trasladar.
-   - **Recuperación** (activo perdido): el activo apareció y vuelve a **En servicio**.
+   - **Recuperación** (activo perdido): el activo apareció y vuelve a **En servicio**, o a **En mantenimiento** si se
+     perdió con una reparación en curso.
    - **Baja** (activo en servicio, en mantenimiento o perdido): es definitiva.
 3. Indica la fecha (no puede ser futura ni anterior a la adquisición) y una descripción o el motivo de la baja, y pulsa
    **Registrar**. Un aviso lo confirma y la tarjeta **Estado** muestra la fecha de la pérdida o de la baja.
@@ -213,11 +214,18 @@ Una reparación **En curso** muestra en su fila:
 - **Cancelar:** para una reparación registrada por error o que no se hará, con un motivo opcional. El activo vuelve a
   estar en servicio sin cambiar su condición, y la reparación queda como **Cancelado**.
 
+Si el activo se pierde o se da de baja mientras su reparación está **En curso**, la fila solo ofrece **Cancelar**: la
+reparación queda como **Cancelado** y el activo conserva su estado (**Perdido** o **De baja**), así la reparación no
+queda abierta. Si un activo perdido con una reparación en curso aparece, su recuperación lo deja **En mantenimiento**
+hasta que finalices o canceles esa reparación.
+
 Un activo en buen estado, perdido, dado de baja o que ya tiene una reparación en curso no ofrece **Registrar
 reparación**.
 
 ![Reparación en curso en computadora](activos-reparacion-escritorio.jpg)
 ![Finalizar una reparación a 360 px](activos-reparacion-finalizar-movil.jpg)
+![Reparación en curso de un activo perdido en computadora](activos-reparacion-perdido-escritorio.jpg)
+![Cancelar la reparación de un activo perdido a 360 px](activos-reparacion-perdido-movil.jpg)
 
 ## Programar mantenimiento (RF_27)
 
@@ -273,3 +281,52 @@ reserva misma no cuenta como choque. Al guardar, la reserva muestra la etiqueta 
 modificación. El Superusuario y los encargados del espacio reciben una notificación; si la reserva cambia de espacio,
 los encargados del espacio que se liberó y los del espacio nuevo reciben cada uno su aviso. Las reservas en curso,
 finalizadas o eliminadas no ofrecen esta opción.
+
+## Autenticación en dos pasos (RF_00_1)
+
+Las cuentas con el rol **Superusuario** o **Administrador** ingresan con la autenticación en dos pasos: después de la
+contraseña, el sistema pide un código de seis dígitos de una aplicación de autenticación en el teléfono (Google
+Authenticator, Microsoft Authenticator, 1Password u otra). Para los demás roles es opcional y se activa igual.
+
+**Activarla.** Si tu rol la exige y todavía no la activaste, al ingresar el sistema te lleva a **Configuración →
+Seguridad** con el aviso *Tu rol exige la autenticación en dos pasos* y no abre otras páginas hasta que la actives.
+
+1. Confirma tu contraseña si el sistema la pide y pulsa **Activar 2FA**.
+2. Escanea el código QR con la aplicación del teléfono (o escribe la clave que aparece debajo) y pulsa **Continuar**.
+3. Escribe el código de seis dígitos que muestra la aplicación y pulsa **Confirmar**.
+4. Pulsa **Ver códigos de recuperación** y guárdalos en un lugar seguro, por ejemplo un gestor de contraseñas. Cada
+   código sirve una vez para ingresar si pierdes el teléfono.
+
+Desde entonces, cada inicio de sesión pide la contraseña y luego el código del teléfono (o **ingresar con un código de
+recuperación**).
+
+**Cambiar de teléfono.** En **Configuración → Seguridad**, pulsa **Desactivar 2FA** y actívala de nuevo con el
+teléfono nuevo. Si tu rol la exige, el sistema te devuelve a esta página hasta que termines.
+
+**Duración de la sesión.** La sesión se cierra tras 120 minutos sin uso y, aunque la estés usando, 9 horas después de
+ingresar; la pantalla de inicio de sesión indica el motivo. La página de seguridad vuelve a pedir la contraseña cuando
+pasaron más de 120 minutos desde que la confirmaste.
+
+En el entorno de desarrollo el requisito está apagado: para probarlo, pon `TWO_FACTOR_REQUIRED=true` en `.env` e
+ingresa con `admin@seti.test` (contraseña `password`).
+
+![Aviso de autenticación obligatoria en computadora](seguridad-2fa-obligatoria-escritorio.jpg)
+![Aviso de autenticación obligatoria a 360 px](seguridad-2fa-obligatoria-movil.jpg)
+
+## Restablecer la autenticación en dos pasos de una persona (RF_00_1)
+
+Si una persona perdió el teléfono y sus códigos de recuperación, el **Superusuario** restablece su autenticación en dos
+pasos. Abre **Usuarios y roles**, elige a la persona y, en la tarjeta **Autenticación en dos pasos**:
+
+1. Confirma primero, por otro medio (en persona o por teléfono), que es esa persona quien lo pide.
+2. Pulsa **Restablecer** y luego **Sí, restablecer**.
+
+Se cierran todas sus sesiones abiertas y en su siguiente ingreso entra solo con la contraseña; si es Superusuario o
+Administrador, el sistema le pide activarla de nuevo. El cambio queda en la auditoría, sin datos secretos.
+
+La tarjeta solo aparece para cuentas que tienen la autenticación activa y nunca en tu propia cuenta. Un Superusuario
+que pierde su teléfono ingresa con un código de recuperación; si no le quedan, solo otro Superusuario puede
+restablecerla. Por eso conviene que haya más de un Superusuario o que los códigos estén bien guardados.
+
+![Restablecer la autenticación de una persona en computadora](usuarios-2fa-restablecer-escritorio.jpg)
+![Tarjeta de autenticación en dos pasos a 360 px](usuarios-2fa-restablecer-movil.jpg)
