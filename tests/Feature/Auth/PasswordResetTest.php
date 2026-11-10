@@ -3,10 +3,12 @@
 use App\Enums\AuditAction;
 use App\Models\AuditLog;
 use App\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\ResetPassword;
+use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 
 // The password broker serves both "forgot password" and invitations (Q21).
 
@@ -111,4 +113,24 @@ test('resetting the password ends every open session of the user', function () {
     });
 
     expect(DB::table('sessions')->where('user_id', $user->id)->exists())->toBeFalse();
+});
+
+test('one address may ask for five links a minute', function () {
+    Notification::fake();
+
+    foreach (range(1, 5) as $attempt) {
+        $this->post(route('password.email'), ['email' => "nadie{$attempt}@tec.ac.cr"])->assertSessionHas('status');
+    }
+
+    $this->post(route('password.email'), ['email' => 'nadie6@tec.ac.cr'])->assertTooManyRequests();
+});
+
+test('the reset email is sent by the queue, with its token encrypted', function () {
+    Queue::fake();
+    $user = User::factory()->create();
+
+    $this->post(route('password.email'), ['email' => $user->email])->assertSessionHas('status');
+
+    Queue::assertPushed(SendQueuedNotifications::class, fn (SendQueuedNotifications $job) => $job->notification instanceof ResetPassword
+        && $job->shouldBeEncrypted);
 });

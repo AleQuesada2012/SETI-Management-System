@@ -21,7 +21,9 @@ use Illuminate\Validation\Rule;
  *
  * The email is the login, so a new one is not trusted until its owner proves it: an active account gets it marked
  * unverified and receives a verification link at the new address; a pending invitation is sent again to the new address
- * (the first one went to the wrong inbox). Links tied to the old address are deleted.
+ * (the first one went to the wrong inbox). Links tied to the old address are deleted, and the user's open sessions end:
+ * whoever is signed in under the old address signs in again with the new one (the actor's own session stays when they
+ * edit themselves).
  */
 final class UpdateUser
 {
@@ -51,7 +53,7 @@ final class UpdateUser
         $invitationPending = $user->password === null;
 
         try {
-            DB::transaction(function () use ($user, $data, $emailChanged, $oldEmail): void {
+            DB::transaction(function () use ($actor, $user, $data, $emailChanged, $oldEmail): void {
                 $user->name = trim($data['name']);
                 $user->email = $data['email'];
 
@@ -63,6 +65,10 @@ final class UpdateUser
                 }
 
                 $user->save();
+
+                if ($emailChanged) {
+                    $user->endSessions(exceptSessionId: $actor->is($user) ? session()->getId() : null);
+                }
             });
         } catch (QueryException $exception) {
             $field = match (ConstraintViolation::ruleName($exception)) {

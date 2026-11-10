@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\PermissionName;
 use App\Enums\SystemRole;
+use App\Notifications\ResetPassword;
 use App\Support\Audit\Auditable;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -20,6 +21,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use SensitiveParameter;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -101,6 +103,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function deactivatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'deactivated_by');
+    }
+
+    /** The reset email is queued, so the request answers as fast for a registered email as for any other. */
+    public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
+    {
+        $this->notify(new ResetPassword($token));
     }
 
     /**
