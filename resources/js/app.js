@@ -7,3 +7,5 @@
 import './echo';
 
 import './charts';
+
+import './two-factor';
