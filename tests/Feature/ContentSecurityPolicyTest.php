@@ -26,8 +26,9 @@ test('a page is sent a report-only policy by default', function () {
         ->toContain("object-src 'none'")
         ->toContain("frame-ancestors 'self'")
         ->toContain('connect-src \'self\' wss://'.parse_url(config('app.url'), PHP_URL_HOST))
+        ->toContain("style-src-attr 'unsafe-inline'")
         ->not->toContain('unsafe-eval')
-        ->not->toContain('unsafe-inline');
+        ->not->toMatch("/(script-src|style-src) [^;]*'unsafe-inline'/");
 });
 
 test('CSP_ENFORCE sends the policy as enforced', function () {

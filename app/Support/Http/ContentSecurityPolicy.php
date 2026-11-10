@@ -5,10 +5,13 @@ namespace App\Support\Http;
 /**
  * The Content-Security-Policy of every web page (config/csp.php).
  *
- * Scripts and styles run only from this site or with the request's nonce, which Vite, Livewire and Flux print on
- * their tags (`Vite::useCspNonce()` in SecurityHeaders). Livewire's CSP-safe build (`livewire.csp_safe`) evaluates
- * Alpine expressions without `eval`, so 'unsafe-eval' is not needed; inline style attributes are not allowed either
- * (Alpine and Chart.js set styles through the DOM, which a policy does not restrict).
+ * Scripts and style sheets run only from this site or with the request's nonce, which Vite, Livewire and Flux print
+ * on their tags (`Vite::useCspNonce()` in SecurityHeaders). Livewire's CSP-safe build (`livewire.csp_safe`) evaluates
+ * Alpine expressions without `eval`, so 'unsafe-eval' is not needed.
+ *
+ * Inline style *attributes* are allowed: Flux's modals toggle `style="display: …"` on their focus-trap placeholders
+ * with setAttribute, which a stricter policy would block. A style attribute cannot run script, and img-src keeps a
+ * `url()` in one from reaching another site.
  */
 class ContentSecurityPolicy
 {
@@ -28,6 +31,7 @@ class ContentSecurityPolicy
             'default-src' => ["'self'"],
             'script-src' => ["'self'", $nonce, ...$vite],
             'style-src' => ["'self'", $nonce, ...$vite],
+            'style-src-attr' => ["'unsafe-inline'"],
             'img-src' => ["'self'", 'data:', 'blob:', ...$vite],
             'font-src' => ["'self'", ...$vite],
             'connect-src' => ["'self'", config('csp.websocket'), ...($this->local ? [
