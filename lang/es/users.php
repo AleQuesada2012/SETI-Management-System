@@ -211,6 +211,19 @@ return [
             'already_active' => 'La cuenta de :user ya está activa.',
         ],
     ],
+    'two_factor' => [
+        'heading' => 'Autenticación en dos pasos',
+        'enabled_help' => 'Esta persona inicia sesión con un código de su teléfono. Si perdió el teléfono y sus códigos de recuperación, restablécela para que pueda volver a entrar.',
+        'reset' => 'Restablecer autenticación en dos pasos',
+        'confirm_heading' => '¿Restablecer la autenticación en dos pasos?',
+        'confirm_help' => 'Confirma primero, por otro medio, que es :user quien lo pide. Se cerrarán sus sesiones abiertas y entrará solo con su contraseña hasta que la active de nuevo.',
+        'confirm' => 'Sí, restablecer',
+        'done' => 'Se restableció la autenticación en dos pasos de :user.',
+        'errors' => [
+            'self' => 'Desactiva tu propia autenticación en dos pasos desde tu página de seguridad.',
+            'not_enabled' => ':user no tiene activa la autenticación en dos pasos.',
+        ],
+    ],
     'roles' => [
         'title' => 'Roles',
         'intro' => 'Cada usuario puede tener varios roles; sus permisos son la suma de los permisos de sus roles.',

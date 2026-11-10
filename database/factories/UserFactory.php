@@ -41,6 +41,16 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) use ($roles): void {
             $user->assignRole(array_map(fn (SystemRole $role): string => $role->value, $roles));
+
+            // The Superusuario and the Administradores cannot use the application without two-factor authentication
+            // (RequireTwoFactor); ->withRole(…)->withoutTwoFactor() gives the one who has not set it up yet.
+            if ($user->mustSetUpTwoFactor()) {
+                $user->forceFill([
+                    'two_factor_secret' => encrypt('secret'),
+                    'two_factor_recovery_codes' => encrypt(json_encode(['recovery-code-1'])),
+                    'two_factor_confirmed_at' => now(),
+                ])->saveQuietly();
+            }
         });
     }
 
@@ -66,6 +76,18 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /** Has not set up two-factor authentication. Call it after withRole(), which sets it up for the roles that need it. */
+    public function withoutTwoFactor(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->forceFill([
+                'two_factor_secret' => null,
+                'two_factor_recovery_codes' => null,
+                'two_factor_confirmed_at' => null,
+            ])->saveQuietly();
+        });
     }
 
     public function withTwoFactor(): static

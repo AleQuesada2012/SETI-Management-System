@@ -7,6 +7,10 @@ return [
         'submit' => 'Ingresar al sistema',
     ],
 
+    'two_factor' => [
+        'required' => 'Tu rol exige la autenticación en dos pasos. Actívala aquí para continuar usando el sistema.',
+    ],
+
     'profile' => [
         'subheading' => 'Actualiza tu nombre visible',
         'email_readonly' => 'Tu correo es tu usuario de acceso; solo el Superusuario puede cambiarlo.',

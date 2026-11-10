@@ -9,7 +9,8 @@ what data it exposes. We answer within two working days.
 ## What the application guarantees
 
 - **Authentication** (RF_00_1): email + password, passwords hashed with bcrypt, at least 12 characters (and checked
-  against known breaches in production); optional two-factor authentication; sign-in throttled to 5 attempts per
+  against known breaches in production); two-factor authentication, required for the Superusuario and the
+  Administradores before they can use the application and optional for the other roles; sign-in throttled to 5 attempts per
   minute per email and IP; "forgot password" throttled to 5 requests per minute per IP and answering the same, in
   text and in time, whether or not the email is registered; no self-registration (accounts are created by the Superusuario and activated by an emailed,
   single-use invitation link).

@@ -128,6 +128,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->deactivated_at === null;
     }
 
+    /** The roles that can change data in bulk sign in with two-factor authentication (SECURITY.md). */
+    public function mustUseTwoFactor(): bool
+    {
+        return $this->hasAnyRole([SystemRole::Superusuario->value, SystemRole::Administrador->value]);
+    }
+
+    /** Must use two-factor authentication and has not set it up (and confirmed it) yet: RequireTwoFactor. */
+    public function mustSetUpTwoFactor(): bool
+    {
+        return $this->mustUseTwoFactor() && ! $this->hasEnabledTwoFactorAuthentication();
+    }
+
     public function isSuperuser(): bool
     {
         return $this->hasRole(SystemRole::Superusuario->value);

@@ -3,6 +3,7 @@
 use App\Http\Middleware\AssignRequestId;
 use App\Http\Middleware\EnforceSessionLifetime;
 use App\Http\Middleware\EnsureUserIsActive;
+use App\Http\Middleware\RequireTwoFactor;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\ThrottlePasswordResetLinks;
 use Illuminate\Foundation\Application;
@@ -26,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
             AssignRequestId::class,
             EnsureUserIsActive::class,
             EnforceSessionLifetime::class,
+            RequireTwoFactor::class,
             ThrottlePasswordResetLinks::class,
             SecurityHeaders::class,
         ]);

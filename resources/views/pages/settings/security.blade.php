@@ -135,6 +135,12 @@ new #[Title('Security settings')] class extends Component {
 
         @if ($canManageTwoFactor)
             <section class="mt-12">
+                @if (config('auth.two_factor_required') && auth()->user()->mustSetUpTwoFactor())
+                    <flux:callout color="amber" icon="shield-exclamation" class="mb-6" data-test="two-factor-required">
+                        <flux:callout.text>{{ __('security.two_factor.required') }}</flux:callout.text>
+                    </flux:callout>
+                @endif
+
                 <flux:heading>{{ __('Two-factor authentication') }}</flux:heading>
                 <flux:subheading>{{ __('Manage your two-factor authentication settings') }}</flux:subheading>
 

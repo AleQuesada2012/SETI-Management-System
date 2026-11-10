@@ -39,6 +39,12 @@ class UserPolicy
         return $user->can(P::UsersDeactivate);
     }
 
+    /** Clear a user's two-factor authentication after they lost their device (ResetTwoFactor). */
+    public function resetTwoFactor(User $user, User $model): bool
+    {
+        return $user->can(P::UsersUpdate);
+    }
+
     /** RF_85–RF_87. */
     public function assignRoles(User $user, User $model): bool
     {
