@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Concerns\PasswordValidationRules;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 
 class ResetUserPassword implements ResetsUserPasswords
@@ -18,6 +19,11 @@ class ResetUserPassword implements ResetsUserPasswords
      */
     public function reset(User $user, array $input): void
     {
+        // A link sent before the account was deactivated (RF_88) no longer changes its password.
+        if (! $user->isActive()) {
+            throw ValidationException::withMessages(['email' => __('auth.deactivated')]);
+        }
+
         Validator::make($input, [
             'password' => $this->passwordRules(),
         ])->validate();

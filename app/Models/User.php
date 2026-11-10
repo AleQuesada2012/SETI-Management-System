@@ -105,9 +105,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(User::class, 'deactivated_by');
     }
 
-    /** The reset email is queued, so the request answers as fast for a registered email as for any other. */
+    /**
+     * The reset email is queued, so the request answers as fast for a registered email as for any other. A deactivated
+     * account gets none (RF_88); the form still answers as for any email (PasswordResetLinkRequested).
+     */
     public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
     {
+        if (! $this->isActive()) {
+            return;
+        }
+
         $this->notify(new ResetPassword($token));
     }
 
