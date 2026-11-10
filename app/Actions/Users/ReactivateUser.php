@@ -19,11 +19,15 @@ final class ReactivateUser
     {
         Gate::forUser($actor)->authorize('deactivate', $user);
 
-        if ($user->isActive()) {
-            throw ValidationException::withMessages(['account' => __('users.account.errors.already_active', ['user' => $user->name])]);
-        }
-
         DB::transaction(function () use ($actor, $user): void {
+            // The row is locked and read again, so two reactivations at once end in one change and one audit entry.
+            User::query()->whereKey($user->id)->lockForUpdate()->firstOrFail();
+            $user->refresh();
+
+            if ($user->isActive()) {
+                throw ValidationException::withMessages(['account' => __('users.account.errors.already_active', ['user' => $user->name])]);
+            }
+
             $user->forceFill(['deactivated_at' => null, 'deactivated_by' => null])->save();
 
             Audit::record(AuditAction::Reactivated, $user, actor: $actor);

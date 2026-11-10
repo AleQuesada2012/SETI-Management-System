@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Validator;
 /**
  * RF_11 · Cancel a repair in progress that was registered by mistake or will not be done (Agent-DB.md §8.4): the repair
  * becomes `cancelled` with an optional reason, and the asset goes back in service with its condition unchanged, in one
- * transaction. The row stays for the history and the reports. Who: MaintenanceRecordPolicy::update (★).
+ * transaction. The row stays for the history and the reports. Allowed whatever the asset's status, like
+ * CancelScheduledMaintenance, so the repair of an asset lost or decommissioned meanwhile can be closed: that asset
+ * keeps its status. Who: MaintenanceRecordPolicy::update (★).
  */
 final class CancelRepair
 {
@@ -26,7 +28,7 @@ final class CancelRepair
     public function handle(User $actor, MaintenanceRecord $repair, array $input = []): MaintenanceRecord
     {
         Gate::forUser($actor)->authorize('update', $repair);
-        CompleteRepair::ensureInProgress($repair);
+        CompleteRepair::ensureInProgress($repair, assetMustBeAllowed: false);
 
         /** @var array{cancellation_reason?: string|null} $data */
         $data = Validator::make($input, [
@@ -38,7 +40,7 @@ final class CancelRepair
                 $current = MaintenanceRecord::query()->whereKey($repair->id)->lockForUpdate()->firstOrFail();
                 $asset = Asset::query()->whereKey($current->asset_id)->lockForUpdate()->firstOrFail();
                 Gate::forUser($actor)->authorize('update', $current);
-                CompleteRepair::ensureInProgress($current);
+                CompleteRepair::ensureInProgress($current, assetMustBeAllowed: false);
 
                 $current->update([
                     'status' => MaintenanceStatus::Cancelled,
@@ -46,7 +48,7 @@ final class CancelRepair
                 ]);
 
                 if ($asset->status === AssetStatus::InMaintenance) {
-                    $asset->forceFill(['status' => AssetStatus::InService])->save();
+                    $asset->transitionTo(AssetStatus::InService);
                 }
 
                 return $current;

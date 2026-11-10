@@ -57,7 +57,7 @@ final class CompleteRepair
 
                 $asset->update(['condition_id' => (int) $data['condition_id']]);
                 if ($asset->status === AssetStatus::InMaintenance) {
-                    $asset->forceFill(['status' => AssetStatus::InService])->save();
+                    $asset->transitionTo(AssetStatus::InService);
                 }
 
                 return $current;
@@ -67,17 +67,21 @@ final class CompleteRepair
         }
     }
 
-    /** A corrective job in progress, on an asset at hand that may still change (shared with CancelRepair). */
-    public static function isInProgress(MaintenanceRecord $repair): bool
+    /**
+     * A corrective job in progress. Finishing it also needs the asset at hand (in service or in maintenance), since it
+     * sets the asset's condition; cancelling it does not (CancelRepair), so the repair of an asset lost or
+     * decommissioned meanwhile never stays open for ever.
+     */
+    public static function isInProgress(MaintenanceRecord $repair, bool $assetMustBeAllowed = true): bool
     {
         return $repair->kind === MaintenanceKind::Corrective
             && $repair->status === MaintenanceStatus::InProgress
-            && RegisterMaintenance::isAllowed($repair->asset);
+            && (! $assetMustBeAllowed || RegisterMaintenance::isAllowed($repair->asset));
     }
 
-    public static function ensureInProgress(MaintenanceRecord $repair): void
+    public static function ensureInProgress(MaintenanceRecord $repair, bool $assetMustBeAllowed = true): void
     {
-        if (! self::isInProgress($repair)) {
+        if (! self::isInProgress($repair, $assetMustBeAllowed)) {
             throw ValidationException::withMessages(['form' => __('assets.maintenance.errors.not_in_progress')]);
         }
     }

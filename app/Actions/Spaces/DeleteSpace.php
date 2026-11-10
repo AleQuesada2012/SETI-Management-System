@@ -57,7 +57,7 @@ final class DeleteSpace
     {
         return Asset::query()
             ->where('current_space_id', $space->id)
-            ->whereIn('status', [AssetStatus::InService, AssetStatus::InMaintenance])
+            ->whereIn('status', AssetStatus::available())
             ->count();
     }
 

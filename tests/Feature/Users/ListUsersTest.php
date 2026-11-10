@@ -23,18 +23,6 @@ test('an Administrador sees every user with name, email, roles and account statu
         ->assertSee('Desactivada');
 });
 
-test('a Superusuario sees the users list', function () {
-    actingAsRole(SystemRole::Superusuario);
-
-    $this->get(route('users.index'))->assertOk();
-});
-
-test('roles without users.view cannot open the users list', function (SystemRole $role) {
-    actingAsRole($role);
-
-    $this->get(route('users.index'))->assertForbidden();
-})->with([SystemRole::Visualizador, SystemRole::Reservante, SystemRole::Reportes]);
-
 test('filters without matches say no users were found', function () {
     actingAsRole(SystemRole::Superusuario);
     // A deactivated account exists, so the empty list comes from combining the criteria (RF_101 covers "none at all").

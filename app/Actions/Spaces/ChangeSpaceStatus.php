@@ -24,15 +24,20 @@ final class ChangeSpaceStatus
     {
         Gate::forUser($actor)->authorize('update', $space);
 
-        $affected = self::affectedReservations($space, $status);
+        return DB::transaction(function () use ($actor, $space, $status, $confirmedAffectedReservations): Space {
+            // Locked, so a reservation cannot be booked between the count and the change: CreateReservation and
+            // UpdateReservation take a shared lock on the space and check again that it is reservable.
+            $current = Space::query()->whereKey($space->id)->lockForUpdate()->firstOrFail();
+            Gate::forUser($actor)->authorize('update', $current);
 
-        if ($affected > 0 && ! $confirmedAffectedReservations) {
-            throw ValidationException::withMessages([
-                'status' => trans_choice('spaces.status.affected', $affected, ['count' => $affected]),
-            ]);
-        }
+            $affected = self::affectedReservations($current, $status);
 
-        return DB::transaction(function () use ($space, $status): Space {
+            if ($affected > 0 && ! $confirmedAffectedReservations) {
+                throw ValidationException::withMessages([
+                    'status' => trans_choice('spaces.status.affected', $affected, ['count' => $affected]),
+                ]);
+            }
+
             $space->status()->associate($status)->save();
 
             return $space;

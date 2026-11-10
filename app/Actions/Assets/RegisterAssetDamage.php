@@ -3,7 +3,6 @@
 namespace App\Actions\Assets;
 
 use App\Enums\AssetEventKind;
-use App\Enums\AssetStatus;
 use App\Enums\AuditAction;
 use App\Enums\ColorGroup;
 use App\Models\Asset;
@@ -99,7 +98,7 @@ final class RegisterAssetDamage
     /** A damage is registered on an asset at hand that may still change (Agent-DB.md §8.4). */
     public static function isAllowed(Asset $asset): bool
     {
-        return in_array($asset->status, [AssetStatus::InService, AssetStatus::InMaintenance], true);
+        return $asset->status->isAvailable();
     }
 
     /**

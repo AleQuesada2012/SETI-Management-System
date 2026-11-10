@@ -47,16 +47,20 @@ final class CreateReservation
         self::ensureBookable($space, $startsAt, $endsAt, (int) $data['attendees']);
 
         try {
-            $reservation = DB::transaction(fn (): Reservation => Reservation::query()->create([
-                'space_id' => $space->id,
-                'starts_at' => $startsAt,
-                'ends_at' => $endsAt,
-                'title' => trim($data['title']),
-                'notes' => filled($data['notes'] ?? null) ? trim($data['notes']) : null,
-                'attendees' => (int) $data['attendees'],
-                'responsible_id' => (int) $data['responsible_id'],
-                'created_by' => $actor->id,
-            ]));
+            $reservation = DB::transaction(function () use ($actor, $space, $startsAt, $endsAt, $data): Reservation {
+                self::holdReservable($space);
+
+                return Reservation::query()->create([
+                    'space_id' => $space->id,
+                    'starts_at' => $startsAt,
+                    'ends_at' => $endsAt,
+                    'title' => trim($data['title']),
+                    'notes' => filled($data['notes'] ?? null) ? trim($data['notes']) : null,
+                    'attendees' => (int) $data['attendees'],
+                    'responsible_id' => (int) $data['responsible_id'],
+                    'created_by' => $actor->id,
+                ]);
+            });
         } catch (QueryException $e) {
             throw ConstraintViolation::toValidationException($e, field: self::fieldOf($e));
         }
@@ -100,6 +104,22 @@ final class CreateReservation
 
         if (Reservation::query()->overlapping($space->id, $startsAt, $endsAt, $ignoreId)->exists()) {
             throw ValidationException::withMessages(['start_time' => __('reservations.create.errors.overlap')]);
+        }
+    }
+
+    /**
+     * Inside the booking's transaction: take a shared lock on the space and check again that it is reservable, so a
+     * status change (ChangeSpaceStatus) or a delete (DeleteSpace) made meanwhile, which lock the row for update and
+     * count its reservations, cannot miss this one. Bookings of the same space do not block each other.
+     *
+     * @throws ValidationException
+     */
+    public static function holdReservable(Space $space): void
+    {
+        $current = Space::withTrashed()->with(['spaceType', 'status'])->whereKey($space->id)->sharedLock()->first();
+
+        if ($current === null || ! $current->isReservable()) {
+            throw ValidationException::withMessages(['space_id' => __('reservations.create.errors.not_reservable')]);
         }
     }
 

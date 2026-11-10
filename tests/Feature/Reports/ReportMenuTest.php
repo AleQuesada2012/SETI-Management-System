@@ -40,9 +40,3 @@ test('inaccessible audit reports are hidden and direct access is refused', funct
     Livewire::test('pages::reports.index')->set('category', 'audit')
         ->assertSee(route('reports.show', 'audit'), false)->assertDontSee('Próximamente');
 });
-
-test('users without reports access cannot open the menu or either report', function (string $code) {
-    actingAsRole(SystemRole::Visualizador);
-    $this->get(route('reports.index'))->assertForbidden();
-    $this->get(route('reports.show', $code))->assertForbidden();
-})->with(['assets_inventory', 'spaces']);

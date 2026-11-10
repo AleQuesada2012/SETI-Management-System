@@ -24,8 +24,11 @@ use LogicException;
  * | kind         | allowed when the asset is        | status afterwards |
  * |--------------|----------------------------------|-------------------|
  * | loss         | in service or in maintenance     | lost              |
- * | recovery     | lost                             | in service        |
+ * | recovery     | lost                             | in service (*)    |
  * | decommission | in service, in maintenance, lost | decommissioned    |
+ *
+ * (*) in maintenance when the asset was lost with a repair in progress: the repair is still open, so the asset comes
+ * back as it left. Finishing or cancelling that repair (RF_11) is what puts it in service.
  *
  * A decommission is terminal: the asset stays listed with its history, may only exit its space, and is read-only
  * (decision of 2026-10-16). PostgreSQL allows one decommission per asset (asset_events_one_decommission).
@@ -65,7 +68,7 @@ final class RegisterAssetEvent
                     'registered_by' => $actor->id,
                 ]);
 
-                $current->forceFill(['status' => self::statusAfter($kind)])->save();
+                $current->transitionTo(self::statusAfter($kind, $current));
 
                 return $event;
             });
@@ -94,11 +97,11 @@ final class RegisterAssetEvent
         };
     }
 
-    private static function statusAfter(AssetEventKind $kind): AssetStatus
+    private static function statusAfter(AssetEventKind $kind, Asset $asset): AssetStatus
     {
         return match ($kind) {
             AssetEventKind::Loss => AssetStatus::Lost,
-            AssetEventKind::Recovery => AssetStatus::InService,
+            AssetEventKind::Recovery => $asset->hasRepairInProgress() ? AssetStatus::InMaintenance : AssetStatus::InService,
             AssetEventKind::Decommission => AssetStatus::Decommissioned,
             AssetEventKind::Damage => throw new LogicException('A damage changes the condition, not the status (RF_13).'),
         };

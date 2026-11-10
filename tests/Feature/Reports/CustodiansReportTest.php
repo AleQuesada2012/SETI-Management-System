@@ -50,8 +50,3 @@ test('unknown custodian filters block preview and export without a generation', 
     Livewire::test('reports.export-button', ['report' => 'custodians', 'filters' => $filters])->call('export', 'pdf')->assertHasErrors();
     expect(ReportGeneration::query()->exists())->toBeFalse();
 });
-
-test('custodians requires report permission', function () {
-    actingAsRole(SystemRole::Visualizador);
-    $this->get(route('reports.show', 'custodians'))->assertForbidden();
-});

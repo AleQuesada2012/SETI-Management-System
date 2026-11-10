@@ -149,6 +149,22 @@ test('an account cannot be deactivated or reactivated twice', function () {
         ->toThrow(ValidationException::class, __('users.account.errors.already_active', ['user' => 'Jorge Ramírez']));
 });
 
+test('a second deactivation or reactivation from a stale page changes nothing and is not audited again', function () {
+    $superuser = userWithRole(SystemRole::Superusuario);
+    $user = User::factory()->create();
+    $stale = User::query()->findOrFail($user->id);
+
+    app(DeactivateUser::class)->handle($superuser, $user);
+    expect(fn () => app(DeactivateUser::class)->handle($superuser, $stale))->toThrow(ValidationException::class);
+
+    $stale = User::query()->findOrFail($user->id);
+    app(ReactivateUser::class)->handle($superuser, $user);
+    expect(fn () => app(ReactivateUser::class)->handle($superuser, $stale))->toThrow(ValidationException::class);
+
+    expect(AuditLog::query()->where('entity_type', 'user')->where('entity_id', $user->id)
+        ->whereIn('action', [AuditAction::Deactivated, AuditAction::Reactivated])->count())->toBe(2);
+});
+
 test('an Administrador cannot deactivate or reactivate accounts', function () {
     $admin = actingAsRole(SystemRole::Administrador);
     $user = userWithRole(SystemRole::Reservante);

@@ -626,9 +626,9 @@ Laravel services apply these **in the same transaction**, audited under one `req
 | Register a damage (RF_13) | `asset_events(damage)` + evidence | condition → a red-group condition the user picks (default "Dañado"). This removes RF_13's circular "the asset must already be red". |
 | Start corrective maintenance (RF_11) | `maintenance_records(corrective, in_progress)` | status → `in_maintenance`; the red condition stays |
 | Complete corrective maintenance (RF_11) | update → `completed` (or inserted already `completed`) | status → `in_service`; the user picks the new condition ("en funcionamiento": green or amber group) |
-| Cancel an in-progress corrective job | update → `cancelled` | status → `in_service`; condition unchanged |
+| Cancel an in-progress corrective job | update → `cancelled` | status → `in_service`; condition unchanged. Allowed whatever the asset's status (a lost or decommissioned asset keeps it), so a repair never stays open for ever. |
 | Register a loss (RF_28) | `asset_events(loss)` | status → `lost` |
-| Register a recovery | `asset_events(recovery)` | status → `in_service` |
+| Register a recovery | `asset_events(recovery)` | status → `in_service`, or `in_maintenance` when the asset was lost with a repair still in progress |
 | Decommission (RF_29) | `asset_events(decommission)` | status → `decommissioned`. Terminal: no transfers, maintenance or components afterwards. |
 
 Preventive maintenance doesn't change the status; it is usually done in place. Maintenance registered as already done

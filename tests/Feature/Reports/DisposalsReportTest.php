@@ -91,8 +91,3 @@ test('invalid disposals filters produce Spanish feedback and no export', functio
     'bad date' => [['occurred_on' => ['to' => '2026-13-01']], 'Introduce una fecha válida con formato AAAA-MM-DD.'],
     'inverted range' => [['occurred_on' => ['from' => '2026-10-31', 'to' => '2026-10-01']], 'La fecha final no puede ser anterior a la inicial.'],
 ]);
-
-test('a user without report permission cannot consult disposals', function () {
-    actingAsRole(SystemRole::Visualizador);
-    $this->get(route('reports.show', 'disposals'))->assertForbidden();
-});

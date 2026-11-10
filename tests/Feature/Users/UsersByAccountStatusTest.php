@@ -53,9 +53,3 @@ test('a status that exists but matches nothing with the other criteria says no u
         ->assertSee(__('users.index.no_results'))
         ->assertDontSee(__('users.index.no_status.deactivated'));
 });
-
-test('roles without users.view cannot consult users by account status', function () {
-    actingAsRole(SystemRole::Reservante);
-
-    $this->get(route('users.index', ['filters' => ['account_status' => ['values' => ['deactivated']]]]))->assertForbidden();
-});

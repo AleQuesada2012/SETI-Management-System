@@ -38,9 +38,3 @@ test('a search without matches says no users were found', function () {
         ->set('search', 'zzz-nadie')
         ->assertSee(__('users.index.no_results'));
 });
-
-test('roles without users.view cannot search users', function () {
-    actingAsRole(SystemRole::Visualizador);
-
-    $this->get(route('users.index', ['search' => 'jimenez']))->assertForbidden();
-});

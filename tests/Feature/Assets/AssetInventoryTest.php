@@ -48,6 +48,10 @@ test('search treats % and _ literally', function () {
 
     expect(inventoryCodes(['search' => '%']))->toBe([])
         ->and(inventoryCodes(['search' => '_']))->toBe([]);
+
+    $literal = Asset::factory()->inSpace($this->lab)->create(['model' => 'Portátil 100%_\\']);
+
+    expect(inventoryCodes(['model' => ['contains' => '100%_\\']]))->toBe([$literal->code]);
 });
 
 test('each criterion keeps only the assets that meet it', function () {

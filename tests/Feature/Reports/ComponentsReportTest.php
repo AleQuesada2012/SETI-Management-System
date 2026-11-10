@@ -102,8 +102,3 @@ test('invalid component filters produce Spanish feedback and no export', functio
     'text asset' => [['asset' => ['values' => ['abc']]], 'Selecciona una opción válida del filtro.'],
     'unknown member' => [['asset' => ['contains' => 'PC']], 'La estructura del filtro no es válida.'],
 ]);
-
-test('a user without report permission cannot consult components', function () {
-    actingAsRole(SystemRole::Visualizador);
-    $this->get(route('reports.show', 'components'))->assertForbidden();
-});

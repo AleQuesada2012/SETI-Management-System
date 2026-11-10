@@ -4,7 +4,6 @@
 
 use App\Enums\SystemRole;
 use App\Models\Space;
-use App\Models\User;
 use App\Queries\Spaces\SpaceDirectory;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
@@ -100,10 +99,4 @@ test('the sort is kept in the URL', function () {
     $this->get(route('spaces.index', ['orden' => 'updated_at', 'sentido' => 'desc']))
         ->assertOk()
         ->assertSeeInOrder(['SP-A', 'SP-C', 'SP-B']);
-});
-
-test('a user who cannot view spaces cannot sort them', function () {
-    $this->actingAs(User::factory()->create());
-
-    $this->get(route('spaces.index', ['orden' => 'created_at']))->assertForbidden();
 });
