@@ -8,6 +8,7 @@ use App\Enums\SystemRole;
 use App\Models\AuditLog;
 use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\DemoSeeder;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -49,6 +50,16 @@ test('the other roles may leave two-factor authentication off', function (System
 
     $this->get(route('spaces.index'))->assertOk();
 })->with([SystemRole::Reportes, SystemRole::Visualizador, SystemRole::Reservante]);
+
+test('the demo Superusuario and Administradores sign in with their password alone', function () {
+    $this->seed(DemoSeeder::class);
+
+    foreach (['superusuario@seti.test', 'admin@seti.test'] as $email) {
+        $this->post(route('login.store'), ['email' => $email, 'password' => 'password']);
+        $this->assertAuthenticated();
+        $this->post(route('logout'));
+    }
+});
 
 test('the requirement can be turned off for local demo data', function () {
     config(['auth.two_factor_required' => false]);
