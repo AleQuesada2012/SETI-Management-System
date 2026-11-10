@@ -123,7 +123,8 @@ eventos de los activos que están (o estuvieron por última vez) en los espacios
 2. Elige el tipo; solo aparecen los que el estado del activo permite:
    - **Pérdida** (activo en servicio o en mantenimiento): queda **Perdido**, deja de contarse como disponible y no se
      puede trasladar.
-   - **Recuperación** (activo perdido): el activo apareció y vuelve a **En servicio**.
+   - **Recuperación** (activo perdido): el activo apareció y vuelve a **En servicio**, o a **En mantenimiento** si se
+     perdió con una reparación en curso.
    - **Baja** (activo en servicio, en mantenimiento o perdido): es definitiva.
 3. Indica la fecha (no puede ser futura ni anterior a la adquisición) y una descripción o el motivo de la baja, y pulsa
    **Registrar**. Un aviso lo confirma y la tarjeta **Estado** muestra la fecha de la pérdida o de la baja.
@@ -213,11 +214,18 @@ Una reparación **En curso** muestra en su fila:
 - **Cancelar:** para una reparación registrada por error o que no se hará, con un motivo opcional. El activo vuelve a
   estar en servicio sin cambiar su condición, y la reparación queda como **Cancelado**.
 
+Si el activo se pierde o se da de baja mientras su reparación está **En curso**, la fila solo ofrece **Cancelar**: la
+reparación queda como **Cancelado** y el activo conserva su estado (**Perdido** o **De baja**), así la reparación no
+queda abierta. Si un activo perdido con una reparación en curso aparece, su recuperación lo deja **En mantenimiento**
+hasta que finalices o canceles esa reparación.
+
 Un activo en buen estado, perdido, dado de baja o que ya tiene una reparación en curso no ofrece **Registrar
 reparación**.
 
 ![Reparación en curso en computadora](activos-reparacion-escritorio.jpg)
 ![Finalizar una reparación a 360 px](activos-reparacion-finalizar-movil.jpg)
+![Reparación en curso de un activo perdido en computadora](activos-reparacion-perdido-escritorio.jpg)
+![Cancelar la reparación de un activo perdido a 360 px](activos-reparacion-perdido-movil.jpg)
 
 ## Programar mantenimiento (RF_27)
 
