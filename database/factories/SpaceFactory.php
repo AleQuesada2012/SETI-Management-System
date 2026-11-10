@@ -21,7 +21,8 @@ class SpaceFactory extends Factory
      */
     public function definition(): array
     {
-        $number = fake()->unique()->numberBetween(100, 999);
+        // Four digits: tests hard-code LAB-100 to LAB-999, and the unique indexes ignore case.
+        $number = fake()->unique()->numberBetween(1000, 9999);
 
         return [
             'code' => "LAB-{$number}",

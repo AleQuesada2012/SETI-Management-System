@@ -24,7 +24,8 @@ class AssetFactory extends Factory
     public function definition(): array
     {
         return [
-            'asset_tag' => fake()->unique()->bothify('TEC-#####'),
+            // Six digits: tests hard-code five-digit tags such as TEC-10001.
+            'asset_tag' => fake()->unique()->bothify('TEC-######'),
             'serial_number' => fake()->bothify('SN-????-########'),
             'asset_type_id' => fn () => AssetType::query()->where('name', 'Monitor')->value('id'),
             'model' => fake()->bothify('Modelo ###'),
