@@ -2,6 +2,11 @@
 #
 #   cp .env.production.example .env        # fill in every value
 #   docker compose -f compose.prod.yaml up -d --build
+#   docker compose -f compose.prod.yaml exec app php artisan db:seed --force   # catalogs, roles, permissions
+#   docker compose -f compose.prod.yaml exec app php artisan users:create-first-superuser <email> "<name>"
+#
+# The first Superusuario gets an invitation by email and sets up two-factor authentication at first sign-in; they
+# should keep the recovery codes safe, since nobody else can reset theirs.
 #
 # Only Caddy publishes ports (80/443, automatic HTTPS). The app, workers and PostgreSQL talk on the private
 # `seti` network. Uploaded files and exported reports live in the `storage` volume on the VM disk; back up

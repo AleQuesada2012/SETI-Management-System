@@ -64,6 +64,10 @@ return [
         'submit' => 'Registrar',
         'done' => 'Se registró a :user y se envió la invitación a :email.',
     ],
+    'first_superuser' => [
+        'exists' => 'Ya hay un Superusuario: registra a los demás usuarios desde la aplicación (Usuarios y roles).',
+        'invited' => 'Se creó el Superusuario :user y se envió la invitación a :email. El enlace vence en :hours horas; al ingresar deberá activar la autenticación en dos pasos.',
+    ],
     'invitation' => [
         'subject' => 'Tu invitación a SETI Activos',
         'introduction' => 'Se creó tu cuenta en SETI Activos. Define tu contraseña para comenzar.',
