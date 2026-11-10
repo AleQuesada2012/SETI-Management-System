@@ -74,8 +74,9 @@ test('a deactivated user loses an open session on the next request', function ()
 
     $user->forceFill(['deactivated_at' => now()])->save();
 
-    $this->get(route('profile.edit'))->assertRedirect(route('login'));
+    $this->get(route('profile.edit'))->assertRedirect(route('login', ['reason' => 'deactivated']));
     $this->assertGuest();
+    $this->get(route('login', ['reason' => 'deactivated']))->assertSee(__('auth.deactivated'));
 });
 
 test('sign-in, failed attempts and sign-out are audited', function () {

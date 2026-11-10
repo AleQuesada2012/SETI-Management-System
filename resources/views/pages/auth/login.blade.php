@@ -5,6 +5,12 @@
 
         <x-auth-session-status :status="session('status')" />
 
+        @if ($signedOut = \App\Http\Responses\SignedOut::message(request()->query('reason')))
+            <div class="text-center text-sm font-medium text-status-bad" role="alert" data-test="signed-out-reason">
+                {{ $signedOut }}
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-5">
             @csrf
 

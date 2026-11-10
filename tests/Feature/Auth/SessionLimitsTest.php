@@ -15,17 +15,25 @@ test('a session ends nine hours after sign-in, even while it is in use', functio
     }
 
     $this->travel(1)->hours();
-    $this->get(route('profile.edit'))
-        ->assertRedirect(route('login'))
-        ->assertSessionHasErrors(['email' => __('auth.session_expired')]);
+    $this->get(route('profile.edit'))->assertRedirect(route('login', ['reason' => 'expired']));
     $this->assertGuest();
+});
+
+test('the sign-in page says why the session ended, however many times it loads', function () {
+    // A Livewire request follows the redirect itself and the browser then loads the page again: a flashed message
+    // would be gone by the second load, the reason in the URL is not.
+    foreach (range(1, 2) as $load) {
+        $this->get(route('login', ['reason' => 'expired']))->assertOk()->assertSee(__('auth.session_expired'));
+    }
+
+    $this->get(route('login', ['reason' => 'anything-else']))->assertOk()->assertDontSee('data-test="signed-out-reason"', false);
 });
 
 test('signing in again starts a new nine hours', function () {
     $user = User::factory()->create();
     $this->actingAs($user)->get(route('profile.edit'))->assertOk();
     $this->travel(9)->hours();
-    $this->get(route('profile.edit'))->assertRedirect(route('login'));
+    $this->get(route('profile.edit'))->assertRedirect(route('login', ['reason' => 'expired']));
 
     $this->post(route('login.store'), ['email' => $user->email, 'password' => 'password']);
     $this->get(route('profile.edit'))->assertOk();
