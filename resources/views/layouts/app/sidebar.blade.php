@@ -44,8 +44,14 @@
                 @endcan
 
                 @can(App\Enums\PermissionName::ReportsView)
-                    <flux:sidebar.item icon="chart-bar" :href="route('reports.index')" :current="request()->routeIs('reports.*')" wire:navigate>
+                    <flux:sidebar.item icon="chart-bar" :href="route('reports.index')" :current="request()->routeIs('reports.*') && ! request()->routeIs('reports.powerbi')" wire:navigate>
                         {{ __('app.nav.reports') }}
+                    </flux:sidebar.item>
+                @endcan
+
+                @can(App\Enums\PermissionName::DashboardsPowerbi)
+                    <flux:sidebar.item icon="presentation-chart-line" :href="route('reports.powerbi')" :current="request()->routeIs('reports.powerbi')" wire:navigate>
+                        {{ __('app.nav.powerbi') }}
                     </flux:sidebar.item>
                 @endcan
 

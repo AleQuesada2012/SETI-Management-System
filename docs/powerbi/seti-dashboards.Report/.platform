@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "seti-dashboards"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2f11692b-e3b8-4f78-b2e1-2ad4de74ada1"
+  }
+}

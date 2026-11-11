@@ -36,6 +36,7 @@ enum PermissionName: string
     case ReservationsManageOwn = 'reservations.manage_own';
     case ReservationsManageAny = 'reservations.manage_any';
     case DashboardsView = 'dashboards.view';
+    case DashboardsPowerbi = 'dashboards.powerbi';
     case ReportsView = 'reports.view';
     case ReportsExport = 'reports.export';
     case ReportsAudit = 'reports.audit';
@@ -76,6 +77,7 @@ enum PermissionName: string
             self::ReservationsManageOwn => 'Modificar y cancelar las reservas propias',
             self::ReservationsManageAny => 'Modificar y cancelar reservas de otras personas',
             self::DashboardsView => 'Ver tableros e indicadores',
+            self::DashboardsPowerbi => 'Ver los tableros interactivos de Power BI',
             self::ReportsView => 'Generar y consultar reportes',
             self::ReportsExport => 'Exportar reportes en PDF y XLSX',
             self::ReportsAudit => 'Consultar la auditoría y la actividad de los usuarios',

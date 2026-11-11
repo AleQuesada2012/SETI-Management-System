@@ -1,0 +1,336 @@
+table Activos
+	lineageTag: e368b9d3-d641-4de2-a748-3cef83495338
+
+	measure 'Total activos' = COUNTROWS(Activos)
+		formatString: #,0
+		lineageTag: a3064e9c-193d-4586-a6c5-022b4f9bee75
+
+	measure 'Activos en servicio' = CALCULATE(COUNTROWS(Activos), Activos[status] = "in_service") + 0
+		formatString: #,0
+		lineageTag: 8c1f01f0-0f95-4e83-a329-dae6b52d5e00
+
+	measure 'Activos en mantenimiento' = CALCULATE(COUNTROWS(Activos), Activos[status] = "in_maintenance") + 0
+		formatString: #,0
+		lineageTag: 466ccae5-dbe0-4339-adde-afa0571cbccd
+
+	measure 'Activos dañados' = CALCULATE(COUNTROWS(Activos), Activos[condition] = "Dañado") + 0
+		formatString: #,0
+		lineageTag: b3e9ad7f-89e9-4ff4-a631-f095ada3c686
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: bda932fe-00b4-4fb3-aa2f-2b1a5bbc115d
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column code
+		dataType: string
+		lineageTag: c666c6e9-4061-4b9a-b524-6502e5b7cb39
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_tag
+		dataType: string
+		lineageTag: 54fe8ae3-2b1b-40e8-8a87-cea8e68014fc
+		summarizeBy: none
+		sourceColumn: asset_tag
+
+		annotation SummarizationSetBy = Automatic
+
+	column serial_number
+		dataType: string
+		lineageTag: 3fcaeaea-72b2-4f1d-8905-73dcdea74ad8
+		summarizeBy: none
+		sourceColumn: serial_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column display_name
+		dataType: string
+		lineageTag: e9ae4811-7480-48fd-b589-7b6aaf8d6781
+		summarizeBy: none
+		sourceColumn: display_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 149f2ca8-ab8a-469f-94f6-394f2965f640
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column category_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9751742a-23fc-406a-91d4-1fea81d2dce4
+		summarizeBy: none
+		sourceColumn: category_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: fe6b27ff-a24d-4450-a2ca-701af952dd97
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_type_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3b84a76a-5467-4de0-a67e-e199bc33a50e
+		summarizeBy: none
+		sourceColumn: asset_type_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_type
+		dataType: string
+		lineageTag: f06294e1-1faa-4c18-b5fa-86c4e4ea85ea
+		summarizeBy: none
+		sourceColumn: asset_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column brand_id
+		dataType: int64
+		formatString: 0
+		lineageTag: bd6b8b47-29dd-44f9-b510-92b5a11a275e
+		summarizeBy: none
+		sourceColumn: brand_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column brand
+		dataType: string
+		lineageTag: b9377b3e-2187-4e9a-9e72-a4f8a27e360f
+		summarizeBy: none
+		sourceColumn: brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column model
+		dataType: string
+		lineageTag: 82aaf4ec-62c0-47f0-a01a-06b28ac96ebf
+		summarizeBy: none
+		sourceColumn: model
+
+		annotation SummarizationSetBy = Automatic
+
+	column condition_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9f387564-6e7c-483c-b412-3937c0bcb921
+		summarizeBy: none
+		sourceColumn: condition_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column condition
+		dataType: string
+		lineageTag: c941e446-ab81-4e5e-bcbd-61179a04c42d
+		summarizeBy: none
+		sourceColumn: condition
+
+		annotation SummarizationSetBy = Automatic
+
+	column condition_color
+		dataType: string
+		lineageTag: 0579c648-75ef-4ea5-a699-a14191d4ad95
+		summarizeBy: none
+		sourceColumn: condition_color
+
+		annotation SummarizationSetBy = Automatic
+
+	column condition_note
+		dataType: string
+		lineageTag: 382316c9-a21b-4693-98e4-b6cdd869c821
+		summarizeBy: none
+		sourceColumn: condition_note
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 93b7227e-e4c2-4c33-a01b-03b3202de216
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_id
+		dataType: int64
+		formatString: 0
+		lineageTag: cb2079e8-90f1-4532-9cc0-9adf39277cbe
+		summarizeBy: none
+		sourceColumn: space_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_code
+		dataType: string
+		lineageTag: 5e9df8af-0f31-42bb-8dfc-e7203ace809e
+		summarizeBy: none
+		sourceColumn: space_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column space_name
+		dataType: string
+		lineageTag: afc83746-41fb-4679-a1fa-c88d052181e3
+		summarizeBy: none
+		sourceColumn: space_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column building
+		dataType: string
+		lineageTag: c9df2a76-e35b-4564-b0b5-dbb500aef659
+		summarizeBy: none
+		sourceColumn: building
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_detail
+		dataType: string
+		lineageTag: 9ab41fcc-bf12-4293-a759-3a34b22e1bb1
+		summarizeBy: none
+		sourceColumn: location_detail
+
+		annotation SummarizationSetBy = Automatic
+
+	column responsible_user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 321f3165-d092-4511-b27c-5bceb7eb58ab
+		summarizeBy: none
+		sourceColumn: responsible_user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column responsible_name
+		dataType: string
+		lineageTag: 880a3f66-e322-448c-8372-574997b0f8b9
+		summarizeBy: none
+		sourceColumn: responsible_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column responsible_email
+		dataType: string
+		lineageTag: 07655b94-edbe-4689-99f1-90eba29be421
+		summarizeBy: none
+		sourceColumn: responsible_email
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a40fcb03-8ddc-4a9b-a0f6-7c58df832987
+		summarizeBy: none
+		sourceColumn: supplier_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier
+		dataType: string
+		lineageTag: 0d72f2b0-6104-4dc8-9242-3f0c5e98e0b6
+		summarizeBy: none
+		sourceColumn: supplier
+
+		annotation SummarizationSetBy = Automatic
+
+	column acquired_on
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e8ad57ab-a9d2-400e-808e-eb4c822fbf14
+		summarizeBy: none
+		sourceColumn: acquired_on
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column warranty_starts_on
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5ef50691-3450-4b7d-a775-6aba80d225ee
+		summarizeBy: none
+		sourceColumn: warranty_starts_on
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column warranty_ends_on
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e2e2d605-a150-4fe2-8678-1a32a5cdd146
+		summarizeBy: none
+		sourceColumn: warranty_ends_on
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column warranty_state
+		dataType: string
+		lineageTag: f4c0cdf3-cff1-4cde-8c69-74b6519e8d87
+		summarizeBy: none
+		sourceColumn: warranty_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column observations
+		dataType: string
+		lineageTag: 7f90fd28-5b5c-474d-bf1f-626c9ff5211b
+		summarizeBy: none
+		sourceColumn: observations
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b5d53b31-4c40-461d-9c98-0b17f776573c
+		summarizeBy: none
+		sourceColumn: created_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d71b5e84-545b-4da4-9c59-1322736ace4a
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estado = SWITCH([status], "in_service", "En servicio", "in_maintenance", "En mantenimiento", "lost", "Perdido", "decommissioned", "De baja", [status])
+		dataType: string
+		lineageTag: 6221202f-2551-436f-a4f1-786e072bdff8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Activos = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "assets"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

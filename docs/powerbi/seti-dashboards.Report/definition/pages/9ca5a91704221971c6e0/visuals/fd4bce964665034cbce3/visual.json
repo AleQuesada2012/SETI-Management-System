@@ -1,0 +1,260 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "fd4bce964665034cbce3",
+  "position": {
+    "x": 16,
+    "y": 446,
+    "z": 1100,
+    "height": 262,
+    "width": 1248,
+    "tabOrder": 1100
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "code"
+                }
+              },
+              "queryRef": "Activos.code",
+              "nativeQueryRef": "Código",
+              "active": true,
+              "displayName": "Código"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "display_name"
+                }
+              },
+              "queryRef": "Activos.display_name",
+              "nativeQueryRef": "Activo",
+              "active": true,
+              "displayName": "Activo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "category"
+                }
+              },
+              "queryRef": "Activos.category",
+              "nativeQueryRef": "Categoría",
+              "active": true,
+              "displayName": "Categoría"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "Estado"
+                }
+              },
+              "queryRef": "Activos.Estado",
+              "nativeQueryRef": "Estado",
+              "active": true,
+              "displayName": "Estado"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "condition"
+                }
+              },
+              "queryRef": "Activos.condition",
+              "nativeQueryRef": "Condición",
+              "active": true,
+              "displayName": "Condición"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "space_name"
+                }
+              },
+              "queryRef": "Activos.space_name",
+              "nativeQueryRef": "Espacio",
+              "active": true,
+              "displayName": "Espacio"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "responsible_name"
+                }
+              },
+              "queryRef": "Activos.responsible_name",
+              "nativeQueryRef": "Responsable",
+              "active": true,
+              "displayName": "Responsable"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detalle de activos'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "5fef2d250984e00d166b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "adf33ee512558682b6ea",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "display_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a2960bcd0d9784ebd7b9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "category"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "d2d16d6527dc070dcd15",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "Estado"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a94b4496e7da4ebee1d4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "condition"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "781a0dfbc967ca48414c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "space_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "4b1ffa4b5ebb41c90105",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Activos"
+              }
+            },
+            "Property": "responsible_name"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

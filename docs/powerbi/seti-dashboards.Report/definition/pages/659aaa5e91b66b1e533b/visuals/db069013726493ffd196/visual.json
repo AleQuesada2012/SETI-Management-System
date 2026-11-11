@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "db069013726493ffd196",
+  "position": {
+    "x": 436,
+    "y": 188,
+    "z": 700,
+    "height": 250,
+    "width": 408,
+    "tabOrder": 700
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Roles de usuario"
+                    }
+                  },
+                  "Property": "role"
+                }
+              },
+              "queryRef": "Roles de usuario.role",
+              "nativeQueryRef": "Rol",
+              "displayName": "Rol",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Roles de usuario"
+                    }
+                  },
+                  "Property": "Usuarios con rol"
+                }
+              },
+              "queryRef": "Roles de usuario.Usuarios con rol",
+              "nativeQueryRef": "Usuarios",
+              "displayName": "Usuarios"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Roles de usuario"
+                  }
+                },
+                "Property": "Usuarios con rol"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Usuarios por rol'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

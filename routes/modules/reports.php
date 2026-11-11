@@ -25,6 +25,11 @@ Route::prefix('reportes')->name('reports.')->group(function () {
         ->middleware('can:'.PermissionName::ReportsView->value)
         ->name('statistics.reservations');
 
+    // RF_61 · the embedded Power BI dashboards.
+    Route::livewire('tableros', 'pages::reports.powerbi')
+        ->middleware('can:'.PermissionName::DashboardsPowerbi->value)
+        ->name('powerbi');
+
     // RF_84 · the history of exported reports.
     Route::livewire('generados', 'pages::reports.generations')
         ->middleware('can:viewAny,'.ReportGeneration::class)

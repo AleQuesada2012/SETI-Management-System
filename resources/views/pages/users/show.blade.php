@@ -439,7 +439,7 @@ new #[Title('users.show.title')] class extends Component
 
             <ul class="flex flex-col divide-y divide-line">
                 @foreach ($user->roles->sortBy('name') as $heldRole)
-                    <li wire:key="held-role-{{ $heldRole->id }}" class="flex flex-wrap items-center justify-between gap-2 py-2">
+                    <li wire:key="held-role-{{ $heldRole->id }}" class="flex flex-wrap items-center justify-between gap-2 px-3 py-2 even:bg-row-alt">
                         <flux:badge size="sm" color="blue">{{ $heldRole->name }}</flux:badge>
                         <div class="flex flex-wrap gap-1">
                             @if ($this->assignableRoles->isNotEmpty())
@@ -607,7 +607,7 @@ new #[Title('users.show.title')] class extends Component
             @else
                 <ul class="flex flex-col divide-y divide-line">
                     @foreach ($this->managedSpaces as $space)
-                        <li wire:key="managed-{{ $space->id }}" class="flex items-center gap-3 py-2">
+                        <li wire:key="managed-{{ $space->id }}" class="flex items-center gap-3 px-3 py-2 even:bg-row-alt">
                             @can(PermissionName::SpacesAssignManagers)
                                 <flux:checkbox wire:model="spacesToRemove" :value="$space->id" :aria-label="__('users.managed_spaces.select', ['space' => $space->code])" />
                             @endcan

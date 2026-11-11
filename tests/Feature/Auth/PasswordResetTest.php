@@ -8,6 +8,7 @@ use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Queue;
 
 // The password broker serves both "forgot password" and invitations (Q21).
@@ -89,6 +90,33 @@ test('asking for a link answers the same whether or not the email is registered'
     }
 
     Notification::assertSentToTimes($user, ResetPassword::class, 1);
+});
+
+test('a deactivated account gets no link, and the form answers as for any email (RF_88)', function () {
+    Notification::fake();
+    $user = User::factory()->deactivated()->create();
+
+    $this->post(route('password.email'), ['email' => $user->email])
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('status', __('passwords.sent'));
+
+    Notification::assertNothingSent();
+});
+
+test('a link sent before the account was deactivated no longer changes its password', function () {
+    $user = User::factory()->create();
+    $token = Password::broker()->createToken($user);
+    $user->forceFill(['deactivated_at' => now()])->save();
+
+    $this->post(route('password.update'), [
+        'token' => $token,
+        'email' => $user->email,
+        'password' => 'una-contrasena-larga',
+        'password_confirmation' => 'una-contrasena-larga',
+    ])->assertSessionHasErrors(['email' => __('auth.deactivated')]);
+
+    expect(Hash::check('una-contrasena-larga', $user->refresh()->password))->toBeFalse()
+        ->and(AuditLog::query()->where('action', AuditAction::PasswordReset)->exists())->toBeFalse();
 });
 
 test('resetting the password ends every open session of the user', function () {

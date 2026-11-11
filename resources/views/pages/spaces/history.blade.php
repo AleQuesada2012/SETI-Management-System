@@ -166,7 +166,7 @@ new #[Title('spaces.history.title')] class extends Component {
             <ol class="flex flex-col divide-y divide-line" data-test="space-history">
                 @foreach ($this->entries as $entry)
                     @php($item = $this->describe($entry))
-                    <li wire:key="{{ $entry->kind }}-{{ $entry->source_id }}" class="flex gap-3 py-3 first:pt-0 last:pb-0">
+                    <li wire:key="{{ $entry->kind }}-{{ $entry->source_id }}" class="flex gap-3 px-3 py-3 even:bg-row-alt">
                         <flux:icon :name="$item['icon']" class="mt-0.5 size-5 shrink-0 text-ink-muted" />
                         <div class="flex min-w-0 flex-1 flex-col gap-1">
                             <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">

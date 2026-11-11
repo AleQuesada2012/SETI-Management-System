@@ -1,0 +1,25 @@
+relationship 41d1a83f-3443-4b8d-a944-4bd27576b43a
+	fromColumn: Activos.space_id
+	toColumn: Espacios.id
+
+relationship dfddea06-ef2c-4be6-a7e2-746fd97278f3
+	fromColumn: Activos.responsible_user_id
+	toColumn: Usuarios.id
+
+relationship a47055c7-8810-4be3-a826-8a41b7658141
+	fromColumn: Mantenimientos.asset_id
+	toColumn: Activos.id
+
+relationship 62be48da-2f00-48f6-aa9b-9cd1abcd61dd
+	fromColumn: Reservas.space_id
+	toColumn: Espacios.id
+
+relationship 5aaf1152-e6e9-416c-a91b-f9fc35ad097b
+	fromColumn: Ocupación.space_id
+	toColumn: Espacios.id
+
+relationship 13980fc2-f02a-42c9-a455-539ec03e197c
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'Roles de usuario'.user_id
+	toColumn: Usuarios.id
+
