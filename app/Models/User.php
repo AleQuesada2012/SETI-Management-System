@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\PermissionName;
 use App\Enums\SystemRole;
+use App\Notifications\ResetPassword;
 use App\Support\Audit\Auditable;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -17,8 +18,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use SensitiveParameter;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -102,9 +105,39 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(User::class, 'deactivated_by');
     }
 
+    /** The reset email is queued, so the request answers as fast for a registered email as for any other. */
+    public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
+    {
+        $this->notify(new ResetPassword($token));
+    }
+
+    /**
+     * End the user's sessions at once (database sessions, SECURITY.md): on deactivation and whenever the password
+     * changes, so whoever held a session with the old password loses it. Pass the current session id to keep it.
+     */
+    public function endSessions(?string $exceptSessionId = null): void
+    {
+        DB::table((string) config('session.table'))
+            ->where('user_id', $this->id)
+            ->when($exceptSessionId !== null, fn ($sessions) => $sessions->where('id', '!=', $exceptSessionId))
+            ->delete();
+    }
+
     public function isActive(): bool
     {
         return $this->deactivated_at === null;
+    }
+
+    /** The roles that can change data in bulk sign in with two-factor authentication (SECURITY.md). */
+    public function mustUseTwoFactor(): bool
+    {
+        return $this->hasAnyRole([SystemRole::Superusuario->value, SystemRole::Administrador->value]);
+    }
+
+    /** Must use two-factor authentication and has not set it up (and confirmed it) yet: RequireTwoFactor. */
+    public function mustSetUpTwoFactor(): bool
+    {
+        return $this->mustUseTwoFactor() && ! $this->hasEnabledTwoFactorAuthentication();
     }
 
     public function isSuperuser(): bool

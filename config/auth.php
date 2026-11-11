@@ -118,6 +118,19 @@ return [
     |
     */
 
-    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+    // Seconds a confirmed password stays confirmed (the security page): as long as an idle session, never longer.
+    'password_timeout' => (int) env('AUTH_PASSWORD_TIMEOUT', 60 * (int) env('SESSION_LIFETIME', 120)),
+
+    // The Superusuario and the Administradores must set up two-factor authentication before using the application
+    // (App\Http\Middleware\RequireTwoFactor). On everywhere except `local`, where DemoSeeder's users have none; a
+    // missing variable in production therefore means "required".
+    'two_factor_required' => (bool) env('TWO_FACTOR_REQUIRED', env('APP_ENV', 'production') !== 'local'),
+
+    /*
+    | Microseconds every sign-in attempt and every "forgot password" request takes at least, so their duration does
+    | not tell a visitor whether the email has an account. Half a second covers hashing the reset token (about 0.2 s
+    | with 12 bcrypt rounds); the framework default of 0.2 s does not.
+    */
+    'timebox_duration' => (int) env('AUTH_TIMEBOX_DURATION', 500_000),
 
 ];

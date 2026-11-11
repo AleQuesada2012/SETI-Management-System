@@ -3,9 +3,12 @@
 use App\Enums\AuditAction;
 use App\Models\AuditLog;
 use App\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\ResetPassword;
+use Illuminate\Notifications\SendQueuedNotifications;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 
 // The password broker serves both "forgot password" and invitations (Q21).
 
@@ -72,4 +75,62 @@ test('passwords shorter than 12 characters are rejected', function () {
 
         return true;
     });
+});
+
+test('asking for a link answers the same whether or not the email is registered', function () {
+    Notification::fake();
+    $user = User::factory()->create();
+
+    foreach ([$user->email, 'nadie@tec.ac.cr', $user->email] as $email) {
+        // The third request is throttled by the broker, which would also reveal that the account exists.
+        $this->post(route('password.email'), ['email' => $email])
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status', __('passwords.sent'));
+    }
+
+    Notification::assertSentToTimes($user, ResetPassword::class, 1);
+});
+
+test('resetting the password ends every open session of the user', function () {
+    Notification::fake();
+    $user = User::factory()->create();
+    DB::table('sessions')->insert([
+        'id' => 'session-of-a-thief', 'user_id' => $user->id, 'ip_address' => '127.0.0.1',
+        'user_agent' => 'Pest', 'payload' => '', 'last_activity' => now()->timestamp,
+    ]);
+
+    $this->post(route('password.email'), ['email' => $user->email]);
+
+    Notification::assertSentTo($user, ResetPassword::class, function (ResetPassword $notification) use ($user) {
+        $this->post(route('password.update'), [
+            'token' => $notification->token,
+            'email' => $user->email,
+            'password' => 'una-contrasena-larga',
+            'password_confirmation' => 'una-contrasena-larga',
+        ])->assertSessionHasNoErrors();
+
+        return true;
+    });
+
+    expect(DB::table('sessions')->where('user_id', $user->id)->exists())->toBeFalse();
+});
+
+test('one address may ask for five links a minute', function () {
+    Notification::fake();
+
+    foreach (range(1, 5) as $attempt) {
+        $this->post(route('password.email'), ['email' => "nadie{$attempt}@tec.ac.cr"])->assertSessionHas('status');
+    }
+
+    $this->post(route('password.email'), ['email' => 'nadie6@tec.ac.cr'])->assertTooManyRequests();
+});
+
+test('the reset email is sent by the queue, with its token encrypted', function () {
+    Queue::fake();
+    $user = User::factory()->create();
+
+    $this->post(route('password.email'), ['email' => $user->email])->assertSessionHas('status');
+
+    Queue::assertPushed(SendQueuedNotifications::class, fn (SendQueuedNotifications $job) => $job->notification instanceof ResetPassword
+        && $job->shouldBeEncrypted);
 });

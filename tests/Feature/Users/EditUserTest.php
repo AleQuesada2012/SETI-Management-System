@@ -63,6 +63,23 @@ test('a new email for an active account must be verified: it is marked unverifie
     Notification::assertNotSentTo($user, UserInvitation::class);
 });
 
+test('a new email ends the user\'s open sessions; the Superusuario editing their own keeps theirs', function () {
+    $superuser = actingAsRole(SystemRole::Superusuario);
+    $user = User::factory()->create(['email' => 'old@seti.test']);
+    $session = fn (string $id, User $owner): array => [
+        'id' => $id, 'user_id' => $owner->id, 'ip_address' => '127.0.0.1', 'user_agent' => 'Pest', 'payload' => '',
+        'last_activity' => now()->timestamp,
+    ];
+    DB::table('sessions')->insert([$session('session-of-the-user', $user), $session(session()->getId(), $superuser), $session('superuser-elsewhere', $superuser)]);
+
+    app(UpdateUser::class)->handle($superuser, $user, ['name' => $user->name, 'email' => 'new@seti.test']);
+    expect(DB::table('sessions')->where('user_id', $user->id)->exists())->toBeFalse();
+
+    app(UpdateUser::class)->handle($superuser, $user, ['name' => 'Otro Nombre', 'email' => 'new@seti.test']);
+    app(UpdateUser::class)->handle($superuser, $superuser, ['name' => $superuser->name, 'email' => 'root.nuevo@seti.test']);
+    expect(DB::table('sessions')->where('user_id', $superuser->id)->pluck('id')->all())->toBe([session()->getId()]);
+});
+
 test('a new email for a pending invitation gets the invitation again', function () {
     $user = User::factory()->invited()->create(['email' => 'typo@seti.tset']);
 

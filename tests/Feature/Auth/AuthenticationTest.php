@@ -4,6 +4,7 @@ use App\Enums\AuditAction;
 use App\Enums\AuditChannel;
 use App\Models\AuditLog;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -73,8 +74,9 @@ test('a deactivated user loses an open session on the next request', function ()
 
     $user->forceFill(['deactivated_at' => now()])->save();
 
-    $this->get(route('profile.edit'))->assertRedirect(route('login'));
+    $this->get(route('profile.edit'))->assertRedirect(route('login', ['reason' => 'deactivated']));
     $this->assertGuest();
+    $this->get(route('login', ['reason' => 'deactivated']))->assertSee(__('auth.deactivated'));
 });
 
 test('sign-in, failed attempts and sign-out are audited', function () {
@@ -125,4 +127,14 @@ test('users with two-factor enabled are sent to the challenge', function () {
         ->assertRedirect(route('two-factor.login'));
 
     $this->assertGuest();
+});
+
+test('a crafted "remember" field gets no long-lived cookie: sessions end after 120 minutes', function () {
+    $user = User::factory()->create();
+
+    $this->post(route('login.store'), ['email' => $user->email, 'password' => 'password', 'remember' => 'on'])
+        ->assertSessionHasNoErrors()
+        ->assertCookieMissing(Auth::guard('web')->getRecallerName());
+
+    $this->assertAuthenticatedAs($user);
 });

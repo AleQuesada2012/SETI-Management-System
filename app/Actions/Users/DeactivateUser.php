@@ -56,7 +56,7 @@ final class DeactivateUser
                 'remember_token' => Str::random(60),
             ])->save();
 
-            DB::table('sessions')->where('user_id', $user->id)->delete();
+            $user->endSessions();
 
             Audit::record(AuditAction::Deactivated, $user, actor: $actor);
         });

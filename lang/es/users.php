@@ -64,6 +64,10 @@ return [
         'submit' => 'Registrar',
         'done' => 'Se registró a :user y se envió la invitación a :email.',
     ],
+    'first_superuser' => [
+        'exists' => 'Ya hay un Superusuario: registra a los demás usuarios desde la aplicación (Usuarios y roles).',
+        'invited' => 'Se creó el Superusuario :user y se envió la invitación a :email. El enlace vence en :hours horas; al ingresar deberá activar la autenticación en dos pasos.',
+    ],
     'invitation' => [
         'subject' => 'Tu invitación a SETI Activos',
         'introduction' => 'Se creó tu cuenta en SETI Activos. Define tu contraseña para comenzar.',
@@ -209,6 +213,19 @@ return [
             'last_superuser' => 'No se puede desactivar al último Superusuario activo: el sistema se quedaría sin quien lo administre.',
             'already_deactivated' => 'La cuenta de :user ya está desactivada.',
             'already_active' => 'La cuenta de :user ya está activa.',
+        ],
+    ],
+    'two_factor' => [
+        'heading' => 'Autenticación en dos pasos',
+        'enabled_help' => 'Esta persona inicia sesión con un código de su teléfono. Si perdió el teléfono y sus códigos de recuperación, restablécela para que pueda volver a entrar.',
+        'reset' => 'Restablecer',
+        'confirm_heading' => '¿Restablecer la autenticación en dos pasos?',
+        'confirm_help' => 'Confirma primero, por otro medio, que es :user quien lo pide. Se cerrarán sus sesiones abiertas y entrará solo con su contraseña hasta que la active de nuevo.',
+        'confirm' => 'Sí, restablecer',
+        'done' => 'Se restableció la autenticación en dos pasos de :user.',
+        'errors' => [
+            'self' => 'Desactiva tu propia autenticación en dos pasos desde tu página de seguridad.',
+            'not_enabled' => ':user no tiene activa la autenticación en dos pasos.',
         ],
     ],
     'roles' => [

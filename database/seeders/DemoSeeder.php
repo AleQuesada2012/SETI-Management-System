@@ -73,9 +73,11 @@ class DemoSeeder extends Seeder
             'profesora' => ['Daniela Quirós', 'profesora@seti.test', [SystemRole::Visualizador, SystemRole::Reservante]],
         ];
 
+        // Demo accounts sign in with the password alone; with TWO_FACTOR_REQUIRED on, the Superusuario and the
+        // Administradores are sent to set up two-factor authentication, so it can be demonstrated.
         $users = [];
         foreach ($people as $key => [$name, $email, $roles]) {
-            $users[$key] = User::factory()->withRole(...$roles)->create(['name' => $name, 'email' => $email]);
+            $users[$key] = User::factory()->withRole(...$roles)->withoutTwoFactor()->create(['name' => $name, 'email' => $email]);
         }
 
         User::factory()->withRole(SystemRole::Visualizador)->deactivated()

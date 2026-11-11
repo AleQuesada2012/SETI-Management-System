@@ -38,6 +38,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Absolute Session Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Minutes after sign-in at which a session ends even while it is in use
+    | (App\Http\Middleware\EnforceSessionLifetime). Nine hours covers a
+    | working day; "lifetime" above only ends sessions that sit idle.
+    |
+    */
+
+    'absolute_lifetime' => (int) env('SESSION_ABSOLUTE_LIFETIME', 540),
+
+    /*
+    |--------------------------------------------------------------------------
     | Session Encryption
     |--------------------------------------------------------------------------
     |
@@ -47,7 +60,7 @@ return [
     |
     */
 
-    'encrypt' => env('SESSION_ENCRYPT', false),
+    'encrypt' => env('SESSION_ENCRYPT', true),
 
     /*
     |--------------------------------------------------------------------------

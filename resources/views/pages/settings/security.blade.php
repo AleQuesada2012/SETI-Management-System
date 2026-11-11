@@ -63,6 +63,9 @@ new #[Title('Security settings')] class extends Component {
             'password' => $validated['password'],
         ]);
 
+        // Sessions opened with the old password on other devices end now; this one stays.
+        Auth::user()->endSessions(exceptSessionId: session()->getId());
+
         $this->reset('current_password', 'password', 'password_confirmation');
 
         Flux::toast(variant: 'success', text: __('Password updated.'));
@@ -132,6 +135,12 @@ new #[Title('Security settings')] class extends Component {
 
         @if ($canManageTwoFactor)
             <section class="mt-12">
+                @if (config('auth.two_factor_required') && auth()->user()->mustSetUpTwoFactor())
+                    <flux:callout color="amber" icon="shield-exclamation" class="mb-6" data-test="two-factor-required">
+                        <flux:callout.text>{{ __('security.two_factor.required') }}</flux:callout.text>
+                    </flux:callout>
+                @endif
+
                 <flux:heading>{{ __('Two-factor authentication') }}</flux:heading>
                 <flux:subheading>{{ __('Manage your two-factor authentication settings') }}</flux:subheading>
 

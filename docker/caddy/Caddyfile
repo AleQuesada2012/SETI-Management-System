@@ -3,8 +3,9 @@
 {$APP_DOMAIN} {
 	encode zstd gzip
 
-	# WebSockets for Reverb (notifications, live dashboards).
-	@reverb path /app/* /apps/*
+	# WebSockets for Reverb (notifications, live dashboards). Only /app/* (browser connections) is public: /apps/* is
+	# Reverb's publish API, which the app calls inside the Docker network (REVERB_HOST=reverb), never from the internet.
+	@reverb path /app/*
 	reverse_proxy @reverb reverb:8000
 
 	reverse_proxy app:8080

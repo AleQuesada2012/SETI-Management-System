@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Responses\SignedOut;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -18,13 +18,7 @@ class EnsureUserIsActive
         $user = $request->user();
 
         if ($user !== null && $user->deactivated_at !== null) {
-            Auth::guard('web')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect()->route('login')->withErrors([
-                'email' => __('auth.deactivated'),
-            ]);
+            return SignedOut::because($request, 'deactivated');
         }
 
         return $next($request);

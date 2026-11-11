@@ -5,6 +5,7 @@ use App\Actions\Spaces\RemoveSpaceManager;
 use App\Actions\Users\AssignRole;
 use App\Actions\Users\ChangeRole;
 use App\Actions\Users\DeactivateUser;
+use App\Actions\Users\ResetTwoFactor;
 use App\Actions\Users\ReactivateUser;
 use App\Actions\Users\RemoveRole;
 use App\Enums\PermissionName;
@@ -331,6 +332,21 @@ new #[Title('users.show.title')] class extends Component
 
         $this->user->refresh();
         Flux::toast(variant: 'success', text: __('users.account.deactivated', ['user' => $this->user->name]));
+    }
+
+    /** Clear the user's two-factor authentication after the confirmation window (lost device). */
+    public function resetTwoFactor(ResetTwoFactor $resetTwoFactor): void
+    {
+        $this->authorize('resetTwoFactor', $this->user);
+
+        try {
+            $resetTwoFactor->handle(auth()->user(), $this->user);
+        } finally {
+            Flux::modal('reset-two-factor')->close();
+        }
+
+        $this->user->refresh();
+        Flux::toast(variant: 'success', text: __('users.two_factor.done', ['user' => $this->user->name]));
     }
 
     /** RF_88 criterion 4, RF_98: give access back after the confirmation window. */
@@ -669,6 +685,36 @@ new #[Title('users.show.title')] class extends Component
                             <flux:button variant="ghost">{{ __('users.managed_spaces.cancel') }}</flux:button>
                         </flux:modal.close>
                         <flux:button type="submit" variant="danger">{{ __('users.managed_spaces.confirm_submit') }}</flux:button>
+                    </div>
+                </form>
+            </flux:modal>
+        @endcan
+    @endif
+
+    @if ($user->two_factor_secret !== null && ! auth()->user()->is($user))
+        @can('resetTwoFactor', $user)
+            <flux:card class="flex flex-col gap-3" data-test="two-factor-reset">
+                <flux:heading level="3">{{ __('users.two_factor.heading') }}</flux:heading>
+                <flux:text>{{ __('users.two_factor.enabled_help') }}</flux:text>
+                <div>
+                    <flux:modal.trigger name="reset-two-factor">
+                        <flux:button variant="danger" icon="device-phone-mobile">{{ __('users.two_factor.reset') }}</flux:button>
+                    </flux:modal.trigger>
+                </div>
+                <flux:error name="two_factor" />
+            </flux:card>
+
+            <flux:modal name="reset-two-factor" class="w-full max-w-md">
+                <form wire:submit="resetTwoFactor" class="flex flex-col gap-5">
+                    <div>
+                        <flux:heading size="lg">{{ __('users.two_factor.confirm_heading') }}</flux:heading>
+                        <flux:text class="mt-2">{{ __('users.two_factor.confirm_help', ['user' => $user->name]) }}</flux:text>
+                    </div>
+                    <div class="flex justify-end gap-2">
+                        <flux:modal.close>
+                            <flux:button variant="ghost">{{ __('users.account.cancel') }}</flux:button>
+                        </flux:modal.close>
+                        <flux:button type="submit" variant="danger">{{ __('users.two_factor.confirm') }}</flux:button>
                     </div>
                 </form>
             </flux:modal>

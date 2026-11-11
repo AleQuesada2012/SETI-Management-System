@@ -33,6 +33,11 @@ final class AssignRole
             $user->assignRole($role);
 
             Audit::record(AuditAction::RoleAssigned, $user, new: ['role' => $role->name], actor: $actor);
+
+            // A role that needs two-factor authentication: pages left open before the change must not keep working.
+            if ($user->unsetRelation('roles')->mustSetUpTwoFactor() && ! $actor->is($user)) {
+                $user->endSessions();
+            }
         });
 
         $this->permissions->forgetCachedPermissions();
