@@ -439,6 +439,7 @@ spaces (§6).
 | `reservations.create` · `reservations.manage_own` | ✓ | ✓ | | | ✓ |
 | `reservations.manage_any` | ✓ | ✓★ | | | |
 | `dashboards.view` | ✓ | ✓ | ✓ | | |
+| `dashboards.powerbi` (RF_61; the Superusuario grants it through a role) | ✓ | | | | |
 | `reports.view` · `reports.export` · `reports.audit` | ✓ | | ✓ | | |
 | `reports.history` (RF_84) | ✓ | | | | |
 | `users.view` | ✓ | ✓ | | | |

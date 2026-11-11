@@ -1,0 +1,817 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "activos.activos_dañados": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "Activos dañados"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dañados": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.activos_en_mantenimiento": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "Activos en mantenimiento"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "En mantenimiento": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.estado": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "Estado"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Estado": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.total_activos": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "Total activos"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Activos": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Total activos": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.condition": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "condition"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Condición": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.space_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "space_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Espacio": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.building": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "building"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Edificio": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.category": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "category"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Categoría": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.activos_en_servicio": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "Activos en servicio"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "En servicio": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.code": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "code"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Código": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.display_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "display_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Activo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "activos.responsible_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Activos",
+			          "ConceptualProperty": "responsible_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Responsable": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.code": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "code"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Código": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Espacio": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.space_type": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "space_type"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Tipo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.status": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "status"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Estado": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.building": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "building"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Edificio": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.capacity": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "capacity"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Capacidad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.asset_count": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "asset_count"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Activos": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.managers": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "managers"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Encargados": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.espacios_ocupados": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "Espacios ocupados"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Ocupados": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.espacios_reservables": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "Espacios reservables"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Reservables": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "espacios.total_espacios": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Espacios",
+			          "ConceptualProperty": "Total espacios"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Total espacios": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Espacios": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "reservas.reservas_confirmadas": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Reservas",
+			          "ConceptualProperty": "Reservas confirmadas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Reservas confirmadas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Reservas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "ocupación.local_date": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Ocupación",
+			          "ConceptualProperty": "local_date"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Fecha": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "ocupación.horas_reservadas": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Ocupación",
+			          "ConceptualProperty": "Horas reservadas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Horas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "usuarios.invitaciones_pendientes": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Usuarios",
+			          "ConceptualProperty": "Invitaciones pendientes"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Invitaciones pendientes": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "usuarios.estado_de_cuenta": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Usuarios",
+			          "ConceptualProperty": "Estado de cuenta"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Estado de cuenta": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "usuarios.usuarios_activos": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Usuarios",
+			          "ConceptualProperty": "Usuarios activos"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Cuentas activas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "usuarios.total_usuarios": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Usuarios",
+			          "ConceptualProperty": "Total usuarios"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Usuarios": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Total usuarios": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "usuarios.name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Usuarios",
+			          "ConceptualProperty": "name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Nombre": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Responsable": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "usuarios.roles": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Usuarios",
+			          "ConceptualProperty": "roles"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Roles": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "usuarios.last_login_at": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Usuarios",
+			          "ConceptualProperty": "last_login_at"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Último ingreso": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "usuarios.usuarios_desactivados": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Usuarios",
+			          "ConceptualProperty": "Usuarios desactivados"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Cuentas desactivadas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "roles_de_usuario.role": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Roles de usuario",
+			          "ConceptualProperty": "role"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Rol": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "roles_de_usuario.usuarios_con_rol": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Roles de usuario",
+			          "ConceptualProperty": "Usuarios con rol"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Usuarios": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

@@ -9,6 +9,7 @@ return [
         'spaces' => 'Espacios',
         'reservations' => 'Reservas',
         'reports' => 'Reportes',
+        'powerbi' => 'Tableros de Power BI',
         'users' => 'Usuarios y roles',
         'settings' => 'Configuración',
         'open_menu' => 'Abrir menú',

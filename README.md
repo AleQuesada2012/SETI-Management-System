@@ -94,7 +94,34 @@ docker compose logs -f app                            # ver errores del servidor
 ```
 
 Si un puerto ya está ocupado en tu computadora, cámbialo en `.env` (`APP_PORT`, `FORWARD_DB_PORT`, `VITE_PORT`,
-`REVERB_FORWARD_PORT`, `FORWARD_MAILPIT_DASHBOARD_PORT`) y ejecuta `docker compose up -d` de nuevo.
+`REVERB_FORWARD_PORT`, `FORWARD_MAILPIT_DASHBOARD_PORT`, `APP_HTTPS_PORT`) y ejecuta `docker compose up -d` de nuevo.
+
+### 5. Abrir el sistema desde otra computadora (HTTPS)
+
+Los navegadores solo tratan `http://localhost` como un origen seguro. Desde otra computadora hace falta HTTPS: sin él,
+por ejemplo, el botón de inicio de sesión de los tableros de Power BI no hace nada.
+
+En `.env`, usa la IP de tu computadora en la red (cámbiala si te conectas a otra red):
+
+```dotenv
+LOCAL_HTTPS_HOST=192.168.1.50
+VITE_REVERB_HOST=192.168.1.50
+VITE_REVERB_PORT=8443
+VITE_REVERB_SCHEME=https
+```
+
+Luego detén Vite, compila los recursos e inicia Caddy:
+
+```bash
+docker compose stop vite
+docker compose exec app rm -f public/hot
+docker compose run --rm vite npm run build
+docker compose --profile https up -d caddy
+```
+
+El sistema queda en `https://<tu-IP>:8443`. El certificado es local, así que el navegador muestra una advertencia la
+primera vez: elige continuar. Para volver al modo normal, restaura esos valores de `.env`, ejecuta
+`docker compose stop caddy` y luego `docker compose up -d`.
 
 ---
 

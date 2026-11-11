@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "02b0d528324654b106d2",
+  "position": {
+    "x": 961,
+    "y": 84,
+    "z": 700,
+    "height": 96,
+    "width": 303,
+    "tabOrder": 700
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "Activos dañados"
+                }
+              },
+              "queryRef": "Activos.Activos dañados",
+              "nativeQueryRef": "Dañados",
+              "displayName": "Dañados"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
