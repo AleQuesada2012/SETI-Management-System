@@ -100,7 +100,7 @@ new class extends Component {
             && (auth()->user()?->can('create', [MaintenanceRecord::class, $this->asset]) ?? false);
     }
 
-    /** The user may manage this asset's maintenance, whatever its status (to cancel what was scheduled). */
+    /** The user may manage this asset's maintenance, whatever its status (to cancel what is scheduled or in progress). */
     public function canEdit(): bool
     {
         return auth()->user()?->can('create', [MaintenanceRecord::class, $this->asset]) ?? false;
@@ -316,7 +316,7 @@ new class extends Component {
         $selected = MaintenanceKind::tryFrom($kind);
         $damageDates = $this->damages->mapWithKeys(fn (AssetEvent $damage) => [$damage->id => $damage->occurred_on->format('d/m/Y')]);
         $isRepairInProgress = fn (MaintenanceRow $record): bool => $record->kind === MaintenanceKind::Corrective && $record->status === MaintenanceStatus::InProgress;
-        $hasActions = $canEdit && $this->records->contains(fn (MaintenanceRow $record) => ($canManage && $isRepairInProgress($record)) || $record->status === MaintenanceStatus::Scheduled);
+        $hasActions = $canEdit && $this->records->contains(fn (MaintenanceRow $record) => $isRepairInProgress($record) || $record->status === MaintenanceStatus::Scheduled);
         $cancellingScheduled = $recordId !== null && $this->records->firstWhere('id', $recordId)?->status === MaintenanceStatus::Scheduled;
     @endphp
     <div class="flex flex-wrap items-center gap-3">
@@ -377,9 +377,11 @@ new class extends Component {
                             <flux:table.cell class="min-w-28 whitespace-normal">{{ $record->registered_by_name ?? __('assets.maintenance.system') }}</flux:table.cell>
                             @if ($hasActions)
                                 <flux:table.cell>
-                                    @if ($inProgress && $canManage)
+                                    @if ($inProgress)
                                         <div class="flex flex-col items-start gap-2">
-                                            <flux:button wire:click="openComplete({{ $record->id }})" size="xs" variant="primary" icon="check" data-test="complete-repair-button">{{ __('assets.maintenance.repair.complete') }}</flux:button>
+                                            @if ($canManage)
+                                                <flux:button wire:click="openComplete({{ $record->id }})" size="xs" variant="primary" icon="check" data-test="complete-repair-button">{{ __('assets.maintenance.repair.complete') }}</flux:button>
+                                            @endif
                                             <flux:button wire:click="openCancel({{ $record->id }})" size="xs" variant="ghost" icon="x-mark" data-test="cancel-repair-button">{{ __('assets.maintenance.repair.cancel') }}</flux:button>
                                         </div>
                                     @elseif ($scheduled)

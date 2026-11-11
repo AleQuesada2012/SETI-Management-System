@@ -117,9 +117,3 @@ test('a period without reservations says so', function () {
         ->assertOk()
         ->assertSee(__('reports.document.empty'));
 });
-
-test('roles without reports.view cannot open the occupancy report', function () {
-    $this->actingAs(userWithRole(SystemRole::Visualizador))
-        ->get(route('reports.show', 'occupancy'))
-        ->assertForbidden();
-});

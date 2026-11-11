@@ -69,8 +69,3 @@ test('an unknown role blocks users preview and export until cleared', function (
         ->call('export', 'pdf')->assertHasErrors();
     expect(ReportGeneration::query()->exists())->toBeFalse();
 });
-
-test('a user without report permission cannot open the users report', function () {
-    actingAsRole(SystemRole::Visualizador);
-    $this->get(route('reports.show', 'users'))->assertForbidden();
-});

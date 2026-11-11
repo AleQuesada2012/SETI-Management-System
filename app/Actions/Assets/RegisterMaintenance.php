@@ -2,7 +2,6 @@
 
 namespace App\Actions\Assets;
 
-use App\Enums\AssetStatus;
 use App\Enums\MaintenanceKind;
 use App\Enums\MaintenanceStatus;
 use App\Models\Asset;
@@ -71,7 +70,7 @@ final class RegisterMaintenance
     /** Maintenance is registered on an asset at hand that may still change (Agent-DB.md §8.4). */
     public static function isAllowed(Asset $asset): bool
     {
-        return in_array($asset->status, [AssetStatus::InService, AssetStatus::InMaintenance], true);
+        return $asset->status->isAvailable();
     }
 
     /**

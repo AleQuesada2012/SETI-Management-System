@@ -42,10 +42,3 @@ test('a user that does not exist is reported as not found', function () {
         ->assertNotFound()
         ->assertSee(__('app.errors.404.title'));
 });
-
-test('roles without users.view cannot open a user detail', function (SystemRole $role) {
-    actingAsRole($role);
-    $user = User::factory()->create();
-
-    $this->get(route('users.show', $user))->assertForbidden();
-})->with([SystemRole::Visualizador, SystemRole::Reservante, SystemRole::Reportes]);

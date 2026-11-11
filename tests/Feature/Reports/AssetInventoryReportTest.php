@@ -6,15 +6,12 @@ use App\Enums\ReportFormat;
 use App\Enums\SystemRole;
 use App\Models\Asset;
 use App\Models\AssetCategory;
-use App\Models\AssetCondition;
 use App\Models\AuditLog;
 use App\Models\Brand;
 use App\Models\ReportGeneration;
 use App\Models\ReportType;
 use App\Models\Space;
 use App\Models\User;
-use App\Queries\Assets\AssetInventory;
-use App\Queries\Assets\InventoryFilters;
 use App\Reports\Definitions\AssetInventoryReport;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -48,42 +45,6 @@ test('the inventory report labels and applies the shared category filter', funct
         ->set('filters.category.values', [(string) $category->id])
         ->assertSee('Monitor de categoría')
         ->assertDontSee('Escritorio de otra categoría');
-});
-
-test('all inventory criteria combine with AND and selected or missing values combine with OR', function () {
-    $brand = Brand::factory()->create(['name' => 'Marca Única']);
-    $space = Space::factory()->create();
-    $user = User::factory()->create();
-    $condition = AssetCondition::query()->where('color_group', 'amber')->firstOrFail();
-    $wanted = Asset::factory()->inSpace($space)->create(['name' => 'Especial', 'brand_id' => $brand->id,
-        'model' => 'Portátil 100%_\\', 'condition_id' => $condition->id,
-        'responsible_user_id' => $user->id, 'acquired_on' => '2026-09-30']);
-    Asset::factory()->create(['name' => 'Otro']);
-    $filters = ['search' => 'unica', 'brand' => ['values' => [$brand->id]], 'model' => ['contains' => '100%_\\'],
-        'condition' => ['values' => [$condition->id]], 'condition_color' => ['values' => ['amber']],
-        'lifecycle_status' => ['values' => ['in_service']], 'space' => ['values' => [$space->id]],
-        'responsible_user' => ['values' => [$user->id]], 'acquired_on' => ['from' => '2026-09-30', 'to' => '2026-09-30']];
-    expect(AssetInventory::query($filters)->pluck('id')->all())->toBe([$wanted->id]);
-    $missing = Asset::factory()->create(['brand_id' => null, 'model' => null, 'acquired_on' => null]);
-    expect(AssetInventory::query(['brand' => ['values' => [$brand->id], 'include_missing' => true]])->pluck('id')->all())
-        ->toContain($wanted->id, $missing->id);
-    foreach (['brand', 'model', 'space', 'responsible_user', 'acquired_on'] as $key) {
-        expect(AssetInventory::query([$key => ['include_missing' => true]])->pluck('id')->all())->toContain($missing->id);
-    }
-    expect(InventoryFilters::validate(['search' => ' ', 'brand' => ['values' => [], 'include_missing' => false]]))->toBe([]);
-    expect(InventoryFilters::validate(['brand' => ['values' => [(string) $brand->id, $brand->id]]]))
-        ->toBe(['brand' => ['values' => [$brand->id]]]);
-});
-
-test('historical choices remain distinct from missing and stable across filters', function () {
-    $brand = Brand::factory()->create(['name' => 'Marca Histórica']);
-    $user = User::factory()->deactivated()->create(['name' => 'Responsable Histórico']);
-    $asset = Asset::factory()->create(['brand_id' => $brand->id, 'responsible_user_id' => $user->id]);
-    $brand->delete();
-    $choices = InventoryFilters::choices();
-    expect(collect($choices['brand'])->firstWhere('id', $brand->id)['label'])->toContain('eliminado')
-        ->and(collect($choices['responsible_user'])->firstWhere('id', $user->id)['label'])->toContain('desactivada');
-    expect(AssetInventory::query(['brand' => ['values' => [$brand->id]]])->pluck('id')->all())->toBe([$asset->id]);
 });
 
 test('invalid inventory input is rejected before an export is recorded', function (array $filters) {

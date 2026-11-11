@@ -78,7 +78,9 @@ final class RegisterRepair
                 if ($completed) {
                     $current->update(['condition_id' => (int) $data['condition_id']]);
                 } else {
-                    $current->forceFill(['status' => AssetStatus::InMaintenance])->save();
+                    if ($current->status !== AssetStatus::InMaintenance) {
+                        $current->transitionTo(AssetStatus::InMaintenance);
+                    }
                 }
 
                 return $repair;
@@ -106,10 +108,7 @@ final class RegisterRepair
 
     public static function hasRepairInProgress(Asset $asset): bool
     {
-        return $asset->maintenanceRecords()
-            ->where('kind', MaintenanceKind::Corrective)
-            ->where('status', MaintenanceStatus::InProgress)
-            ->exists();
+        return $asset->hasRepairInProgress();
     }
 
     /**

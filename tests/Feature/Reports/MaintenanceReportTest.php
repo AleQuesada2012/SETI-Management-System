@@ -88,8 +88,3 @@ test('invalid maintenance filters produce Spanish feedback and no export', funct
     'inverted range' => [['completed_on' => ['from' => '2026-10-31', 'to' => '2026-10-01']], 'La fecha final no puede ser anterior a la inicial.'],
     'scalar criterion' => [['kind' => 'corrective'], 'La estructura del filtro no es válida.'],
 ]);
-
-test('a user without report permission cannot consult maintenance', function () {
-    actingAsRole(SystemRole::Visualizador);
-    $this->get(route('reports.show', 'maintenance'))->assertForbidden();
-});

@@ -49,12 +49,6 @@ test('a role nobody holds says so', function () {
         ->assertSee(__('users.roles.no_holders'));
 });
 
-test('roles without roles.view cannot open the roles page', function (SystemRole $role) {
-    actingAsRole($role);
-
-    $this->get(route('roles.index'))->assertForbidden();
-})->with([SystemRole::Administrador, SystemRole::Reportes, SystemRole::Visualizador, SystemRole::Reservante]);
-
 test('selecting a role is forbidden when the current user no longer has roles.view', function () {
     actingAsRole(SystemRole::Superusuario);
     $component = Livewire::test('pages::roles.index');

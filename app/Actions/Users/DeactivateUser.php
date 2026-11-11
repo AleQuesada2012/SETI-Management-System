@@ -31,11 +31,15 @@ final class DeactivateUser
             throw ValidationException::withMessages(['account' => __('users.account.errors.self')]);
         }
 
-        if (! $user->isActive()) {
-            throw ValidationException::withMessages(['account' => __('users.account.errors.already_deactivated', ['user' => $user->name])]);
-        }
-
         DB::transaction(function () use ($actor, $user): void {
+            // The row is locked and read again, so two deactivations at once end in one change and one audit entry.
+            User::query()->whereKey($user->id)->lockForUpdate()->firstOrFail();
+            $user->refresh();
+
+            if (! $user->isActive()) {
+                throw ValidationException::withMessages(['account' => __('users.account.errors.already_deactivated', ['user' => $user->name])]);
+            }
+
             // Lock the active Superusuarios so two deactivations cannot both pass the "last one" check.
             $activeSuperusers = User::role(SystemRole::Superusuario->value)
                 ->whereNull('deactivated_at')

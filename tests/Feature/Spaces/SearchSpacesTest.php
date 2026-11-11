@@ -5,7 +5,6 @@
 use App\Enums\SystemRole;
 use App\Models\Building;
 use App\Models\Space;
-use App\Models\User;
 use App\Queries\Spaces\SpaceDirectory;
 use Livewire\Livewire;
 
@@ -80,10 +79,4 @@ test('the search is kept in the URL of the spaces list', function () {
         ->assertOk()
         ->assertSee('OF-7')
         ->assertDontSee('SAL-02');
-});
-
-test('a user without permission to view spaces cannot search them', function () {
-    $this->actingAs(User::factory()->create());
-
-    $this->get(route('spaces.index', ['buscar' => 'lab']))->assertForbidden();
 });

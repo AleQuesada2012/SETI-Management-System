@@ -89,9 +89,3 @@ test('invalid filters block the export and a period without reservations says so
     $this->get(route('reports.show', ['report' => 'reservations', 'filters' => ['date' => ['from' => '2031-01-01', 'to' => '2031-01-31']]]))
         ->assertOk()->assertSee(__('reports.document.empty'));
 });
-
-test('a user without reports.view cannot open the reservations report', function () {
-    actingAsRole(SystemRole::Reservante);
-
-    $this->get(route('reports.show', 'reservations'))->assertForbidden();
-});

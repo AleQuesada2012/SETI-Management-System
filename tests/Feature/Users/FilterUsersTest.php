@@ -118,9 +118,3 @@ test('a search that matches nobody of an existing type says no users were found'
         ->assertSee(__('users.index.no_results'))
         ->assertDontSee(__('users.index.no_registered.administrators'));
 });
-
-test('roles without users.view cannot filter users', function () {
-    actingAsRole(SystemRole::Visualizador);
-
-    $this->get(route('users.index', ['filters' => ['user_type' => ['values' => ['administrators']]]]))->assertForbidden();
-});

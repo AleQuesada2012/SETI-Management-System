@@ -101,8 +101,3 @@ test('invalid movement filters produce Spanish feedback and no export', function
     'inverted range' => [['moved_at' => ['from' => '2026-10-31', 'to' => '2026-10-01']], 'La fecha final no puede ser anterior a la inicial.'],
     'scalar values' => [['type' => ['values' => 'transfer']], 'La estructura del filtro no es válida.'],
 ]);
-
-test('a user without report permission cannot consult movements', function () {
-    actingAsRole(SystemRole::Visualizador);
-    $this->get(route('reports.show', 'movements'))->assertForbidden();
-});

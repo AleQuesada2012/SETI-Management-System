@@ -59,6 +59,8 @@ final class UpdateReservation
 
                 $this->ensureModifiable($locked, $readVersion);
 
+                CreateReservation::holdReservable($space);
+
                 CreateReservation::ensureBookable($space, $startsAt, $endsAt, (int) $data['attendees'], $locked->id);
 
                 $before = clone $locked;

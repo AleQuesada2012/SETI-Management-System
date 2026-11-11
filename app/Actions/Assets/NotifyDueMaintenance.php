@@ -36,7 +36,7 @@ final class NotifyDueMaintenance
         $due = MaintenanceRecord::query()
             ->where('status', MaintenanceStatus::Scheduled)
             ->whereDate('scheduled_for', '<=', $today->copy()->addDays(self::DAYS_AHEAD))
-            ->whereIn('asset_id', Asset::query()->whereIn('status', [AssetStatus::InService, AssetStatus::InMaintenance])->select('id'))
+            ->whereIn('asset_id', Asset::query()->whereIn('status', AssetStatus::available())->select('id'))
             ->with('asset')
             ->orderBy('scheduled_for')
             ->orderBy('id')

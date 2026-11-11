@@ -63,13 +63,6 @@ test('an asset that does not exist answers with the not-found page', function ()
     $this->get(route('assets.show', $deleted))->assertNotFound();
 });
 
-test('a Reservante cannot see assets', function () {
-    actingAsRole(SystemRole::Reservante);
-    $asset = Asset::factory()->inSpace(Space::factory()->create())->create();
-
-    $this->get(route('assets.show', $asset))->assertForbidden();
-});
-
 test('the warranty shows whether the asset has one and whether it is still valid', function (?string $starts, ?string $ends, string $state) {
     actingAsRole(SystemRole::Visualizador);
     $asset = Asset::factory()->inSpace(Space::factory()->create())

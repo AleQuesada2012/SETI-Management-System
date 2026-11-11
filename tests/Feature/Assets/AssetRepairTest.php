@@ -7,6 +7,7 @@
 use App\Actions\Assets\CancelRepair;
 use App\Actions\Assets\CompleteRepair;
 use App\Actions\Assets\RegisterAssetDamage;
+use App\Actions\Assets\RegisterAssetEvent;
 use App\Actions\Assets\RegisterRepair;
 use App\Enums\AssetEventKind;
 use App\Enums\AssetStatus;
@@ -244,6 +245,55 @@ test('only a repair in progress can be finished or cancelled', function () {
 
     $preventive = MaintenanceRecordFactory::new()->create(['asset_id' => $this->asset->id]);
     expect(repairErrors(fn () => app(CancelRepair::class)->handle($this->admin, $preventive)))->toBe($notInProgress);
+});
+
+test('an asset lost during a repair comes back in maintenance, and finishing the repair puts it in service', function () {
+    $repair = registerRepair($this->asset);
+    $event = ['occurred_on' => today()->toDateString(), 'description' => 'No aparece en el taller.'];
+
+    app(RegisterAssetEvent::class)->handle($this->admin, $this->asset->refresh(), ['kind' => 'loss'] + $event);
+    app(RegisterAssetEvent::class)->handle($this->admin, $this->asset->refresh(), ['kind' => 'recovery'] + $event);
+
+    expect($this->asset->refresh()->status)->toBe(AssetStatus::InMaintenance)
+        ->and($repair->refresh()->status)->toBe(MaintenanceStatus::InProgress);
+
+    app(CompleteRepair::class)->handle($this->admin, $repair, ['completed_on' => today()->toDateString(), 'condition_id' => $this->good->id]);
+
+    expect($this->asset->refresh()->status)->toBe(AssetStatus::InService);
+});
+
+test('the repair of an asset lost or decommissioned meanwhile can only be cancelled, and the asset keeps its status', function (string $kind, AssetStatus $status) {
+    $repair = registerRepair($this->asset);
+    app(RegisterAssetEvent::class)->handle($this->admin, $this->asset->refresh(), [
+        'kind' => $kind, 'occurred_on' => today()->toDateString(), 'description' => 'Ya no está disponible.',
+    ]);
+
+    $this->actingAs($this->admin);
+    Livewire::test('assets.asset-maintenance', ['asset' => $this->asset->refresh()])
+        ->assertSee('data-test="cancel-repair-button"', false)
+        ->assertDontSee('data-test="complete-repair-button"', false);
+
+    expect(repairErrors(fn () => app(CompleteRepair::class)->handle($this->admin, $repair, ['completed_on' => today()->toDateString(), 'condition_id' => $this->good->id])))
+        ->toBe(['form' => [__('assets.maintenance.errors.not_in_progress')]]);
+
+    app(CancelRepair::class)->handle($this->admin, $repair->refresh(), ['cancellation_reason' => 'El activo ya no está.']);
+
+    expect($repair->refresh()->status)->toBe(MaintenanceStatus::Cancelled)
+        ->and($this->asset->refresh()->status)->toBe($status);
+})->with([
+    'lost' => ['loss', AssetStatus::Lost],
+    'decommissioned' => ['decommission', AssetStatus::Decommissioned],
+]);
+
+test('the lifecycle status only changes along its allowed transitions, and a decommission is terminal', function () {
+    expect(AssetStatus::Decommissioned->transitions())->toBe([])
+        ->and(AssetStatus::Lost->canTransitionTo(AssetStatus::InService))->toBeTrue()
+        ->and(AssetStatus::InService->canTransitionTo(AssetStatus::InService))->toBeFalse();
+
+    $this->asset->transitionTo(AssetStatus::Decommissioned);
+
+    expect(fn () => $this->asset->transitionTo(AssetStatus::InService))->toThrow(LogicException::class)
+        ->and($this->asset->refresh()->status)->toBe(AssetStatus::Decommissioned);
 });
 
 test('an Administrador who does not manage the asset\'s space cannot register, finish or cancel its repairs', function () {

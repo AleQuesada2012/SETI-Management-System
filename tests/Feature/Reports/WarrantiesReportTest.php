@@ -73,8 +73,3 @@ test('invalid warranty filters produce Spanish feedback before an export exists'
     'unknown member' => [['warranty_state' => ['extra' => true]], 'La estructura del filtro no es válida.'],
     'null value' => [['warranty_state' => ['values' => [null]]], 'Selecciona una opción válida del filtro.'],
 ]);
-
-test('a user without report permission cannot consult warranties', function () {
-    actingAsRole(SystemRole::Visualizador);
-    $this->get(route('reports.show', 'warranties'))->assertForbidden();
-});

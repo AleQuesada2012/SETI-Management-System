@@ -3,6 +3,7 @@
 namespace App\Actions\Assets;
 
 use App\Enums\MaintenanceStatus;
+use App\Models\Asset;
 use App\Models\MaintenanceRecord;
 use App\Models\User;
 use App\Support\Database\ConstraintViolation;
@@ -36,6 +37,8 @@ final class CompleteScheduledMaintenance
         try {
             return DB::transaction(function () use ($actor, $record, $data): MaintenanceRecord {
                 $current = MaintenanceRecord::query()->whereKey($record->id)->lockForUpdate()->firstOrFail();
+                // Locked as well: a loss or decommission registered meanwhile (RegisterAssetEvent) waits or is seen.
+                $current->setRelation('asset', Asset::withTrashed()->whereKey($current->asset_id)->lockForUpdate()->firstOrFail());
                 Gate::forUser($actor)->authorize('update', $current);
                 ScheduleMaintenance::ensureScheduled($current);
 

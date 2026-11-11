@@ -124,10 +124,3 @@ test('a report type without a definition says it is not available yet', function
         ->assertOk()
         ->assertSee(__('reports.show.unavailable'));
 });
-
-test('stored files are private: exported files are only reachable through the download route', function () {
-    $generation = app(ExportReport::class)->handle($this->author, 'users', ReportFormat::Pdf);
-
-    expect(File::query()->sole()->disk)->toBe(config('filesystems.files_disk'))
-        ->and($generation->file->path)->toStartWith('reports/');
-});

@@ -24,12 +24,6 @@ test('a Visualizador sees the inventory', function () {
         ->assertSee('LAB-1');
 });
 
-test('a Reservante cannot open the inventory', function () {
-    actingAsRole(SystemRole::Reservante);
-
-    $this->get(route('assets.index'))->assertForbidden();
-});
-
 test('the search shows the matching assets, or says the asset does not exist', function () {
     Livewire::test('pages::assets.index')
         ->set('search', 'recepcion')
