@@ -28,6 +28,7 @@ class StartPageController extends Controller
             $user->can('viewAny', Space::class) => 'spaces.index',
             $user->can('viewAny', Reservation::class) => 'reservations.index',
             $user->can(PermissionName::ReportsView) => 'reports.index',
+            $user->can(PermissionName::DashboardsPowerbi) => 'reports.powerbi',
             $user->can('viewAny', User::class) => 'users.index',
             $user->can('viewAny', Role::class) => 'roles.index',
             default => 'profile.edit',

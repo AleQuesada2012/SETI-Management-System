@@ -21,6 +21,7 @@
     --color-line: #e5e5e5;            /* borders and dividers */
     --color-ink: #171717;             /* main text */
     --color-ink-muted: #525252;       /* secondary text */
+    --color-row-alt: rgb(0 0 0 / 0.045); /* band on alternating rows; translucent, to work on canvas and surface */
 
     /* Navy chrome from the mockups: the sidebar, and the background of sign-in and error pages. The same in both
        appearances (the sidebar always renders in dark mode), so these are defined here only. */
@@ -71,6 +72,7 @@
         --color-line: #2a2a2a;
         --color-ink: #fafafa;
         --color-ink-muted: #a3a3a3;
+        --color-row-alt: rgb(255 255 255 / 0.06);
 
         --color-status-good: #22c55e;
         --color-status-warning: #f59e0b;
