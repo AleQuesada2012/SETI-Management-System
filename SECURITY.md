@@ -17,7 +17,7 @@ what data it exposes. We answer within two working days.
   console, `php artisan users:create-first-superuser`, which refuses once one exists).
 - **Sessions**: server-side (database), encrypted, HttpOnly, `SameSite=Lax`, `Secure` in production; they end after
   120 minutes idle and 9 hours after sign-in in any case. A confirmed password stays confirmed for 120 minutes.
-  Deactivating an account ends its sessions immediately; changing the password ends the user's other sessions and
+  Deactivating an account ends its sessions immediately, and it can no longer get or use a password reset link; changing the password ends the user's other sessions and
   resetting it ends all of them, and so does a change of the account's email. There is no "remember me" cookie, even for a crafted request.
 - **Authorization** (RF_89): every route and every Livewire action checks a policy or permission; the test suite
   fails when a route has no authorization check.
