@@ -7,30 +7,45 @@ and [ADR-0007](adr/0007-files-live-outside-the-database-and-are-linked-with-fore
 | Piece | Where it runs |
 |---|---|
 | App (PHP + NGINX), queue worker, scheduler, Reverb (WebSockets), Caddy (HTTPS) | Docker containers on the EC2 instance, from [`compose.prod.yaml`](../compose.prod.yaml) |
-| PostgreSQL | The course's **Amazon RDS** instance: its own `seti` database and `seti` user |
+| PostgreSQL | The course's **Amazon RDS** instance, **not** the EC2 instance: its own `seti` database and `seti` user. Nothing of PostgreSQL runs or is installed on the instance except the `psql` client. |
 | Uploaded files and exported reports | The `seti-prod_storage` Docker volume on the instance's disk |
 | Secrets | `.env` on the instance only, never in Git |
 
-Commands below run **on the instance**, in an SSH session, unless a step says "AWS console".
+The instance this guide was written for runs **Ubuntu 26.04.1 LTS (Resolute Raccoon)**, kernel `7.0.0-1017-aws`, and
+its default user is `ubuntu`. Deploy from `main`. Commands below run **on the instance**, in an SSH session, unless a
+step says otherwise.
 
-## 1. Before you start (AWS console and DNS)
+## 1. Before you start
 
-- **Domain.** An A record for the site's name (`APP_DOMAIN`) pointing to the instance's **Elastic IP** (a plain
-  public IP changes when the instance stops). Caddy asks Let's Encrypt for the certificate on its first start, so the
-  name must already resolve: check with `dig +short <domain>` before step 6. Let's Encrypt does not issue for
-  `*.amazonaws.com` names; without an institutional domain yet, `<elastic-ip-with-dashes>.sslip.io` (for example
-  `3-14-15-92.sslip.io`) resolves to that IP and can be used meanwhile.
-- **EC2 security group (inbound).** 80/tcp and 443/tcp from anywhere, 443/udp from anywhere (HTTP/3), 22/tcp only
-  from the team's IPs. Nothing else.
-- **RDS security group (inbound).** 5432/tcp only from the EC2 instance's security group. If `psql` from the
-  instance already connects, this is in place. The database should not be publicly accessible; Power BI's access is
+The team has SSH access to the instance but not the AWS console. Whatever can be checked from the instance is
+checked there; the rest is a request to whoever administers the AWS account.
+
+- **Ask the AWS administrators** to confirm or set up:
+  1. that the public IP **3.129.66.37** is an **Elastic IP**. A plain public IP changes when the instance is stopped
+     and started, and the site's name and its built JavaScript (which contains the domain) would have to change with
+     it;
+  2. the instance's security group inbound rules: 80/tcp, 443/tcp and 443/udp (HTTP/3) from anywhere, 22/tcp only
+     from the team's IPs, nothing else;
+  3. RDS automated backups on, with a retention of at least 7 days;
+  4. optionally, an S3 bucket the instance can write to, or a daily EBS snapshot policy, for copies off the instance
+     (step 9).
+
+  Only item 2 blocks the first deployment.
+- **Domain.** An A record for the site's name (`APP_DOMAIN`) pointing to 3.129.66.37. Without an institutional
+  domain, use **`3-129-66-37.sslip.io`**, which resolves to that IP. Let's Encrypt does not issue for
+  `*.amazonaws.com` names. Caddy asks Let's Encrypt for the certificate on its first start, so the name must already
+  resolve: `getent hosts <domain>` must print 3.129.66.37 before step 6.
+- **Ports 80 and 443 reachable from the internet.** Without the console, test them: on the instance run
+  `sudo timeout 60 python3 -m http.server 80`, and within that minute, from a laptop, `curl -sI http://3.129.66.37`
+  must answer `HTTP/1.0 200 OK`. Repeat with `443` in both commands (`curl -sI http://3.129.66.37:443`). A timeout
+  means the security group blocks the port (item 2 above).
+- **RDS reachable from the instance.** `psql -h <rds-endpoint> -U postgres -d postgres` connects from the instance;
+  then the RDS security group already allows it. The database should not be publicly accessible; Power BI's access is
   decided in issue #112.
-- **RDS backups.** RDS console → the instance → *Maintenance & backups*: automated backups on, with a retention of at
-  least 7 days.
 - **SMTP.** The institution's relay host, port, user and password, and the sender address (invitations and password
   resets depend on it).
-- **Memory.** Building the image runs Composer and `npm run build` on the instance. With 2 GB of RAM or less, add
-  swap first:
+- **Memory.** Building the image runs Composer and `npm run build` on the instance, and Ubuntu's EC2 images have no
+  swap. Check with `free -h`; with 2 GB of RAM or less, add swap first:
 
   ```bash
   sudo dd if=/dev/zero of=/swapfile bs=1M count=2048 && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile && echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
@@ -38,34 +53,33 @@ Commands below run **on the instance**, in an SSH session, unless a step says "A
 
 ## 2. Install Docker and Git
 
-Check the operating system with `cat /etc/os-release`.
-
-**Amazon Linux 2023** (the EC2 default). Its `docker` package has no Compose plugin, so it is added by hand:
+Docker's own apt repository supports Ubuntu 26.04 (`resolute`) and ships the engine with the Compose and buildx
+plugins that `compose.prod.yaml` needs. Do not use Ubuntu's `docker.io` package or the snap: on a fresh instance
+`dpkg -l | grep -E 'docker|containerd|runc'` lists nothing; if it lists something, remove it first.
 
 ```bash
-sudo dnf install -y docker git
-sudo systemctl enable --now docker
+sudo apt-get update && sudo apt-get install -y ca-certificates curl git postgresql-client
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
+
+```bash
+printf 'Types: deb\nURIs: https://download.docker.com/linux/ubuntu\nSuites: %s\nComponents: stable\nSigned-By: /etc/apt/keyrings/docker.asc\n' "$(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")" | sudo tee /etc/apt/sources.list.d/docker.sources
+```
+
+```bash
+sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo usermod -aG docker "$USER"
-sudo mkdir -p /usr/local/lib/docker/cli-plugins
-sudo curl -fsSL -o /usr/local/lib/docker/cli-plugins/docker-compose "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$(uname -m)"
-sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 ```
 
-Sign out and back in (for the `docker` group), then check `docker compose version` and `docker buildx version`.
-Compose builds need buildx 0.17 or later; if it is missing or older:
+Sign out and back in (so the `docker` group applies), then check:
 
 ```bash
-ARCH=$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')
-V=$(curl -fsSL https://api.github.com/repos/docker/buildx/releases/latest | grep -m1 '"tag_name"' | cut -d'"' -f4)
-sudo curl -fsSL -o /usr/local/lib/docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/$V/buildx-$V.linux-$ARCH"
-sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
+docker version --format '{{.Server.Version}}' && docker compose version && docker buildx version
 ```
 
-**Ubuntu.** Docker's own script installs the engine with the Compose and buildx plugins:
-
-```bash
-curl -fsSL https://get.docker.com | sudo sh && sudo usermod -aG docker "$USER"
-```
+On Ubuntu 26.04.1 (2026-11-10) these steps installed Docker Engine 29.9, Compose 5.7, buildx 0.38 and `psql` 18,
+and `/etc/apt/sources.list.d/docker.sources` says `Suites: resolute`.
 
 ## 3. Get the code
 
@@ -179,20 +193,47 @@ In a browser, as the Superusuario:
 
 ## 9. Backups and restoring
 
-**Database.** RDS automated backups (step 1). To restore: RDS console → the instance → *Actions → Restore to point
-in time*. That creates a **new** instance: give it the same security group, put its endpoint in `DB_HOST`, and run
-`docker compose -f compose.prod.yaml up -d`.
-
-**Files.** The `storage` volume is not in RDS. A daily copy, kept 14 days (on Amazon Linux 2023, install cron
-first: `sudo dnf install -y cronie && sudo systemctl enable --now crond`):
+Two daily copies on the instance, kept 14 days, both from the `ubuntu` user's crontab. They do not depend on the AWS
+console. RDS automated backups (step 1, item 3) are a second line for the database, restored by the AWS
+administrators (*Restore to point in time* creates a new RDS instance; its endpoint then goes in `DB_HOST`).
 
 ```bash
-sudo mkdir -p /var/backups/seti && (crontab -l 2>/dev/null; echo "15 3 * * * docker run --rm -v seti-prod_storage:/data:ro -v /var/backups/seti:/backup alpine:3.22 tar czf /backup/storage-\$(date +\%F).tgz -C /data . && find /var/backups/seti -name 'storage-*.tgz' -mtime +14 -delete") | crontab -
+sudo install -d -o "$USER" -m 700 /var/backups/seti
 ```
 
-Those copies are on the same disk, so they do not survive losing the instance. Also copy them off the instance: an
-S3 bucket (`aws s3 sync /var/backups/seti s3://<bucket>/seti/` from cron, with an instance role that can write to
-it), or a daily snapshot of the instance's EBS volume (EC2 console → *Lifecycle Manager*).
+**Database.** `pg_dump` reads the `seti` password from `~/.pgpass`. Create it with an editor (`nano ~/.pgpass`), one
+line `<rds-endpoint>:5432:*:seti:<DB_PASSWORD>` (`*`: any database, so a restore can use it too), then `chmod 600 ~/.pgpass`. The `pg_dump` from step 2 is version
+18; it must be at least the server's major version (step 4).
+
+```bash
+(crontab -l 2>/dev/null; echo "0 3 * * * pg_dump 'host=<rds-endpoint> dbname=seti user=seti sslmode=require' -Fc -f /var/backups/seti/db-\$(date +\%F).dump && find /var/backups/seti -name 'db-*.dump' -mtime +14 -delete") | crontab -
+```
+
+**Files.** The `storage` volume:
+
+```bash
+(crontab -l 2>/dev/null; echo "15 3 * * * docker run --rm -v seti-prod_storage:/data:ro -v /var/backups/seti:/backup alpine:3.22 tar czf /backup/storage-\$(date +\%F).tgz -C /data . && find /var/backups/seti -name 'storage-*.tgz' -mtime +14 -delete") | crontab -
+```
+
+Those copies are on the instance's own disk, so they do not survive losing it. Copy them off it regularly: from a
+team laptop, `scp -r ubuntu@3.129.66.37:/var/backups/seti ./seti-backups`. If the administrators provide an S3
+bucket and an instance role (step 1, item 4), a cron `aws s3 sync /var/backups/seti s3://<bucket>/seti/` replaces
+that.
+
+To restore the database from a dump, into a new database so the current one stays until the restore is checked
+(as the master user, then as `seti`):
+
+```bash
+psql -h <rds-endpoint> -U postgres -d postgres -c "CREATE DATABASE seti_restored OWNER seti TEMPLATE template0 ENCODING 'UTF8' LOCALE_PROVIDER icu ICU_LOCALE 'es-CR'" -c 'REVOKE ALL ON DATABASE seti_restored FROM PUBLIC'
+psql -h <rds-endpoint> -U postgres -d seti_restored -c 'CREATE EXTENSION btree_gist' -c 'CREATE EXTENSION pg_trgm' -c 'CREATE EXTENSION unaccent'
+pg_restore -l /var/backups/seti/db-<date>.dump | grep -v 'COMMENT - EXTENSION' > /tmp/restore.list
+pg_restore --no-owner --exit-on-error -L /tmp/restore.list -d 'host=<rds-endpoint> dbname=seti_restored user=seti sslmode=require' /var/backups/seti/db-<date>.dump
+```
+
+The list leaves out the extensions' comments: the master user owns the extensions, so `seti` may not comment on
+them, and `--exit-on-error` would stop there.
+
+Then set `DB_DATABASE=seti_restored` in `.env` and run `docker compose -f compose.prod.yaml up -d`.
 
 To restore the files from a copy:
 
