@@ -12,5 +12,5 @@ paths:
 - Constraints, exclusion constraints, triggers and views are raw SQL (`DB::statement` / `DB::unprepared`), like the existing migrations. A migration that alters a column used by a `reporting` view drops and recreates that view.
 - **A new table** needs: PK, every FK indexed, `timestamptz` timestamps, a `CHECK` plus a PHP enum in `app/Enums` for any code-driven set, audit coverage (`Auditable` + morph alias), a `reporting` view if it is reported, and tests for its rules (Agent-DB.md §16 rule 10).
 - **Constraint names are an API**: `lang/es/db.php` maps each name to a Spanish message through `App\Support\Database\ConstraintViolation`. Name new constraints `<table>_<rule>` and add the message.
-- Seeders are idempotent (`upsert` on `code`/`name`). `DemoSeeder` runs only in `local`.
+- Seeders are idempotent (`upsert` on `code`/`name`). `DemoSeeder` runs only in `local`. `SampleDataSeeder` is temporary test data for the deployed site: it creates no accounts, and it is removed with the handover reset (`docs/deployment.md` § 12), never row by row.
 - Keep in sync in the same PR: migration ↔ enum ↔ `lang/es/db.php` ↔ `docs/Agent-DB.md` ↔ `CONTEXT.md`.
