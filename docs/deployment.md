@@ -212,8 +212,10 @@ After a PR merges to `main`:
 cd ~/seti && git pull --ff-only && docker compose -f compose.prod.yaml up -d --build
 ```
 
-The `app` container runs new migrations as it starts; the workers restart with the new image. A change to
-`.env.production.example` in that pull means a new or changed setting: compare it with `.env` first.
+The `app` container runs new migrations as it starts; the workers restart with the new image. Seeders do not run
+by themselves: when the pull changes `database/seeders/` (new catalog values, such as buildings), also run
+`docker compose -f compose.prod.yaml exec app php artisan db:seed --force`, which only adds what is missing. A change
+to `.env.production.example` in that pull means a new or changed setting: compare it with `.env` first.
 
 ## 11. Power BI (after issue #112)
 
@@ -231,3 +233,45 @@ psql -h <rds-endpoint> -U postgres -d seti -c 'CREATE ROLE powerbi LOGIN IN ROLE
 ```
 
 Run `create-powerbi-reader.sql` again whenever a migration adds a reporting view.
+
+## 12. Test data, and emptying the database before the handover
+
+**Temporary test data.** So the team can try every module on the deployed site, `SampleDataSeeder` loads eight
+spaces in the campus buildings, about fifty assets placed through real movements (one under repair, one with a
+scheduled maintenance) and reservations around the current week. It creates **no accounts**: it uses the active
+people already registered (the Superusuario is required; Administradores manage the spaces and hold the assets;
+Reservantes make the bookings). Register the team first, then:
+
+```bash
+docker compose -f compose.prod.yaml exec app php artisan db:seed --class=SampleDataSeeder --force
+```
+
+Its asset tags start with `PRUEBA-` and its spaces and assets carry the note "Dato de prueba". Running it again does
+nothing. Never run `DemoSeeder` here: it creates accounts with a known password, and refuses to run in production.
+
+**Emptying the database for the handover.** Test data is not removed row by row: asset history is append-only and
+every change has an audit entry. Instead the whole database is emptied and set up again, which also removes the
+team's accounts. The application blocks `php artisan migrate:fresh` in production on purpose; this is the
+deliberate way, from the repository folder:
+
+1. Take a last backup (step 9) if anything in it should be kept.
+2. Stop the stack and remove the uploaded files (the `storage` volume is created again, empty, on the next start):
+
+   ```bash
+   docker compose -f compose.prod.yaml down && docker volume rm seti-prod_storage
+   ```
+
+3. Close any other connection to the `seti` database (for example a `psql` session), then, as the master user:
+
+   ```bash
+   psql -v ON_ERROR_STOP=1 -h <rds-endpoint> -U postgres -d postgres -f database/sql/ops/reset-app-database.sql
+   ```
+
+4. Start the stack (it runs the migrations), then repeat step 7: `db:seed --force` and
+   `users:create-first-superuser` for the person who receives the system.
+
+   ```bash
+   docker compose -f compose.prod.yaml up -d
+   ```
+
+5. Delete the test-era copies: `rm -f /var/backups/seti/*`. If Power BI was connected, run step 11 again.
