@@ -134,11 +134,33 @@ Every empty value must be filled; the comments in the file explain each one. In 
 | `APP_KEY` | `echo "base64:$(openssl rand -base64 32)"`. Generate it once and keep it: changing it signs everyone out and makes encrypted values (2FA secrets) unreadable. |
 | `APP_DOMAIN` | The name from step 1, without `https://`. |
 | `DB_HOST` | The RDS endpoint. `DB_DATABASE` and `DB_USERNAME` stay `seti`; `DB_PASSWORD` is the one from step 4. |
-| `MAIL_*` | The institution's SMTP relay. |
+| `MAIL_*` | The institution's SMTP relay, or meanwhile a Gmail account (below). |
 | `REVERB_APP_ID`, `REVERB_APP_KEY`, `REVERB_APP_SECRET` | Random values, for example `openssl rand -hex 16` each. |
-| `POWERBI_EMBED_URL` | The Power BI secure-embed URL, or empty until the dashboards are published. |
+| `POWERBI_EMBED_URL` | The Power BI secure-embed URL (*File → Embed report → Website or portal*: `https://app.powerbi.com/reportEmbed?reportId=…&autoAuth=true&ctid=…`), or empty until the dashboards are published. |
 
 Keep `TWO_FACTOR_REQUIRED=true`, `CSP_ENFORCE=false` (see step 8) and `SESSION_COOKIE=__Host-seti-session`.
+
+**Mail until the institution's relay is available.** Use a Gmail account created only for SETI, not a person's
+address. A personal `@estudiantec.cr` address is a poor fit: that domain is on Microsoft 365, where password sign-in
+for SMTP is being retired and is often turned off for students, and the person's password would sit in `.env`.
+For the Gmail account:
+
+1. Turn on 2-Step Verification, then create an app password (*Google Account → Security → App passwords*).
+2. Fill in:
+
+   ```
+   MAIL_MAILER=smtp
+   MAIL_SCHEME=smtps
+   MAIL_HOST=smtp.gmail.com
+   MAIL_PORT=465
+   MAIL_USERNAME=<account>@gmail.com
+   MAIL_PASSWORD=<the 16-character app password, without spaces>
+   MAIL_FROM_ADDRESS=<account>@gmail.com
+   ```
+
+`MAIL_FROM_ADDRESS` must be the account itself: Gmail replaces any other sender. Gmail allows about 500 messages a
+day, far more than invitations and resets need; the first messages may land in spam. When the relay is available,
+change only the `MAIL_*` lines and run `docker compose -f compose.prod.yaml up -d` (no rebuild).
 
 ## 6. Build and start
 
@@ -170,9 +192,23 @@ docker compose -f compose.prod.yaml exec app php artisan db:seed --force
 
 This loads only the catalogs, report types, roles and permissions; demo users load only in a local environment.
 
+Check that mail works **before** creating the Superusuario: the next command sends the invitation on the spot and
+cannot be run a second time.
+
+```bash
+docker compose -f compose.prod.yaml exec app php artisan tinker --execute 'Mail::raw("Prueba de correo de SETI.", fn ($m) => $m->to("<your address>")->subject("Prueba de SETI"));'
+```
+
+The message must arrive (check spam). An error here is the `MAIL_*` values: fix `.env`, run
+`docker compose -f compose.prod.yaml up -d`, and try again.
+
 ```bash
 docker compose -f compose.prod.yaml exec app php artisan users:create-first-superuser <email> "<full name>"
 ```
+
+If the command saved the Superusuario but failed to send the invitation, fix mail as above and use
+"¿Olvidaste tu contraseña?" on the sign-in page with that email: the reset link sets the password just as the
+invitation would.
 
 The command works only while no Superusuario exists. It emails a 48-hour invitation: open it, set the password,
 and set up two-factor authentication, which the app requires before anything else. **Store the recovery codes
