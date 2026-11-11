@@ -7,6 +7,7 @@ use App\Enums\SystemRole;
 use App\Models\Building;
 use App\Models\Space;
 use App\Models\SpaceType;
+use Database\Seeders\CatalogSeeder;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\ValidationException;
 use Livewire\Livewire;
@@ -121,4 +122,14 @@ test('the spaces list shows "Añadir espacio" only to those who may create', fun
 
     actingAsRole(SystemRole::Reservante);
     $this->get(route('spaces.index'))->assertOk()->assertDontSee(__('spaces.index.create'));
+});
+
+test('the campus buildings are offered when creating a space, once each even after seeding again', function () {
+    actingAsRole(SystemRole::Administrador);
+    $this->seed(CatalogSeeder::class);
+
+    $offered = Livewire::test('spaces.create-space')->instance()->buildings()->pluck('name');
+
+    expect($offered)->toContain('Módulo 1', 'Edificio Administrativo', 'Torre de Laboratorios', 'Escuela de Electromecánica')
+        ->and(Building::query()->where('name', 'Módulo 1')->count())->toBe(1);
 });
