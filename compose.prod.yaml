@@ -1,4 +1,6 @@
-# Production stack for the single AWS VM (ADR-0012, ADR-0007 as amended). Run it on the VM with:
+# Production stack for the single AWS VM (ADR-0012 and ADR-0007, both as amended). The database is the course's
+# Amazon RDS PostgreSQL instance, not a container: DB_HOST in .env is its endpoint. Step-by-step guide, from a fresh
+# EC2 instance to the first sign-in, backups included: docs/deployment.md. In short, on the VM:
 #
 #   cp .env.production.example .env        # fill in every value
 #   docker compose -f compose.prod.yaml up -d --build
@@ -8,9 +10,11 @@
 # The first Superusuario gets an invitation by email and sets up two-factor authentication at first sign-in; they
 # should keep the recovery codes safe, since nobody else can reset theirs.
 #
-# Only Caddy publishes ports (80/443, automatic HTTPS). The app, workers and PostgreSQL talk on the private
-# `seti` network. Uploaded files and exported reports live in the `storage` volume on the VM disk; back up
-# that volume and the `pgsql-data` volume.
+# Only Caddy publishes ports (80/443, automatic HTTPS). Uploaded files and exported reports live in the `storage`
+# volume on the VM disk; back it up with the database (RDS keeps the database's own automated backups).
+#
+# A copy of this stack without RDS (to try a change behind HTTPS on a laptop) adds a PostgreSQL container with
+# `--profile local-db` and DB_HOST=pgsql in its .env.
 
 name: seti-prod
 
@@ -37,6 +41,8 @@ x-app: &app
   depends_on:
     pgsql:
       condition: service_healthy
+      # Only with --profile local-db; in production the database is RDS.
+      required: false
   restart: unless-stopped
 
 services:
@@ -91,14 +97,16 @@ services:
       - app
     restart: unless-stopped
 
+  # Only for copies of this stack (`--profile local-db`); production uses RDS.
   pgsql:
     image: postgres:18.6-trixie
+    profiles: [local-db]
     environment:
       POSTGRES_DB: ${DB_DATABASE:?Set DB_DATABASE in .env}
       POSTGRES_USER: ${DB_USERNAME:?Set DB_USERNAME in .env}
       POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale-provider=icu --icu-locale=es-CR"
-    # Reachable only from the VM itself (PowerBI gateway, backups over SSH): never from the internet.
+    # Reachable only from the machine itself: never from the internet.
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
