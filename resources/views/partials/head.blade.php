@@ -14,5 +14,10 @@
 
 @fonts
 
+{{-- The Vite dev server reads the nonce here for the styles it injects (App\Support\Http\ContentSecurityPolicy). --}}
+@if (Vite::isRunningHot())
+    <meta property="csp-nonce" nonce="{{ Vite::cspNonce() }}" />
+@endif
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-@fluxAppearance
+@fluxAppearance(['nonce' => Vite::cspNonce()])

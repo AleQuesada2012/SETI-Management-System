@@ -187,8 +187,7 @@ new class extends Component {
                 <div class="space-y-6">
                     <div
                         class="flex flex-col items-center space-y-3 justify-center"
-                        x-data
-                        x-init="$nextTick(() => $el.querySelector('input')?.focus())"
+                        x-data="focusFirstInput"
                     >
                         <flux:otp
                             name="code"
@@ -234,7 +233,7 @@ new class extends Component {
                             <div x-data class="flex items-center justify-center h-full p-4">
                                 <div
                                     class="bg-white p-3 rounded"
-                                    :style="($flux.appearance === 'dark' || ($flux.appearance === 'system' && $flux.dark)) ? 'filter: invert(1) brightness(1.5)' : ''"
+                                    :class="($flux.appearance === 'dark' || ($flux.appearance === 'system' && $flux.dark)) && 'invert brightness-150'"
                                 >
                                     {!! $qrCodeSvg !!}
                                 </div>
@@ -264,18 +263,7 @@ new class extends Component {
 
                     <div
                         class="flex items-center space-x-2"
-                        x-data="{
-                            copied: false,
-                            async copy() {
-                                try {
-                                    await navigator.clipboard.writeText('{{ $manualSetupKey }}');
-                                    this.copied = true;
-                                    setTimeout(() => this.copied = false, 1500);
-                                } catch (e) {
-                                    console.warn('Could not copy to clipboard');
-                                }
-                            }
-                        }"
+                        x-data="copySetupKey"
                     >
                         <div class="flex items-stretch w-full border rounded-xl dark:border-stone-700">
                             @empty($manualSetupKey)
@@ -286,6 +274,7 @@ new class extends Component {
                                 <input
                                     type="text"
                                     readonly
+                                    x-ref="setupKey"
                                     value="{{ $manualSetupKey }}"
                                     class="w-full p-3 bg-transparent outline-none text-stone-900 dark:text-stone-100"
                                 />

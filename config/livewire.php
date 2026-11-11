@@ -15,6 +15,12 @@ return [
 
     'component_layout' => 'layouts::app',
 
+    // Alpine and wire: expressions are evaluated by a parser instead of `new Function()`, so the Content-Security-Policy
+    // needs no 'unsafe-eval' (config/csp.php). The parser takes one plain expression: anything with arrow functions,
+    // `?.`, `??`, template literals, several statements or globals such as JSON goes in an Alpine.data component in
+    // resources/js (two-factor.js, charts.js).
+    'csp_safe' => true,
+
     // `php artisan make:livewire` writes single-file components without the ⚡ file-name prefix (it breaks some
     // Windows tools and shells).
     'make_command' => [

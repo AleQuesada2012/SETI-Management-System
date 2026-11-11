@@ -96,6 +96,6 @@
             </flux:toast.group>
         @endpersist
 
-        @fluxScripts
+        @fluxScripts(['nonce' => Vite::cspNonce()])
     </body>
 </html>

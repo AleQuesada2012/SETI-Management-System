@@ -3,11 +3,13 @@ import { Chart, DoughnutController, ArcElement, BarController, BarElement, Categ
 Chart.register(DoughnutController, ArcElement, BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 // type 'doughnut' shows proportions (RF_80/81); 'bar' ranks rows horizontally, one color per row (RF_82/83).
-const register = () => window.Alpine.data('setiChart', (series, type = 'doughnut') => {
+// The rows come from the element's data-series (components/chart.blade.php).
+const register = () => window.Alpine.data('setiChart', (type = 'doughnut') => {
     let chart;
     let observer;
     return {
         init() {
+            const series = JSON.parse(this.$el.dataset.series);
             const colors = () => {
                 const style = getComputedStyle(this.$el);
                 return series.map((row, index) => style.getPropertyValue(`--color-chart-${row.color ?? index % 5 + 1}`).trim());
