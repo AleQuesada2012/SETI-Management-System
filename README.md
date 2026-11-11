@@ -194,9 +194,10 @@ automáticamente: `php artisan test`.
 
 ## Producción
 
-Una máquina virtual en AWS ejecuta `compose.prod.yaml`: la aplicación, los procesos en segundo plano, PostgreSQL y
-Caddy (HTTPS automático). Instrucciones en el encabezado de [`compose.prod.yaml`](compose.prod.yaml) y valores en
-[`.env.production.example`](.env.production.example).
+Una instancia EC2 de AWS ejecuta `compose.prod.yaml`: la aplicación, los procesos en segundo plano y Caddy (HTTPS
+automático). La base de datos es una instancia de PostgreSQL en Amazon RDS. La guía paso a paso, desde la instancia
+vacía hasta el primer inicio de sesión y los respaldos, está en [`docs/deployment.md`](docs/deployment.md); los
+valores, en [`.env.production.example`](.env.production.example).
 
 ## Problemas frecuentes
 

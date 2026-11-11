@@ -92,6 +92,15 @@ where stated; historical G1/G3/B entries above remain unchanged. Tracking:
 | Target feature completion by October 25; protect October 26–28 for integration, fixes, manuals and demonstration preparation. | Final delivery needs reserved time beyond feature implementation; the October 28 18:30 deadline remains. | [PLANNING.md § Sprints](PLANNING.md#sprints) |
 | Record the plan in a planning PR and synchronize the eleven issue milestones; no additional October 14 feature commitments were identified. | Keep canonical requirement metadata, generated summaries and the live tracker aligned with the PM's adopted provisional distribution. | Issue #146, planning PR, GitHub RF issues |
 
+## Deployment (2026-11-10)
+
+Made by Alejandro (@AleQuesada2012) while deploying (issue #111). Supersedes the G1 entry "PostgreSQL as a container"
+for production only; development and CI keep the container.
+
+| Decision | Why | Enforced in |
+|---|---|---|
+| Production uses the course's Amazon RDS PostgreSQL instance, with its own `seti` database and user (never the master user), over TLS. | The course provides it; RDS backs it up and patches it. | [ADR-0012 amendment](adr/0012-docker-compose-on-serversideup-php-instead-of-sail.md), `database/sql/ops/create-app-database.sql`, `compose.prod.yaml`, [deployment.md](deployment.md) |
+
 ## Open
 
 - Whether AI tools may appear as commit co-authors (team decision pending).
