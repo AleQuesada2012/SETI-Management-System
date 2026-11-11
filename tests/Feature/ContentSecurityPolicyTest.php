@@ -71,3 +71,11 @@ test('only APP_ENV=local allows the Vite dev server and the local Reverb port', 
         ->and($local)->toContain('ws://localhost:8080')
         ->and($local)->toContain('ws://localhost:5173');
 });
+
+test('the Power BI report may be framed only when one is configured (RF_61)', function () {
+    expect((new ContentSecurityPolicy('nonce'))->header())->toContain("frame-src 'self';");
+
+    config(['reports.powerbi_embed_url' => 'https://app.powerbi.com/reportEmbed?reportId=1&autoAuth=true']);
+
+    expect((new ContentSecurityPolicy('nonce'))->header())->toContain("frame-src 'self' https://app.powerbi.com;");
+});

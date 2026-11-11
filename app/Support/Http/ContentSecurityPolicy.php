@@ -12,6 +12,8 @@ namespace App\Support\Http;
  * Inline style *attributes* are allowed: Flux's modals toggle `style="display: …"` on their focus-trap placeholders
  * with setAttribute, which a stricter policy would block. A style attribute cannot run script, and img-src keeps a
  * `url()` in one from reaching another site.
+ *
+ * Frames: only the Power BI report of RF_61 (the origin of `reports.powerbi_embed_url`), when one is configured.
  */
 class ContentSecurityPolicy
 {
@@ -39,6 +41,7 @@ class ContentSecurityPolicy
                 ...$vite,
                 'ws://'.config('csp.local.vite'),
             ] : [])],
+            'frame-src' => ["'self'", $this->origin(config('reports.powerbi_embed_url'))],
             'object-src' => ["'none'"],
             'base-uri' => ["'self'"],
             'form-action' => ["'self'"],
@@ -48,5 +51,17 @@ class ContentSecurityPolicy
         return collect($directives)
             ->map(fn (array $sources, string $directive): string => $directive.' '.implode(' ', array_filter($sources)))
             ->implode('; ');
+    }
+
+    /** `https://host[:port]` of a URL, or null when there is none. */
+    private function origin(?string $url): ?string
+    {
+        $parts = parse_url((string) $url);
+
+        if (! isset($parts['scheme'], $parts['host'])) {
+            return null;
+        }
+
+        return $parts['scheme'].'://'.$parts['host'].(isset($parts['port']) ? ':'.$parts['port'] : '');
     }
 }
