@@ -16,6 +16,19 @@ class CatalogSeeder extends Seeder
 {
     public function run(): void
     {
+        // The buildings of the Centro Académico de Alajuela; a space's location is building + floor + detail.
+        $this->seedNamed('buildings', [
+            ['name' => 'Módulo 1'],
+            ['name' => 'Módulo 2'],
+            ['name' => 'Módulo 3'],
+            ['name' => 'Módulo 4'],
+            ['name' => 'Edificio Administrativo'],
+            ['name' => 'Módulo 6'],
+            ['name' => 'Edificio TEC'],
+            ['name' => 'Torre de Laboratorios'],
+            ['name' => 'Escuela de Electromecánica'],
+        ]);
+
         $this->seedNamed('space_types', [
             ['name' => 'Laboratorio', 'is_reservable' => true, 'description' => 'Laboratorio de cómputo o de proyectos. Se puede reservar.'],
             ['name' => 'Sala', 'is_reservable' => true, 'description' => 'Sala de reuniones o aula. Se puede reservar.'],
