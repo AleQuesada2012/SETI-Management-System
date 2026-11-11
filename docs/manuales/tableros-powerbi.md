@@ -14,6 +14,10 @@ Cada tablero tiene tres páginas, **Activos**, **Espacios** y **Usuarios**, que 
 - Toca una parte de un gráfico para filtrar o resaltar los demás elementos de la página.
 - Pasa el cursor sobre un gráfico para ver el detalle de ese dato.
 
+![Página Activos de los tableros de Power BI](tableros-powerbi-activos.jpg)
+
+![Página Usuarios de los tableros de Power BI](tableros-powerbi-usuarios.jpg)
+
 Los datos se actualizan de forma programada, no en el momento. Si una actualización falla, Power BI muestra un aviso
 dentro del tablero.
 
