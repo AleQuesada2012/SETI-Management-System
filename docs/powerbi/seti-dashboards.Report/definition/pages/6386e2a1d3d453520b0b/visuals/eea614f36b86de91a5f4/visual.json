@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "eea614f36b86de91a5f4",
+  "position": {
+    "x": 436,
+    "y": 188,
+    "z": 1100,
+    "height": 250,
+    "width": 408,
+    "tabOrder": 1100
+  },
+  "visual": {
+    "visualType": "donutChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Estado"
+                }
+              },
+              "queryRef": "Reservas.Estado",
+              "nativeQueryRef": "Estado",
+              "displayName": "Estado",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Total reservas"
+                }
+              },
+              "queryRef": "Reservas.Total reservas",
+              "nativeQueryRef": "Reservas",
+              "displayName": "Reservas"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Reservas"
+                  }
+                },
+                "Property": "Total reservas"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Reservas por estado'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

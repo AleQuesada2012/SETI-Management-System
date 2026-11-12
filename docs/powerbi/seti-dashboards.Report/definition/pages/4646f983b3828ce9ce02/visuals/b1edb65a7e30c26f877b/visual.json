@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "b1edb65a7e30c26f877b",
+  "position": {
+    "x": 16,
+    "y": 446,
+    "z": 800,
+    "height": 262,
+    "width": 616,
+    "tabOrder": 800
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "generated_by_name"
+                }
+              },
+              "queryRef": "Reportes generados.generated_by_name",
+              "nativeQueryRef": "Usuario",
+              "displayName": "Usuario",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "Total reportes generados"
+                }
+              },
+              "queryRef": "Reportes generados.Total reportes generados",
+              "nativeQueryRef": "Reportes",
+              "displayName": "Reportes"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Reportes generados"
+                  }
+                },
+                "Property": "Total reportes generados"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Reportes por usuario'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

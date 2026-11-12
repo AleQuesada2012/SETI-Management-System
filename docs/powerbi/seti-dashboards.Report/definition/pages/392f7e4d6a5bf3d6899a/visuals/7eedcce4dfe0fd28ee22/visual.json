@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "7eedcce4dfe0fd28ee22",
+  "position": {
+    "x": 434,
+    "y": 84,
+    "z": 600,
+    "height": 96,
+    "width": 201,
+    "tabOrder": 600
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "Espacios ocupados"
+                }
+              },
+              "queryRef": "Espacios.Espacios ocupados",
+              "nativeQueryRef": "Ocupados ahora",
+              "displayName": "Ocupados ahora"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

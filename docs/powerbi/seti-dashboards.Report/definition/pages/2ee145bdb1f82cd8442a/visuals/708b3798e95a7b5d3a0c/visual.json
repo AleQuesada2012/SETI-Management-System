@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "708b3798e95a7b5d3a0c",
+  "position": {
+    "x": 16,
+    "y": 84,
+    "z": 400,
+    "height": 96,
+    "width": 201,
+    "tabOrder": 400
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "Total mantenimientos"
+                }
+              },
+              "queryRef": "Mantenimientos.Total mantenimientos",
+              "nativeQueryRef": "Intervenciones",
+              "displayName": "Intervenciones"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

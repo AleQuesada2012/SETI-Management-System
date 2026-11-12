@@ -1,0 +1,144 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "cb8d70655bc3f10ac7ab",
+  "position": {
+    "x": 648,
+    "y": 446,
+    "z": 900,
+    "height": 262,
+    "width": 616,
+    "tabOrder": 900
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "generated_at"
+                }
+              },
+              "queryRef": "Reportes generados.generated_at",
+              "nativeQueryRef": "Fecha",
+              "displayName": "Fecha",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "report_name"
+                }
+              },
+              "queryRef": "Reportes generados.report_name",
+              "nativeQueryRef": "Reporte",
+              "displayName": "Reporte",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "Formato"
+                }
+              },
+              "queryRef": "Reportes generados.Formato",
+              "nativeQueryRef": "Formato",
+              "displayName": "Formato",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "row_count"
+                }
+              },
+              "queryRef": "Reportes generados.row_count",
+              "nativeQueryRef": "Filas",
+              "displayName": "Filas",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "generated_by_name"
+                }
+              },
+              "queryRef": "Reportes generados.generated_by_name",
+              "nativeQueryRef": "Usuario",
+              "displayName": "Usuario",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Reportes generados"
+                  }
+                },
+                "Property": "generated_at"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detalle de reportes generados'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

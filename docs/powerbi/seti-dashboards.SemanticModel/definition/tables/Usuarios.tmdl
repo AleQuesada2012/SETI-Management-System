@@ -1,112 +1,119 @@
 table Usuarios
-	lineageTag: 5664e8b6-1c18-4240-b589-2b97f7390bbb
+	lineageTag: dff4d9f2-8165-5305-a679-a972f38f0edb
 
-	measure 'Total usuarios' = COUNTROWS(Usuarios)
+	measure 'Total usuarios' = COUNTROWS(Usuarios) + 0
 		formatString: #,0
-		lineageTag: ba94a923-b4de-44d9-adfc-d331f0a3679a
+		lineageTag: 7b9d9c5a-40a2-5baf-8789-5f70d7176347
 
 	measure 'Usuarios activos' = CALCULATE(COUNTROWS(Usuarios), Usuarios[account_status] = "active") + 0
 		formatString: #,0
-		lineageTag: b03d4134-f528-4871-a79b-90ecc1ca17e5
+		lineageTag: 8669e10c-9426-569f-81ca-aaf61d53d9b0
 
 	measure 'Usuarios desactivados' = CALCULATE(COUNTROWS(Usuarios), Usuarios[account_status] = "deactivated") + 0
 		formatString: #,0
-		lineageTag: 16b3f3c8-1422-4f8d-a6bc-3e50c642c88e
+		lineageTag: 85c88f51-3ae7-5292-b317-1419f41c2cf2
 
 	measure 'Invitaciones pendientes' = CALCULATE(COUNTROWS(Usuarios), Usuarios[invitation_pending] = TRUE()) + 0
 		formatString: #,0
-		lineageTag: 29c45220-96b3-43a2-a2e9-1dda27ec22d3
+		lineageTag: 49d77b25-f018-554e-a530-7cca63c031c3
+
+	measure 'Con acceso en 30 días' = CALCULATE(COUNTROWS(Usuarios), Usuarios[account_status] = "active", Usuarios[last_login_at] >= NOW() - 30) + 0
+		formatString: #,0
+		lineageTag: c9b7da57-a67e-560e-b585-c4e17d082e65
+
+	measure '% de adopción' = DIVIDE([Con acceso en 30 días], [Usuarios activos])
+		formatString: 0.0%
+		lineageTag: 9d0f34d8-d11f-5e9e-bdac-8e37456c5aa6
 
 	column id
 		dataType: int64
 		formatString: 0
-		lineageTag: d92350ee-001e-4b4c-84b2-6da7f572b6f2
 		summarizeBy: none
 		sourceColumn: id
+		lineageTag: e61824dd-2ca4-5249-896f-803bbd98d31e
 
 		annotation SummarizationSetBy = Automatic
 
 	column name
 		dataType: string
-		lineageTag: d5f0987c-8f52-4224-9c62-ecb184e82291
 		summarizeBy: none
 		sourceColumn: name
-
-		annotation SummarizationSetBy = Automatic
-
-	column email
-		dataType: string
-		lineageTag: 253b0e1e-85cf-4c06-b676-ffc0c137923d
-		summarizeBy: none
-		sourceColumn: email
+		lineageTag: 49e8c4cd-9e7c-5c06-b302-744f7f92cb3f
 
 		annotation SummarizationSetBy = Automatic
 
 	column account_status
 		dataType: string
-		lineageTag: 1d870586-94be-44b9-ac55-f36b783b7d39
 		summarizeBy: none
 		sourceColumn: account_status
+		lineageTag: 2aef0445-9d5f-5ba6-a85c-bccc608f2337
 
 		annotation SummarizationSetBy = Automatic
 
 	column invitation_pending
 		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 140130f2-0405-481f-b5d4-4b4914afc761
+		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: invitation_pending
+		lineageTag: bdbbbf8a-c6a0-5ef0-a06f-7cbb71b70cea
 
 		annotation SummarizationSetBy = Automatic
 
 	column roles
 		dataType: string
-		lineageTag: f0d50750-4f78-4977-810f-34f51b20c734
 		summarizeBy: none
 		sourceColumn: roles
+		lineageTag: 7df6ef2b-e680-57e9-a1b0-af9dd70341b2
 
 		annotation SummarizationSetBy = Automatic
 
 	column last_login_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: 699da7dd-3a48-4111-8c27-d4505a73baf4
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: last_login_at
+		lineageTag: 5b347930-bb5b-584e-9b21-bd534341d503
 
 		annotation SummarizationSetBy = Automatic
 
 	column deactivated_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: 9822af64-2ae1-4a32-8a16-cda23a5aca48
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: deactivated_at
+		lineageTag: 84599fa9-c224-5cd1-949b-e873160deff9
 
 		annotation SummarizationSetBy = Automatic
 
 	column created_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: 2fb7b778-6dda-42e1-ac09-967c27e69a78
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: created_at
-
-		annotation SummarizationSetBy = Automatic
-
-	column updated_at
-		dataType: dateTime
-		formatString: General Date
-		lineageTag: 81088753-429d-46c3-babf-01f832258329
-		summarizeBy: none
-		sourceColumn: updated_at
+		lineageTag: b5fbf258-0f0a-55d9-a074-6f8e1e75422d
 
 		annotation SummarizationSetBy = Automatic
 
 	column 'Estado de cuenta' = SWITCH([account_status], "active", "Activa", "deactivated", "Desactivada", [account_status])
 		dataType: string
-		lineageTag: 2293d9fa-ae26-49b0-ad61-f84ad406065f
 		summarizeBy: none
+		lineageTag: 2a37ba43-3cb5-5a1e-8228-cc708dc76a26
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Último acceso' = VAR days = INT(NOW() - [last_login_at]) RETURN SWITCH(TRUE(), ISBLANK([last_login_at]), "Nunca", days <= 7, "Últimos 7 días", days <= 30, "De 8 a 30 días", days <= 90, "De 31 a 90 días", "Más de 90 días")
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Último acceso (orden)'
+		lineageTag: 6978e0cf-b3bb-5f61-83e1-3ab636e5ddf9
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Último acceso (orden)' = VAR days = INT(NOW() - [last_login_at]) RETURN SWITCH(TRUE(), ISBLANK([last_login_at]), 5, days <= 7, 1, days <= 30, 2, days <= 90, 3, 4)
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		lineageTag: e00b4af6-fc8d-5a35-bd83-ca7e355f39af
 
 		annotation SummarizationSetBy = Automatic
 
@@ -114,10 +121,11 @@ table Usuarios
 		mode: import
 		source =
 				let
-				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
-				  #"Navigation 1" = Source{[Schema = "reporting", Item = "users"]}[Data]
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "users.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"id", Int64.Type}, {"name", type text}, {"account_status", type text}, {"invitation_pending", type logical}, {"roles", type text}, {"last_login_at", type datetime}, {"deactivated_at", type datetime}, {"created_at", type datetime}}, "en-US")
 				in
-				  #"Navigation 1"
+				    Typed
 
 	annotation PBI_ResultType = Table
-

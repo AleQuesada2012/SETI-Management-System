@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "b06fe8b1a70194c555c7",
+  "position": {
+    "x": 436,
+    "y": 188,
+    "z": 1100,
+    "height": 250,
+    "width": 408,
+    "tabOrder": 1100
+  },
+  "visual": {
+    "visualType": "donutChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "Estado"
+                }
+              },
+              "queryRef": "Mantenimientos.Estado",
+              "nativeQueryRef": "Estado",
+              "displayName": "Estado",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "Total mantenimientos"
+                }
+              },
+              "queryRef": "Mantenimientos.Total mantenimientos",
+              "nativeQueryRef": "Intervenciones",
+              "displayName": "Intervenciones"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Mantenimientos"
+                  }
+                },
+                "Property": "Total mantenimientos"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Intervenciones por estado'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "d8a3c74ec7233f9d90a3",
+  "position": {
+    "x": 330,
+    "y": 84,
+    "z": 500,
+    "height": 96,
+    "width": 306,
+    "tabOrder": 500
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Movimientos"
+                    }
+                  },
+                  "Property": "Ingresos"
+                }
+              },
+              "queryRef": "Movimientos.Ingresos",
+              "nativeQueryRef": "Ingresos",
+              "displayName": "Ingresos"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

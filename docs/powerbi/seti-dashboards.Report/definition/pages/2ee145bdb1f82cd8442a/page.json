@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "2ee145bdb1f82cd8442a",
+  "displayName": "Mantenimiento",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

@@ -1,177 +1,144 @@
 table Espacios
-	lineageTag: c66af89c-f061-4d97-a0df-45fb8cf565d5
+	lineageTag: 73ddf0e5-32e4-59de-b6eb-ddcf3ade5cac
 
-	measure 'Total espacios' = COUNTROWS(Espacios)
+	measure 'Total espacios' = COUNTROWS(Espacios) + 0
 		formatString: #,0
-		lineageTag: 5dba10b5-e662-4021-a7de-c8d2b9696833
+		lineageTag: 8540b286-d838-56ca-a0f2-3b0d5f40c79f
 
 	measure 'Espacios reservables' = CALCULATE(COUNTROWS(Espacios), Espacios[is_reservable] = TRUE()) + 0
 		formatString: #,0
-		lineageTag: 5e5204ef-5475-42e1-a0f9-4c317e73b6c0
+		lineageTag: 6f6d571a-9ffe-524e-a989-8dd303d5267d
 
 	measure 'Espacios ocupados' = CALCULATE(COUNTROWS(Espacios), Espacios[is_occupied] = TRUE()) + 0
 		formatString: #,0
-		lineageTag: c158a4dc-7091-44c6-a335-53e8559d0ff1
+		lineageTag: f76fec5d-4739-5ffe-961b-9b02da428c54
+
+	measure 'Capacidad total' = SUM(Espacios[capacity]) + 0
+		formatString: #,0
+		lineageTag: 2be03dc1-1f91-56d2-8b15-8f9cf92dfaac
 
 	column id
 		dataType: int64
 		formatString: 0
-		lineageTag: 67c1e1da-c785-441a-a0a5-7f69092ad771
 		summarizeBy: none
 		sourceColumn: id
+		lineageTag: d9730a64-a39f-56d7-9efc-6a0bd01c1077
 
 		annotation SummarizationSetBy = Automatic
 
 	column code
 		dataType: string
-		lineageTag: 5710f9ac-f409-48dd-8cc5-1c0d2961d0e7
 		summarizeBy: none
 		sourceColumn: code
+		lineageTag: 4dcddc4d-90c8-5783-8151-f550cad52710
 
 		annotation SummarizationSetBy = Automatic
 
 	column name
 		dataType: string
-		lineageTag: b80598f6-0866-445c-beae-db9039757061
 		summarizeBy: none
 		sourceColumn: name
-
-		annotation SummarizationSetBy = Automatic
-
-	column space_type_id
-		dataType: int64
-		formatString: 0
-		lineageTag: c02d8bc7-d705-4456-b147-0bf36de9951f
-		summarizeBy: none
-		sourceColumn: space_type_id
+		lineageTag: 4139d5d4-6cd4-57df-b13e-c45dddb2e40f
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_type
 		dataType: string
-		lineageTag: 2dfad8e5-a3aa-43d1-a6ac-26bb7bbb0207
 		summarizeBy: none
 		sourceColumn: space_type
-
-		annotation SummarizationSetBy = Automatic
-
-	column space_status_id
-		dataType: int64
-		formatString: 0
-		lineageTag: fb7c2515-a812-43ab-87cc-441e0ba9efd9
-		summarizeBy: none
-		sourceColumn: space_status_id
+		lineageTag: f76de679-8c37-5984-bec6-e641751e755a
 
 		annotation SummarizationSetBy = Automatic
 
 	column status
 		dataType: string
-		lineageTag: 0d6f6d09-d73c-4d91-a6e1-fa28b90f8dd3
 		summarizeBy: none
 		sourceColumn: status
+		lineageTag: 0b92239e-c5db-50c4-939f-819307355079
 
 		annotation SummarizationSetBy = Automatic
 
 	column status_color
 		dataType: string
-		lineageTag: 5ec074c6-b964-4b59-961c-b9951554f17d
 		summarizeBy: none
 		sourceColumn: status_color
+		lineageTag: 9a805af2-550f-5823-8b1c-1f66d038f03d
 
 		annotation SummarizationSetBy = Automatic
 
 	column is_reservable
 		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 76e3f30e-4cf5-45a3-a6f0-0efc96bbf4b3
+		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: is_reservable
+		lineageTag: 2f893a3e-8d65-5ed6-b248-74808576766a
 
 		annotation SummarizationSetBy = Automatic
 
 	column is_occupied
 		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 4d319fa6-3cff-4865-94f7-ffbbc89bcdea
+		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: is_occupied
-
-		annotation SummarizationSetBy = Automatic
-
-	column building_id
-		dataType: int64
-		formatString: 0
-		lineageTag: 5b88ad4b-89b2-4802-8ed7-9a30e82df67e
-		summarizeBy: none
-		sourceColumn: building_id
+		lineageTag: a8d983e7-772f-56cf-8187-805920d91a54
 
 		annotation SummarizationSetBy = Automatic
 
 	column building
 		dataType: string
-		lineageTag: 2c101ed0-396d-44b5-a0b9-28af9835345c
 		summarizeBy: none
 		sourceColumn: building
+		lineageTag: 0adac9f5-aaca-5f03-a90e-a80697f82407
 
 		annotation SummarizationSetBy = Automatic
 
 	column floor
 		dataType: string
-		lineageTag: 277aa619-40e6-497c-aa7a-17fabbe14205
 		summarizeBy: none
 		sourceColumn: floor
-
-		annotation SummarizationSetBy = Automatic
-
-	column location_detail
-		dataType: string
-		lineageTag: 028cc82b-f26a-4532-ba26-c30a3b77f370
-		summarizeBy: none
-		sourceColumn: location_detail
+		lineageTag: 7c9be312-5349-5ffc-a2d1-5540b06cb57a
 
 		annotation SummarizationSetBy = Automatic
 
 	column capacity
 		dataType: int64
-		formatString: 0
-		lineageTag: 3bd900b1-1417-4322-8eae-d59335bcfcc3
+		formatString: #,0
 		summarizeBy: sum
 		sourceColumn: capacity
+		lineageTag: caeb48b2-5aee-5f96-9379-79af5403efa3
 
 		annotation SummarizationSetBy = Automatic
 
 	column managers
 		dataType: string
-		lineageTag: acdab7b7-b5d3-437f-b7a6-96d68fd3df81
 		summarizeBy: none
 		sourceColumn: managers
+		lineageTag: dda35724-1477-540d-8e82-aa2d07fccca6
 
 		annotation SummarizationSetBy = Automatic
 
 	column asset_count
 		dataType: int64
-		formatString: 0
-		lineageTag: d80b515a-a1bc-4fef-b3dd-918fb853deb5
+		formatString: #,0
 		summarizeBy: sum
 		sourceColumn: asset_count
+		lineageTag: 2002f704-c8ff-5a06-aaf4-cf7f40123b09
 
 		annotation SummarizationSetBy = Automatic
 
 	column created_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: 559c2020-706e-4d06-9d9f-6df8bae8a6f7
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: created_at
+		lineageTag: 2d62cf7b-882d-5aa2-8dbf-2b7199cfbcdb
 
 		annotation SummarizationSetBy = Automatic
 
-	column updated_at
-		dataType: dateTime
-		formatString: General Date
-		lineageTag: 1b3179c9-e5b1-4268-b7e6-7828d44704e4
+	column Reservable = IF([is_reservable], "Reservable", "No reservable")
+		dataType: string
 		summarizeBy: none
-		sourceColumn: updated_at
+		lineageTag: 4e3fa8f5-97e1-5d05-b5a8-5da62f4e1b6a
 
 		annotation SummarizationSetBy = Automatic
 
@@ -179,10 +146,11 @@ table Espacios
 		mode: import
 		source =
 				let
-				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
-				  #"Navigation 1" = Source{[Schema = "reporting", Item = "spaces"]}[Data]
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "spaces.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"id", Int64.Type}, {"code", type text}, {"name", type text}, {"space_type", type text}, {"status", type text}, {"status_color", type text}, {"is_reservable", type logical}, {"is_occupied", type logical}, {"building", type text}, {"floor", type text}, {"capacity", Int64.Type}, {"managers", type text}, {"asset_count", Int64.Type}, {"created_at", type datetime}}, "en-US")
 				in
-				  #"Navigation 1"
+				    Typed
 
 	annotation PBI_ResultType = Table
-

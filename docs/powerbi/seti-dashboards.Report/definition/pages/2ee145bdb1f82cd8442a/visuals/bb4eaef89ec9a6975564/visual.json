@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "bb4eaef89ec9a6975564",
+  "position": {
+    "x": 856,
+    "y": 446,
+    "z": 1400,
+    "height": 262,
+    "width": 408,
+    "tabOrder": 1400
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Eventos de activos"
+                    }
+                  },
+                  "Property": "Tipo"
+                }
+              },
+              "queryRef": "Eventos de activos.Tipo",
+              "nativeQueryRef": "Incidente",
+              "displayName": "Incidente",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Eventos de activos"
+                    }
+                  },
+                  "Property": "Total eventos"
+                }
+              },
+              "queryRef": "Eventos de activos.Total eventos",
+              "nativeQueryRef": "Incidentes",
+              "displayName": "Incidentes"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Eventos de activos"
+                  }
+                },
+                "Property": "Total eventos"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Incidentes por tipo'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

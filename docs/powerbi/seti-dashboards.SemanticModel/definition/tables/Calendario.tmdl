@@ -1,0 +1,102 @@
+table Calendario
+	lineageTag: 042779a0-f2d4-52bf-816d-a427230969d4
+
+	column Fecha
+		dataType: dateTime
+		isDataTypeInferred
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: [Date]
+		lineageTag: 4cbdc6d9-83ed-5740-9354-5b5e08de5803
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Año'
+		dataType: int64
+		isDataTypeInferred
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: [Año]
+		lineageTag: 91fc3a4e-91b3-5df5-83e8-e25221701878
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		dataType: string
+		isDataTypeInferred
+		summarizeBy: none
+		sourceColumn: [Mes]
+		sortByColumn: 'Mes (orden)'
+		lineageTag: d2d709fe-9747-59ba-ab60-507a6c084dfa
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mes (orden)'
+		dataType: int64
+		isDataTypeInferred
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: [Mes (orden)]
+		lineageTag: d1af1210-27bd-520a-a095-072d9cbd8d84
+
+		annotation SummarizationSetBy = Automatic
+
+	column Semana
+		dataType: dateTime
+		isDataTypeInferred
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: [Semana]
+		lineageTag: 12ec9290-6e92-554c-8307-315f50dbb8ce
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Día de la semana'
+		dataType: string
+		isDataTypeInferred
+		summarizeBy: none
+		sourceColumn: [Día de la semana]
+		sortByColumn: 'Día (orden)'
+		lineageTag: 6d08ea2b-fdb8-5403-8c20-8ec092b4d3ea
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Día (orden)'
+		dataType: int64
+		isDataTypeInferred
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: [Día (orden)]
+		lineageTag: 5e9dfaa1-ed18-5959-a7cc-2b33d08298d7
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Día hábil'
+		dataType: boolean
+		isDataTypeInferred
+		formatString: "TRUE";"TRUE";"FALSE"
+		summarizeBy: none
+		sourceColumn: [Día hábil]
+		lineageTag: 41815cb1-1bb1-54a7-a84f-aaefd70b918b
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendario = calculated
+		mode: import
+		source = ```
+				VAR firstDay = MINX({ MIN(Reservas[local_date]), MIN(Mantenimientos[reference_date]), MIN(Movimientos[Fecha]), MIN('Eventos de activos'[occurred_on]), MIN('Reportes generados'[Fecha]) }, [Value])
+				VAR lastDay = MAXX({ MAX(Reservas[local_date]), TODAY() + 30 }, [Value])
+				RETURN
+				  ADDCOLUMNS(
+				    CALENDAR(COALESCE(firstDay, TODAY() - 365), lastDay),
+				    "Año", YEAR([Date]),
+				    "Mes", SWITCH(MONTH([Date]), 1, "ene", 2, "feb", 3, "mar", 4, "abr", 5, "may", 6, "jun", 7, "jul", 8, "ago", 9, "sep", 10, "oct", 11, "nov", "dic") & " " & YEAR([Date]),
+				    "Mes (orden)", YEAR([Date]) * 100 + MONTH([Date]),
+				    "Semana", [Date] - WEEKDAY([Date], 2) + 1,
+				    "Día de la semana", SWITCH(WEEKDAY([Date], 2), 1, "Lunes", 2, "Martes", 3, "Miércoles", 4, "Jueves", 5, "Viernes", 6, "Sábado", "Domingo"),
+				    "Día (orden)", WEEKDAY([Date], 2),
+				    "Día hábil", WEEKDAY([Date], 2) <= 6
+				  )
+				```
+
+	annotation PBI_Id = calendario

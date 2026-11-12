@@ -1,82 +1,88 @@
-table Ocupación
-	lineageTag: e4234c60-da4b-4a71-a2c9-988125c271de
+table 'Ocupación'
+	lineageTag: 0e53ccc5-4681-500d-96c2-6cd4ee8e81f3
 
 	measure 'Horas reservadas' = SUM('Ocupación'[booked_hours]) + 0
+		formatString: #,0.0
+		lineageTag: c200d824-8b18-55a3-9762-12eed64ab69b
+
+	measure 'Horas disponibles' = VAR firstDay = CALCULATE(MIN(Reservas[local_date]), REMOVEFILTERS()) VAR days = CALCULATE(COUNTROWS(Calendario), KEEPFILTERS(Calendario[Día hábil] = TRUE()), KEEPFILTERS(Calendario[Fecha] >= firstDay), KEEPFILTERS(Calendario[Fecha] <= TODAY())) RETURN days * 15 * [Espacios reservables]
 		formatString: #,0
-		lineageTag: e847f405-685d-421e-a9cb-a6b0084b1fd2
+		lineageTag: f25584ff-3360-5d1d-ba05-937d438ca552
+
+	measure '% de ocupación' = DIVIDE(CALCULATE([Horas reservadas], KEEPFILTERS(Calendario[Fecha] <= TODAY())), [Horas disponibles])
+		formatString: 0.0%
+		lineageTag: 64f7f4d0-950f-5ec9-a37f-e270dcecbdfe
 
 	column space_id
 		dataType: int64
 		formatString: 0
-		lineageTag: fd68daf0-41cb-458c-afa1-2592c89832c0
 		summarizeBy: none
 		sourceColumn: space_id
+		lineageTag: 605f123a-4e7c-55ab-9aa6-c9143dd5cbb9
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_code
 		dataType: string
-		lineageTag: 6a0e877b-fd85-4fee-bece-88d8da5864ff
 		summarizeBy: none
 		sourceColumn: space_code
+		lineageTag: 29932891-561c-54c0-9c0d-4216e22de2ee
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_name
 		dataType: string
-		lineageTag: 6ade76e4-75e5-4fa4-a983-3b22a8cf1aa7
 		summarizeBy: none
 		sourceColumn: space_name
+		lineageTag: ec2aa529-95fd-5006-b122-4a75d01639d7
 
 		annotation SummarizationSetBy = Automatic
 
 	column local_date
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 80de1282-264e-445d-8629-5ab5cf72a85e
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: local_date
+		lineageTag: 8daffbcc-8b5d-57ea-be64-d82362828ae2
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation UnderlyingDateTimeDataType = Date
-
 	column reservations
 		dataType: int64
-		formatString: 0
-		lineageTag: 7b6eee64-c97b-4856-9031-49ad71def9cf
+		formatString: #,0
 		summarizeBy: sum
 		sourceColumn: reservations
+		lineageTag: 6fad96af-2dbc-5e5f-bdf0-05fdcd7ae07d
 
 		annotation SummarizationSetBy = Automatic
 
 	column booked_hours
 		dataType: double
-		lineageTag: 5287f76e-2c81-4601-bb45-cc30b326a3eb
+		formatString: #,0.0
 		summarizeBy: sum
 		sourceColumn: booked_hours
+		lineageTag: c1217295-9ea6-5dac-a5ae-ae99281a1c50
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column attendees
 		dataType: int64
-		formatString: 0
-		lineageTag: 0ad4efc6-6996-4aeb-bcdb-4acca9f4ff56
+		formatString: #,0
 		summarizeBy: sum
 		sourceColumn: attendees
+		lineageTag: 6feab5e3-7b55-5d42-8ef5-5d90cf2e6f17
 
 		annotation SummarizationSetBy = Automatic
 
-	partition Ocupación = m
+	partition 'Ocupación' = m
 		mode: import
 		source =
 				let
-				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
-				  #"Navigation 1" = Source{[Schema = "reporting", Item = "space_occupancy"]}[Data]
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "space_occupancy.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"space_id", Int64.Type}, {"space_code", type text}, {"space_name", type text}, {"local_date", type date}, {"reservations", Int64.Type}, {"booked_hours", type number}, {"attendees", Int64.Type}}, "en-US")
 				in
-				  #"Navigation 1"
+				    Typed
 
 	annotation PBI_ResultType = Table
-

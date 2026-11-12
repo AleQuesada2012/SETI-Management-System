@@ -1,239 +1,235 @@
 table Reservas
-	lineageTag: a5ca0af3-5fb5-4d13-88ed-e36ac4021c1a
+	lineageTag: a7dc8ffd-3a27-5e5a-a125-8e075907eabb
+
+	measure 'Total reservas' = COUNTROWS(Reservas) + 0
+		formatString: #,0
+		lineageTag: 139322b0-edd8-5ad9-9084-c5e04bc30d91
 
 	measure 'Reservas confirmadas' = CALCULATE(COUNTROWS(Reservas), Reservas[status] = "confirmed") + 0
 		formatString: #,0
-		lineageTag: cfa554a0-a5d9-4cd9-a280-745292872fdd
+		lineageTag: ece95725-8401-54b2-a825-b162f529de6a
+
+	measure 'Reservas canceladas' = CALCULATE(COUNTROWS(Reservas), Reservas[status] = "cancelled") + 0
+		formatString: #,0
+		lineageTag: 29d9a864-c0b9-5147-a380-ca479d884555
+
+	measure '% canceladas' = DIVIDE([Reservas canceladas], [Total reservas])
+		formatString: 0.0%
+		lineageTag: cfa008bd-41a8-5050-a5ac-ebfd5f1df9d6
+
+	measure '% recurrentes' = DIVIDE(CALCULATE(COUNTROWS(Reservas), NOT ISBLANK(Reservas[series_id])), [Total reservas])
+		formatString: 0.0%
+		lineageTag: f52eda37-e3c5-55ae-932d-62df689466df
+
+	measure 'Anticipación promedio (días)' = CALCULATE(AVERAGE(Reservas[Días de anticipación]), Reservas[status] = "confirmed")
+		formatString: #,0.0
+		lineageTag: 93048bcd-06a3-5de2-ad57-25606f3e5e01
+
+	measure 'Asistentes promedio' = CALCULATE(AVERAGE(Reservas[attendees]), Reservas[status] = "confirmed")
+		formatString: #,0.0
+		lineageTag: a0fdc17e-be63-5ce8-abcc-e2de489f005b
+
+	measure 'Reservas próximos 7 días' = CALCULATE(COUNTROWS(Reservas), Reservas[status] = "confirmed", Reservas[local_date] >= TODAY(), Reservas[local_date] < TODAY() + 7, REMOVEFILTERS(Calendario)) + 0
+		formatString: #,0
+		lineageTag: 89a4b886-3a26-5ef3-9408-4bae67dcbaa0
 
 	column id
 		dataType: int64
 		formatString: 0
-		lineageTag: a68924b9-d5cc-48a9-b8f6-5e3f8ee54f82
 		summarizeBy: none
 		sourceColumn: id
+		lineageTag: 166c63da-a192-5b36-a11a-eec69c76a041
 
 		annotation SummarizationSetBy = Automatic
 
 	column series_id
 		dataType: string
-		lineageTag: d1d02262-2b7f-44bc-a1f6-4c64f78268f2
 		summarizeBy: none
 		sourceColumn: series_id
+		lineageTag: 9473d278-10fb-5610-b36c-32bb9062ea41
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_id
 		dataType: int64
 		formatString: 0
-		lineageTag: 16dda9b1-4139-4b11-bf1a-b1b9297cad31
 		summarizeBy: none
 		sourceColumn: space_id
+		lineageTag: 2837c7aa-8d55-5e67-b81a-dd4b8b22c05a
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_code
 		dataType: string
-		lineageTag: e288f489-cac5-46f3-8374-593125c4b362
 		summarizeBy: none
 		sourceColumn: space_code
+		lineageTag: 76af90cb-07d6-5e42-a93f-9c2769860af5
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_name
 		dataType: string
-		lineageTag: edec9bd8-9825-4e9b-a608-8b1e70350f3f
 		summarizeBy: none
 		sourceColumn: space_name
+		lineageTag: d5ce773a-0508-56bd-8622-a855c0d1fab4
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_deleted
 		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: b5fba588-a0ae-4c1d-a00d-640ac057e3cb
+		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: space_deleted
+		lineageTag: 74d6e26e-f1bb-5483-9c53-0fd76e8dfafe
 
 		annotation SummarizationSetBy = Automatic
 
 	column starts_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: 9863a8b2-b236-4ce9-b125-8b4ea5a6c523
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: starts_at
+		lineageTag: f5ec48d6-46c7-5538-8084-38fad92ae34d
 
 		annotation SummarizationSetBy = Automatic
 
 	column ends_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: 53541e87-9643-4368-8dd9-16f63c373f42
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: ends_at
+		lineageTag: 117739ac-56de-5cab-87b9-ddf85e6b2a92
 
 		annotation SummarizationSetBy = Automatic
 
 	column local_date
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 54aea115-2987-4bff-bc1e-bc411c011de2
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: local_date
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column title
-		dataType: string
-		lineageTag: 41706dc3-6846-4ed3-99e0-75fd6b14b63c
-		summarizeBy: none
-		sourceColumn: title
-
-		annotation SummarizationSetBy = Automatic
-
-	column notes
-		dataType: string
-		lineageTag: fcf71754-9765-4f5f-a266-b97f90a21f6a
-		summarizeBy: none
-		sourceColumn: notes
+		lineageTag: fa212635-04f6-537b-a77d-abdfe815c635
 
 		annotation SummarizationSetBy = Automatic
 
 	column attendees
 		dataType: int64
-		formatString: 0
-		lineageTag: 1ab2d1bd-ec59-4678-a414-d5c947d48870
+		formatString: #,0
 		summarizeBy: sum
 		sourceColumn: attendees
+		lineageTag: d07456c1-d1bd-5d35-8211-8363ca2dbd10
 
 		annotation SummarizationSetBy = Automatic
 
 	column responsible_id
 		dataType: int64
 		formatString: 0
-		lineageTag: a338a5f8-0dee-4fea-b399-4ceb79efd8f3
 		summarizeBy: none
 		sourceColumn: responsible_id
+		lineageTag: 591b38e4-69a6-521a-9e5f-55359398fe8c
 
 		annotation SummarizationSetBy = Automatic
 
 	column responsible_name
 		dataType: string
-		lineageTag: ef6e6a6b-06f1-4e0c-be3b-3dabd27ffdc4
 		summarizeBy: none
 		sourceColumn: responsible_name
-
-		annotation SummarizationSetBy = Automatic
-
-	column created_by
-		dataType: int64
-		formatString: 0
-		lineageTag: ca44d4f5-6f35-4d90-927a-c167891509b5
-		summarizeBy: none
-		sourceColumn: created_by
+		lineageTag: 36fd5c43-6f66-523f-8bf2-3a0abc27b8fb
 
 		annotation SummarizationSetBy = Automatic
 
 	column created_by_name
 		dataType: string
-		lineageTag: 8c8fcee3-e70d-436f-8d75-545767c88497
 		summarizeBy: none
 		sourceColumn: created_by_name
+		lineageTag: e70dbfa2-a877-57a7-836a-809779384f63
 
 		annotation SummarizationSetBy = Automatic
 
 	column status
 		dataType: string
-		lineageTag: cac16d7f-571a-4df6-8f31-8f97a8d810ea
 		summarizeBy: none
 		sourceColumn: status
+		lineageTag: 49fe5cb1-f60c-5b81-8592-281567d7c3cd
 
 		annotation SummarizationSetBy = Automatic
 
 	column effective_status
 		dataType: string
-		lineageTag: e649650c-892f-468a-9624-e2c00cfc21f0
 		summarizeBy: none
 		sourceColumn: effective_status
+		lineageTag: 7034221e-b1e0-5650-bfc4-9055081193c4
 
 		annotation SummarizationSetBy = Automatic
 
 	column was_modified
 		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: a8ab25e4-98f0-41c8-91fd-b92fd4e5f778
+		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: was_modified
-
-		annotation SummarizationSetBy = Automatic
-
-	column version
-		dataType: int64
-		formatString: 0
-		lineageTag: bc3b8eb6-f11d-45ee-b1a1-b7e5c633053f
-		summarizeBy: sum
-		sourceColumn: version
+		lineageTag: 5fbc1e52-e826-5b80-bfd3-af1c0f549467
 
 		annotation SummarizationSetBy = Automatic
 
 	column cancelled_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: e4cd0465-5206-4a56-bebf-1a921f0f1630
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: cancelled_at
-
-		annotation SummarizationSetBy = Automatic
-
-	column cancelled_by
-		dataType: int64
-		formatString: 0
-		lineageTag: 7236ba3e-be15-49e7-9443-ed13796e53e4
-		summarizeBy: none
-		sourceColumn: cancelled_by
-
-		annotation SummarizationSetBy = Automatic
-
-	column cancelled_by_name
-		dataType: string
-		lineageTag: 6566bdc9-7116-4751-a0c9-fa29e5431ff0
-		summarizeBy: none
-		sourceColumn: cancelled_by_name
-
-		annotation SummarizationSetBy = Automatic
-
-	column cancellation_reason
-		dataType: string
-		lineageTag: 16a54537-d9ed-420e-98e0-bf8c8cd43f6b
-		summarizeBy: none
-		sourceColumn: cancellation_reason
+		lineageTag: 3038f13b-b2a6-572e-a289-b163eb06cc75
 
 		annotation SummarizationSetBy = Automatic
 
 	column created_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: 3b7b732c-dd53-4769-93fa-b30f7df84a11
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: created_at
-
-		annotation SummarizationSetBy = Automatic
-
-	column updated_at
-		dataType: dateTime
-		formatString: General Date
-		lineageTag: f0c727e7-0a0d-46f2-bd1d-e54febb91270
-		summarizeBy: none
-		sourceColumn: updated_at
+		lineageTag: e26e025f-1be1-5758-bfc1-109f9ddd6ed3
 
 		annotation SummarizationSetBy = Automatic
 
 	column Estado = SWITCH([effective_status], "upcoming", "Próxima", "in_progress", "En curso", "finished", "Finalizada", "cancelled", "Cancelada", [effective_status])
 		dataType: string
-		lineageTag: f47b00a1-8264-4d9b-af6d-33688d7023fb
 		summarizeBy: none
+		lineageTag: e2537619-c057-57c2-991a-1bdce65f146a
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Hora de inicio' = HOUR([starts_at])
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		lineageTag: 640bd069-51e9-5ebc-b52f-eb108aa8b9c0
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duración (horas)' = DATEDIFF([starts_at], [ends_at], MINUTE) / 60
+		dataType: double
+		formatString: #,0.0
+		summarizeBy: none
+		lineageTag: 7ebbf72c-7917-5334-b9cf-ea73f9d28528
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Días de anticipación' = IF([created_at] <= [starts_at], INT([starts_at] - [created_at]), 0)
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		lineageTag: 77e012b3-4b9e-5642-9a4d-d7cf3ce95230
+
+		annotation SummarizationSetBy = Automatic
+
+	column Frecuencia = IF(ISBLANK([series_id]), "Única", "Recurrente")
+		dataType: string
+		summarizeBy: none
+		lineageTag: e2cb3db3-6e36-5ec5-89c7-efeaa3faa51e
+
+		annotation SummarizationSetBy = Automatic
+
+	column Responsable = COALESCE([responsible_name], "Sin responsable")
+		dataType: string
+		summarizeBy: none
+		lineageTag: 2417ad20-c383-57a8-b34f-dd49f3aafe15
 
 		annotation SummarizationSetBy = Automatic
 
@@ -241,10 +237,11 @@ table Reservas
 		mode: import
 		source =
 				let
-				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
-				  #"Navigation 1" = Source{[Schema = "reporting", Item = "reservations"]}[Data]
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "reservations.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"id", Int64.Type}, {"series_id", type text}, {"space_id", Int64.Type}, {"space_code", type text}, {"space_name", type text}, {"space_deleted", type logical}, {"starts_at", type datetime}, {"ends_at", type datetime}, {"local_date", type date}, {"attendees", Int64.Type}, {"responsible_id", Int64.Type}, {"responsible_name", type text}, {"created_by_name", type text}, {"status", type text}, {"effective_status", type text}, {"was_modified", type logical}, {"cancelled_at", type datetime}, {"created_at", type datetime}}, "en-US")
 				in
-				  #"Navigation 1"
+				    Typed
 
 	annotation PBI_ResultType = Table
-

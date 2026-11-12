@@ -1,0 +1,176 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "6863d2a4ac6d92f08bad",
+  "position": {
+    "x": 16,
+    "y": 446,
+    "z": 1300,
+    "height": 262,
+    "width": 832,
+    "tabOrder": 1300
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "reference_date"
+                }
+              },
+              "queryRef": "Mantenimientos.reference_date",
+              "nativeQueryRef": "Fecha",
+              "displayName": "Fecha",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "asset_code"
+                }
+              },
+              "queryRef": "Mantenimientos.asset_code",
+              "nativeQueryRef": "Código",
+              "displayName": "Código",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "asset_name"
+                }
+              },
+              "queryRef": "Mantenimientos.asset_name",
+              "nativeQueryRef": "Activo",
+              "displayName": "Activo",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "Tipo"
+                }
+              },
+              "queryRef": "Mantenimientos.Tipo",
+              "nativeQueryRef": "Tipo",
+              "displayName": "Tipo",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "Estado"
+                }
+              },
+              "queryRef": "Mantenimientos.Estado",
+              "nativeQueryRef": "Estado",
+              "displayName": "Estado",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "Vencido"
+                }
+              },
+              "queryRef": "Mantenimientos.Vencido",
+              "nativeQueryRef": "Plazo",
+              "displayName": "Plazo",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "performed_by"
+                }
+              },
+              "queryRef": "Mantenimientos.performed_by",
+              "nativeQueryRef": "Realizado por",
+              "displayName": "Realizado por",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Mantenimientos"
+                  }
+                },
+                "Property": "reference_date"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detalle de intervenciones'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

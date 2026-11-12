@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "e435a9c8719193fb4927",
+  "position": {
+    "x": 852,
+    "y": 84,
+    "z": 800,
+    "height": 96,
+    "width": 201,
+    "tabOrder": 800
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Ocupación"
+                    }
+                  },
+                  "Property": "Horas reservadas"
+                }
+              },
+              "queryRef": "Ocupación.Horas reservadas",
+              "nativeQueryRef": "Horas reservadas",
+              "displayName": "Horas reservadas"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

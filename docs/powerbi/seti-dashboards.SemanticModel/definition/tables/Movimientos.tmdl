@@ -1,0 +1,149 @@
+table Movimientos
+	lineageTag: aececadb-8693-5400-84f4-67ddb8997038
+
+	measure 'Total movimientos' = COUNTROWS(Movimientos) + 0
+		formatString: #,0
+		lineageTag: 29012e76-b481-52fb-9a90-adb19c8251fa
+
+	measure Traslados = CALCULATE(COUNTROWS(Movimientos), Movimientos[type] = "transfer") + 0
+		formatString: #,0
+		lineageTag: 563a8634-94d1-55eb-a3af-87a7be97a57f
+
+	measure Ingresos = CALCULATE(COUNTROWS(Movimientos), Movimientos[type] = "entry") + 0
+		formatString: #,0
+		lineageTag: eb3c6cd7-81ab-50c7-9e25-bee97ff75876
+
+	column id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: id
+		lineageTag: 1927b213-3a85-5b11-98d8-60997f0dc0a1
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: asset_id
+		lineageTag: aec225b8-bc0f-545b-aaf9-8dd32cd1dcab
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: asset_code
+		lineageTag: f924a381-3c42-50e3-b6e0-d52874dab5d1
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: asset_name
+		lineageTag: c0a6f94f-2b6b-5165-97d7-fe5ca80ba5a6
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		summarizeBy: none
+		sourceColumn: type
+		lineageTag: f9e2db2f-0939-540a-ae55-a757cbbdf3a9
+
+		annotation SummarizationSetBy = Automatic
+
+	column from_space_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: from_space_id
+		lineageTag: bb866103-46a2-5d88-a68c-59a755debfc2
+
+		annotation SummarizationSetBy = Automatic
+
+	column from_space_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: from_space_name
+		lineageTag: 93e46e01-a62f-5c3c-8c6d-6840909a383d
+
+		annotation SummarizationSetBy = Automatic
+
+	column to_space_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: to_space_id
+		lineageTag: bbb77dfa-b110-5839-854b-cbf8092b4ecd
+
+		annotation SummarizationSetBy = Automatic
+
+	column to_space_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: to_space_name
+		lineageTag: 443b9b21-d96a-5b45-9e80-53f3a055c1a8
+
+		annotation SummarizationSetBy = Automatic
+
+	column moved_at
+		dataType: dateTime
+		formatString: dd/mm/yyyy hh:mm
+		summarizeBy: none
+		sourceColumn: moved_at
+		lineageTag: 4aecba29-0b5f-5ead-91ee-4e2a80097afc
+
+		annotation SummarizationSetBy = Automatic
+
+	column moved_by_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: moved_by_name
+		lineageTag: e4cd5caa-6e85-59ab-9ce1-8695e8473b03
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo = SWITCH([type], "entry", "Ingreso", "transfer", "Traslado", "exit", "Salida", [type])
+		dataType: string
+		summarizeBy: none
+		lineageTag: d1192f11-e52a-5021-af6d-667c6a7c5e30
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fecha = DATE(YEAR([moved_at]), MONTH([moved_at]), DAY([moved_at]))
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		lineageTag: 40e70487-f8ae-5809-9ecf-54792459518e
+
+		annotation SummarizationSetBy = Automatic
+
+	column Origen = COALESCE([from_space_name], "Sin espacio")
+		dataType: string
+		summarizeBy: none
+		lineageTag: 5e3387b2-e23a-521d-95e4-6b89d073a9a8
+
+		annotation SummarizationSetBy = Automatic
+
+	column Destino = COALESCE([to_space_name], "Sin espacio")
+		dataType: string
+		summarizeBy: none
+		lineageTag: 9cab3317-4896-5dd0-b78b-cdcc119832dd
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Movimientos = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "asset_movements.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"id", Int64.Type}, {"asset_id", Int64.Type}, {"asset_code", type text}, {"asset_name", type text}, {"type", type text}, {"from_space_id", Int64.Type}, {"from_space_name", type text}, {"to_space_id", Int64.Type}, {"to_space_name", type text}, {"moved_at", type datetime}, {"moved_by_name", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

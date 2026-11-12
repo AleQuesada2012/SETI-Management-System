@@ -1,0 +1,25 @@
+table 'Actualización'
+	lineageTag: 8b83b67c-752e-57bd-b1e3-ab64cc154af7
+
+	measure 'Última actualización' = "Datos al " & FORMAT(MAX('Actualización'[Actualizado]), "dd/mm/yyyy hh:mm")
+		lineageTag: 51a659bb-1679-584c-8aa1-0fbb560809f1
+
+	column Actualizado
+		dataType: dateTime
+		formatString: dd/mm/yyyy hh:mm
+		summarizeBy: none
+		sourceColumn: Actualizado
+		lineageTag: 3bfd0796-2a5a-5cff-8b86-145d1693f5f6
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Actualización' = m
+		mode: import
+		source =
+				let
+				    // The moment of the refresh in Costa Rica time (UTC-6, no daylight saving).
+				    Source = #table(type table [Actualizado = datetime], {{DateTimeZone.RemoveZone(DateTimeZone.SwitchZone(DateTimeZone.UtcNow(), -6))}})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

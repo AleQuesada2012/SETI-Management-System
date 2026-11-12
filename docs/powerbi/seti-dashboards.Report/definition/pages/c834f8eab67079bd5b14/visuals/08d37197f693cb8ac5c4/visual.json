@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "08d37197f693cb8ac5c4",
+  "position": {
+    "x": 648,
+    "y": 12,
+    "z": 200,
+    "height": 64,
+    "width": 616,
+    "tabOrder": 200
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Usuarios"
+                    }
+                  },
+                  "Property": "Estado de cuenta"
+                }
+              },
+              "queryRef": "Usuarios.Estado de cuenta",
+              "nativeQueryRef": "Estado de cuenta",
+              "displayName": "Estado de cuenta",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
