@@ -101,6 +101,23 @@ return [
             'timezone' => env('DB_TIMEZONE', 'America/Costa_Rica'),
         ],
 
+        // The Power BI feed's read-only login (ADR-0010): a member of `powerbi_reader`, which sees only the
+        // `reporting` views (database/sql/ops/create-powerbi-reader.sql). Same server and database as `pgsql`.
+        'powerbi' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('POWERBI_DB_USERNAME'),
+            'password' => env('POWERBI_DB_PASSWORD', ''),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'reporting',
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'timezone' => env('DB_TIMEZONE', 'America/Costa_Rica'),
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),

@@ -29,7 +29,7 @@ the one to copy.
 - The audit report (RF_68) requires `reports.audit`: return it from `permission()`.
 - Dashboard KPIs come from `reporting.dashboard_kpis`.
 - **Charts** (RF_80–RF_83, dashboard) use one shared `<x-chart>` component built in RF_80 with Chart.js 4 (dependency approved in planning round 3). Series colors come from the `--color-chart-*` tokens in `resources/css/theme.css`, so charts follow light and dark mode.
-- **Power BI** (RF_61, RF_73): a secure-embed iframe (URL in `.env`) shown only to users with the permission `dashboards.powerbi`, which RF_61 adds (enum case, seeder, role matrix; the Superusuario grants it). Power BI reads only the `reporting` views through the read-only `powerbi_reader` role (`database/sql/ops`). Refresh strategy: see `docs/PLANNING.md` § Power BI.
+- **Power BI** (RF_61, RF_73): a secure-embed iframe (URL in `.env`) shown only to users with the permission `dashboards.powerbi`, which RF_61 adds (enum case, seeder, role matrix; the Superusuario grants it). Power BI reads only the `reporting` views, through the CSV feed of `App\Reports\PowerBiFeed` (`routes/powerbi.php`, HTTP Basic), which reads with the read-only `powerbi_reader` login when configured. A column a dashboard needs is added to `PowerBiFeed::DATASETS` and to the table in `docs/powerbi/…SemanticModel`; never emails or free text.
 
 ## Shared filter contract
 

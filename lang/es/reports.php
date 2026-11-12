@@ -5,7 +5,10 @@ return [
     'powerbi' => [
         'title' => 'Tableros de Power BI',
         'intro' => 'Estadísticas interactivas de activos, espacios y usuarios. Para verlas, inicia sesión con tu cuenta de Microsoft con licencia de Power BI.',
-        'refresh' => 'Los datos se actualizan de forma programada. Si una actualización falla, Power BI muestra un aviso dentro del tablero.',
+        'refresh' => 'Los datos se actualizan automáticamente varias veces al día con la información registrada en el sistema.',
+        'last_updated' => 'Última actualización de los datos: :date.',
+        'never_updated' => 'Los datos del tablero todavía no se han actualizado con la información del sistema.',
+        'stale' => 'Los datos del tablero no se han podido actualizar desde el :date, así que pueden estar desactualizados. Comunícate con el Superusuario del sistema.',
         'sign_in_help' => '¿Sigue pidiendo iniciar sesión? Tu navegador puede estar bloqueando las cookies que Power BI necesita dentro del sistema.',
         'open_direct' => 'Abrir en Power BI',
         'not_configured' => 'Los tableros de Power BI todavía no están configurados. Comunícate con el Superusuario del sistema.',

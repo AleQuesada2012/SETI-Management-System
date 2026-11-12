@@ -195,11 +195,9 @@ Nobody builds infrastructure ahead of its first use.
 - The report is embedded with Power BI **secure embed** (an iframe; its URL lives in `.env`); viewers sign in with
   their licensed account. No Azure app registration.
 - Alejandro builds the `.pbix` in Power BI Desktop (Windows) on the `reporting` views; backup: Sebastián.
-- Access/readiness preparation starts in Sprint 2; deployment and the half-day connectivity test remain early
-  Sprint 3, with the test after AWS deployment. Try a direct cloud
-  connection to PostgreSQL (TLS, the read-only `powerbi_reader` login, firewall rules) first; if Power BI requires a
-  gateway, install an on-premises data gateway on a SETI PC; the safety net is a manually refreshed report. Power BI
-  Pro allows 8 scheduled refreshes per day.
+- **Refresh (decided 2026-11-11, issue #112):** Power BI Service refreshes three times a day from the app's CSV feed
+  over HTTPS (`/powerbi/<dataset>.csv`, an HTTP Basic password), because the RDS instance is not reachable from
+  outside the VPC. No gateway. See `docs/decisions.md` § Power BI feed and `docs/deployment.md` § 11.
 
 ## Reassignments (planning round 3, 2026-09-29)
 
