@@ -25,8 +25,9 @@ El reporte tiene ocho páginas, que se eligen en la parte inferior:
 - Toca una parte de un gráfico para filtrar o resaltar los demás elementos de la página.
 - Pasa el cursor sobre un gráfico para ver el detalle de ese dato.
 
-La ocupación compara las horas reservadas con el horario de reservas, de lunes a sábado de 7:00 a 22:00, desde el día
-de la primera reserva registrada.
+La ocupación compara las horas reservadas hasta hoy con el horario de reservas, de lunes a sábado de 7:00 a 22:00, desde
+el día de la primera reserva registrada. Las reservas próximas no cuentan para la ocupación, pero sí aparecen en el
+gráfico de horas reservadas por día.
 
 ![Página Activos de los tableros de Power BI](tableros-powerbi-activos.jpg)
 

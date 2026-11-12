@@ -23,12 +23,12 @@
                       "Entity": "Ocupación"
                     }
                   },
-                  "Property": "Horas reservadas"
+                  "Property": "Horas reservadas a la fecha"
                 }
               },
-              "queryRef": "Ocupación.Horas reservadas",
-              "nativeQueryRef": "Horas reservadas",
-              "displayName": "Horas reservadas"
+              "queryRef": "Ocupación.Horas reservadas a la fecha",
+              "nativeQueryRef": "Horas reservadas a la fecha",
+              "displayName": "Horas reservadas a la fecha"
             }
           ]
         }

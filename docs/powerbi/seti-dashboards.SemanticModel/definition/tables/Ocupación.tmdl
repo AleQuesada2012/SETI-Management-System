@@ -9,7 +9,11 @@ table 'Ocupación'
 		formatString: #,0
 		lineageTag: f25584ff-3360-5d1d-ba05-937d438ca552
 
-	measure '% de ocupación' = DIVIDE(CALCULATE([Horas reservadas], KEEPFILTERS(Calendario[Fecha] <= TODAY())), [Horas disponibles])
+	measure 'Horas reservadas a la fecha' = CALCULATE([Horas reservadas], KEEPFILTERS(Calendario[Fecha] <= TODAY()))
+		formatString: #,0.0
+		lineageTag: 18426b63-14c8-58ae-88ae-0b274cbc0304
+
+	measure '% de ocupación' = DIVIDE([Horas reservadas a la fecha], [Horas disponibles])
 		formatString: 0.0%
 		lineageTag: 64f7f4d0-950f-5ec9-a37f-e270dcecbdfe
 

@@ -68,7 +68,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Horas reservadas por día'"
+                  "Value": "'Horas reservadas por día (incluye las próximas)'"
                 }
               }
             }
