@@ -68,7 +68,6 @@ table Espacios
 
 	column is_reservable
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: is_reservable
 		lineageTag: 2f893a3e-8d65-5ed6-b248-74808576766a
@@ -77,7 +76,6 @@ table Espacios
 
 	column is_occupied
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: is_occupied
 		lineageTag: a8d983e7-772f-56cf-8187-805920d91a54

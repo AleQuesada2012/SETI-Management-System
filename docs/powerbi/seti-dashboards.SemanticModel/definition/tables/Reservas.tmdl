@@ -77,7 +77,6 @@ table Reservas
 
 	column space_deleted
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: space_deleted
 		lineageTag: 74d6e26e-f1bb-5483-9c53-0fd76e8dfafe
@@ -163,7 +162,6 @@ table Reservas
 
 	column was_modified
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: was_modified
 		lineageTag: 5fbc1e52-e826-5b80-bfd3-af1c0f549467

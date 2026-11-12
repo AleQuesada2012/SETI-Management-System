@@ -52,7 +52,6 @@ table Usuarios
 
 	column invitation_pending
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: invitation_pending
 		lineageTag: bdbbbf8a-c6a0-5ef0-a06f-7cbb71b70cea

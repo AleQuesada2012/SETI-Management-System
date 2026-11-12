@@ -74,7 +74,6 @@ table Calendario
 	column 'Día hábil'
 		dataType: boolean
 		isDataTypeInferred
-		formatString: "TRUE";"TRUE";"FALSE"
 		summarizeBy: none
 		sourceColumn: [Día hábil]
 		lineageTag: 41815cb1-1bb1-54a7-a84f-aaefd70b918b
