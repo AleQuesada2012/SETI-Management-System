@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "30f3288d853e3116dacd",
+  "position": {
+    "x": 16,
+    "y": 188,
+    "z": 1000,
+    "height": 250,
+    "width": 408,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Calendario"
+                    }
+                  },
+                  "Property": "Semana"
+                }
+              },
+              "queryRef": "Calendario.Semana",
+              "nativeQueryRef": "Semana",
+              "displayName": "Semana",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Reservas confirmadas"
+                }
+              },
+              "queryRef": "Reservas.Reservas confirmadas",
+              "nativeQueryRef": "Confirmadas",
+              "displayName": "Confirmadas"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Reservas canceladas"
+                }
+              },
+              "queryRef": "Reservas.Reservas canceladas",
+              "nativeQueryRef": "Canceladas",
+              "displayName": "Canceladas"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Reservas por semana'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

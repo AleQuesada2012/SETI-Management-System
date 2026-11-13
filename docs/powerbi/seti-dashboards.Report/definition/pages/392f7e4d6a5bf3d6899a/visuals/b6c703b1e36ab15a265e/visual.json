@@ -1,0 +1,81 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "b6c703b1e36ab15a265e",
+  "position": {
+    "x": 856,
+    "y": 188,
+    "z": 1200,
+    "height": 250,
+    "width": 408,
+    "tabOrder": 1200
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Calendario"
+                    }
+                  },
+                  "Property": "Día de la semana"
+                }
+              },
+              "queryRef": "Calendario.Día de la semana",
+              "nativeQueryRef": "Día",
+              "displayName": "Día",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Reservas confirmadas"
+                }
+              },
+              "queryRef": "Reservas.Reservas confirmadas",
+              "nativeQueryRef": "Reservas",
+              "displayName": "Reservas"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Reservas por día de la semana'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

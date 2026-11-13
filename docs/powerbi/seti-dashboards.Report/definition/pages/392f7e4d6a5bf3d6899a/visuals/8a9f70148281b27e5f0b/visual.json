@@ -1,0 +1,174 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "8a9f70148281b27e5f0b",
+  "position": {
+    "x": 648,
+    "y": 446,
+    "z": 1400,
+    "height": 262,
+    "width": 616,
+    "tabOrder": 1400
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "code"
+                }
+              },
+              "queryRef": "Espacios.code",
+              "nativeQueryRef": "Código",
+              "displayName": "Código",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "Espacios.name",
+              "nativeQueryRef": "Espacio",
+              "displayName": "Espacio",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "space_type"
+                }
+              },
+              "queryRef": "Espacios.space_type",
+              "nativeQueryRef": "Tipo",
+              "displayName": "Tipo",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "Espacios.status",
+              "nativeQueryRef": "Estado",
+              "displayName": "Estado",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "building"
+                }
+              },
+              "queryRef": "Espacios.building",
+              "nativeQueryRef": "Edificio",
+              "displayName": "Edificio",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "capacity"
+                }
+              },
+              "queryRef": "Espacios.capacity",
+              "nativeQueryRef": "Capacidad",
+              "displayName": "Capacidad",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "asset_count"
+                }
+              },
+              "queryRef": "Espacios.asset_count",
+              "nativeQueryRef": "Activos",
+              "displayName": "Activos",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "managers"
+                }
+              },
+              "queryRef": "Espacios.managers",
+              "nativeQueryRef": "Encargados",
+              "displayName": "Encargados",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detalle de espacios'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "1ad804a769cc5b4a3d0d",
+  "position": {
+    "x": 436,
+    "y": 188,
+    "z": 600,
+    "height": 250,
+    "width": 408,
+    "tabOrder": 600
+  },
+  "visual": {
+    "visualType": "donutChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "Formato"
+                }
+              },
+              "queryRef": "Reportes generados.Formato",
+              "nativeQueryRef": "Formato",
+              "displayName": "Formato",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "Total reportes generados"
+                }
+              },
+              "queryRef": "Reportes generados.Total reportes generados",
+              "nativeQueryRef": "Reportes",
+              "displayName": "Reportes"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Reportes generados"
+                  }
+                },
+                "Property": "Total reportes generados"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Reportes por formato'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

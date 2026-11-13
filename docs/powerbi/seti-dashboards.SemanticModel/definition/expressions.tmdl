@@ -1,5 +1,7 @@
-expression DatabaseServer = "192.168.1.205:5434" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
-	lineageTag: 67e004a1-487e-4347-ab21-8cf9a60f8884
+/// Base address of the SETI Power BI feed (routes/powerbi.php). Each table appends its dataset, e.g. assets.csv.
+expression FeedUrl = "https://3-129-66-37.sslip.io/powerbi/" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 1782889e-37ca-57ba-ac63-b51c04fb34cd
 
 	annotation PBI_ResultType = Text
 
+	annotation PBI_NavigationStepName = Navigation

@@ -1,0 +1,176 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "8722898741fadf38798c",
+  "position": {
+    "x": 16,
+    "y": 446,
+    "z": 1000,
+    "height": 262,
+    "width": 1248,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Movimientos"
+                    }
+                  },
+                  "Property": "moved_at"
+                }
+              },
+              "queryRef": "Movimientos.moved_at",
+              "nativeQueryRef": "Fecha",
+              "displayName": "Fecha",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Movimientos"
+                    }
+                  },
+                  "Property": "asset_code"
+                }
+              },
+              "queryRef": "Movimientos.asset_code",
+              "nativeQueryRef": "Código",
+              "displayName": "Código",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Movimientos"
+                    }
+                  },
+                  "Property": "asset_name"
+                }
+              },
+              "queryRef": "Movimientos.asset_name",
+              "nativeQueryRef": "Activo",
+              "displayName": "Activo",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Movimientos"
+                    }
+                  },
+                  "Property": "Tipo"
+                }
+              },
+              "queryRef": "Movimientos.Tipo",
+              "nativeQueryRef": "Tipo",
+              "displayName": "Tipo",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Movimientos"
+                    }
+                  },
+                  "Property": "Origen"
+                }
+              },
+              "queryRef": "Movimientos.Origen",
+              "nativeQueryRef": "Origen",
+              "displayName": "Origen",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Movimientos"
+                    }
+                  },
+                  "Property": "Destino"
+                }
+              },
+              "queryRef": "Movimientos.Destino",
+              "nativeQueryRef": "Destino",
+              "displayName": "Destino",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Movimientos"
+                    }
+                  },
+                  "Property": "moved_by_name"
+                }
+              },
+              "queryRef": "Movimientos.moved_by_name",
+              "nativeQueryRef": "Registrado por",
+              "displayName": "Registrado por",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Movimientos"
+                  }
+                },
+                "Property": "moved_at"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detalle de movimientos'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

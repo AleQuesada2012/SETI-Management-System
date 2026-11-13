@@ -5,3 +5,9 @@ Dashboards (RF_61, RF_73, RF_80–RF_83) and reports (RF_63–RF_79) read stable
 ## Consequences
 
 A migration that changes a column used by a view must drop and recreate that view in the same migration. If a query ever gets slow, turn that view into a materialized view refreshed by the scheduler; do not add counters to base tables.
+
+## Amendment (2026-11-11)
+
+In production PowerBI cannot reach the database (Amazon RDS inside a VPC), so it reads the same views through the
+app's CSV feed (`App\Reports\PowerBiFeed`), which queries them with the read-only `powerbi_reader` login. The contract
+is unchanged: views only, never base tables. See `docs/decisions.md` § Power BI feed.

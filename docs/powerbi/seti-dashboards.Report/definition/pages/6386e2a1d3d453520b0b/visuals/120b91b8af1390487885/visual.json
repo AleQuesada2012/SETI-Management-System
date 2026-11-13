@@ -1,0 +1,176 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "120b91b8af1390487885",
+  "position": {
+    "x": 16,
+    "y": 446,
+    "z": 1300,
+    "height": 262,
+    "width": 832,
+    "tabOrder": 1300
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "local_date"
+                }
+              },
+              "queryRef": "Reservas.local_date",
+              "nativeQueryRef": "Fecha",
+              "displayName": "Fecha",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "starts_at"
+                }
+              },
+              "queryRef": "Reservas.starts_at",
+              "nativeQueryRef": "Inicio",
+              "displayName": "Inicio",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "ends_at"
+                }
+              },
+              "queryRef": "Reservas.ends_at",
+              "nativeQueryRef": "Fin",
+              "displayName": "Fin",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "space_name"
+                }
+              },
+              "queryRef": "Reservas.space_name",
+              "nativeQueryRef": "Espacio",
+              "displayName": "Espacio",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Responsable"
+                }
+              },
+              "queryRef": "Reservas.Responsable",
+              "nativeQueryRef": "Responsable",
+              "displayName": "Responsable",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "attendees"
+                }
+              },
+              "queryRef": "Reservas.attendees",
+              "nativeQueryRef": "Asistentes",
+              "displayName": "Asistentes",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Estado"
+                }
+              },
+              "queryRef": "Reservas.Estado",
+              "nativeQueryRef": "Estado",
+              "displayName": "Estado",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Reservas"
+                  }
+                },
+                "Property": "starts_at"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detalle de reservas'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

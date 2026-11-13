@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "4661c24d2fdcf1f2851d",
+  "position": {
+    "x": 16,
+    "y": 188,
+    "z": 1000,
+    "height": 250,
+    "width": 408,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "Espacios.name",
+              "nativeQueryRef": "Espacio",
+              "displayName": "Espacio",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Ocupación"
+                    }
+                  },
+                  "Property": "% de ocupación"
+                }
+              },
+              "queryRef": "Ocupación.% de ocupación",
+              "nativeQueryRef": "Ocupación",
+              "displayName": "Ocupación"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Ocupación"
+                  }
+                },
+                "Property": "% de ocupación"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Ocupación por espacio'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

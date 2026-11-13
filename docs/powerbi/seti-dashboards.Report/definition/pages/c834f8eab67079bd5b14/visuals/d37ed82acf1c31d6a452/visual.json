@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "d37ed82acf1c31d6a452",
+  "position": {
+    "x": 518,
+    "y": 84,
+    "z": 500,
+    "height": 96,
+    "width": 243,
+    "tabOrder": 500
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Usuarios"
+                    }
+                  },
+                  "Property": "Usuarios desactivados"
+                }
+              },
+              "queryRef": "Usuarios.Usuarios desactivados",
+              "nativeQueryRef": "Desactivados",
+              "displayName": "Desactivados"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
