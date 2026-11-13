@@ -9,7 +9,7 @@ cada acción, con capturas tomadas en el teléfono y en la computadora.
 | `inicio-de-sesion.md` | Seguridad | Pendiente |
 | `activos.md` | Activos | Pendiente |
 | `espacios.md` | Espacios | Pendiente |
-| `reservas.md` | Reservas | Pendiente |
+| `reservas.md` | Reservas | Disponible |
 | `reportes.md` | Reportes | Pendiente |
 | `usuarios-y-roles.md` | Usuarios y roles | Pendiente |
 
@@ -252,35 +252,6 @@ encargados, el aviso llega al Superusuario. Al tocar el aviso se abre el activo.
 
 ![Mantenimientos programados en computadora](mantenimientos-programados-escritorio.jpg)
 ![Programar mantenimiento a 360 px](mantenimientos-programar-movil.jpg)
-
-## Notificaciones de reservas (RF_47, RF_48)
-
-Cuando alguien reserva un espacio, el Superusuario y los encargados de ese espacio reciben una notificación en la
-campana de la barra superior, sin recargar la página. La notificación indica el espacio, la fecha y el horario, el
-motivo y quién reservó; quien hizo la reserva no recibe aviso. Al tocar una notificación se marca como leída y se abre
-el detalle de la reserva; **Marcar todas como leídas** limpia el contador. Para probarlo, reserva **LAB-110** con
-`reservante@seti.test` y abre la campana con `superusuario@seti.test` o `admin@seti.test` (contraseña `password`).
-
-## Eliminar una reserva (RF_50)
-
-Quien hizo la reserva o es su responsable, el Administrador encargado del espacio y el Superusuario ven **Eliminar** en
-el detalle de una reserva que todavía no ha comenzado (en el calendario, toca el día y luego el motivo de la reserva).
-El sistema pide confirmar y permite anotar un motivo opcional. La reserva se cancela: el horario queda libre en el
-calendario, la reserva sigue en el historial como **Cancelada** y el Superusuario y los encargados del espacio reciben
-una notificación. Las reservas en curso o finalizadas no ofrecen esta opción.
-
-## Modificar una reserva (RF_49)
-
-Quien hizo la reserva o es su responsable, el Administrador encargado del espacio y el Superusuario ven **Modificar** en
-el detalle de una reserva que todavía no ha comenzado. El formulario trae los datos actuales: se puede cambiar el
-espacio, la fecha, el horario, el motivo, la cantidad de personas, el responsable y las notas, y anotar un motivo
-opcional de la modificación. Como al reservar, las horas de inicio y fin se eligen de una lista con las franjas de 15
-minutos del horario permitido (07:00, 07:15…), y la hora de fin solo ofrece horas posteriores al inicio. Se aplican las
-mismas reglas que al reservar (horario permitido, capacidad, espacio reservable y sin choques con otra reserva); la
-reserva misma no cuenta como choque. Al guardar, la reserva muestra la etiqueta **Modificada** y el motivo de la última
-modificación. El Superusuario y los encargados del espacio reciben una notificación; si la reserva cambia de espacio,
-los encargados del espacio que se liberó y los del espacio nuevo reciben cada uno su aviso. Las reservas en curso,
-finalizadas o eliminadas no ofrecen esta opción.
 
 ## Autenticación en dos pasos (RF_00_1)
 
