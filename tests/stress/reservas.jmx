@@ -3,8 +3,8 @@
   Stress plan of the Reservas module (test plan, "Pruebas de estrés", row "Reservas (Jose)"): 20 users × 5 iterations
   over the reservation list, the history and the occupancy page. Local environment only (http://localhost:8000).
 
-  Before the first run, create the accounts (one per thread, role "Pruebas de estrés", no two-factor step):
-    tests/stress/crear-cuentas-estres.sh 20
+  Before the first run, create the stress accounts with tests/stress/create-stress-accounts.php, as
+  tests/stress/README.md shows. Each thread signs in with its own line of cuentas.csv (estres01 to estres20).
 
   Run from the repository root (Apache JMeter 5.6):
     jmeter -n -t tests/stress/reservas.jmx -l reservas.jtl -e -o reporte-reservas/
@@ -38,11 +38,6 @@
           <elementProp name="LOOPS" elementType="Argument">
             <stringProp name="Argument.name">LOOPS</stringProp>
             <stringProp name="Argument.value">${__P(loops,5)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="PASSWORD" elementType="Argument">
-            <stringProp name="Argument.name">PASSWORD</stringProp>
-            <stringProp name="Argument.value">${__P(password,password)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -90,6 +85,18 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
       </ThreadGroup>
       <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Cuentas (cuentas.csv)">
+          <stringProp name="filename">cuentas.csv</stringProp>
+          <stringProp name="fileEncoding">UTF-8</stringProp>
+          <stringProp name="variableNames">email,password</stringProp>
+          <boolProp name="ignoreFirstLine">false</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="shareMode">shareMode.group</stringProp>
+        </CSVDataSet>
+        <hashTree/>
         <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Iniciar sesión (una vez por hilo)"/>
         <hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /login">
@@ -132,14 +139,14 @@
                 <elementProp name="email" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">true</boolProp>
                   <stringProp name="Argument.name">email</stringProp>
-                  <stringProp name="Argument.value">estres${__threadNum}@seti.test</stringProp>
+                  <stringProp name="Argument.value">${email}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="password" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">true</boolProp>
                   <stringProp name="Argument.name">password</stringProp>
-                  <stringProp name="Argument.value">${PASSWORD}</stringProp>
+                  <stringProp name="Argument.value">${password}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
