@@ -3,3 +3,5 @@ node_modules/
 .auth/
 test-results/
 playwright-report/
+playwright-report-qa/
+qa-results.json
