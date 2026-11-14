@@ -9,7 +9,7 @@ cada acción, con capturas tomadas en el teléfono y en la computadora.
 | `inicio-de-sesion.md` | Seguridad | Pendiente |
 | `activos.md` | Activos | Pendiente |
 | `espacios.md` | Espacios | Pendiente |
-| `reservas.md` | Reservas | Pendiente |
+| `reservas.md` | Reservas | Listo |
 | `reportes.md` | Reportes | Pendiente |
 | `usuarios-y-roles.md` | Usuarios y roles | Pendiente |
 
