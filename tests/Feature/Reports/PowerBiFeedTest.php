@@ -89,10 +89,31 @@ test('the feed rejects a missing or wrong credential and serves nothing', functi
     expect($response->getContent())->not->toContain('No Debe Salir');
 })->with([null, 'wrong-password']);
 
+test('the base address lists the datasets, so Power BI Service can test the credential', function (string $path) {
+    Cache::forget(PowerBiFeed::LAST_PULLED_KEY);
+
+    $response = $this->get($path, ['Authorization' => 'Basic '.base64_encode('powerbi:'.FEED_PASSWORD)])
+        ->assertOk()
+        ->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
+
+    expect(explode("\n", trim($response->getContent())))
+        ->toBe(array_map(fn (string $dataset) => $dataset.'.csv', array_keys(PowerBiFeed::DATASETS)))
+        ->and(PowerBiFeed::lastPulledAt())->toBeNull();
+})->with(['/powerbi/', '/powerbi']);
+
+test('the base address rejects a missing or wrong credential', function (?string $password) {
+    $headers = $password === null ? [] : ['Authorization' => 'Basic '.base64_encode('powerbi:'.$password)];
+
+    $this->get('/powerbi/', $headers)
+        ->assertUnauthorized()
+        ->assertHeader('WWW-Authenticate', 'Basic realm="SETI Power BI", charset="UTF-8"');
+})->with([null, 'wrong-password']);
+
 test('without a configured password the feed does not exist', function () {
     config(['reports.powerbi_feed.password' => null]);
 
     pullFeed('assets')->assertNotFound();
+    $this->get('/powerbi/', ['Authorization' => 'Basic '.base64_encode('powerbi:')])->assertNotFound();
 });
 
 test('an unknown dataset or a view outside the feed is not served', function (string $dataset) {

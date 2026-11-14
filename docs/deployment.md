@@ -300,7 +300,9 @@ to `.env.production.example` in that pull means a new or changed setting: compar
 The RDS instance is reachable only from inside the VPC, so Power BI Service cannot connect to PostgreSQL. Instead
 the app serves the `reporting` views as CSV over its own HTTPS, protected by a password, and Power BI refreshes from
 there on a schedule, with no gateway (`docs/decisions.md` § Power BI feed). The address of each dataset is
-`https://<APP_DOMAIN>/powerbi/<dataset>.csv` (`App\Reports\PowerBiFeed` lists them).
+`https://<APP_DOMAIN>/powerbi/<dataset>.csv` (`App\Reports\PowerBiFeed` lists them). The base address,
+`https://<APP_DOMAIN>/powerbi/`, lists the datasets with the same password: Power BI Service tests the credential
+there before saving it. It reads no data, so it does not count as a refresh.
 
 **On the instance.**
 
@@ -322,7 +324,7 @@ there on a schedule, with no gateway (`docs/decisions.md` § Power BI feed). The
    step 1. Without `POWERBI_DB_USERNAME` the feed reads with the app's own `seti` user, which works but sees more
    than it needs. Then `docker compose -f compose.prod.yaml up -d` to load them.
 3. Check it from any computer: `curl -u powerbi https://<APP_DOMAIN>/powerbi/spaces.csv` asks for the password and
-   prints the header and the spaces.
+   prints the header and the spaces; `curl -u powerbi https://<APP_DOMAIN>/powerbi/` prints the list of datasets.
 
 **In Power BI.** The report is `docs/powerbi/seti-dashboards.pbip`.
 
@@ -332,7 +334,8 @@ there on a schedule, with no gateway (`docs/decisions.md` § Power BI feed). The
 2. *Refresh*, then *Publish* to the workspace of the account that owns the dashboards.
 3. In Power BI Service, open the semantic model's *Settings*:
    - *Data source credentials → Edit credentials*: Basic, the same user and password, privacy level Organizational.
-     *Skip test connection* stays off.
+     *Skip test connection* stays off: a wrong password is caught here instead of at the first refresh. (Before the
+     base address answered, this test failed with `(404): Not Found` and had to be skipped.)
    - *Refresh → Configure a refresh schedule*: on, time zone *(UTC-06:00) Central America*, three times a day
      (for example 07:00, 12:30 and 18:00; Pro allows eight). Turn on the failure e-mail to the owner.
 4. *File → Embed report → Website or portal*, and put the URL in `POWERBI_EMBED_URL` (step 5).
