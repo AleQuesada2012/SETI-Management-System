@@ -1,0 +1,110 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "5de61aec704f10941a20",
+  "position": {
+    "x": 16,
+    "y": 446,
+    "z": 1100,
+    "height": 262,
+    "width": 832,
+    "tabOrder": 1100
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Usuarios"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "Usuarios.name",
+              "nativeQueryRef": "Nombre",
+              "displayName": "Nombre",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Usuarios"
+                    }
+                  },
+                  "Property": "roles"
+                }
+              },
+              "queryRef": "Usuarios.roles",
+              "nativeQueryRef": "Roles",
+              "displayName": "Roles",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Usuarios"
+                    }
+                  },
+                  "Property": "Estado de cuenta"
+                }
+              },
+              "queryRef": "Usuarios.Estado de cuenta",
+              "nativeQueryRef": "Estado de cuenta",
+              "displayName": "Estado de cuenta",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Usuarios"
+                    }
+                  },
+                  "Property": "last_login_at"
+                }
+              },
+              "queryRef": "Usuarios.last_login_at",
+              "nativeQueryRef": "Último acceso",
+              "displayName": "Último acceso",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detalle de usuarios'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

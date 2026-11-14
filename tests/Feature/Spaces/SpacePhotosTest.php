@@ -56,7 +56,7 @@ test('a manager uploads several photos: stored privately with a phone thumbnail,
     expect($photos->last()->thumbnail_path)->not->toBeNull()
         ->and(getimagesizefromstring(spacePhotosDisk()->get($photos->last()->thumbnail_path))[0])->toBe(300);
 
-    expect(AuditLog::query()->where(['action' => 'attached', 'entity_type' => 'space', 'entity_id' => $this->space->id, 'actor_id' => $this->admin->id])->pluck('new_values')->pluck('photo')->all())
+    expect(AuditLog::query()->where(['action' => 'attached', 'entity_type' => 'space', 'entity_id' => $this->space->id, 'actor_id' => $this->admin->id])->orderBy('id')->pluck('new_values')->pluck('photo')->all())
         ->toBe(['aula.jpg', 'pizarra.png']);
 });
 

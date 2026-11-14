@@ -1,325 +1,288 @@
 table Activos
-	lineageTag: e368b9d3-d641-4de2-a748-3cef83495338
+	lineageTag: 8cd71799-d930-5583-a860-d2149bffe380
 
-	measure 'Total activos' = COUNTROWS(Activos)
+	measure 'Total activos' = COUNTROWS(Activos) + 0
 		formatString: #,0
-		lineageTag: a3064e9c-193d-4586-a6c5-022b4f9bee75
+		lineageTag: 4b6c4465-d46f-5722-939a-12ba66700d3a
 
 	measure 'Activos en servicio' = CALCULATE(COUNTROWS(Activos), Activos[status] = "in_service") + 0
 		formatString: #,0
-		lineageTag: 8c1f01f0-0f95-4e83-a329-dae6b52d5e00
+		lineageTag: bd504597-7fc5-51c4-9bdf-adccee2afbf6
 
 	measure 'Activos en mantenimiento' = CALCULATE(COUNTROWS(Activos), Activos[status] = "in_maintenance") + 0
 		formatString: #,0
-		lineageTag: 466ccae5-dbe0-4339-adde-afa0571cbccd
+		lineageTag: 4be91f99-4e1c-5aa0-8973-a2f12ed33847
 
 	measure 'Activos dañados' = CALCULATE(COUNTROWS(Activos), Activos[condition] = "Dañado") + 0
 		formatString: #,0
-		lineageTag: b3e9ad7f-89e9-4ff4-a631-f095ada3c686
+		lineageTag: 1a0de8a6-7698-5ba7-b9af-8c3b9890bcc8
+
+	measure '% en servicio' = DIVIDE([Activos en servicio], CALCULATE(COUNTROWS(Activos), Activos[status] <> "decommissioned"))
+		formatString: 0.0%
+		lineageTag: dfa9173a-00ef-5760-bfbb-9f32099a9494
+
+	measure 'Garantías por vencer (90 días)' = CALCULATE(COUNTROWS(Activos), Activos[Días para vencer la garantía] <= 90) + 0
+		formatString: #,0
+		lineageTag: f7c2d557-255f-5c2d-8c74-59d8de92a4be
+
+	measure 'Garantías vencidas' = CALCULATE(COUNTROWS(Activos), Activos[warranty_state] = "expired") + 0
+		formatString: #,0
+		lineageTag: 0b627259-70f1-5498-9f83-cc59d332399f
+
+	measure 'Activos sin responsable' = CALCULATE(COUNTROWS(Activos), ISBLANK(Activos[responsible_user_id]), Activos[status] <> "decommissioned") + 0
+		formatString: #,0
+		lineageTag: 36acf790-6b0f-5fc4-94c1-be36ef708fa3
 
 	column id
 		dataType: int64
 		formatString: 0
-		lineageTag: bda932fe-00b4-4fb3-aa2f-2b1a5bbc115d
 		summarizeBy: none
 		sourceColumn: id
+		lineageTag: 271103bd-430e-55c2-b457-3be1e7d7c650
 
 		annotation SummarizationSetBy = Automatic
 
 	column code
 		dataType: string
-		lineageTag: c666c6e9-4061-4b9a-b524-6502e5b7cb39
 		summarizeBy: none
 		sourceColumn: code
+		lineageTag: 424f284f-5836-56d2-8d28-fa560ac8abba
 
 		annotation SummarizationSetBy = Automatic
 
 	column asset_tag
 		dataType: string
-		lineageTag: 54fe8ae3-2b1b-40e8-8a87-cea8e68014fc
 		summarizeBy: none
 		sourceColumn: asset_tag
-
-		annotation SummarizationSetBy = Automatic
-
-	column serial_number
-		dataType: string
-		lineageTag: 3fcaeaea-72b2-4f1d-8905-73dcdea74ad8
-		summarizeBy: none
-		sourceColumn: serial_number
+		lineageTag: f3edbe8e-83b1-5db2-a94f-10f7c9c62dd2
 
 		annotation SummarizationSetBy = Automatic
 
 	column display_name
 		dataType: string
-		lineageTag: e9ae4811-7480-48fd-b589-7b6aaf8d6781
 		summarizeBy: none
 		sourceColumn: display_name
+		lineageTag: 7bd89120-f45b-5c27-bc97-e1bb7cdac3ef
 
 		annotation SummarizationSetBy = Automatic
 
 	column name
 		dataType: string
-		lineageTag: 149f2ca8-ab8a-469f-94f6-394f2965f640
 		summarizeBy: none
 		sourceColumn: name
-
-		annotation SummarizationSetBy = Automatic
-
-	column category_id
-		dataType: int64
-		formatString: 0
-		lineageTag: 9751742a-23fc-406a-91d4-1fea81d2dce4
-		summarizeBy: none
-		sourceColumn: category_id
+		lineageTag: 5bac28a0-3492-5155-a1d9-2065eec3b9e2
 
 		annotation SummarizationSetBy = Automatic
 
 	column category
 		dataType: string
-		lineageTag: fe6b27ff-a24d-4450-a2ca-701af952dd97
 		summarizeBy: none
 		sourceColumn: category
-
-		annotation SummarizationSetBy = Automatic
-
-	column asset_type_id
-		dataType: int64
-		formatString: 0
-		lineageTag: 3b84a76a-5467-4de0-a67e-e199bc33a50e
-		summarizeBy: none
-		sourceColumn: asset_type_id
+		lineageTag: 4d0d35d8-ab83-5e41-934c-f9a8cc396859
 
 		annotation SummarizationSetBy = Automatic
 
 	column asset_type
 		dataType: string
-		lineageTag: f06294e1-1faa-4c18-b5fa-86c4e4ea85ea
 		summarizeBy: none
 		sourceColumn: asset_type
-
-		annotation SummarizationSetBy = Automatic
-
-	column brand_id
-		dataType: int64
-		formatString: 0
-		lineageTag: bd6b8b47-29dd-44f9-b510-92b5a11a275e
-		summarizeBy: none
-		sourceColumn: brand_id
+		lineageTag: 37ec71ab-16c1-5c96-9b1a-fae453427f01
 
 		annotation SummarizationSetBy = Automatic
 
 	column brand
 		dataType: string
-		lineageTag: b9377b3e-2187-4e9a-9e72-a4f8a27e360f
 		summarizeBy: none
 		sourceColumn: brand
+		lineageTag: 724dd568-40b9-51ae-9ec4-47d1908de7f0
 
 		annotation SummarizationSetBy = Automatic
 
 	column model
 		dataType: string
-		lineageTag: 82aaf4ec-62c0-47f0-a01a-06b28ac96ebf
 		summarizeBy: none
 		sourceColumn: model
-
-		annotation SummarizationSetBy = Automatic
-
-	column condition_id
-		dataType: int64
-		formatString: 0
-		lineageTag: 9f387564-6e7c-483c-b412-3937c0bcb921
-		summarizeBy: none
-		sourceColumn: condition_id
+		lineageTag: 759be5f4-93e2-5cd4-92ef-cd38223e54fb
 
 		annotation SummarizationSetBy = Automatic
 
 	column condition
 		dataType: string
-		lineageTag: c941e446-ab81-4e5e-bcbd-61179a04c42d
 		summarizeBy: none
 		sourceColumn: condition
+		lineageTag: 3c003a7b-9159-5c8f-8344-f1dd33f60c1d
 
 		annotation SummarizationSetBy = Automatic
 
 	column condition_color
 		dataType: string
-		lineageTag: 0579c648-75ef-4ea5-a699-a14191d4ad95
 		summarizeBy: none
 		sourceColumn: condition_color
-
-		annotation SummarizationSetBy = Automatic
-
-	column condition_note
-		dataType: string
-		lineageTag: 382316c9-a21b-4693-98e4-b6cdd869c821
-		summarizeBy: none
-		sourceColumn: condition_note
+		lineageTag: d1e3d373-1037-5478-8542-e6b1d0620b12
 
 		annotation SummarizationSetBy = Automatic
 
 	column status
 		dataType: string
-		lineageTag: 93b7227e-e4c2-4c33-a01b-03b3202de216
 		summarizeBy: none
 		sourceColumn: status
+		lineageTag: 61eb2009-976e-5d45-94aa-f2bf9d6eefc0
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_id
 		dataType: int64
 		formatString: 0
-		lineageTag: cb2079e8-90f1-4532-9cc0-9adf39277cbe
 		summarizeBy: none
 		sourceColumn: space_id
+		lineageTag: 42924137-69ea-543c-aa73-451fa125441b
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_code
 		dataType: string
-		lineageTag: 5e9df8af-0f31-42bb-8dfc-e7203ace809e
 		summarizeBy: none
 		sourceColumn: space_code
+		lineageTag: c692b911-f20e-54a1-b5f4-be7be3bd65be
 
 		annotation SummarizationSetBy = Automatic
 
 	column space_name
 		dataType: string
-		lineageTag: afc83746-41fb-4679-a1fa-c88d052181e3
 		summarizeBy: none
 		sourceColumn: space_name
+		lineageTag: 4b0a8e9d-b3f3-58d2-a000-8bdc6c434860
 
 		annotation SummarizationSetBy = Automatic
 
 	column building
 		dataType: string
-		lineageTag: c9df2a76-e35b-4564-b0b5-dbb500aef659
 		summarizeBy: none
 		sourceColumn: building
-
-		annotation SummarizationSetBy = Automatic
-
-	column location_detail
-		dataType: string
-		lineageTag: 9ab41fcc-bf12-4293-a759-3a34b22e1bb1
-		summarizeBy: none
-		sourceColumn: location_detail
+		lineageTag: 7c32c956-7708-57b1-b9c6-5d994626cd7a
 
 		annotation SummarizationSetBy = Automatic
 
 	column responsible_user_id
 		dataType: int64
 		formatString: 0
-		lineageTag: 321f3165-d092-4511-b27c-5bceb7eb58ab
 		summarizeBy: none
 		sourceColumn: responsible_user_id
+		lineageTag: 56c5dccb-fe3a-5a84-b91a-af612b31b833
 
 		annotation SummarizationSetBy = Automatic
 
 	column responsible_name
 		dataType: string
-		lineageTag: 880a3f66-e322-448c-8372-574997b0f8b9
 		summarizeBy: none
 		sourceColumn: responsible_name
-
-		annotation SummarizationSetBy = Automatic
-
-	column responsible_email
-		dataType: string
-		lineageTag: 07655b94-edbe-4689-99f1-90eba29be421
-		summarizeBy: none
-		sourceColumn: responsible_email
-
-		annotation SummarizationSetBy = Automatic
-
-	column supplier_id
-		dataType: int64
-		formatString: 0
-		lineageTag: a40fcb03-8ddc-4a9b-a0f6-7c58df832987
-		summarizeBy: none
-		sourceColumn: supplier_id
+		lineageTag: fd721467-fea3-5a66-9002-f1e6ed544005
 
 		annotation SummarizationSetBy = Automatic
 
 	column supplier
 		dataType: string
-		lineageTag: 0d72f2b0-6104-4dc8-9242-3f0c5e98e0b6
 		summarizeBy: none
 		sourceColumn: supplier
+		lineageTag: d08806f6-1ff6-5b7c-a9c5-9aee95025c6c
 
 		annotation SummarizationSetBy = Automatic
 
 	column acquired_on
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: e8ad57ab-a9d2-400e-808e-eb4c822fbf14
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: acquired_on
+		lineageTag: 5d2348d3-9a12-5885-a385-b0a5543cc3e7
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
 
 	column warranty_starts_on
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 5ef50691-3450-4b7d-a775-6aba80d225ee
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: warranty_starts_on
+		lineageTag: b775e44b-ecb3-51cd-8638-1f6a441264ca
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
 
 	column warranty_ends_on
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: e2e2d605-a150-4fe2-8678-1a32a5cdd146
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: warranty_ends_on
+		lineageTag: 82f093b0-33c0-574d-8340-2167299135e1
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
 
 	column warranty_state
 		dataType: string
-		lineageTag: f4c0cdf3-cff1-4cde-8c69-74b6519e8d87
 		summarizeBy: none
 		sourceColumn: warranty_state
-
-		annotation SummarizationSetBy = Automatic
-
-	column observations
-		dataType: string
-		lineageTag: 7f90fd28-5b5c-474d-bf1f-626c9ff5211b
-		summarizeBy: none
-		sourceColumn: observations
+		lineageTag: 32720634-2cbe-5081-99db-2c285b93c9e9
 
 		annotation SummarizationSetBy = Automatic
 
 	column created_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: b5d53b31-4c40-461d-9c98-0b17f776573c
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: created_at
+		lineageTag: 00b286ca-e8c7-53b1-abd2-ed75c133b808
 
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: d71b5e84-545b-4da4-9c59-1322736ace4a
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: updated_at
+		lineageTag: b3eb309d-2e9e-52d0-b43c-1cb2f5ec38fc
 
 		annotation SummarizationSetBy = Automatic
 
 	column Estado = SWITCH([status], "in_service", "En servicio", "in_maintenance", "En mantenimiento", "lost", "Perdido", "decommissioned", "De baja", [status])
 		dataType: string
-		lineageTag: 6221202f-2551-436f-a4f1-786e072bdff8
 		summarizeBy: none
+		lineageTag: a12a9eab-7e74-5edb-a66a-2c6e86b879e6
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Garantía' = SWITCH([warranty_state], "valid", "Vigente", "expired", "Vencida", "Sin garantía")
+		dataType: string
+		summarizeBy: none
+		lineageTag: 6beee86c-6895-5f0c-a7b8-3feafa172b96
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Días para vencer la garantía' = IF(NOT ISBLANK([warranty_ends_on]) && [warranty_ends_on] >= TODAY(), INT([warranty_ends_on] - TODAY()))
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		lineageTag: 3af6a75d-7663-5566-91e5-a788bb7a2200
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Antigüedad' = VAR years = DATEDIFF([acquired_on], TODAY(), DAY) / 365.25 RETURN SWITCH(TRUE(), ISBLANK([acquired_on]), "Sin fecha", years < 1, "Menos de 1 año", years < 3, "De 1 a 3 años", years < 5, "De 3 a 5 años", "Más de 5 años")
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Antigüedad (orden)'
+		lineageTag: 050f57bc-60c8-59ed-98ad-1effc730b6c5
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Antigüedad (orden)' = VAR years = DATEDIFF([acquired_on], TODAY(), DAY) / 365.25 RETURN SWITCH(TRUE(), ISBLANK([acquired_on]), 5, years < 1, 1, years < 3, 2, years < 5, 3, 4)
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		lineageTag: 0dc5e274-7391-55fa-8a7b-291ceec24861
+
+		annotation SummarizationSetBy = Automatic
+
+	column Responsable = COALESCE([responsible_name], "Sin responsable")
+		dataType: string
+		summarizeBy: none
+		lineageTag: f9784df4-1faa-520c-9626-f27cba160757
 
 		annotation SummarizationSetBy = Automatic
 
@@ -327,10 +290,11 @@ table Activos
 		mode: import
 		source =
 				let
-				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
-				  #"Navigation 1" = Source{[Schema = "reporting", Item = "assets"]}[Data]
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "assets.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"id", Int64.Type}, {"code", type text}, {"asset_tag", type text}, {"display_name", type text}, {"name", type text}, {"category", type text}, {"asset_type", type text}, {"brand", type text}, {"model", type text}, {"condition", type text}, {"condition_color", type text}, {"status", type text}, {"space_id", Int64.Type}, {"space_code", type text}, {"space_name", type text}, {"building", type text}, {"responsible_user_id", Int64.Type}, {"responsible_name", type text}, {"supplier", type text}, {"acquired_on", type date}, {"warranty_starts_on", type date}, {"warranty_ends_on", type date}, {"warranty_state", type text}, {"created_at", type datetime}, {"updated_at", type datetime}}, "en-US")
 				in
-				  #"Navigation 1"
+				    Typed
 
 	annotation PBI_ResultType = Table
-

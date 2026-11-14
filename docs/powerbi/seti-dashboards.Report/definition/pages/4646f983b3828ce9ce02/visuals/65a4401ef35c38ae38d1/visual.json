@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "65a4401ef35c38ae38d1",
+  "position": {
+    "x": 648,
+    "y": 12,
+    "z": 200,
+    "height": 64,
+    "width": 616,
+    "tabOrder": 200
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reportes generados"
+                    }
+                  },
+                  "Property": "report_category"
+                }
+              },
+              "queryRef": "Reportes generados.report_category",
+              "nativeQueryRef": "Categoría de reporte",
+              "displayName": "Categoría de reporte",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

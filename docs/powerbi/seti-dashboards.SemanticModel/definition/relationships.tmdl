@@ -1,25 +1,60 @@
-relationship 41d1a83f-3443-4b8d-a944-4bd27576b43a
+relationship 2d8bfbe0-ab31-5fe4-be34-44270b05d81f
 	fromColumn: Activos.space_id
 	toColumn: Espacios.id
 
-relationship dfddea06-ef2c-4be6-a7e2-746fd97278f3
+relationship d1294512-272d-52e0-8b69-7c1da9f197ea
 	fromColumn: Activos.responsible_user_id
 	toColumn: Usuarios.id
 
-relationship a47055c7-8810-4be3-a826-8a41b7658141
+relationship 2f20c015-b7b8-5072-869e-aa9b01d6d2cb
 	fromColumn: Mantenimientos.asset_id
 	toColumn: Activos.id
 
-relationship 62be48da-2f00-48f6-aa9b-9cd1abcd61dd
+relationship 7dee780c-edcd-546d-9500-e6723acb841d
+	fromColumn: Mantenimientos.reference_date
+	toColumn: Calendario.Fecha
+
+relationship f971298b-bf09-59e5-8e10-06440cf2c7ed
+	fromColumn: 'Eventos de activos'.asset_id
+	toColumn: Activos.id
+
+relationship 039d5a5a-b417-5bd8-9851-54eebef0acb4
+	fromColumn: 'Eventos de activos'.occurred_on
+	toColumn: Calendario.Fecha
+
+relationship f75b5be7-3817-5814-9a98-dd034a04dd02
+	fromColumn: Movimientos.asset_id
+	toColumn: Activos.id
+
+relationship a50c9d6b-8cd5-5702-ad61-435f8b9c9e05
+	fromColumn: Movimientos.Fecha
+	toColumn: Calendario.Fecha
+
+relationship d32dc813-baa4-54cc-8e14-986e7b8bb76b
 	fromColumn: Reservas.space_id
 	toColumn: Espacios.id
 
-relationship 5aaf1152-e6e9-416c-a91b-f9fc35ad097b
-	fromColumn: Ocupación.space_id
+relationship 4ea4b8ad-739b-5488-9a51-2e6adc5b1995
+	fromColumn: Reservas.local_date
+	toColumn: Calendario.Fecha
+
+relationship e260dcbe-76fd-51af-97fb-75145b1a0f56
+	fromColumn: 'Ocupación'.space_id
 	toColumn: Espacios.id
 
-relationship 13980fc2-f02a-42c9-a455-539ec03e197c
+relationship 6f830b66-f36a-56d6-b7ab-f31f0891c90e
+	fromColumn: 'Ocupación'.local_date
+	toColumn: Calendario.Fecha
+
+relationship 806c7b78-b6e2-59ca-bbd8-e8ee54891e6b
 	crossFilteringBehavior: bothDirections
 	fromColumn: 'Roles de usuario'.user_id
 	toColumn: Usuarios.id
 
+relationship dd41339e-3dfb-50f2-bfb8-8e05bbae4401
+	fromColumn: 'Reportes generados'.generated_by
+	toColumn: Usuarios.id
+
+relationship 305c1a21-b58f-50ee-b186-cfa39554aa0c
+	fromColumn: 'Reportes generados'.Fecha
+	toColumn: Calendario.Fecha

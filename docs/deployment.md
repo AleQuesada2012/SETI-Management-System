@@ -136,6 +136,7 @@ Every empty value must be filled; the comments in the file explain each one. In 
 | `DB_HOST` | The RDS endpoint. `DB_DATABASE` and `DB_USERNAME` stay `seti`; `DB_PASSWORD` is the one from step 4. |
 | `MAIL_*` | The institution's SMTP relay, or meanwhile a Gmail account (below). |
 | `REVERB_APP_ID`, `REVERB_APP_KEY`, `REVERB_APP_SECRET` | Random values, for example `openssl rand -hex 16` each. |
+| `POWERBI_FEED_*`, `POWERBI_DB_*` | The Power BI feed's password and its read-only login: step 11. Empty until then. |
 | `POWERBI_EMBED_URL` | The Power BI secure-embed URL (*File → Embed report → Website or portal*: `https://app.powerbi.com/reportEmbed?reportId=…&autoAuth=true&ctid=…`), or empty until the dashboards are published. |
 
 Keep `TWO_FACTOR_REQUIRED=true`, `CSP_ENFORCE=false` (see step 8) and `SESSION_COOKIE=__Host-seti-session`.
@@ -294,22 +295,51 @@ by themselves: when the pull changes `database/seeders/` (new catalog values, su
 `docker compose -f compose.prod.yaml exec app php artisan db:seed --force`, which only adds what is missing. A change
 to `.env.production.example` in that pull means a new or changed setting: compare it with `.env` first.
 
-## 11. Power BI (after issue #112)
+## 11. Power BI
 
-The dashboards read only the `reporting` views, through a read-only role. Once the connection path is decided, as
-the master user:
+The RDS instance is reachable only from inside the VPC, so Power BI Service cannot connect to PostgreSQL. Instead
+the app serves the `reporting` views as CSV over its own HTTPS, protected by a password, and Power BI refreshes from
+there on a schedule, with no gateway (`docs/decisions.md` § Power BI feed). The address of each dataset is
+`https://<APP_DOMAIN>/powerbi/<dataset>.csv` (`App\Reports\PowerBiFeed` lists them).
 
-```bash
-psql -v ON_ERROR_STOP=1 -h <rds-endpoint> -U postgres -d seti -f database/sql/ops/create-powerbi-reader.sql
-```
+**On the instance.**
 
-Then create the login Power BI uses, a member of that role (`\password` asks for its password):
+1. Create the read-only login the feed reads with, as the master user. The first script gives the
+   `powerbi_reader` role `SELECT` on the `reporting` views only; the second creates a login in it (`\password` asks
+   for its password: generate one with `openssl rand -hex 32`):
 
-```bash
-psql -h <rds-endpoint> -U postgres -d seti -c 'CREATE ROLE powerbi LOGIN IN ROLE powerbi_reader; GRANT CONNECT ON DATABASE seti TO powerbi;' -c '\password powerbi'
-```
+   ```bash
+   psql -v ON_ERROR_STOP=1 -h <rds-endpoint> -U postgres -d seti -f database/sql/ops/create-powerbi-reader.sql
+   ```
 
-Run `create-powerbi-reader.sql` again whenever a migration adds a reporting view.
+   ```bash
+   psql -h <rds-endpoint> -U postgres -d seti -c 'CREATE ROLE powerbi LOGIN IN ROLE powerbi_reader; GRANT CONNECT ON DATABASE seti TO powerbi;' -c '\password powerbi'
+   ```
+
+   Run `create-powerbi-reader.sql` again whenever a migration adds a reporting view.
+2. In `.env`: `POWERBI_FEED_PASSWORD` (generate it with `openssl rand -hex 32`; Power BI signs in as
+   `POWERBI_FEED_USERNAME`, `powerbi` by default), `POWERBI_DB_USERNAME=powerbi` and `POWERBI_DB_PASSWORD` from
+   step 1. Without `POWERBI_DB_USERNAME` the feed reads with the app's own `seti` user, which works but sees more
+   than it needs. Then `docker compose -f compose.prod.yaml up -d` to load them.
+3. Check it from any computer: `curl -u powerbi https://<APP_DOMAIN>/powerbi/spaces.csv` asks for the password and
+   prints the header and the spaces.
+
+**In Power BI.** The report is `docs/powerbi/seti-dashboards.pbip`.
+
+1. Open it in Power BI Desktop. If the site's address changed, set it in *Transform data → Edit parameters →
+   FeedUrl* (it ends in `/powerbi/`). When Desktop asks for the credentials of the feed, choose **Basic**, user
+   `powerbi` and the feed password, at the level of `https://<APP_DOMAIN>/powerbi/`. Privacy level: Organizational.
+2. *Refresh*, then *Publish* to the workspace of the account that owns the dashboards.
+3. In Power BI Service, open the semantic model's *Settings*:
+   - *Data source credentials → Edit credentials*: Basic, the same user and password, privacy level Organizational.
+     *Skip test connection* stays off.
+   - *Refresh → Configure a refresh schedule*: on, time zone *(UTC-06:00) Central America*, three times a day
+     (for example 07:00, 12:30 and 18:00; Pro allows eight). Turn on the failure e-mail to the owner.
+4. *File → Embed report → Website or portal*, and put the URL in `POWERBI_EMBED_URL` (step 5).
+
+The dashboards page in the app says when Power BI last read the feed, and warns users when that was more than
+`POWERBI_FEED_STALE_AFTER_HOURS` (13 by default) ago, which covers one missed refresh of a three-a-day schedule.
+Changing the feed password means editing the credentials in Power BI Service too.
 
 ## 12. Test data, and emptying the database before the handover
 
@@ -351,4 +381,6 @@ deliberate way, from the repository folder:
    docker compose -f compose.prod.yaml up -d
    ```
 
-5. Delete the test-era copies: `rm -f /var/backups/seti/*`. If Power BI was connected, run step 11 again.
+5. Delete the test-era copies: `rm -f /var/backups/seti/*`. If Power BI was connected, run `create-powerbi-reader.sql`
+   again (step 11, item 1): the `powerbi` login survives the reset, but its access to the new database's views does
+   not. The dashboards show the real data from their next refresh; nothing changes in Power BI.

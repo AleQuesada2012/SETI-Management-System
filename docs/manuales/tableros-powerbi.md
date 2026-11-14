@@ -8,18 +8,35 @@ Para ver los tableros hace falta, además, una cuenta de Microsoft con licencia 
 primera vez, el tablero pide iniciar sesión con esa cuenta y, si el navegador lo solicita, permitir la ventana
 emergente de inicio de sesión.
 
-Cada tablero tiene tres páginas, **Activos**, **Espacios** y **Usuarios**, que se eligen en la parte inferior:
+El reporte tiene ocho páginas, que se eligen en la parte inferior:
 
-- Usa las listas de la parte superior para filtrar la página.
+| Página | Qué muestra |
+|---|---|
+| **Resumen** | Los indicadores principales de cada módulo, las reservas por semana y la ocupación de los espacios. |
+| **Activos** | Estado, condición física, categoría, antigüedad, proveedores y garantías por vencer. |
+| **Mantenimiento** | Intervenciones preventivas y correctivas por mes, pendientes y vencidas, días de atención e incidentes. |
+| **Espacios y ocupación** | Porcentaje de ocupación de cada espacio, horas y días con más reservas. |
+| **Reservas** | Reservas por semana, cancelaciones, reservas recurrentes, anticipación y responsables. |
+| **Movimientos** | Ingresos y traslados de activos entre espacios. |
+| **Usuarios** | Roles, estado de las cuentas y último acceso al sistema. |
+| **Uso del sistema** | Los reportes que se generan, en qué formato y quién los genera. |
+
+- Usa las listas de la parte superior para filtrar la página, y el rango de fechas para elegir un período.
 - Toca una parte de un gráfico para filtrar o resaltar los demás elementos de la página.
 - Pasa el cursor sobre un gráfico para ver el detalle de ese dato.
+
+La ocupación compara las horas reservadas hasta hoy con el horario de reservas, de lunes a sábado de 7:00 a 22:00, desde
+el día de la primera reserva registrada. Las reservas próximas no cuentan para la ocupación, pero sí aparecen en el
+gráfico de horas reservadas por día.
 
 ![Página Activos de los tableros de Power BI](tableros-powerbi-activos.jpg)
 
 ![Página Usuarios de los tableros de Power BI](tableros-powerbi-usuarios.jpg)
 
-Los datos se actualizan de forma programada, no en el momento. Si una actualización falla, Power BI muestra un aviso
-dentro del tablero.
+Los datos se actualizan automáticamente varias veces al día, no en el momento: la tarjeta **Actualización** de la página
+Resumen indica la fecha y hora de los datos que se muestran. Debajo del tablero, el sistema indica cuándo se
+actualizaron por última vez y muestra un aviso si no se han podido actualizar en más de 13 horas; en ese caso,
+comunícate con el Superusuario del sistema.
 
 ## Si el tablero sigue pidiendo iniciar sesión
 

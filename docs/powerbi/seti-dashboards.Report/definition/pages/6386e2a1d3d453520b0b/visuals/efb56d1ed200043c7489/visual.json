@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "efb56d1ed200043c7489",
+  "position": {
+    "x": 16,
+    "y": 84,
+    "z": 400,
+    "height": 96,
+    "width": 201,
+    "tabOrder": 400
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Total reservas"
+                }
+              },
+              "queryRef": "Reservas.Total reservas",
+              "nativeQueryRef": "Reservas",
+              "displayName": "Reservas"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

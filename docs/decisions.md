@@ -101,7 +101,17 @@ for production only; development and CI keep the container.
 |---|---|---|
 | Production uses the course's Amazon RDS PostgreSQL instance, with its own `seti` database and user (never the master user), over TLS. | The course provides it; RDS backs it up and patches it. | [ADR-0012 amendment](adr/0012-docker-compose-on-serversideup-php-instead-of-sail.md), `database/sql/ops/create-app-database.sql`, `compose.prod.yaml`, [deployment.md](deployment.md) |
 
+## Power BI feed (2026-11-11)
+
+Made by Alejandro (@AleQuesada2012) for issue #112, the connectivity test. Supersedes the refresh plan of G3 and of
+PLANNING.md § Power BI (direct connection, then a gateway on a SETI PC).
+
+| Decision | Why | Enforced in |
+|---|---|---|
+| Power BI refreshes from a CSV feed that the app serves over its own HTTPS (`/powerbi/<dataset>.csv`), one dataset per `reporting` view, behind an HTTP Basic password from `.env`. No direct connection to PostgreSQL and no gateway. | The RDS instance only accepts connections from inside the VPC, so Power BI Service cannot reach it. A gateway would tie every refresh to a PC that must stay on and to one Microsoft tenant, and the stakeholder will publish the report under their own `itcr.ac.cr` account. The feed needs only the site, which is already public. | `routes/powerbi.php`, `App\Reports\PowerBiFeed`, [deployment.md § 11](deployment.md#11-power-bi) |
+| The feed reads through the read-only `powerbi` login (`powerbi_reader`) when it is configured, and leaves out emails, free-text notes and the audit log. Names may appear in the dashboards (confirmed by Alejandro with the stakeholder). | ADR-0010 still holds: Power BI sees only the `reporting` views. The dashboards are shared with many viewers. | `config/database.php` (`powerbi`), `PowerBiFeed::DATASETS` |
+| Refresh three times a day in Power BI Service. The app records when Power BI last read the feed and the dashboards page warns when that is older than 13 hours (RF_73, criterion 3). | Pro allows 8 refreshes a day; without an Azure app registration the app cannot ask Power BI whether a refresh failed, but it sees the feed being read. | `pages::reports.powerbi`, `reports.powerbi_feed.stale_after_hours` |
+
 ## Open
 
 - Whether AI tools may appear as commit co-authors (team decision pending).
-- The outcome of the Power BI connectivity test (start of Sprint 3).

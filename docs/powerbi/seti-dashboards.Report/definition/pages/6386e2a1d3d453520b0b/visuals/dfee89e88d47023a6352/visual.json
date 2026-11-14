@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "dfee89e88d47023a6352",
+  "position": {
+    "x": 852,
+    "y": 84,
+    "z": 800,
+    "height": 96,
+    "width": 201,
+    "tabOrder": 800
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reservas"
+                    }
+                  },
+                  "Property": "Anticipación promedio (días)"
+                }
+              },
+              "queryRef": "Reservas.Anticipación promedio (días)",
+              "nativeQueryRef": "Días de anticipación",
+              "displayName": "Días de anticipación"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

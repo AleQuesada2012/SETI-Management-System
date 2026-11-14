@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "33c5c917a1d6b50c2d57",
+  "position": {
+    "x": 1061,
+    "y": 84,
+    "z": 1000,
+    "height": 96,
+    "width": 201,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Activos"
+                    }
+                  },
+                  "Property": "Activos sin responsable"
+                }
+              },
+              "queryRef": "Activos.Activos sin responsable",
+              "nativeQueryRef": "Sin responsable",
+              "displayName": "Sin responsable"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

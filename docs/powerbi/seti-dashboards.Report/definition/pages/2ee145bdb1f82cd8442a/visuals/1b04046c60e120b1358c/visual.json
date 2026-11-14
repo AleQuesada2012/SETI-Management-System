@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "1b04046c60e120b1358c",
+  "position": {
+    "x": 434,
+    "y": 84,
+    "z": 600,
+    "height": 96,
+    "width": 201,
+    "tabOrder": 600
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Mantenimientos"
+                    }
+                  },
+                  "Property": "Pendientes"
+                }
+              },
+              "queryRef": "Mantenimientos.Pendientes",
+              "nativeQueryRef": "Pendientes",
+              "displayName": "Pendientes"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

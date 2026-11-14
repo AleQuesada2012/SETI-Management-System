@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "59f5fe7835cdeb4879d9",
+  "position": {
+    "x": 16,
+    "y": 84,
+    "z": 400,
+    "height": 96,
+    "width": 201,
+    "tabOrder": 400
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Espacios"
+                    }
+                  },
+                  "Property": "Total espacios"
+                }
+              },
+              "queryRef": "Espacios.Total espacios",
+              "nativeQueryRef": "Espacios",
+              "displayName": "Espacios"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

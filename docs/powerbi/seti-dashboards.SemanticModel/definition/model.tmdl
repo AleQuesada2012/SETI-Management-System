@@ -1,7 +1,7 @@
 model Model
-	culture: en-US
+	culture: es-ES
 	defaultPowerBIDataSourceVersion: powerBI_V3
-	sourceQueryCulture: en-US
+	sourceQueryCulture: es-CR
 	valueFilterBehavior: independent
 	dataAccessOptions
 		legacyRedirects
@@ -9,17 +9,19 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBI_QueryOrder = ["DatabaseServer","Activos","Espacios","Usuarios","Roles de usuario","Reservas","Mantenimientos","Ocupación"]
+annotation PBI_QueryOrder = ["FeedUrl", "Activos", "Espacios", "Reservas", "Ocupación", "Mantenimientos", "Eventos de activos", "Movimientos", "Usuarios", "Roles de usuario", "Reportes generados", "Actualización"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
 ref table Activos
 ref table Espacios
+ref table Reservas
+ref table 'Ocupación'
+ref table Mantenimientos
+ref table 'Eventos de activos'
+ref table Movimientos
 ref table Usuarios
 ref table 'Roles de usuario'
-ref table Reservas
-ref table Mantenimientos
-ref table Ocupación
-
-ref cultureInfo en-US
-
+ref table 'Reportes generados'
+ref table Calendario
+ref table 'Actualización'

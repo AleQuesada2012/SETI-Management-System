@@ -1,33 +1,33 @@
 table 'Roles de usuario'
-	lineageTag: 790c77d1-5a0b-4639-b570-467e340b8308
+	lineageTag: 9588e3a2-4f75-5943-8c8c-89bb75e0f7d5
 
-	measure 'Usuarios con rol' = COUNTROWS('Roles de usuario')
+	measure 'Usuarios con rol' = COUNTROWS('Roles de usuario') + 0
 		formatString: #,0
-		lineageTag: 74cc9fc9-23c8-4db9-a8cd-1c9887ebb3fa
+		lineageTag: a6002da9-77af-5603-89e4-dd02d6882ea1
 
 	column user_id
 		dataType: int64
 		formatString: 0
-		lineageTag: 72f6c0f2-3de9-48d4-b6fe-3f864eefdfea
 		summarizeBy: none
 		sourceColumn: user_id
+		lineageTag: 6ec1aab9-38be-56e3-941b-c785d5ddad24
 
 		annotation SummarizationSetBy = Automatic
 
 	column role_id
 		dataType: int64
 		formatString: 0
-		lineageTag: d258d05b-f221-4a9c-a8d0-8be24d247684
 		summarizeBy: none
 		sourceColumn: role_id
+		lineageTag: 1ca0341d-6eaf-581c-8ef4-9f6d794fda44
 
 		annotation SummarizationSetBy = Automatic
 
 	column role
 		dataType: string
-		lineageTag: 32e3d9c2-4635-4258-abbd-2a328510b3b9
 		summarizeBy: none
 		sourceColumn: role
+		lineageTag: de6819de-8e4b-5e98-8f46-9aefd6049d16
 
 		annotation SummarizationSetBy = Automatic
 
@@ -35,10 +35,11 @@ table 'Roles de usuario'
 		mode: import
 		source =
 				let
-				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
-				  #"Navigation 1" = Source{[Schema = "reporting", Item = "user_roles"]}[Data]
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "user_roles.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"user_id", Int64.Type}, {"role_id", Int64.Type}, {"role", type text}}, "en-US")
 				in
-				  #"Navigation 1"
+				    Typed
 
 	annotation PBI_ResultType = Table
-

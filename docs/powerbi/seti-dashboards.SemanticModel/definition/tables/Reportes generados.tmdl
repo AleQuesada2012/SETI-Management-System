@@ -1,0 +1,114 @@
+table 'Reportes generados'
+	lineageTag: 74a5c17e-84e2-5c52-b439-0fddd4657b20
+
+	measure 'Total reportes generados' = COUNTROWS('Reportes generados') + 0
+		formatString: #,0
+		lineageTag: 7d7b5d70-4907-5eec-b421-01bfdbbd4dc9
+
+	measure 'Filas exportadas' = SUM('Reportes generados'[row_count]) + 0
+		formatString: #,0
+		lineageTag: e40310b0-2978-5b84-bada-c1cc71b518b0
+
+	column id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: id
+		lineageTag: 3f948333-97f2-554d-8085-ef53f90cb014
+
+		annotation SummarizationSetBy = Automatic
+
+	column report_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: report_code
+		lineageTag: 0bde553e-724b-591b-9d20-4bd1cab553c0
+
+		annotation SummarizationSetBy = Automatic
+
+	column report_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: report_name
+		lineageTag: b516eab3-cb64-5c03-8980-d0138996d291
+
+		annotation SummarizationSetBy = Automatic
+
+	column report_category
+		dataType: string
+		summarizeBy: none
+		sourceColumn: report_category
+		lineageTag: f09da95d-a43e-53e3-8cd6-d456e9160677
+
+		annotation SummarizationSetBy = Automatic
+
+	column format
+		dataType: string
+		summarizeBy: none
+		sourceColumn: format
+		lineageTag: cfef8d99-df24-519a-b227-71913d05afe0
+
+		annotation SummarizationSetBy = Automatic
+
+	column row_count
+		dataType: int64
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: row_count
+		lineageTag: 60fdc341-b933-5907-9051-a53847085afd
+
+		annotation SummarizationSetBy = Automatic
+
+	column generated_by
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: generated_by
+		lineageTag: 3a1b6ae0-f8df-58dc-9056-9b94f5138cf8
+
+		annotation SummarizationSetBy = Automatic
+
+	column generated_by_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: generated_by_name
+		lineageTag: 66c0a5f9-b9ef-5939-9659-2347fad9789e
+
+		annotation SummarizationSetBy = Automatic
+
+	column generated_at
+		dataType: dateTime
+		formatString: dd/mm/yyyy hh:mm
+		summarizeBy: none
+		sourceColumn: generated_at
+		lineageTag: c1395f2c-c1b2-5b6f-8e0b-6dbf11db8aed
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fecha = DATE(YEAR([generated_at]), MONTH([generated_at]), DAY([generated_at]))
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		lineageTag: ca1f726c-5446-5544-9a55-62fc035f41e3
+
+		annotation SummarizationSetBy = Automatic
+
+	column Formato = UPPER([format])
+		dataType: string
+		summarizeBy: none
+		lineageTag: 606f0adb-0d9d-510c-8ab1-b815b34def43
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Reportes generados' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "report_generations.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"id", Int64.Type}, {"report_code", type text}, {"report_name", type text}, {"report_category", type text}, {"format", type text}, {"row_count", Int64.Type}, {"generated_by", Int64.Type}, {"generated_by_name", type text}, {"generated_at", type datetime}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

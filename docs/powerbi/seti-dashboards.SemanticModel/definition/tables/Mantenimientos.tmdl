@@ -1,187 +1,171 @@
 table Mantenimientos
-	lineageTag: 810abfdb-f409-4a06-8ba4-47154fc0d3ed
+	lineageTag: 2f030616-968c-51ba-a1a8-f8db1de8328f
+
+	measure 'Total mantenimientos' = COUNTROWS(Mantenimientos) + 0
+		formatString: #,0
+		lineageTag: 1963a5df-b683-598e-8cff-8004871251ed
+
+	measure Preventivos = CALCULATE(COUNTROWS(Mantenimientos), Mantenimientos[kind] = "preventive") + 0
+		formatString: #,0
+		lineageTag: b22bb85e-fb07-5fbc-a7c6-c9e5572384fb
+
+	measure Correctivos = CALCULATE(COUNTROWS(Mantenimientos), Mantenimientos[kind] = "corrective") + 0
+		formatString: #,0
+		lineageTag: 124d2f32-5121-59a0-a83e-de1f42965009
+
+	measure '% preventivo' = DIVIDE([Preventivos], [Total mantenimientos])
+		formatString: 0.0%
+		lineageTag: d735ec4a-53b3-5eeb-8fa7-6617bb598aa8
+
+	measure Pendientes = CALCULATE(COUNTROWS(Mantenimientos), Mantenimientos[status] IN {"scheduled", "in_progress"}) + 0
+		formatString: #,0
+		lineageTag: 3d20c99e-e36e-54bd-987e-d7fecf03591e
+
+	measure Vencidos = CALCULATE(COUNTROWS(Mantenimientos), Mantenimientos[Vencido] = "Vencido") + 0
+		formatString: #,0
+		lineageTag: 171a8558-cd86-5c58-bc89-3aed049e9020
+
+	measure 'Promedio de días de atención' = AVERAGE(Mantenimientos[Días de atención])
+		formatString: #,0.0
+		lineageTag: 285dfcbc-e143-5a20-8869-c36003eb42fb
 
 	column id
 		dataType: int64
 		formatString: 0
-		lineageTag: b09acbd4-233e-4312-9b73-e160e7202538
 		summarizeBy: none
 		sourceColumn: id
+		lineageTag: 0e6ff7e8-1041-56a4-b3e9-2adf2eae0ef3
 
 		annotation SummarizationSetBy = Automatic
 
 	column asset_id
 		dataType: int64
 		formatString: 0
-		lineageTag: 3803a474-f9ee-4735-8b0d-d3cf9fe283ff
 		summarizeBy: none
 		sourceColumn: asset_id
+		lineageTag: 0767d134-1055-5e1c-b5d5-cebd399aabcd
 
 		annotation SummarizationSetBy = Automatic
 
 	column asset_code
 		dataType: string
-		lineageTag: f600b6fe-3559-4071-8986-b2c80fed6726
 		summarizeBy: none
 		sourceColumn: asset_code
-
-		annotation SummarizationSetBy = Automatic
-
-	column asset_tag
-		dataType: string
-		lineageTag: da69375a-c2b0-4782-a8f6-1f81861b7cc3
-		summarizeBy: none
-		sourceColumn: asset_tag
+		lineageTag: acad2da0-c034-57f2-85c6-0467282fb7d6
 
 		annotation SummarizationSetBy = Automatic
 
 	column asset_name
 		dataType: string
-		lineageTag: cd168234-c38e-404d-b573-2a6a45646635
 		summarizeBy: none
 		sourceColumn: asset_name
+		lineageTag: 4dcacce8-740b-5c50-88b4-dacf6efbc31f
 
 		annotation SummarizationSetBy = Automatic
 
 	column kind
 		dataType: string
-		lineageTag: bded0c43-5448-4b0e-8f08-2061a5ed2b1f
 		summarizeBy: none
 		sourceColumn: kind
+		lineageTag: b5b66749-cb99-5e40-b84e-8aa27e0f9610
 
 		annotation SummarizationSetBy = Automatic
 
 	column status
 		dataType: string
-		lineageTag: 78939735-a7ed-43fc-97d9-c5331645c2fc
 		summarizeBy: none
 		sourceColumn: status
+		lineageTag: c20229a6-8838-541a-a0e4-71231bd5477a
 
 		annotation SummarizationSetBy = Automatic
 
 	column scheduled_for
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 8a75c70f-9003-4591-987e-b9b0342a6d16
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: scheduled_for
+		lineageTag: 95a41913-f5e7-52d3-a364-d112e4e96533
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
 
 	column started_on
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 48d387e8-436f-4682-8e51-b3664442c786
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: started_on
+		lineageTag: 05c59953-eb03-5456-a13a-88210a3bc90f
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
 
 	column completed_on
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 3a7d8614-4c85-4b90-afee-bbc6963ae628
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: completed_on
+		lineageTag: c183ba0a-a5f9-55b7-a811-3038cc7d41b1
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
 
 	column reference_date
 		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 1531d2c7-e297-430d-b6a4-8f26dd77f852
+		formatString: dd/mm/yyyy
 		summarizeBy: none
 		sourceColumn: reference_date
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column description
-		dataType: string
-		lineageTag: 54b3a763-1964-477d-8308-4c9497e0381d
-		summarizeBy: none
-		sourceColumn: description
+		lineageTag: 98edfed6-b9a4-52f1-94b1-6e3a84cbccd0
 
 		annotation SummarizationSetBy = Automatic
 
 	column performed_by
 		dataType: string
-		lineageTag: feec6ad7-e8a2-478b-8923-7a67e264e413
 		summarizeBy: none
 		sourceColumn: performed_by
-
-		annotation SummarizationSetBy = Automatic
-
-	column asset_event_id
-		dataType: int64
-		formatString: 0
-		lineageTag: a393b8a0-0dd6-4539-8c6c-9ec17044ba33
-		summarizeBy: none
-		sourceColumn: asset_event_id
-
-		annotation SummarizationSetBy = Automatic
-
-	column registered_by
-		dataType: int64
-		formatString: 0
-		lineageTag: c881e144-35e5-4758-9ddc-d2c01a8d585f
-		summarizeBy: none
-		sourceColumn: registered_by
+		lineageTag: f02103bb-fb98-5356-b8ba-14683aed6764
 
 		annotation SummarizationSetBy = Automatic
 
 	column registered_by_name
 		dataType: string
-		lineageTag: 5ec0b457-0a84-4819-84bd-0d1f2c7dcff2
 		summarizeBy: none
 		sourceColumn: registered_by_name
-
-		annotation SummarizationSetBy = Automatic
-
-	column cancellation_reason
-		dataType: string
-		lineageTag: df0cc8b8-0949-49b9-ba3e-0109988d4ec1
-		summarizeBy: none
-		sourceColumn: cancellation_reason
+		lineageTag: 7a1ffd1e-0e41-54a1-b554-78ec13c18923
 
 		annotation SummarizationSetBy = Automatic
 
 	column created_at
 		dataType: dateTime
-		formatString: General Date
-		lineageTag: 03ed7473-bc32-4309-a83f-70d5095d7da9
+		formatString: dd/mm/yyyy hh:mm
 		summarizeBy: none
 		sourceColumn: created_at
-
-		annotation SummarizationSetBy = Automatic
-
-	column updated_at
-		dataType: dateTime
-		formatString: General Date
-		lineageTag: f7cf352a-53df-48ec-bae5-6eefced3f9bd
-		summarizeBy: none
-		sourceColumn: updated_at
+		lineageTag: afaa842f-1f75-5fdb-9856-ab1bc693ce20
 
 		annotation SummarizationSetBy = Automatic
 
 	column Tipo = SWITCH([kind], "preventive", "Preventivo", "corrective", "Correctivo", [kind])
 		dataType: string
-		lineageTag: eff59e1c-78e4-4603-a198-d55721cd297c
 		summarizeBy: none
+		lineageTag: 986c634c-97b7-5f1c-94bf-94354502df44
 
 		annotation SummarizationSetBy = Automatic
 
 	column Estado = SWITCH([status], "scheduled", "Programado", "in_progress", "En curso", "completed", "Completado", "cancelled", "Cancelado", [status])
 		dataType: string
-		lineageTag: 3bceb159-09d7-4b5f-a3f4-45c0b81bc362
 		summarizeBy: none
+		lineageTag: 2bc3170c-326f-5ee0-952d-39bfa303215a
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Días de atención' = IF(NOT ISBLANK([started_on]) && NOT ISBLANK([completed_on]), INT([completed_on] - [started_on]))
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		lineageTag: fb00e5bb-443a-5818-b44d-13c891711510
+
+		annotation SummarizationSetBy = Automatic
+
+	column Vencido = IF([status] = "scheduled" && [scheduled_for] < TODAY(), "Vencido", "Al día")
+		dataType: string
+		summarizeBy: none
+		lineageTag: 42a3e369-bdc8-5731-abd7-3ec576e1d892
 
 		annotation SummarizationSetBy = Automatic
 
@@ -189,10 +173,11 @@ table Mantenimientos
 		mode: import
 		source =
 				let
-				  Source = PostgreSQL.Database(DatabaseServer, "seti"),
-				  #"Navigation 1" = Source{[Schema = "reporting", Item = "maintenance"]}[Data]
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "maintenance.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"id", Int64.Type}, {"asset_id", Int64.Type}, {"asset_code", type text}, {"asset_name", type text}, {"kind", type text}, {"status", type text}, {"scheduled_for", type date}, {"started_on", type date}, {"completed_on", type date}, {"reference_date", type date}, {"performed_by", type text}, {"registered_by_name", type text}, {"created_at", type datetime}}, "en-US")
 				in
-				  #"Navigation 1"
+				    Typed
 
 	annotation PBI_ResultType = Table
-

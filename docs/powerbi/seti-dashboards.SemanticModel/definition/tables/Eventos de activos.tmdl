@@ -1,0 +1,103 @@
+table 'Eventos de activos'
+	lineageTag: 5fd64c52-54c0-5ad5-a43c-b79786c0f6b9
+
+	measure 'Total eventos' = COUNTROWS('Eventos de activos') + 0
+		formatString: #,0
+		lineageTag: 511588ff-db30-5116-bdf7-fb25cc6d789c
+
+	column id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: id
+		lineageTag: de26d26e-61e1-5805-b144-5f19099e2d8a
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: asset_id
+		lineageTag: 313d82ff-00a1-52c3-ab57-1398fa388734
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: asset_code
+		lineageTag: 09f1e6f3-e1f4-5f0d-8665-667d4063f2f6
+
+		annotation SummarizationSetBy = Automatic
+
+	column asset_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: asset_name
+		lineageTag: 8e5dc287-1514-5e36-aeba-b60812b1cb6c
+
+		annotation SummarizationSetBy = Automatic
+
+	column kind
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kind
+		lineageTag: 5a61039d-b932-550d-accd-1054a151cace
+
+		annotation SummarizationSetBy = Automatic
+
+	column occurred_on
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: occurred_on
+		lineageTag: 3ca718aa-4664-58c1-9045-c72d0004a4cd
+
+		annotation SummarizationSetBy = Automatic
+
+	column registered_by_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: registered_by_name
+		lineageTag: 62de036b-a9e6-55bc-a6eb-b9891c84622f
+
+		annotation SummarizationSetBy = Automatic
+
+	column evidence_count
+		dataType: int64
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: evidence_count
+		lineageTag: 9b6a12d0-9d98-507a-96b6-ab8dfeaee8d7
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: dd/mm/yyyy hh:mm
+		summarizeBy: none
+		sourceColumn: created_at
+		lineageTag: e2d6214b-9c02-59f4-bf1d-3fe5548bf603
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo = SWITCH([kind], "damage", "Daño", "loss", "Pérdida", "recovery", "Recuperación", "decommission", "Baja", [kind])
+		dataType: string
+		summarizeBy: none
+		lineageTag: b4c6e36e-324b-5e34-9e60-9c349994c186
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Eventos de activos' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents(FeedUrl, [RelativePath = "asset_events.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, Table.ColumnNames(Headers)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"id", Int64.Type}, {"asset_id", Int64.Type}, {"asset_code", type text}, {"asset_name", type text}, {"kind", type text}, {"occurred_on", type date}, {"registered_by_name", type text}, {"evidence_count", Int64.Type}, {"created_at", type datetime}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
