@@ -8,6 +8,7 @@ only, never the deployed site: the EC2 instance is small and the RDS database is
 | `general.jmx` | Main screens: dashboard, assets, spaces, reservations, reports, statistics (20 × 1) |
 | `seguridad-reportes.jmx` | Sign-in (10 × 5); lockout after 5 wrong passwords (1 × 10); report preview (20 × 5); statistics (20 × 5); download of a generated report (20 × 5) |
 | `reservas.jmx` | Reservation calendar, history and occupancy (20 × 5) |
+| `activos.jmx` | Asset inventory, inventory with a search and a filter, asset page and its history (20 × 5) |
 | `usuarios.jmx` | Users list, list with search and filters, a user's page, their activity, and roles (20 × 5) |
 
 The thread groups of a plan run one after the other, so each scenario is measured on its own.
