@@ -7,8 +7,13 @@ only, never the deployed site: the EC2 instance is small and the RDS database is
 |---|---|
 | `general.jmx` | Main screens: dashboard, assets, spaces, reservations, reports, statistics (20 × 1) |
 | `seguridad-reportes.jmx` | Sign-in (10 × 5); lockout after 5 wrong passwords (1 × 10); report preview (20 × 5); statistics (20 × 5); download of a generated report (20 × 5) |
+| `reservas.jmx` | Reservation calendar, history and occupancy (20 × 5) |
 
 The thread groups of a plan run one after the other, so each scenario is measured on its own.
+
+`reservas-concurrencia.sh` is not a JMeter plan: it sends 10 simultaneous bookings of the same space and slot, first
+through the booking action and then as bare inserts, and checks that exactly one reservation is created each time. Run
+it from the repository root with `tests/stress/reservas-concurrencia.sh`; it needs no stress accounts.
 
 ## Before the first run
 
