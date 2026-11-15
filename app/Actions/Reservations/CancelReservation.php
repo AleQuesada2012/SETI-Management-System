@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 /**
- * RF_50 · "Eliminar reserva", following the RF_50 diagram: the reservation is cancelled, never deleted (ADR-0005), so
+ * RF_50 · "Cancelar reserva", following the RF_50 diagram: the reservation is cancelled, never deleted (ADR-0005), so
  * it frees the space's block and stays in the history with who cancelled it, when and why. Only reservations that
  * have not started can be cancelled (Agent-DB.md §9). The row is locked and re-read inside the transaction, so two
  * concurrent cancellations, or a modification (RF_49) made after the user opened the page, are refused with a Spanish

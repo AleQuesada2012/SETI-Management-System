@@ -2,7 +2,7 @@
 
 En **Reservas**, el botón **Ocupación** abre la lista de los espacios que tuvieron reservas en un período. Cada fila
 muestra el espacio, la cantidad de reservas y el tiempo reservado en horas y minutos (por ejemplo, **5 h 45 min**).
-Solo cuentan las reservas confirmadas: las eliminadas (canceladas) no suman. Una reserva cuenta en el día en que
+Solo cuentan las reservas confirmadas: las canceladas no suman. Una reserva cuenta en el día en que
 empieza, aunque termine al día siguiente. Los espacios sin reservas en el período no aparecen.
 
 La pantalla abre con el mes actual. Las flechas junto al nombre del mes pasan al mes anterior o al siguiente, y

@@ -89,7 +89,7 @@ export async function createReservation(page: Page, slot: Slot, title: string, s
 }
 
 /**
- * Cancels a reservation through its detail page: "Eliminar" and then "Eliminar reserva" (RF_50). The page goes back
+ * Cancels a reservation through its detail page: "Cancelar" and then "Cancelar reserva" (RF_50). The page goes back
  * to the calendar on the reservation's day and confirms it with a toast.
  */
 export async function cancelReservation(page: Page, detailPath: string, reason?: string): Promise<void> {
@@ -98,7 +98,7 @@ export async function cancelReservation(page: Page, detailPath: string, reason?:
     }
 
     await page.getByTestId('reservation-cancel').click();
-    await expect(page.getByText('¿Eliminar esta reserva?')).toBeVisible();
+    await expect(page.getByText('¿Cancelar esta reserva?')).toBeVisible();
 
     if (reason) {
         await page.getByLabel('Motivo (opcional)').fill(reason);
@@ -106,7 +106,7 @@ export async function cancelReservation(page: Page, detailPath: string, reason?:
 
     await page.getByTestId('confirm-cancel').click();
     await expect(page).toHaveURL(/\/reservas\?mes=/);
-    await expect(page.getByText(/Se eliminó la reserva de .* y el horario quedó libre\./)).toBeVisible();
+    await expect(page.getByText(/Se canceló la reserva de .* y el horario quedó libre\./)).toBeVisible();
 }
 
 /** Opens the bell in the top bar (RF_47, RF_48) and returns its menu. */

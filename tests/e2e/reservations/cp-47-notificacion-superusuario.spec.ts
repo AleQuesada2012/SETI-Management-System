@@ -27,7 +27,7 @@ test.describe('CP-47 · Notificación de reserva de espacio a Superusuario', () 
         await cancelReservation(reservante, path);
 
         const page = await (await browser.newContext({ storageState: storageState('superusuario') })).newPage();
-        await waitForNotification(page, 'Reserva eliminada en', `«${title}»`);
+        await waitForNotification(page, 'Reserva cancelada en', `«${title}»`);
     });
 
     test('c. quien reserva no recibe el aviso de su propia reserva', async ({ browser }) => {

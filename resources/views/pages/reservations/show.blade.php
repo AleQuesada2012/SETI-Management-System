@@ -13,7 +13,7 @@ use Livewire\Component;
 /*
  * Detalle de la reserva (RF_51). Owner: reservations (@JoseHerrera21). Changes call $this->authorize() with
  * ReservationPolicy (update, cancel). Reservations are never deleted: a cancelled one still opens here and says so
- * (RF_51 diagram); an id that never existed answers 404. "Eliminar" (RF_50) asks for confirmation and an optional
+ * (RF_51 diagram); an id that never existed answers 404. "Cancelar" (RF_50) asks for confirmation and an optional
  * reason, then cancels it with CancelReservation and returns to the calendar on that day. "Modificar" opens the RF_49
  * form, and the reason of the last modification shows next to the other details.
  */
@@ -45,7 +45,7 @@ new #[Title('reservations.show.title')] class extends Component {
         return $this->details->effective_status === ReservationEffectiveStatus::Upcoming;
     }
 
-    /** RF_50 · "Eliminar reserva" once the user confirms it. */
+    /** RF_50 · "Cancelar reserva" once the user confirms it. */
     public function cancel(CancelReservation $cancelReservation): void
     {
         $this->authorize('cancel', $this->reservation);
@@ -75,7 +75,7 @@ new #[Title('reservations.show.title')] class extends Component {
                 @endcan
                 @can('cancel', $reservation)
                     <flux:modal.trigger name="cancel-reservation">
-                        <flux:button variant="danger" icon="trash" class="flex-1 sm:flex-none" data-test="reservation-cancel">
+                        <flux:button variant="danger" icon="x-circle" class="flex-1 sm:flex-none" data-test="reservation-cancel">
                             {{ __('reservations.show.cancel') }}
                         </flux:button>
                     </flux:modal.trigger>
