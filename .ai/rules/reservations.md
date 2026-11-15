@@ -21,7 +21,7 @@ status as a side effect (Agent-DB.md §8.4), in the same transaction.
 
 - **Time is `[start, end)`.** Compare with `Reservation::overlapping()`, which mirrors the `reservations_no_overlap` exclusion constraint. Back-to-back reservations (10:00–11:00 and 11:00–12:00) are valid.
 - **The database is the final judge of overlaps** (ADR-0005): validate for a friendly message, then catch the constraint violation on insert (`App\Support\Database\ConstraintViolation` maps it to Spanish). A pre-check alone loses under concurrency.
-- **Only `confirmed` and `cancelled` are stored.** In progress / finished are derived from time (`effectiveStatus()`). "Eliminar reserva" in the UI = cancel (RF_50); the row stays.
+- **Only `confirmed` and `cancelled` are stored.** In progress / finished are derived from time (`effectiveStatus()`). RF_50 ("Eliminar reserva") cancels and the row stays, so the UI says "Cancelar", "Cancelar reserva" and "cancelada", never "eliminar" (#251).
 - **Modifying (RF_49)** bumps `version` (optimistic locking: update `WHERE version = :read_version`); `version > 1` is the "modificada" label.
 - **Series** (`series_id`) are independent reservations created together; each date changes or cancels on its own.
 - **Who may change a reservation:** `ReservationPolicy` (own with `manage_own`; any in managed spaces with `manage_any`, ★). Create only in reservable spaces (`Space::isReservable()`, checked in the Action).

@@ -3,7 +3,7 @@
 namespace App\Notifications\Reservations;
 
 /**
- * RF_50 · A reservation was cancelled ("eliminada" in the interface): the Superusuarios and the space's managers hear
+ * RF_50 · A reservation was cancelled: the Superusuarios and the space's managers hear
  * which space and block were freed, and by whom (RF_50 diagram).
  */
 final class ReservationCancelled extends ReservationNotification

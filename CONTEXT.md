@@ -148,7 +148,7 @@ The user a space is booked for; may differ from the user who made the reservatio
 _Avoid_: solicitante, dueño de la reserva
 
 **Cancellation** · _Cancelación_:
-Ending a reservation before it takes place; the reservation stays in history. "Eliminar reserva" in the interface means cancelling it.
+Ending a reservation before it takes place; the reservation stays in history. RF_50 calls it "Eliminar reserva"; the interface says "Cancelar reserva".
 _Avoid_: eliminar reserva, borrar reserva
 
 **Finished reservation** · _Reserva finalizada_:

@@ -37,7 +37,7 @@ class ReservationPolicy
             || $user->canInSpace(P::ReservationsManageAny, $reservation->space_id);
     }
 
-    /** RF_50 ("Eliminar reserva" in the interface). */
+    /** RF_50 ("Cancelar reserva" in the interface). */
     public function cancel(User $user, Reservation $reservation): bool
     {
         return $this->update($user, $reservation);

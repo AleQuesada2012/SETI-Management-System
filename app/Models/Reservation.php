@@ -21,7 +21,7 @@ use Illuminate\Support\Carbon;
  * - Only `confirmed` and `cancelled` are stored; finished / in progress are derived from time.
  * - PostgreSQL rejects overlapping confirmed reservations (reservations_no_overlap), even under
  *   concurrency. Always compare times with [start, end) semantics, like the constraint.
- * - "Eliminar reserva" in the UI = cancel. The row stays in history.
+ * - RF_50 ("Eliminar reserva") cancels; the UI says "Cancelar reserva". The row stays in history.
  * - A modification bumps `version` (optimistic locking); `version > 1` means "modificada".
  *
  * @property int $id

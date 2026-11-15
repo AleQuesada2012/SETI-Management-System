@@ -98,7 +98,7 @@ return [
         'done' => 'Se modificó la reserva de :space.',
         'errors' => [
             'unchanged' => 'No hiciste ningún cambio en la reserva.',
-            'cancelled' => 'Esta reserva fue eliminada y ya no se puede modificar.',
+            'cancelled' => 'Esta reserva fue cancelada y ya no se puede modificar.',
             'started' => 'Esta reserva ya comenzó o finalizó: solo queda en el historial y no se puede modificar.',
             'changed' => 'La reserva cambió mientras la editabas. Vuelve a abrirla para ver los datos actualizados.',
         ],
@@ -130,7 +130,7 @@ return [
         'cancellation_reason' => 'Motivo de la cancelación: :reason',
         'modification_reason' => 'Motivo de la última modificación',
         'update' => 'Modificar',
-        'cancel' => 'Eliminar',
+        'cancel' => 'Cancelar',
     ],
     'space_reservations' => [
         'heading' => 'Reservas del espacio',
@@ -169,8 +169,8 @@ return [
             'body' => ':actor reservó el espacio para «:title»: :periods.',
         ],
         'cancelled' => [
-            'title' => 'Reserva eliminada en :space',
-            'body' => ':actor eliminó la reserva «:title» y liberó el horario: :periods.',
+            'title' => 'Reserva cancelada en :space',
+            'body' => ':actor canceló la reserva «:title» y liberó el horario: :periods.',
         ],
         'reason' => 'Motivo: :reason',
         'updated' => [
@@ -186,18 +186,19 @@ return [
             'body' => ':actor movió la reserva «:title» desde :previous_space: :periods.:reason',
         ],
     ],
-    // "Eliminar reserva" (RF_50): the reservation is cancelled and stays in the history.
+    // RF_50 ("Eliminar reserva" in the requirement): the reservation is cancelled and stays in the history, so the
+    // interface says "cancelar" everywhere (#251).
     'cancel' => [
-        'heading' => '¿Eliminar esta reserva?',
+        'heading' => '¿Cancelar esta reserva?',
         'description' => 'La reserva de :space del :date, de :start a :end, se cancelará y el horario quedará libre. Seguirá apareciendo en el historial como cancelada.',
         'reason' => 'Motivo (opcional)',
         'reason_placeholder' => 'Se suspendió la tutoría, cambio de aula…',
         'back' => 'Volver',
-        'confirm' => 'Eliminar reserva',
-        'done' => 'Se eliminó la reserva de :space y el horario quedó libre.',
+        'confirm' => 'Cancelar reserva',
+        'done' => 'Se canceló la reserva de :space y el horario quedó libre.',
         'errors' => [
-            'already_cancelled' => 'Esta reserva ya fue eliminada.',
-            'started' => 'Esta reserva ya comenzó o finalizó: solo queda en el historial y no se puede eliminar.',
+            'already_cancelled' => 'Esta reserva ya fue cancelada.',
+            'started' => 'Esta reserva ya comenzó o finalizó: solo queda en el historial y no se puede cancelar.',
             'changed' => 'La reserva cambió mientras la veías. Revisa los datos actualizados y vuelve a intentarlo.',
         ],
     ],

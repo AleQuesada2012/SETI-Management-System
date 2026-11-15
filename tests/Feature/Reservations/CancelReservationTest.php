@@ -159,6 +159,6 @@ test('the manager reads which space and block were freed in their inbox', functi
 
     $this->actingAs($manager);
     Livewire::test('notifications.bell')
-        ->assertSee('Reserva eliminada en LAB-110 · Laboratorio 110')
-        ->assertSee('Beto Reservante eliminó la reserva «Tutoría de cálculo» y liberó el horario: 15/10/2030, de 10:00 a 12:00.');
+        ->assertSee('Reserva cancelada en LAB-110 · Laboratorio 110')
+        ->assertSee('Beto Reservante canceló la reserva «Tutoría de cálculo» y liberó el horario: 15/10/2030, de 10:00 a 12:00.');
 });

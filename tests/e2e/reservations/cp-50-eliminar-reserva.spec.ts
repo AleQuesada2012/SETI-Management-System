@@ -39,7 +39,7 @@ test.describe('CP-50 · Eliminar reserva', () => {
             await page.getByTestId('reservation-cancel').click();
             await page.getByRole('button', { name: 'Volver' }).click();
 
-            await expect(page.getByText('¿Eliminar esta reserva?')).toBeHidden();
+            await expect(page.getByText('¿Cancelar esta reserva?')).toBeHidden();
             await expect(page.getByTestId('reservation-cancelled')).toHaveCount(0);
         });
     });
@@ -53,7 +53,7 @@ test.describe('CP-50 · Eliminar reserva', () => {
         await cancelReservation(manager, path);
     });
 
-    test('e. un rol sin permiso no ve "Eliminar"', async ({ browser }) => {
+    test('e. un rol sin permiso no ve "Cancelar"', async ({ browser }) => {
         const owner = await (await browser.newContext({ storageState: storageState('reservante') })).newPage();
         const path = await createReservation(owner, freeSlot(), 'PRUEBA E2E · CP-50e');
 

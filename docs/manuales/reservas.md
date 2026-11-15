@@ -5,8 +5,8 @@ seguimiento a cada reserva. Qué puede hacer cada persona depende de su rol:
 
 | Rol | Qué puede hacer |
 |---|---|
-| **Reservante** | Consultar los espacios y el calendario, reservar, y modificar o eliminar sus propias reservas. |
-| **Administrador** | Lo mismo, y además modificar o eliminar las reservas de los espacios que tiene a cargo. Recibe un aviso cuando alguien reserva uno de sus espacios. |
+| **Reservante** | Consultar los espacios y el calendario, reservar, y modificar o cancelar sus propias reservas. |
+| **Administrador** | Lo mismo, y además modificar o cancelar las reservas de los espacios que tiene a cargo. Recibe un aviso cuando alguien reserva uno de sus espacios. |
 | **Superusuario** | Todo lo anterior en cualquier espacio. Recibe un aviso de cada reserva. |
 | **Visualizador** y **Reportes** | Consultar los espacios, el calendario y el detalle de las reservas, sin reservar. |
 
@@ -110,7 +110,7 @@ mes.
 
 El detalle muestra el espacio, la fecha, el horario, el motivo, la cantidad de personas, el responsable, quién hizo la
 reserva, las notas y el **Estado actual**: **Próxima**, **En curso**, **Finalizada** o **Cancelada**, con la etiqueta
-**Modificada** si cambió después de hacerse. Quien puede cambiar la reserva ve además **Modificar** y **Eliminar**,
+**Modificada** si cambió después de hacerse. Quien puede cambiar la reserva ve además **Modificar** y **Cancelar**,
 mientras la reserva no haya comenzado.
 
 ![Calendario con el detalle de un día en computadora](reservas-calendario-escritorio.jpg)
@@ -129,22 +129,22 @@ mismas reglas que al reservar (horario permitido, capacidad, espacio reservable 
 reserva misma no cuenta como choque. Al pulsar **Guardar cambios**, la reserva muestra la etiqueta **Modificada** y el
 motivo de la última modificación; si no cambiaste nada, el sistema lo avisa. El Superusuario y los encargados del
 espacio reciben una notificación; si la reserva cambia de espacio, los encargados del espacio que se liberó y los del
-espacio nuevo reciben cada uno su aviso. Las reservas en curso, finalizadas o eliminadas no ofrecen esta opción.
+espacio nuevo reciben cada uno su aviso. Las reservas en curso, finalizadas o canceladas no ofrecen esta opción.
 
 ![Modificar una reserva en computadora](reservas-modificar-escritorio.jpg)
 ![Modificar una reserva a 360 px](reservas-modificar-movil.jpg)
 
-## Eliminar una reserva (RF_50)
+## Cancelar una reserva (RF_50)
 
-Quien hizo la reserva o es su responsable, el Administrador encargado del espacio y el Superusuario ven **Eliminar** en
+Quien hizo la reserva o es su responsable, el Administrador encargado del espacio y el Superusuario ven **Cancelar** en
 el detalle de una reserva que todavía no ha comenzado (en el calendario, toca el día y luego el motivo de la reserva).
-El sistema pide confirmar en **¿Eliminar esta reserva?** y permite anotar un motivo opcional; **Volver** cierra la
-confirmación sin eliminar. Con **Eliminar reserva**, la reserva se cancela: el horario queda libre en el calendario,
-la reserva sigue en el historial como **Cancelada** y el Superusuario y los encargados del espacio reciben una
-notificación. Las reservas en curso o finalizadas no ofrecen esta opción.
+El sistema pide confirmar en **¿Cancelar esta reserva?** y permite anotar un motivo opcional; **Volver** cierra la
+confirmación sin cambiar nada. Con **Cancelar reserva**, el horario queda libre en el calendario, la reserva sigue en el
+historial como **Cancelada** y el Superusuario y los encargados del espacio reciben una notificación. Las reservas en
+curso o finalizadas no ofrecen esta opción.
 
-![Confirmar la eliminación en computadora](reservas-eliminar-escritorio.jpg)
-![Confirmar la eliminación a 360 px](reservas-eliminar-movil.jpg)
+![Confirmar la cancelación en computadora](reservas-cancelar-escritorio.jpg)
+![Confirmar la cancelación a 360 px](reservas-cancelar-movil.jpg)
 
 ## Notificaciones de reservas (RF_47, RF_48)
 
