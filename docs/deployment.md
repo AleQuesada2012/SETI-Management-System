@@ -83,20 +83,22 @@ and `/etc/apt/sources.list.d/docker.sources` says `Suites: resolute`.
 
 ## 3. Get the code
 
-The repository is private, so the instance gets a **read-only deploy key**:
+The repository is public, so the instance clones it over HTTPS, with no key or credentials:
 
 ```bash
-ssh-keygen -t ed25519 -N "" -f ~/.ssh/seti_deploy -C "seti-ec2"
-printf 'Host github.com\n  IdentityFile ~/.ssh/seti_deploy\n  IdentitiesOnly yes\n' >> ~/.ssh/config
-cat ~/.ssh/seti_deploy.pub
+git clone https://github.com/AleQuesada2012/SETI-Management-System.git seti && cd seti
 ```
 
-A repository admin adds that public key in GitHub → the repository → *Settings → Deploy keys* (leave *Allow write
-access* off). Then:
+An instance set up while the repository was private has a read-only deploy key and an SSH remote; both keep working.
+To drop the key, switch the remote to HTTPS, remove the `Host github.com` block from `~/.ssh/config`, delete
+`~/.ssh/seti_deploy*`, and have a repository admin delete the key in GitHub → *Settings → Deploy keys*:
 
 ```bash
-git clone git@github.com:AleQuesada2012/SETI-Management-System.git seti && cd seti
+git -C ~/seti remote set-url origin https://github.com/AleQuesada2012/SETI-Management-System.git
 ```
+
+If the repository is made private again, give the instance a read-only deploy key (*Allow write access* off) and
+clone over SSH instead.
 
 Deploy from `main`; note the commit (`git log -1 --oneline`) so you know what is running.
 
