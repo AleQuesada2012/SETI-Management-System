@@ -113,7 +113,7 @@ new #[Title('assets.create.title')] class extends Component {
         <flux:card class="flex flex-col gap-4">
             <flux:heading level="3">{{ __('assets.create.sections.placement') }}</flux:heading>
 
-            <flux:select wire:model="space_id" :label="Str::ucfirst(__('assets.fields.space_id'))" :placeholder="__('assets.create.choose')" required data-test="asset-space">
+            <flux:select wire:model="space_id" :label="Str::ucfirst(__('assets.fields.space_id'))" :placeholder="__('assets.create.choose')" :badge="__('assets.create.required')" required data-test="asset-space">
                 @foreach ($this->spaces as $space)
                     <flux:select.option :value="$space->id">{{ $space->code }} · {{ $space->name }}</flux:select.option>
                 @endforeach

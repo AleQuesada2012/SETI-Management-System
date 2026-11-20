@@ -186,7 +186,8 @@ new #[Title('assets.index.title')] class extends Component {
         <flux:callout variant="danger" icon="exclamation-triangle" :heading="__('assets.index.invalid')" data-test="invalid-filters">
             <flux:callout.text>
                 <ul class="list-disc ps-5">
-                    @foreach ($errors->all() as $message)
+                    {{-- Not $errors: the view received it before rows() replaced the error bag (CP-08 c). --}}
+                    @foreach ($this->getErrorBag()->all() as $message)
                         <li>{{ $message }}</li>
                     @endforeach
                 </ul>

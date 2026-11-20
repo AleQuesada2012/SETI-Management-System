@@ -75,6 +75,8 @@ return [
         ],
         'choose' => 'Selecciona una opción',
         'none' => 'Ninguno',
+        // The mark of a required field, which the description refers to ("Los campos marcados…").
+        'required' => 'Obligatorio',
         'no_spaces' => 'No tienes espacios asignados donde registrar activos.',
         'name_help' => 'Opcional. Si lo dejas vacío se muestra tipo, marca y modelo.',
         'location_placeholder' => 'Rack 2, Escritorio 5…',

@@ -37,6 +37,9 @@ new #[Title('assets.show.title')] class extends Component {
 
     public function mount(): void
     {
+        // The route binds deleted assets too, only so the page's components can report one deleted meanwhile.
+        abort_if($this->asset->trashed(), 404);
+
         $this->asset->load(['assetType.category', 'brand', 'condition', 'currentSpace', 'responsibleUser', 'supplier']);
     }
 
