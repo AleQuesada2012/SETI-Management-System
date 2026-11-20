@@ -10,7 +10,7 @@
     <flux:heading level="3">{{ __('assets.create.sections.identification') }}</flux:heading>
 
     <div class="grid gap-4 sm:grid-cols-2">
-        <flux:select wire:model="asset_type_id" :label="Str::ucfirst(__('assets.fields.asset_type_id'))" :placeholder="__('assets.create.choose')" required>
+        <flux:select wire:model="asset_type_id" :label="Str::ucfirst(__('assets.fields.asset_type_id'))" :placeholder="__('assets.create.choose')" :badge="__('assets.create.required')" required>
             @foreach ($choices->assetTypes() as $category => $types)
                 <optgroup label="{{ $category }}">
                     @foreach ($types as $type)
@@ -20,7 +20,7 @@
             @endforeach
         </flux:select>
 
-        <flux:select wire:model="condition_id" :label="Str::ucfirst(__('assets.fields.condition_id'))" :placeholder="__('assets.create.choose')" required>
+        <flux:select wire:model="condition_id" :label="Str::ucfirst(__('assets.fields.condition_id'))" :placeholder="__('assets.create.choose')" :badge="__('assets.create.required')" required>
             @foreach ($choices->conditions() as $condition)
                 <flux:select.option :value="$condition->id">{{ $condition->name }} ({{ $condition->color_group->label() }})</flux:select.option>
             @endforeach
@@ -32,7 +32,8 @@
     <flux:input wire:model="name" :label="Str::ucfirst(__('assets.fields.name'))" :description:trailing="__('assets.create.name_help')" maxlength="150" />
 
     <div class="grid gap-4 sm:grid-cols-2">
-        <flux:select wire:model="brand_id" :label="Str::ucfirst(__('assets.fields.brand_id'))" :placeholder="__('assets.create.none')">
+        <flux:select wire:model="brand_id" :label="Str::ucfirst(__('assets.fields.brand_id'))">
+            <flux:select.option value="">{{ __('assets.create.none') }}</flux:select.option>
             @foreach ($choices->brands() as $brand)
                 <flux:select.option :value="$brand->id">{{ $brand->name }}</flux:select.option>
             @endforeach
@@ -53,7 +54,8 @@
     <div class="grid gap-4 sm:grid-cols-2">
         <flux:input wire:model="acquired_on" type="date" :max="now()->toDateString()" :label="Str::ucfirst(__('assets.fields.acquired_on'))" />
 
-        <flux:select wire:model="supplier_id" :label="Str::ucfirst(__('assets.fields.supplier_id'))" :placeholder="__('assets.create.none')">
+        <flux:select wire:model="supplier_id" :label="Str::ucfirst(__('assets.fields.supplier_id'))">
+            <flux:select.option value="">{{ __('assets.create.none') }}</flux:select.option>
             @foreach ($choices->suppliers() as $supplier)
                 <flux:select.option :value="$supplier->id">{{ $supplier->name }}</flux:select.option>
             @endforeach
@@ -70,7 +72,9 @@
 <flux:card class="flex flex-col gap-4">
     <flux:heading level="3">{{ __('assets.create.sections.custody') }}</flux:heading>
 
-    <flux:select wire:model="responsible_user_id" :label="Str::ucfirst(__('assets.fields.responsible_user_id'))" :placeholder="__('assets.create.none')">
+    <flux:select wire:model="responsible_user_id" :label="Str::ucfirst(__('assets.fields.responsible_user_id'))">
+        {{-- A real option, not a placeholder: Flux disables placeholders, so a value could never be cleared (DEF-15). --}}
+        <flux:select.option value="">{{ __('assets.create.none') }}</flux:select.option>
         @foreach ($choices->custodians() as $custodian)
             <flux:select.option :value="$custodian->id">{{ $custodian->name }}</flux:select.option>
         @endforeach

@@ -66,6 +66,22 @@ test('an Administrador registers an asset in a space they manage and is taken to
     $this->assertDatabaseHas('audit_logs', ['action' => 'created', 'entity_type' => 'asset', 'entity_id' => $asset->id, 'actor_id' => $admin->id]);
 });
 
+test('the required fields are marked, as the form\'s description says', function () {
+    $admin = actingAsRole(SystemRole::Administrador);
+    Space::factory()->managedBy($admin)->create();
+
+    $html = $this->get(route('assets.create'))
+        ->assertOk()
+        ->assertSee(__('assets.create.description'))
+        ->getContent();
+
+    // Space, asset type and condition (DEF-17). The mark is visual only: the native `required` already tells a
+    // screen reader.
+    $mark = preg_quote(__('assets.create.required'), '/');
+    expect(preg_match_all('/<span\b[^>]*aria-hidden="true"[^>]*>\s*'.$mark.'\s*<\/span>/', $html))->toBe(3)
+        ->and(preg_match_all('/<select\b[^>]*\brequired\b/', $html))->toBe(3);
+});
+
 test('the Superusuario registers an asset with every field of the form', function () {
     actingAsRole(SystemRole::Superusuario);
     $space = Space::factory()->create();

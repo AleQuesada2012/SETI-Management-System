@@ -76,6 +76,21 @@ test('an asset that no longer exists is reported instead of deleted again', func
     expect(AuditLog::query()->where('action', 'deleted')->where('entity_id', $this->asset->id)->count())->toBe(1);
 });
 
+test('a tab opened before the asset was deleted in another one reports it through the real request (CP-02 c)', function () {
+    $this->actingAs($this->admin);
+    $page = $this->get(route('assets.show', $this->asset))->assertOk()->getContent();
+
+    app(DeleteAsset::class)->handle($this->admin, $this->asset);
+
+    $response = livewireCall($page, 'assets.delete-asset', 'delete')->assertOk();
+
+    expect($response->json('components.0.effects.redirect'))->toBe(route('assets.index'))
+        ->and(collect($response->json('components.0.effects.dispatches'))->pluck('params.slots.text'))
+        ->toContain(__('assets.delete.not_found', ['asset' => $this->asset->code]))
+        ->and(AuditLog::query()->where('action', 'deleted')->where('entity_id', $this->asset->id)->count())->toBe(1);
+    $this->get(route('assets.show', $this->asset))->assertNotFound();
+});
+
 test('the Superusuario deletes an asset of any space', function () {
     $superuser = actingAsRole(SystemRole::Superusuario);
     $other = Asset::factory()->inSpace(Space::factory()->create())->create();

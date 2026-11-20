@@ -72,12 +72,17 @@ test('the assets of a custodian are listed, or a message says they have none', f
         ->assertSee(__('assets.index.empty.responsible'));
 });
 
-test('an invalid date range is explained instead of listing', function () {
+test('an invalid date range is explained instead of listing (CP-08 c)', function () {
     Livewire::test('pages::assets.index')
         ->set('acquired_from', '2026-09-30')
         ->set('acquired_to', '2026-09-01')
         ->assertSee(__('assets.index.invalid'))
+        ->assertSee(__('assets.filters.errors.range'))
         ->assertDontSee('Monitor recepción');
+
+    $this->get(route('assets.index', ['acquired_from' => '2026-09-30', 'acquired_to' => '2026-09-01']))
+        ->assertOk()
+        ->assertSee(__('assets.filters.errors.range'));
 });
 
 test('an empty inventory says so', function () {

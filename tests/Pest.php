@@ -3,6 +3,7 @@
 use App\Enums\SystemRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 /*
@@ -26,4 +27,30 @@ function actingAsRole(SystemRole ...$roles): User
     test()->actingAs($user);
 
     return $user;
+}
+
+/**
+ * Call $method of the $component that $page (a rendered page's HTML) contains, through Livewire's real update
+ * endpoint, as the browser does. Unlike Livewire::test, this runs the page route's middleware again
+ * (SubstituteBindings, can:…), which is where a click can fail after the data changed in another tab.
+ *
+ * @param  list<mixed>  $params
+ */
+function livewireCall(string $page, string $component, string $method, array $params = []): TestResponse
+{
+    preg_match_all('/wire:snapshot="([^"]*)"/', $page, $matches);
+
+    $snapshot = collect($matches[1])
+        ->map(fn (string $encoded) => html_entity_decode($encoded, ENT_QUOTES))
+        ->first(fn (string $json) => (json_decode($json, true)['memo']['name'] ?? null) === $component);
+
+    expect($snapshot)->not->toBeNull("The page does not render the {$component} component.");
+
+    return test()->withHeader('X-Livewire', 'true')->postJson(app('livewire')->getUpdateUri(), [
+        'components' => [[
+            'snapshot' => $snapshot,
+            'updates' => [],
+            'calls' => [['path' => '', 'method' => $method, 'params' => $params]],
+        ]],
+    ]);
 }

@@ -9,6 +9,7 @@ use App\Models\AssetCondition;
 use App\Models\AssetMovement;
 use App\Models\Brand;
 use App\Models\Space;
+use App\Models\Supplier;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\ValidationException;
 use Livewire\Livewire;
@@ -62,6 +63,49 @@ test('the space is shown but does not change from the edit form', function () {
 
     expect($this->asset->refresh()->current_space_id)->toBe($this->space->id)
         ->and(AssetMovement::query()->where('asset_id', $this->asset->id)->count())->toBe(1);
+});
+
+test('the "Registrar traslado" link is not inside the space help, which screen readers skip', function () {
+    $this->actingAs($this->admin);
+
+    $html = $this->get(route('assets.edit', $this->asset))
+        ->assertOk()
+        ->assertSee('data-test="edit-move-link"', false)
+        ->getContent();
+
+    // Flux hides every <ui-description> with aria-hidden: a link in one cannot be reached by a screen reader (DEF-16).
+    expect($html)->not->toMatch('/<ui-description\b(?:(?!<\/ui-description>).)*data-test="edit-move-link"/s');
+});
+
+test('the brand, the supplier and the custodian can go back to "Ninguno" (CP-15 b, CP-23 b)', function () {
+    $this->actingAs($this->admin);
+    $brand = Brand::query()->create(['name' => 'Dell']);
+    $supplier = Supplier::query()->create(['name' => 'Distribuidora Tecnológica S.A.']);
+    $this->asset->update([
+        'brand_id' => $brand->id,
+        'supplier_id' => $supplier->id,
+        'responsible_user_id' => $this->admin->id,
+    ]);
+
+    $html = $this->get(route('assets.edit', $this->asset))->assertOk()->getContent();
+    $none = preg_quote(__('assets.create.none'), '/');
+
+    // A Flux placeholder is a disabled option: "Ninguno" must be a real, selectable one (DEF-15).
+    expect(preg_match_all('/<option\b[^>]*\bvalue=""[^>]*>\s*'.$none.'\s*<\/option>/', $html, $options))->toBe(3)
+        ->and(collect($options[0])->filter(fn (string $option) => str_contains($option, 'disabled'))->all())->toBe([]);
+
+    Livewire::test('pages::assets.edit', ['asset' => $this->asset])
+        ->set('brand_id', '')
+        ->set('supplier_id', '')
+        ->set('responsible_user_id', '')
+        ->call('save')
+        ->assertHasNoErrors();
+
+    $this->asset->refresh();
+    expect($this->asset->brand_id)->toBeNull()
+        ->and($this->asset->supplier_id)->toBeNull()
+        ->and($this->asset->responsible_user_id)->toBeNull();
+    $this->get(route('assets.show', $this->asset))->assertOk()->assertDontSee($supplier->name);
 });
 
 test('assigning a condition saves it, confirms it and shows its color', function (string $condition, string $color) {

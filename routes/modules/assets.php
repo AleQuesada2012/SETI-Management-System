@@ -17,8 +17,12 @@ Route::prefix('activos')->name('assets.')->group(function () {
         ->middleware('can:create,'.Asset::class)
         ->name('create');
 
+    // withTrashed: Livewire runs this route's middleware again on every update of the page's components, so a click
+    // after another tab deleted the asset must still bind it; assets.delete-asset then reports it as gone (CP-02 c).
+    // The page itself answers 404 for a deleted asset, and every Action reloads the asset without the deleted ones.
     Route::livewire('{asset}', 'pages::assets.show')
         ->middleware('can:view,asset')
+        ->withTrashed()
         ->name('show');
 
     Route::livewire('{asset}/editar', 'pages::assets.edit')

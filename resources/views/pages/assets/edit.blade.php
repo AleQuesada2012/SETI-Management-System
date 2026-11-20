@@ -131,12 +131,13 @@ new #[Title('assets.edit.title')] class extends Component {
                     <flux:text class="text-ink" data-test="asset-space">
                         {{ $asset->currentSpace ? $asset->currentSpace->code.' · '.$asset->currentSpace->name : __('assets.show.empty') }}
                     </flux:text>
-                    <flux:description>
+                    {{-- Not flux:description: Flux hides it from screen readers (aria-hidden), and with it the link. --}}
+                    <flux:text size="sm">
                         {{ __('assets.edit.space_help') }}
                         @can('move', $asset)
                             <flux:link :href="route('assets.move', $asset)" wire:navigate data-test="edit-move-link">{{ __('assets.edit.move') }}</flux:link>
                         @endcan
-                    </flux:description>
+                    </flux:text>
                 </flux:field>
 
                 <flux:input wire:model="location_detail" :label="Str::ucfirst(__('assets.fields.location_detail'))" :placeholder="__('assets.create.location_placeholder')" maxlength="200" />
