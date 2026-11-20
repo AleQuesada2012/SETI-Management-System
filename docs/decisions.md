@@ -47,7 +47,7 @@ in [Agent-DB.md §20](Agent-DB.md)). **G3** = planning round 3 (2026-09-29). **B
 
 | # | Decision | Why | Enforced in |
 |---|---|---|---|
-| G1 | Private repo on AleQuesada2012 (`SETI-Management-System`); GitHub Issues is the only tracker; milestones per sprint; labels `module:` and `type:`. | One place to look. | `scripts/github/bootstrap.sh` |
+| G1 | Public repo on AleQuesada2012 (`SETI-Management-System`); GitHub Issues is the only tracker; milestones per sprint; labels `module:` and `type:`. | One place to look. | `scripts/github/bootstrap.sh` |
 | G1 | GitHub Flow, squash merge only; PR title `type(module): summary (RF_xx)`; branches `type/<issue#>-<slug>`; tags `sprint-N`. | Readable history, one commit per change. | [CONTRIBUTING.md](../CONTRIBUTING.md), `pr-title.yml` |
 | G1 | `main` protected: 1 approval, CI green, conversations resolved, stale approvals dismissed; CODEOWNERS only on platform paths. | Review without bottlenecks. | branch protection, `.github/CODEOWNERS` |
 | G1 | Platform owners: @AleQuesada2012, @Rubiocai. Buddy reviewers: assets ← Diego, spaces ← Jose, reservations ← Sebastián, users ← Alejandro, security/reports ← David. | Everyone reviews a neighbour's module. | [CONTRIBUTING.md](../CONTRIBUTING.md) |
