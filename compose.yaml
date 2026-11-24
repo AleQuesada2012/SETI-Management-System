@@ -104,7 +104,7 @@ services:
     restart: unless-stopped
 
   mailpit:
-    image: axllent/mailpit:v1.33
+    image: axllent/mailpit:v1.34
     ports:
       - "${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025"
     restart: unless-stopped
