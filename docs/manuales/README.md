@@ -11,7 +11,7 @@ cada acción, con capturas tomadas en el teléfono y en la computadora.
 | `espacios.md` | Espacios | Pendiente |
 | `reservas.md` | Reservas | Disponible |
 | `reportes.md` | Reportes | Pendiente |
-| `usuarios-y-roles.md` | Usuarios y roles | Pendiente |
+| `usuarios-y-roles.md` | Usuarios y roles | Disponible |
 
 ## Menú de reportes (RF_60)
 
