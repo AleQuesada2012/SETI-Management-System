@@ -82,6 +82,7 @@ return [
         'open' => 'Ver actividad',
         'intro' => 'Consulta las acciones que realizó un usuario: fecha, hora y tipo de operación.',
         'back' => 'Volver a usuarios',
+        'back_to_reports' => 'Volver a reportes',
         'user' => 'Usuario',
         'choose' => 'Elige un usuario',
         'from' => 'Desde',

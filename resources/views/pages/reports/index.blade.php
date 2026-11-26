@@ -46,6 +46,9 @@ new #[Title('reports.index.title')] class extends Component
             @can('viewAny', ReportGeneration::class)
                 <flux:button icon="clock" :href="route('reports.generations')" wire:navigate>{{ __('reports.index.generations') }}</flux:button>
             @endcan
+            @can(PermissionName::ReportsAudit)
+                <flux:button icon="finger-print" :href="route('users.activity')" wire:navigate data-test="user-activity-link">{{ __('users.activity.title') }}</flux:button>
+            @endcan
         </div>
     </div>
 

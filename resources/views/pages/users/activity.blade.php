@@ -104,6 +104,8 @@ new #[Title('users.activity.title')] class extends Component
         <flux:text>{{ __('users.activity.intro') }}</flux:text>
         @can('viewAny', App\Models\User::class)
             <flux:button icon="arrow-left" :href="route('users.index')" wire:navigate>{{ __('users.activity.back') }}</flux:button>
+        @elsecan(App\Enums\PermissionName::ReportsView)
+            <flux:button icon="arrow-left" :href="route('reports.index')" wire:navigate data-test="activity-back-to-reports">{{ __('users.activity.back_to_reports') }}</flux:button>
         @endcan
     </div>
 
