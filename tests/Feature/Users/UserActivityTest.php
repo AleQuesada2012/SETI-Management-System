@@ -2,6 +2,7 @@
 
 use App\Enums\AuditAction;
 use App\Enums\AuditChannel;
+use App\Enums\PermissionName;
 use App\Enums\SystemRole;
 use App\Models\AuditLog;
 use App\Models\User;
@@ -114,4 +115,21 @@ test('the Reportes role may consult activity; roles without reports.audit may no
     $admin = actingAsRole(SystemRole::Administrador);
     $this->get(route('users.activity'))->assertForbidden();
     $this->get(route('users.show', $admin))->assertOk()->assertDontSee(route('users.activity', ['usuario' => $admin->id]), escape: false);
+});
+
+test('the Reportes role reaches the activity from the reports menu and goes back to it', function () {
+    actingAsRole(SystemRole::Reportes);
+
+    $this->get(route('reports.index'))->assertOk()->assertSee(route('users.activity'), escape: false);
+    $this->get(route('users.activity'))->assertOk()
+        ->assertSee(__('users.activity.back_to_reports'))
+        ->assertDontSee(__('users.activity.back'));
+});
+
+test('a user who sees reports but not the audit gets no link to the activity', function () {
+    $user = User::factory()->create();
+    $user->givePermissionTo(PermissionName::ReportsView->value);
+    $this->actingAs($user);
+
+    $this->get(route('reports.index'))->assertOk()->assertDontSee(route('users.activity'), escape: false);
 });
